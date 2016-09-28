@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import { Navigator, StyleSheet, View, Text } from 'react-native';
  
-var Login = require('./Login').default
+var Login = require('./login').default
+var Dashboard = require('./dashboard').default
  
-var ROUTES = { login: Login }
+var ROUTES = { 
+                login: Login,
+                dashboard: Dashboard
+              }
  
 export default class Main extends Component {
   constructor(props){
@@ -19,7 +23,7 @@ export default class Main extends Component {
   render() {
     return (
      <Navigator
-      initialRoute = {{ title: 'Login', index: 0 }}
+      initialRoute = {{ title: 'Dashboard', index: 0 }}
       renderScene  = {(route, navigator) => {
                         return <Login title={route.title} />
                       }}/>
