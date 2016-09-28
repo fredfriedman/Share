@@ -1,0 +1,29 @@
+import React, { Component } from 'react';
+import { Navigator, StyleSheet, View, Text } from 'react-native';
+ 
+var Login = require('./Login').default
+ 
+var ROUTES = { login: Login }
+ 
+export default class Main extends Component {
+  constructor(props){
+        super(props);
+        this.state = {};
+    }
+
+  renderScene(route, navigator) {
+    var Component = ROUTES[route.name]
+    return <Component route={route} navigator={navigator} />
+  }
+
+  render() {
+    return (
+     <Navigator
+      initialRoute = {{ title: 'Login', index: 0 }}
+      renderScene  = {(route, navigator) => {
+                        return <Login title={route.title} />
+                      }}/>
+    )
+  }
+}
+
