@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Image,KeyboardAvoidingView, AppRegistry, TextInput, View, StyleSheet,TouchableHighlight, Text, ScrollView } from 'react-native';
 
 var styles = require('./styles')
-var images = require('../../config/images')
+var { whiteGradient } = require('../../config/images')
 
 export default class Login extends Component {
   constructor(props) {
@@ -27,9 +27,9 @@ export default class Login extends Component {
     return (
       <View style={styles.container}>
           <Image
-          source={require("../../images/whitegradient.png")}
+          source={ whiteGradient }
           style={styles.backgroundImage}>
-            <KeyboardAvoidingView behavior="padding" style={styles.loginContainer}> 
+            <KeyboardAvoidingView behavior="padding" style={styles.loginContainer}>
               <TextInput style={styles.input}
                 onChangeText={(text) => this.setState({username: text})}
                 placeholder={'Username'}

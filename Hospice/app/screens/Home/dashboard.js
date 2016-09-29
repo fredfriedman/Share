@@ -3,16 +3,16 @@
 import React, { Component } from 'react';
 import { AppRegistry, TabBarIOS, View, Text } from 'react-native';
 
- 
+
 export default class Dashboard extends Component {
- 
+
     constructor(props) {
         super(props);
         this.state = {
             selectedTab: 'history'
         };
     }
-    
+
     setTab(tabID) {
         this.setState({selectedTab: tabID})
     }
@@ -25,7 +25,7 @@ export default class Dashboard extends Component {
                     onPress={() => { this.setTab('history') }}>
                     <View><Text> history </Text></View>
                 </TabBarIOS.Item>
-                <TabBarIOS.Item 
+                <TabBarIOS.Item
                     systemIcon="contacts"
                     selected={this.state.selectedTab === "contacts"}
                     onPress={() => { this.setTab('contacts') }}>
@@ -45,10 +45,5 @@ export default class Dashboard extends Component {
         );
     }
 }
- 
+
 AppRegistry.registerComponent('Dashboard', () => Dashboard);
-
-
-/*
-
-                */
