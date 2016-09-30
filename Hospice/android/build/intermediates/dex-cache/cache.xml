@@ -2,165 +2,165 @@
 <items version="2" >
 
     <item
-        jar="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="3be474b1b21b31cf2fa93fe6bd641ae108d96452">
-        <dex dex="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/pre-dexed/debug/classes-3ec5692ee11545214096777e9f657bcf01e27152.jar" />
-    </item>
-    <item
-        jar="/Users/aaronliberatore/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp-urlconnection/3.4.1/63994437f62bc861bc20c605d12962f7246116d1/okhttp-urlconnection-3.4.1.jar"
+        jar="C:\Users\Daniel\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp3\okhttp-urlconnection\3.4.1\63994437f62bc861bc20c605d12962f7246116d1\okhttp-urlconnection-3.4.1.jar"
         jumboMode="false"
         revision="23.0.1"
         sha1="63994437f62bc861bc20c605d12962f7246116d1">
-        <dex dex="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/pre-dexed/debug/okhttp-urlconnection-3.4.1-5c6ac6d31c84b8ebaffbbf1dece2b222f1917db4.jar" />
+        <dex dex="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\pre-dexed\debug\okhttp-urlconnection-3.4.1-b894408a2352d18e8dd0944f690648f00239fd18.jar" />
     </item>
     <item
-        jar="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/jars/libs/internal_impl-23.2.1.jar"
+        jar="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\jars\libs\internal_impl-23.2.1.jar"
         jumboMode="false"
         revision="23.0.1"
         sha1="607a3d0b8013b4ccbfeb0b7cb293351994e021fb">
-        <dex dex="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/pre-dexed/debug/internal_impl-23.2.1-c716c2957e487283cc4bac268c7705382fb3a667.jar" />
+        <dex dex="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\pre-dexed\debug\internal_impl-23.2.1-e3327c3ab46756e9e111bdaa0745193b7b9b3fd7.jar" />
     </item>
     <item
-        jar="/Users/aaronliberatore/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.9.0/f824591a0016efbaeddb8300bee54832a1398cfa/okio-1.9.0.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="f824591a0016efbaeddb8300bee54832a1398cfa">
-        <dex dex="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/pre-dexed/debug/okio-1.9.0-6c6e5c02f367461e122286221c9984e6b0f92930.jar" />
-    </item>
-    <item
-        jar="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline-base/0.11.0/jars/classes.jar"
+        jar="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\0.11.0\jars\classes.jar"
         jumboMode="false"
         revision="23.0.1"
         sha1="ca63c521b5745ae9a09629d7ca67ff6bc2a967fe">
-        <dex dex="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/pre-dexed/debug/classes-ac470bd8cce02bace06760f07505fd98df40af34.jar" />
+        <dex dex="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\pre-dexed\debug\classes-f4d9157c4f6cc54a7bf95870ecce06bb7a8c5c76.jar" />
     </item>
     <item
-        jar="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fresco/0.11.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="d31aadf33187c37a7cd63dc1b769f8c6e33f78c3">
-        <dex dex="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/pre-dexed/debug/classes-507fb539fb0c730daec16bdf9c652a5aa7de519b.jar" />
-    </item>
-    <item
-        jar="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline-okhttp3/0.11.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="2b8a01ad9da5d26d0067894c22e87597bca2c500">
-        <dex dex="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/pre-dexed/debug/classes-93114e61b940bdffc0c4fe64445c44d5d5af4421.jar" />
-    </item>
-    <item
-        jar="/Users/aaronliberatore/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp-ws/3.4.1/8ace66ef7002d98f633377c9e67daeeb196d8c3b/okhttp-ws-3.4.1.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="8ace66ef7002d98f633377c9e67daeeb196d8c3b">
-        <dex dex="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/pre-dexed/debug/okhttp-ws-3.4.1-1d72d06e6f3ee0804be4ef1cabd39675b17e3fc5.jar" />
-    </item>
-    <item
-        jar="/Users/aaronliberatore/.gradle/caches/modules-2/files-2.1/com.nineoldandroids/library/2.4.0/e9b63380f3a242dbdbf103a2355ad7e43bad17cb/library-2.4.0.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb">
-        <dex dex="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/pre-dexed/debug/library-2.4.0-178769ad4e9c3072665591a090a78435509bdbd7.jar" />
-    </item>
-    <item
-        jar="/Users/aaronliberatore/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.0/5871fb60dc68d67da54a663c3fd636a10a532948/jsr305-3.0.0.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="5871fb60dc68d67da54a663c3fd636a10a532948">
-        <dex dex="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/pre-dexed/debug/jsr305-3.0.0-b86bf6d995aaa6282599b08ffccb6b0eb5cd023e.jar" />
-    </item>
-    <item
-        jar="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline/0.11.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="3341b66c54367e777a0647e2db96c045329bfeab">
-        <dex dex="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/pre-dexed/debug/classes-e92873e520fc638809b2514bbb66be1ca6697719.jar" />
-    </item>
-    <item
-        jar="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="d86429b0f0b3f3cafbeb78dda1b9d89119ccb05d">
-        <dex dex="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/pre-dexed/debug/classes-6ade83b30235d76cf272ae54ea398983fdde0a39.jar" />
-    </item>
-    <item
-        jar="/Users/aaronliberatore/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/3.4.1/c7c4f9e35c2fd5900da24f9872e3971801f08ce0/okhttp-3.4.1.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="c7c4f9e35c2fd5900da24f9872e3971801f08ce0">
-        <dex dex="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/pre-dexed/debug/okhttp-3.4.1-f158609b4ab98158e9e128cf569f1bedf12c8da7.jar" />
-    </item>
-    <item
-        jar="/Users/aaronliberatore/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-tasks/1.4.0/d85884acf6810a3bbbecb587f239005cbc846dc4/bolts-tasks-1.4.0.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="d85884acf6810a3bbbecb587f239005cbc846dc4">
-        <dex dex="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/pre-dexed/debug/bolts-tasks-1.4.0-5f9e4b8bf402c30e4b83c7772edfcb4ed9b201db.jar" />
-    </item>
-    <item
-        jar="/Users/aaronliberatore/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.2.3/1a0113da2cab5f4c216b4e5e7c1dbfaa67087e14/jackson-core-2.2.3.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="1a0113da2cab5f4c216b4e5e7c1dbfaa67087e14">
-        <dex dex="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/pre-dexed/debug/jackson-core-2.2.3-29c6421352a75237d7321f066fc13e0df13094b3.jar" />
-    </item>
-    <item
-        jar="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/exploded-aar/com.facebook.soloader/soloader/0.1.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="8f615bca00639150c9eb6175d4b5471193f70794">
-        <dex dex="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/pre-dexed/debug/classes-464eba5576ba418a8ba39c3c6182e4a7f098dadb.jar" />
-    </item>
-    <item
-        jar="/Users/aaronliberatore/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/23.2.1/support-annotations-23.2.1.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="ccb693bc0774fcb637246f7360de25b4af7df318">
-        <dex dex="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/pre-dexed/debug/support-annotations-23.2.1-dd0bbad0b934784d289052361692090170512c23.jar" />
-    </item>
-    <item
-        jar="/Users/aaronliberatore/.gradle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/6975da39a7040257bd51d21a231b76c915872d38/javax.inject-1.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="6975da39a7040257bd51d21a231b76c915872d38">
-        <dex dex="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/pre-dexed/debug/javax.inject-1-31ae0faa9a7d3464025e522fb25389f12292d4de.jar" />
-    </item>
-    <item
-        jar="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.0.1/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="4356e230a981d1bbf047d848b91bc0d9b7c5bacc">
-        <dex dex="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/pre-dexed/debug/classes-aae18a636fa4e63c2e7f361430be57b4bf11c5a6.jar" />
-    </item>
-    <item
-        jar="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/exploded-aar/com.facebook.react/react-native/0.34.1/jars/libs/infer-annotations-1.5.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="085d4b604a91b790ed60ccf219b0c30c9db7d9ea">
-        <dex dex="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/pre-dexed/debug/infer-annotations-1.5-1dbc8a360db6c1992256ea524c591e4310dd2f25.jar" />
-    </item>
-    <item
-        jar="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fbcore/0.11.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="98786c1770b531b9194fb6448b2a2692c64074b6">
-        <dex dex="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/pre-dexed/debug/classes-fda10055914e2fa7885f107554afb4fffbf61af3.jar" />
-    </item>
-    <item
-        jar="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/exploded-aar/com.facebook.react/react-native/0.34.1/jars/classes.jar"
+        jar="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.34.1\jars\classes.jar"
         jumboMode="false"
         revision="23.0.1"
         sha1="24959c1d0b0991e7d0d42ab7bd7e7d68b2c3e679">
-        <dex dex="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/pre-dexed/debug/classes-65f4768037b4f8c9bc6e6f2855647b33a946e171.jar" />
+        <dex dex="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\pre-dexed\debug\classes-11cc2b43d1fced770e7f315a9ca6b5189e96371f.jar" />
     </item>
     <item
-        jar="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/exploded-aar/com.facebook.fresco/drawee/0.11.0/jars/classes.jar"
+        jar="C:\Users\Daniel\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp3\okhttp\3.4.1\c7c4f9e35c2fd5900da24f9872e3971801f08ce0\okhttp-3.4.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="c7c4f9e35c2fd5900da24f9872e3971801f08ce0">
+        <dex dex="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\pre-dexed\debug\okhttp-3.4.1-2827bbc1b76f9f3bc132f34ed45aff9f787736a3.jar" />
+    </item>
+    <item
+        jar="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\exploded-aar\com.facebook.soloader\soloader\0.1.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="8f615bca00639150c9eb6175d4b5471193f70794">
+        <dex dex="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\pre-dexed\debug\classes-fa134a4ca8cf482c93a05f4a61d2b54cf354baec.jar" />
+    </item>
+    <item
+        jar="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="98786c1770b531b9194fb6448b2a2692c64074b6">
+        <dex dex="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\pre-dexed\debug\classes-bc539c45135d09c5b91dbe82c9aafb310d53f981.jar" />
+    </item>
+    <item
+        jar="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="3be474b1b21b31cf2fa93fe6bd641ae108d96452">
+        <dex dex="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\pre-dexed\debug\classes-fa81f50046724f076369b1ea450cf13fb37fb433.jar" />
+    </item>
+    <item
+        jar="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-okhttp3\0.11.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="2b8a01ad9da5d26d0067894c22e87597bca2c500">
+        <dex dex="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\pre-dexed\debug\classes-3abf0d49dcebbc130dd090c63f865e610dfbdb8f.jar" />
+    </item>
+    <item
+        jar="C:\Users\Daniel\.gradle\caches\modules-2\files-2.1\javax.inject\javax.inject\1\6975da39a7040257bd51d21a231b76c915872d38\javax.inject-1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="6975da39a7040257bd51d21a231b76c915872d38">
+        <dex dex="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\pre-dexed\debug\javax.inject-1-c0592d4889690ff85ac1bbaaf123c130f2e57ec8.jar" />
+    </item>
+    <item
+        jar="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\0.11.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="3341b66c54367e777a0647e2db96c045329bfeab">
+        <dex dex="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\pre-dexed\debug\classes-798cf5b55e0498efab49a8215a00caab84939a21.jar" />
+    </item>
+    <item
+        jar="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\exploded-aar\com.facebook.fresco\drawee\0.11.0\jars\classes.jar"
         jumboMode="false"
         revision="23.0.1"
         sha1="1137942adeb03984c1311b662363dd38fc238fd3">
-        <dex dex="/Users/aaronliberatore/Documents/Projects/Hospice/Hospice/android/app/build/intermediates/pre-dexed/debug/classes-11cde724525719dd1c6132139d84a070d4b323a8.jar" />
+        <dex dex="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\pre-dexed\debug\classes-4dd04d0f31764d0b20de6157a85bc527436a530e.jar" />
+    </item>
+    <item
+        jar="C:\Users\Daniel\.gradle\caches\modules-2\files-2.1\com.google.code.findbugs\jsr305\3.0.0\5871fb60dc68d67da54a663c3fd636a10a532948\jsr305-3.0.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="5871fb60dc68d67da54a663c3fd636a10a532948">
+        <dex dex="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\pre-dexed\debug\jsr305-3.0.0-b8d6215bb6ad7bf0f83c8ed1bc08e154aaa54510.jar" />
+    </item>
+    <item
+        jar="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fresco\0.11.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d31aadf33187c37a7cd63dc1b769f8c6e33f78c3">
+        <dex dex="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\pre-dexed\debug\classes-fce86c8596550553a25318a829a3a47795f34cd9.jar" />
+    </item>
+    <item
+        jar="C:\Users\Daniel\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp3\okhttp-ws\3.4.1\8ace66ef7002d98f633377c9e67daeeb196d8c3b\okhttp-ws-3.4.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="8ace66ef7002d98f633377c9e67daeeb196d8c3b">
+        <dex dex="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\pre-dexed\debug\okhttp-ws-3.4.1-28164d55110f7f9c6f3c2372f7b7827d8960f550.jar" />
+    </item>
+    <item
+        jar="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d86429b0f0b3f3cafbeb78dda1b9d89119ccb05d">
+        <dex dex="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\pre-dexed\debug\classes-95e4d57c7eb22e7f7fd9826647afc64695a37bc4.jar" />
+    </item>
+    <item
+        jar="C:\Users\Daniel\.gradle\caches\modules-2\files-2.1\com.squareup.okio\okio\1.9.0\f824591a0016efbaeddb8300bee54832a1398cfa\okio-1.9.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="f824591a0016efbaeddb8300bee54832a1398cfa">
+        <dex dex="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\pre-dexed\debug\okio-1.9.0-cb1d3d9f433e660e2635f4c23fe7bb732e0ece29.jar" />
+    </item>
+    <item
+        jar="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.0.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="4356e230a981d1bbf047d848b91bc0d9b7c5bacc">
+        <dex dex="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\pre-dexed\debug\classes-bf1880e03c02705a16eb58aea9a0083353e2c787.jar" />
+    </item>
+    <item
+        jar="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.34.1\jars\libs\infer-annotations-1.5.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="085d4b604a91b790ed60ccf219b0c30c9db7d9ea">
+        <dex dex="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\pre-dexed\debug\infer-annotations-1.5-4432bb798da3169985162a50ef2258892263f826.jar" />
+    </item>
+    <item
+        jar="C:\Users\Daniel\.gradle\caches\modules-2\files-2.1\com.nineoldandroids\library\2.4.0\e9b63380f3a242dbdbf103a2355ad7e43bad17cb\library-2.4.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb">
+        <dex dex="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\pre-dexed\debug\library-2.4.0-f04fd066cb2942f40899b7b05a2b4e692293b4e4.jar" />
+    </item>
+    <item
+        jar="C:\Users\Daniel\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-core\2.2.3\1a0113da2cab5f4c216b4e5e7c1dbfaa67087e14\jackson-core-2.2.3.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="1a0113da2cab5f4c216b4e5e7c1dbfaa67087e14">
+        <dex dex="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\pre-dexed\debug\jackson-core-2.2.3-df1582e1ed3e5666f9ff3ba76d310508d42b17ea.jar" />
+    </item>
+    <item
+        jar="C:\Users\Daniel\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\23.2.1\support-annotations-23.2.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="ccb693bc0774fcb637246f7360de25b4af7df318">
+        <dex dex="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\pre-dexed\debug\support-annotations-23.2.1-4fd18047796d32ba690d01d2730c995d2ba9aab1.jar" />
+    </item>
+    <item
+        jar="C:\Users\Daniel\.gradle\caches\modules-2\files-2.1\com.parse.bolts\bolts-tasks\1.4.0\d85884acf6810a3bbbecb587f239005cbc846dc4\bolts-tasks-1.4.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d85884acf6810a3bbbecb587f239005cbc846dc4">
+        <dex dex="D:\Daniel\DukeUniversity\2016-2017\COMPSCI408\Projects\Hospice\Hospice\android\app\build\intermediates\pre-dexed\debug\bolts-tasks-1.4.0-cc8dc05f37a2c344f9464bbeb7ddf8d7a06bceae.jar" />
     </item>
 
 </items>

@@ -5,7 +5,7 @@ import { AppRegistry, ViewPagerAndroid, View, Text, Image } from 'react-native';
 import TabNavigator from 'react-native-tab-navigator';
 
 var { whiteGradient, homeIcon, writeIcon, calIcon, settingsIcon, overviewIcon } = require('../config/images')
-var Login = require('../screens/Login/login').default
+var Login = require('../screens/Login/Login').default
 
 export default class TabBar extends Component {
 

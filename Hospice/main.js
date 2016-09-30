@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Navigator, StyleSheet, View, Text } from 'react-native';
 
-var Login = require('./app/screens/Login/login').default
+var Login = require('./app/screens/Login/Login').default
 var Dashboard = require('./app/components/TabBar').default
 
 var ROUTES = {
