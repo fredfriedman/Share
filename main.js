@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { AppRegistry, Navigator, StyleSheet, View, Text } from 'react-native';
+import { AppRegistry, Navigator, StyleSheet, View, Text, AsyncStorage } from 'react-native';
 
-var Signup = require('./app/screens/Login/login').default
+var Signup   = require('./app/screens/Login/login').default
+var TabBar   = require('./app/components/TabBar').default
+var firebase = require('./app/config/firebase')
 
 export default class Main extends Component {
 
@@ -13,26 +15,26 @@ export default class Main extends Component {
         };
     }
 
-    /*componentWillMount(){
+    componentWillMount(){
 
-    AsyncStorage.getItem('user_data').then((user_data_json) => {
+        AsyncStorage.getItem('user_data').then((user_data_json) => {
 
-    let user_data = JSON.parse(user_data_json);
-    let component = {component: Signup};
-    if(user_data != null){
-    app.authWithCustomToken(user_data.token, (error, authData) => {
-    if(error){
-    this.setState(component);
-    }else{
-    this.setState({component: Account});
+            let user_data = JSON.parse(user_data_json);
+            let component = {component: Signup};
+
+            if(user_data != null){
+                firebase.authWithCustomToken(user_data.token, (error, authData) => {
+                    if(error) {
+                        this.setState(component);
+                    } else{
+                        this.setState({component: TabBar});
+                    }
+                });
+            } else {
+                this.setState(component);
+            }
+        });
     }
-    });
-    }else{
-    this.setState(component);
-    }
-    });
-
-    }*/
 
     render(){
         if(this.state.component){

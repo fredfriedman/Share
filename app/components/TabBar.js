@@ -6,9 +6,8 @@ import TabNavigator from 'react-native-tab-navigator';
 
 var { whiteGradient, homeIcon, writeIcon, calIcon, settingsIcon, overviewIcon } = require('../config/images')
 
-var NavBar = require('../components/NavigationBar').default
 // Page in Tab Bar
-var Login = require('../screens/Login/Login').default
+var Login = require('../screens/Login/login').default
 var Patients = require('../screens/Home/patients_view').default
 
 export default class TabBar extends Component {
@@ -16,7 +15,7 @@ export default class TabBar extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedTab: 'Profile'
+            selectedTab: 'Overview'
         };
     }
 
@@ -34,7 +33,7 @@ export default class TabBar extends Component {
                 renderIcon={() => <Image source={homeIcon} />}
                 renderSelectedIcon={() => <Image source={homeIcon} />}
                 onPress={() => this.setTab('Profile')}>
-                <Login/>
+                <View><Text> Calendar </Text></View>
             </TabNavigator.Item>
             <TabNavigator.Item
                 selected={this.state.selectedTab === 'Overview'}
@@ -68,7 +67,7 @@ export default class TabBar extends Component {
     }
 }
 
-AppRegistry.registerComponent('Dashboard', () => Dashboard);
+AppRegistry.registerComponent('TabBar', () => TabBar);
 
 var styles = {
     view: {

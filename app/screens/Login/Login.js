@@ -1,24 +1,13 @@
 import Firebase from 'firebase';
 import React, { Component } from 'react';
-import { Image,KeyboardAvoidingView, AppRegistry, TextInput, View, StyleSheet,TouchableHighlight, Text, ScrollView } from 'react-native';
+import { AsyncStorage, Image, KeyboardAvoidingView, AppRegistry, TextInput, View, StyleSheet, TouchableHighlight, Text, ScrollView } from 'react-native';
 
-var styles = require('./styles')
+var styles   = require('./styles')
+var firebase = require('../../config/firebase')
+let SignUp   = require('./signup').default
+let TabBar   = require('../../components/TabBar').default
+var Button   = require('../../components/button').default
 var { whiteGradient } = require('../../config/images')
-
-let SignUp = require('./signup').default
-var Button = require('../../components/button').default
-
-var firebase = require("firebase/app");
-require("firebase/auth");
-require("firebase/database");
-
-var config = {
-    apiKey: "AIzaSyAGduZMnMEfsoknetJyYk7kJayWSgOAVbE",
-    authDomain: "https://reactcs408.firebaseio.com/",
-    databaseUrl: "https://reactcs408.firebaseio.com/",
- };
-
-firebase.initializeApp(config);
 
 
 export default class Login extends Component {
@@ -32,13 +21,22 @@ export default class Login extends Component {
     }
 
     loginPress() {
-        firebase.auth().signInWithEmailAndPassword(this.state.username, this.state.password).catch(function(error) {
-          // Handle Errors here.
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          // ...
-          console.log(errorCode,errorMessage)
-        });
+
+        var self = this;
+
+        firebase.auth().signInWithEmailAndPassword(this.state.username, this.state.password)
+            .then(function(token) {
+                AsyncStorage.setItem('user_data', JSON.stringify(token));
+                    self.props.navigator.push({
+                      component: TabBar
+                });
+            }, function(error) {
+                // Something went wrong.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+
+                console.log(errorCode,errorMessage)
+            })
     }
 
     signUp() {
@@ -57,18 +55,19 @@ export default class Login extends Component {
                     source={ whiteGradient }
                     style={styles.backgroundImage}>
                     <KeyboardAvoidingView behavior="padding" style={styles.loginContainer}>
-                        <TextInput style={styles.textInput}
+                        <TextInput
+                            style={styles.textInput}
                             onChangeText={(text) => this.setState({username: text})}
-                            placeholder={'Username'}
-                            placeholderStyle={styles.label}
+                            placeholder={'Email'}
                             autoCorrect={false}
                             multiline={false}
                             onSubmitEditing={(event) => {  this.refs.passwordInput.focus(); }}/>
-                        <TextInput secureTextEntry={true} style={styles.textInput}
+                        <TextInput
+                            secureTextEntry={true}
+                            style={styles.textInput}
                             ref='passwordInput'
                             onChangeText={(text) => this.setState({password: text})}
                             placeholder={'Password'}
-                            placeholderStyle={styles.label}
                             multiline={false}/>
                         <Button
                             text="LOGIN"
