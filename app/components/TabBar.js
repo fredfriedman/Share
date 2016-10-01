@@ -5,7 +5,11 @@ import { AppRegistry, ViewPagerAndroid, View, Text, Image } from 'react-native';
 import TabNavigator from 'react-native-tab-navigator';
 
 var { whiteGradient, homeIcon, writeIcon, calIcon, settingsIcon, overviewIcon } = require('../config/images')
+
+var NavBar = require('../components/NavigationBar').default
+// Page in Tab Bar
 var Login = require('../screens/Login/Login').default
+var Patients = require('../screens/Home/patients_view').default
 
 export default class TabBar extends Component {
 
@@ -39,7 +43,7 @@ export default class TabBar extends Component {
                 renderIcon={() => <Image source={overviewIcon} />}
                 renderSelectedIcon={() => <Image source={overviewIcon} />}
                 onPress={() => this.setTab('Overview')}>
-                <View><Text> Overview </Text></View>
+                <Patients/>
             </TabNavigator.Item>
             <TabNavigator.Item
                 selected={this.state.selectedTab === 'Calendar'}
@@ -67,6 +71,9 @@ export default class TabBar extends Component {
 AppRegistry.registerComponent('Dashboard', () => Dashboard);
 
 var styles = {
+    view: {
+        height: 10
+    },
     tabBar: {
         backgroundColor: '#EFEFF4',
         borderTopColor: '#CECED2',

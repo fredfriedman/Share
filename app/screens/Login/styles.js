@@ -5,7 +5,11 @@ module.exports = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    backgroundColor: 'purple'
+  },
+  body: {
+    flex: 9,
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
   },
   backgroundImage: {
     // Have to figure out how to change these to device size
@@ -22,7 +26,7 @@ module.exports = StyleSheet.create({
     paddingTop: 20,
     top: 150,
   },
-  input: {
+  textInput: {
     width: 250,
     height: 50,
     padding: 5,
@@ -33,7 +37,7 @@ module.exports = StyleSheet.create({
     fontFamily: 'Helvetica',
     fontWeight: '100',
     fontSize: 11,
-    color: '#ffffff'
+    color: '#000000'
   },
   button: {
     padding: 10,
@@ -63,5 +67,22 @@ module.exports = StyleSheet.create({
     fontSize: 11,
     fontWeight: '100',
     color: '#ffffff'
-  }
+    },
+    transparent_button: {
+        marginTop: 10,
+        padding: 15
+    },
+    transparent_button_text: {
+        color: '#0485A9',
+        fontSize: 16
+    },
+    primary_button: {
+        margin: 10,
+        padding: 15,
+        backgroundColor: '#529ecc'
+    },
+    primary_button_text: {
+        color: '#FFF',
+        fontSize: 18
+    },
 });
