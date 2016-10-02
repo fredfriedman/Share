@@ -23,7 +23,9 @@ export default class Login extends Component {
     loginPress() {
 
         var self = this;
-
+        self.props.navigator.push({
+          component: TabBar
+      })
         firebase.auth().signInWithEmailAndPassword(this.state.username, this.state.password)
             .then(function(token) {
                 AsyncStorage.setItem('user_data', JSON.stringify(token));

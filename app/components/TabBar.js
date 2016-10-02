@@ -9,6 +9,8 @@ var { whiteGradient, homeIcon, writeIcon, calIcon, settingsIcon, overviewIcon } 
 // Page in Tab Bar
 var Login = require('../screens/Login/login').default
 var Patients = require('../screens/Home/patients_view').default
+var Overview = require('../screens/Home/overview').default
+var Log = require('../screens/DailyLog/log').default
 
 export default class TabBar extends Component {
 
@@ -33,7 +35,7 @@ export default class TabBar extends Component {
                 renderIcon={() => <Image source={homeIcon} />}
                 renderSelectedIcon={() => <Image source={homeIcon} />}
                 onPress={() => this.setTab('Profile')}>
-                <View><Text> Calendar </Text></View>
+                <Log/>
             </TabNavigator.Item>
             <TabNavigator.Item
                 selected={this.state.selectedTab === 'Overview'}
@@ -51,7 +53,7 @@ export default class TabBar extends Component {
                 renderIcon={() => <Image source={calIcon} />}
                 renderSelectedIcon={() => <Image source={calIcon} />}
                 onPress={() => this.setTab('Calendar')}>
-                <View><Text> Calendar </Text></View>
+                <Overview/>
             </TabNavigator.Item>
             <TabNavigator.Item
                 selected={this.state.selectedTab === 'Settings'}
