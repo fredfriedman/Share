@@ -1,4 +1,3 @@
-import React, { Component } from 'react';
 import { StyleSheet} from 'react-native';
 
 module.exports = StyleSheet.create({
@@ -6,10 +5,13 @@ module.exports = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
     },
+    navBar: {
+        backgroundColor: 'transparent',
+        height: 100,
+    },
     body: {
         flex: 9,
         alignItems: 'center',
-        backgroundColor: '#F5FCFF',
         backgroundColor: 'transparent',
     },
     backgroundImage: {

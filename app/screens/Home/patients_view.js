@@ -77,13 +77,15 @@ var styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     justifyContent: 'center',
-    padding: 15,
+    paddingTop: 5,
+    paddingLeft: 10,
+    paddingBottom: 5,
     backgroundColor: '#F6F6F6',
   },
   thumb: {
-    width: 50,
-    height: 50,
-    marginRight: 40,
+    width: 40,
+    height: 40,
+    marginRight: 10,
   },
   text: {
     flex: 1,

@@ -46,6 +46,22 @@ export default class Login extends Component {
     }
 
     passwordReset() {
+        /*
+            1. Change view to show email textInput
+            2. Send Email
+        */
+        let email = ""
+
+        firebase.auth().sendPasswordResetEmail(email)
+            .then(function(success) {
+                // Change view to comfirm password reset
+
+            }, function(error) {
+                switch(error.code){
+                    case "auth/invalid-email" : break
+                    case "auth/user-not-found": break
+                }
+            })
     }
 
     render() {
@@ -82,11 +98,11 @@ export default class Login extends Component {
                             button_text_styles={styles.bottomLabel} />
                     </KeyboardAvoidingView>
                     <Button
-                    text="Don't have an account? Sign Up"
-                    underlayColor={"transparent"}
-                    onpress={this.signUp.bind(this)}
-                    button_styles={styles.signUpButton}
-                    button_text_styles={styles.bottomLabel} />
+                        text="Don't have an account? Sign Up"
+                        underlayColor={"transparent"}
+                        onpress={this.signUp.bind(this)}
+                        button_styles={styles.signUpButton}
+                        button_text_styles={styles.bottomLabel} />
                 </Image>
             </View>
         );
