@@ -5,14 +5,19 @@ import { AppRegistry, ViewPagerAndroid, View, Text, Image } from 'react-native';
 import TabNavigator from 'react-native-tab-navigator';
 
 var { whiteGradient, homeIcon, writeIcon, calIcon, settingsIcon, overviewIcon } = require('../config/images')
-var Login = require('../screens/Login/Login').default
+
+// Page in Tab Bar
+var Login = require('../screens/Login/login').default
+var Patients = require('../screens/Home/patients_view').default
+var Overview = require('../screens/Home/overview').default
+var Log = require('../screens/DailyLog/log').default
 
 export default class TabBar extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            selectedTab: 'Profile'
+            selectedTab: 'Overview'
         };
     }
 
@@ -30,7 +35,7 @@ export default class TabBar extends Component {
                 renderIcon={() => <Image source={homeIcon} />}
                 renderSelectedIcon={() => <Image source={homeIcon} />}
                 onPress={() => this.setTab('Profile')}>
-                <Login/>
+                <Log/>
             </TabNavigator.Item>
             <TabNavigator.Item
                 selected={this.state.selectedTab === 'Overview'}
@@ -39,7 +44,7 @@ export default class TabBar extends Component {
                 renderIcon={() => <Image source={overviewIcon} />}
                 renderSelectedIcon={() => <Image source={overviewIcon} />}
                 onPress={() => this.setTab('Overview')}>
-                <View><Text> Overview </Text></View>
+                <Patients/>
             </TabNavigator.Item>
             <TabNavigator.Item
                 selected={this.state.selectedTab === 'Calendar'}
@@ -48,7 +53,7 @@ export default class TabBar extends Component {
                 renderIcon={() => <Image source={calIcon} />}
                 renderSelectedIcon={() => <Image source={calIcon} />}
                 onPress={() => this.setTab('Calendar')}>
-                <View><Text> Calendar </Text></View>
+                <Overview/>
             </TabNavigator.Item>
             <TabNavigator.Item
                 selected={this.state.selectedTab === 'Settings'}
@@ -64,9 +69,12 @@ export default class TabBar extends Component {
     }
 }
 
-AppRegistry.registerComponent('Dashboard', () => Dashboard);
+AppRegistry.registerComponent('TabBar', () => TabBar);
 
 var styles = {
+    view: {
+        height: 10
+    },
     tabBar: {
         backgroundColor: '#EFEFF4',
         borderTopColor: '#CECED2',

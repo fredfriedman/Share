@@ -1,6 +1,9 @@
-module.exports = {
-  API_KEY: "YOUR_API_KEY",
-  AUTH_DOMAIN: "YOUR_AUTH_DOMAIN",
-  DATABASE_URL: "YOUR_DATABASE_URL",
-  STORAGE_BUCKET: "YOUR_STORAGE_BUCKET"
-}
+import * as firebase from 'firebase';
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAGduZMnMEfsoknetJyYk7kJayWSgOAVbE",
+    authDomain: "https://reactcs408.firebaseio.com/",
+    databaseUrl: "https://reactcs408.firebaseio.com/",
+ };
+
+module.exports = firebase.initializeApp(firebaseConfig);
