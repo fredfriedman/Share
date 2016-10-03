@@ -7,7 +7,6 @@ var styles   = require('./styles')
 let Login    = require('./login').default
 var firebase = require('../../config/firebase')
 var Button   = require('../../components/button').default
-var Header   = require('../../components/header').default
 var { whiteGradient } = require('../../config/images')
 
 
@@ -54,7 +53,6 @@ export default class signup extends Component {
         return (
             <View style={styles.container}>
             <Image source={ whiteGradient } style={styles.backgroundImage}>
-                <Header text="Signup" loaded={this.state.loaded} />
                 <View style={styles.body}>
                     <TextInput
                         style={styles.textInput}

@@ -10,6 +10,7 @@ import { ListView,
         View, } from 'react-native';
 
 var { whiteGradient } = require('../../config/images')
+var TableViewGroup = require('../../components/TableViewGroup').default
 
 export default class PatientsView extends Component {
 
@@ -29,15 +30,18 @@ export default class PatientsView extends Component {
   render() {
     return (
         <View
-          title={this.props.navigator ? null : '<ListView>'}
           noSpacer={true}
-          noScroll={true}>
-          <ListView
-            dataSource={this.state.dataSource}
-            renderRow={this._renderRow}
-            renderScrollComponent={props => <RecyclerViewBackedScrollView {...props} />}
-            renderSeparator={this._renderSeparator}
-          />
+          noScroll={true}
+          style={{backgroundColor: '#E9E9E9'}}>
+          <TableViewGroup
+              title={"Patients"}
+              onPress={this._pressData}
+              style={{}}
+              textStyle={{textAlign: 'center', marginTop: 25, color: '#FFFFFF', fontSize: 18, textAlign: 'center', marginTop: 25,}}
+              headerStyle={{height: 60, backgroundColor: "#3498DB"}}
+              dataSource={this.state.dataSource}
+              renderRow={this._renderRow.bind(this)}
+              renderSeparator={this._renderSeparator}/>
         </View>
     );
   }
@@ -51,9 +55,7 @@ export default class PatientsView extends Component {
         <View>
           <View style={styles.row}>
             <Image style={styles.thumb} source={whiteGradient} />
-            <Text style={styles.text}>
-              {rowData}
-            </Text>
+            <Text style={styles.text}> {rowData} </Text>
           </View>
         </View>
       </TouchableHighlight>
