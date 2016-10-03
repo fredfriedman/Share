@@ -7,10 +7,12 @@ import TabNavigator from 'react-native-tab-navigator';
 var { whiteGradient, homeIcon, writeIcon, calIcon, settingsIcon, overviewIcon } = require('../config/images')
 
 // Page in Tab Bar
-var Login = require('../screens/Login/login').default
-var Patients = require('../screens/Home/patients_view').default
+var Profile = require('../screens/Home/profile').default
 var Overview = require('../screens/Home/overview').default
-var Log = require('../screens/DailyLog/log').default
+var Patients = require('../screens/Home/patients_view').default
+var Settings = require('../screens/Settings/settings').default
+
+
 
 export default class TabBar extends Component {
 
@@ -35,7 +37,7 @@ export default class TabBar extends Component {
                 renderIcon={() => <Image source={homeIcon} />}
                 renderSelectedIcon={() => <Image source={homeIcon} />}
                 onPress={() => this.setTab('Profile')}>
-                <Log/>
+                <Profile/>
             </TabNavigator.Item>
             <TabNavigator.Item
                 selected={this.state.selectedTab === 'Overview'}
@@ -44,7 +46,7 @@ export default class TabBar extends Component {
                 renderIcon={() => <Image source={overviewIcon} />}
                 renderSelectedIcon={() => <Image source={overviewIcon} />}
                 onPress={() => this.setTab('Overview')}>
-                <Patients/>
+                <Overview/>
             </TabNavigator.Item>
             <TabNavigator.Item
                 selected={this.state.selectedTab === 'Calendar'}
@@ -53,7 +55,7 @@ export default class TabBar extends Component {
                 renderIcon={() => <Image source={calIcon} />}
                 renderSelectedIcon={() => <Image source={calIcon} />}
                 onPress={() => this.setTab('Calendar')}>
-                <Overview/>
+                <Patients/>
             </TabNavigator.Item>
             <TabNavigator.Item
                 selected={this.state.selectedTab === 'Settings'}
@@ -62,7 +64,7 @@ export default class TabBar extends Component {
                 renderIcon={() => <Image source={settingsIcon} />}
                 renderSelectedIcon={() => <Image source={settingsIcon} />}
                 onPress={() => this.setTab('Settings')}>
-                <View><Text> Settings </Text></View>
+                <Settings/>
             </TabNavigator.Item>
         </TabNavigator>
       );
