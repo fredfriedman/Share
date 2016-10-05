@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { ListView,
         TouchableHighlight,
         StyleSheet,
-        RecyclerViewBackedScrollView,
         Text,
         Image,
         View, } from 'react-native';
@@ -11,7 +10,7 @@ import Button from 'react-native-button'
 
 var Header = require('../../components/header').default
 var {assignmentIcon} = require('../../config/images')
-
+let CaregiverAssessment = require('../CaregiverAssessment/assessment').default
 
 
 export default class Overview extends Component {
@@ -20,22 +19,19 @@ export default class Overview extends Component {
         super();
     }
 
-    onPressAction(sectionID, rowID) {
-        console.log("action")
-    }
-
-    onPressHeader() {
-
-    }
-
-    onPressPatient(patient) {
-        this.props.navigator.push({
-            component: PatientDetailView,
-            backButtonTitle: 'Back',
-            passProps: {
-            patient: patient,
-            }
-        })
+    handlePress() {
+    	console.log(this.props.buttype);
+    	switch (this.props.buttype) {
+    		case "assessment":
+    			this.props.navigator.push({
+    				component: CaregiverAssessment
+    			})
+    			break;
+    		default:
+    			this.props.navigator.push({
+    				component: CaregiverAssessment
+    			})
+    	}
     }
 
     render() {
@@ -48,23 +44,24 @@ export default class Overview extends Component {
 	            			containerStyle={{flex: 1, justifyContent: 'center'}}
 	            			style={{fontSize: 20, color: 'steelblue'}}
 					        styleDisabled={{color: 'red'}}
-					        onPress={() => this._handlePress()}>
+					        buttype={'assessment'}
+					        onPress={() => this.handlePress()}>
 					        What would you like to do?
 					    </Button>
                 </Row>
             	<Row>
             		<Col>
             			<Button
-	            			containerStyle={{flex: 1, padding:10, overflow:'hidden', borderRadius:4, backgroundColor: 'steelblue', justifyContent: 'center'}}
+	            			containerStyle={{flex: 1, margin:5, overflow:'hidden', borderRadius:4, backgroundColor: 'steelblue', justifyContent: 'center'}}
 	            			style={{color: 'skyblue'}}
 					        styleDisabled={{color: 'red'}}
-					        onPress={() => this._handlePress()}>
+					        onPress={() => this.handlePress()}>
 					        Complete Daily Assessment
 				    	</Button>
 				    </Col>
             		<Col>
             			<Button
-	            			containerStyle={{flex: 1, padding:10, overflow:'hidden', borderRadius:4, backgroundColor: 'skyblue', justifyContent: 'center'}}
+	            			containerStyle={{flex: 1, margin:5, overflow:'hidden', borderRadius:4, backgroundColor: 'skyblue', justifyContent: 'center'}}
 	            			style={{color: 'steelblue'}}
 					        styleDisabled={{color: 'red'}}
 					        onPress={() => this._handlePress()}>
@@ -75,7 +72,7 @@ export default class Overview extends Component {
             	<Row>
             		<Col>
             			<Button
-	            			containerStyle={{flex: 1, padding:10, overflow:'hidden', borderRadius:4, backgroundColor: 'skyblue', justifyContent: 'center'}}
+	            			containerStyle={{flex: 1, margin:5, overflow:'hidden', borderRadius:4, backgroundColor: 'skyblue', justifyContent: 'center'}}
 	            			style={{color: 'steelblue'}}
 					        styleDisabled={{color: 'red'}}
 					        onPress={() => this._handlePress()}>
@@ -84,7 +81,7 @@ export default class Overview extends Component {
 				    </Col>
             		<Col>
             			<Button
-	            			containerStyle={{flex: 1, padding:10, overflow:'hidden', borderRadius:4, backgroundColor: 'steelblue', justifyContent: 'center'}}
+	            			containerStyle={{flex: 1, margin:5, overflow:'hidden', borderRadius:4, backgroundColor: 'steelblue', justifyContent: 'center'}}
 	            			style={{color: 'skyblue'}}
 					        styleDisabled={{color: 'red'}}
 					        onPress={() => this._handlePress()}>
