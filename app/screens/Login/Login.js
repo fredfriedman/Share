@@ -6,6 +6,7 @@ var styles   = require('./styles')
 var firebase = require('../../config/firebase')
 let SignUp   = require('./signup').default
 let TabBar   = require('../../components/TabBar').default
+let CaregiverHome = require('../CaregiverHome/overview').default
 var Button   = require('../../components/button').default
 var { whiteGradient } = require('../../config/images')
 
@@ -39,6 +40,12 @@ export default class Login extends Component {
 
                 console.log(errorCode,errorMessage)
             })
+    }
+
+    caregiverLoginPress() {
+        this.props.navigator.push({
+            component: CaregiverHome
+        })
     }
 
     signUp() {
@@ -90,6 +97,11 @@ export default class Login extends Component {
                         <Button
                             text="LOGIN"
                             onpress={this.loginPress.bind(this)}
+                            button_styles={styles.button}
+                            button_text_styles={styles.LoginLabel} />
+                        <Button
+                            text="CAREGIVER LOGIN"
+                            onpress={this.caregiverLoginPress.bind(this)}
                             button_styles={styles.button}
                             button_text_styles={styles.LoginLabel} />
                         <Button
