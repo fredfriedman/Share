@@ -7,5 +7,7 @@ module.exports = {
 	settingsIcon: require("../images/spanner.png"),
 	uploadIcon: require("../images/upload.png"),
 	writeIcon: require("../images/write-simple.png"),
-	phoneIcon: require("../images/phone.png")
+	phoneIcon: require("../images/phone.png"),
+	backIcon: require("../images/back.png"),
+	disclosureIcon: require("../images/disclosure.png")
 };

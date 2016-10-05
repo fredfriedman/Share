@@ -21,7 +21,6 @@ export default class Profile extends Component {
         return (
         <View style={{ backgroundColor: '#E9E9E9', flex: 1, flexDirection: 'column', justifyContent: 'space-between' }}>
             <Header text={"Profile"}/>
-
         </View>
         );
     }
