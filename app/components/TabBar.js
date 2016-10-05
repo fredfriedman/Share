@@ -5,14 +5,21 @@ import { AppRegistry, ViewPagerAndroid, View, Text, Image } from 'react-native';
 import TabNavigator from 'react-native-tab-navigator';
 
 var { whiteGradient, homeIcon, writeIcon, calIcon, settingsIcon, overviewIcon } = require('../config/images')
-var Login = require('../screens/Login/Login').default
+
+// Page in Tab Bar
+var Profile = require('../screens/Home/profile').default
+var Overview = require('../screens/Home/overview').default
+var Patients = require('../screens/Home/patients_view').default
+var Settings = require('../screens/Settings/settings').default
+
+
 
 export default class TabBar extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            selectedTab: 'Profile'
+            selectedTab: 'Overview'
         };
     }
 
@@ -30,7 +37,7 @@ export default class TabBar extends Component {
                 renderIcon={() => <Image source={homeIcon} />}
                 renderSelectedIcon={() => <Image source={homeIcon} />}
                 onPress={() => this.setTab('Profile')}>
-                <Login/>
+                <Profile/>
             </TabNavigator.Item>
             <TabNavigator.Item
                 selected={this.state.selectedTab === 'Overview'}
@@ -39,7 +46,7 @@ export default class TabBar extends Component {
                 renderIcon={() => <Image source={overviewIcon} />}
                 renderSelectedIcon={() => <Image source={overviewIcon} />}
                 onPress={() => this.setTab('Overview')}>
-                <View><Text> Overview </Text></View>
+                <Overview/>
             </TabNavigator.Item>
             <TabNavigator.Item
                 selected={this.state.selectedTab === 'Calendar'}
@@ -48,7 +55,7 @@ export default class TabBar extends Component {
                 renderIcon={() => <Image source={calIcon} />}
                 renderSelectedIcon={() => <Image source={calIcon} />}
                 onPress={() => this.setTab('Calendar')}>
-                <View><Text> Calendar </Text></View>
+                <Patients/>
             </TabNavigator.Item>
             <TabNavigator.Item
                 selected={this.state.selectedTab === 'Settings'}
@@ -57,16 +64,19 @@ export default class TabBar extends Component {
                 renderIcon={() => <Image source={settingsIcon} />}
                 renderSelectedIcon={() => <Image source={settingsIcon} />}
                 onPress={() => this.setTab('Settings')}>
-                <View><Text> Settings </Text></View>
+                <Settings/>
             </TabNavigator.Item>
         </TabNavigator>
       );
     }
 }
 
-AppRegistry.registerComponent('Dashboard', () => Dashboard);
+AppRegistry.registerComponent('TabBar', () => TabBar);
 
 var styles = {
+    view: {
+        height: 10
+    },
     tabBar: {
         backgroundColor: '#EFEFF4',
         borderTopColor: '#CECED2',

@@ -6,5 +6,6 @@ module.exports = {
 	calIcon: require("../images/calendar.png"),
 	settingsIcon: require("../images/spanner.png"),
 	uploadIcon: require("../images/upload.png"),
-	writeIcon: require("../images/write-simple.png")
+	writeIcon: require("../images/write-simple.png"),
+	phoneIcon: require("../images/phone.png")
 };

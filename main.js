@@ -1,32 +1,53 @@
 import React, { Component } from 'react';
-import { Navigator, StyleSheet, View, Text } from 'react-native';
+import { AppRegistry, Navigator, StyleSheet, View, Text, AsyncStorage } from 'react-native';
 
-var Login = require('./app/screens/Login/Login').default
-var Dashboard = require('./app/components/TabBar').default
-
-var ROUTES = {
-                login: Login,
-                dashboard: Dashboard
-              }
+var Login   = require('./app/screens/Login/login').default
+var TabBar   = require('./app/components/TabBar').default
+var firebase = require('./app/config/firebase')
 
 export default class Main extends Component {
-  constructor(props){
+
+    constructor(props){
         super(props);
-        this.state = {};
+        this.state = {
+            component: Login,
+            loaded: false
+        };
     }
 
-  renderScene(route, navigator) {
-    var Component = ROUTES[route.name]
-    return <Component route={route} navigator={navigator} />
-  }
+    componentWillMount(){
 
-  render() {
-    return (
-     <Navigator
-      initialRoute = {{ title: 'login', index: 0 }}
-      renderScene  = {(route, navigator) => {
-                        return <Dashboard title={route.title} />
-                      }}/>
-    )
-  }
+        AsyncStorage.getItem('user_data')
+            .then( function(user_data_json) {
+                let user_data = JSON.parse(user_data_json);
+                let component = {component: Login};
+
+                firebase.signInWithCustomToken(user_data.token)
+                    .then( function(success) {
+                        this.setState({component: TabBar});
+                    }, function(error) {
+                        this.setState(component)
+                    });
+            }, function(error) {
+                this.setState(component);
+            })
+    }
+
+    render(){
+        return (
+            <Navigator
+                initialRoute={{component: this.state.component}}
+                configureScene={() => {
+                    return Navigator.SceneConfigs.FloatFromRight;
+                }}
+                renderScene={(route, navigator) => {
+                    if(route.component){
+                        return React.createElement(route.component, { navigator });
+                    }
+                }}
+            />
+        );
+    }
 }
+
+AppRegistry.registerComponent('Hospice', () => Main);
