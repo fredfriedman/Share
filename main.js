@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { AppRegistry, Navigator, StyleSheet, View, Text, AsyncStorage } from 'react-native';
 
-var Login   = require('./app/screens/Login/login').default
+var Login   = require('./app/screens/Login/Login').default
 var TabBar   = require('./app/components/TabBar').default
 var firebase = require('./app/config/firebase')
 

@@ -4,7 +4,7 @@ import { Image, KeyboardAvoidingView, AppRegistry, TextInput, View, StyleSheet,T
 
 
 var styles   = require('./styles')
-let Login    = require('./login').default
+let Login    = require('./Login').default
 var firebase = require('../../config/firebase')
 var Button   = require('../../components/button').default
 var { whiteGradient } = require('../../config/images')
