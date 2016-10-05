@@ -37,7 +37,7 @@ export default class TabBar extends Component {
                 renderIcon={() => <Image source={homeIcon} />}
                 renderSelectedIcon={() => <Image source={homeIcon} />}
                 onPress={() => this.setTab('Profile')}>
-                <Profile/>
+                <Profile navigator={this.props.navigator}/>
             </TabNavigator.Item>
             <TabNavigator.Item
                 selected={this.state.selectedTab === 'Overview'}
@@ -46,7 +46,7 @@ export default class TabBar extends Component {
                 renderIcon={() => <Image source={overviewIcon} />}
                 renderSelectedIcon={() => <Image source={overviewIcon} />}
                 onPress={() => this.setTab('Overview')}>
-                <Overview/>
+                <Overview navigator={this.props.navigator}/>
             </TabNavigator.Item>
             <TabNavigator.Item
                 selected={this.state.selectedTab === 'Calendar'}
@@ -55,7 +55,7 @@ export default class TabBar extends Component {
                 renderIcon={() => <Image source={calIcon} />}
                 renderSelectedIcon={() => <Image source={calIcon} />}
                 onPress={() => this.setTab('Calendar')}>
-                <Patients/>
+                <Patients navigator={this.props.navigator}/>
             </TabNavigator.Item>
             <TabNavigator.Item
                 selected={this.state.selectedTab === 'Settings'}
@@ -64,7 +64,7 @@ export default class TabBar extends Component {
                 renderIcon={() => <Image source={settingsIcon} />}
                 renderSelectedIcon={() => <Image source={settingsIcon} />}
                 onPress={() => this.setTab('Settings')}>
-                <Settings/>
+                <Settings navigator={this.props.navigator}/>
             </TabNavigator.Item>
         </TabNavigator>
       );

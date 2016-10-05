@@ -1,7 +1,9 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { TouchableHighlight, ListView, StyleSheet, Text, View } from 'react-native';
+import { TouchableHighlight, ListView, StyleSheet, Text, View, Image } from 'react-native';
+
+var { disclosureIcon } = require('../config/images')
 
 export default class TableViewGroup extends Component {
     constructor() {
@@ -14,12 +16,16 @@ export default class TableViewGroup extends Component {
                 <TouchableHighlight
                     style={this.props.headerStyle}
                     onPress={this.props.onPress}>
-                    <Text style={this.props.textStyle}> {this.props.title} </Text>
+                    <View style={{flexDirection: 'row'}}>
+                        <Text style={this.props.textStyle}> {this.props.title} </Text>
+                        <View style={{flex: 1}} />
+                        <Image style={{height: 10, width: 10, marginTop: 4, marginRight: 10}}source={disclosureIcon}/>
+                    </View>
                 </TouchableHighlight>
                 <ListView
                     dataSource={this.props.dataSource}
                     renderRow={this.props.renderRow}
-                    scrollEnabled={false}
+                    scrollEnabled={this.props.scrollEnabled ? this.props.scrollEnabled : false }
                 />
             </View>
         )

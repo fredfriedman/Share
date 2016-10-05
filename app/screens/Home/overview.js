@@ -9,8 +9,10 @@ import { ListView,
         Image,
         View, } from 'react-native';
 
-var { whiteGradient } = require('../../config/images')
+var {phoneIcon, whiteGradient } = require('../../config/images')
 var TableViewGroup = require('../../components/TableViewGroup').default
+var PatientTableViewCell = require('../../components/patientTableViewCell').default
+var PatientDetailView = require('../Detail/detail').default
 var Header = require('../../components/header').default
 
 export default class Overview extends Component {
@@ -23,22 +25,37 @@ export default class Overview extends Component {
         });
 
         this.state = {
-            dataSourceImproving: dataSource.cloneWithRows(['Bill Clinton', 'Cindy Johnson','Daniel Moore']),
-            dataSourceCritical: dataSource.cloneWithRows(['Tom Haverford', 'Homer Simpson', 'Chase Jeter']),
-            dataSourceStatic: dataSource.cloneWithRows(['Max Kellermueller', 'Marge Simpson', 'Claire Fox']),
+            dataSourceImproving: dataSource.cloneWithRows(
+                [{name:'Bill Clinton', phone:"732-882-3145", status:"#329a22"},
+                {name:'Cindy Johnson', phone:"792-822-3145", status:"#329a22"},
+                {name:'Tom Haverford', phone:"342-822-3243", status: "#329a22"}]),
+            dataSourceCritical: dataSource.cloneWithRows(
+                [{name:'Homer Simpson', phone:"552-822-0874", status:"#d80d0d"},
+                {name:'Chase Jeter', phone:"398-112-4458", status:"#d80d0d"},
+                {name:'Max Kellermueller', phone:"685-919-2231", status:"#d80d0d"}]),
+            dataSourceStatic: dataSource.cloneWithRows(
+                [{name:'Marge Simpson', phone:"443-822-0842", status: "#FFD700"},
+                {name:'Claire Fox', phone:"661-333-4444", status: "#FFD700"},
+                {name:'Jabari Parker', phone:"773-731-0981", status: "#FFD700"}]),
         }
     }
 
-    _pressData(key: number) {
-        true
+    onPressAction(sectionID, rowID) {
+        console.log("action")
     }
 
     onPressHeader() {
 
     }
 
-    onPressPatient(sectionID, rowID) {
-        console.log(sectionID, rowID)
+    onPressPatient(patient) {
+        this.props.navigator.push({
+            component: PatientDetailView,
+            backButtonTitle: 'Back',
+            passProps: {
+            patient: patient,
+            }
+        })
     }
 
     render() {
@@ -73,17 +90,19 @@ export default class Overview extends Component {
         );
     }
 
-    renderRow(rowData: string, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) {
+    renderRow(patient: Object, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) {
         var self = this
         return (
-            <TouchableHighlight onPress={ () => this.onPressPatient(sectionID, rowID)}>
-                <View>
-                    <View style={styles.row}>
-                        <Image style={styles.thumb} source={whiteGradient} />
-                        <Text style={styles.text}> {rowData} </Text>
-                    </View>
-                </View>
-            </TouchableHighlight>
+            <PatientTableViewCell
+                onPress={()=>this.onPressPatient(patient)}
+                onPressIcon={()=>this.onPressAction(sectionID, rowID)}
+                status={patient.status}
+                image={whiteGradient}
+                actionIcon={phoneIcon}
+                mainText={patient.name}
+                subTitleText={patient.phone}
+            />
+
         )
     }
 
