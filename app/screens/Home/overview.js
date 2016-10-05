@@ -64,6 +64,7 @@ export default class Overview extends Component {
             <Header text={"Patient Status"}/>
             <TableViewGroup
                 title={"Critical"}
+                headerIsEnabled={true}
                 onPress={this.onPressHeader.bind(this)}
                 style={{ backgroundColor: '#FFFFFF', shadowColor: "#000000", shadowOpacity: 0.8, shadowRadius: 2, shadowOffset: {height: 1, width: 0 }, elevation: 20, marginLeft: 10, marginRight: 10}}
                 textStyle={{marginLeft: 5, fontWeight: 'bold', color: '#1B1B1B'}}
@@ -72,6 +73,7 @@ export default class Overview extends Component {
                 renderRow={this.renderRow.bind(this)}></TableViewGroup>
             <TableViewGroup
                 title={"Static"}
+                headerIsEnabled={true}
                 onPress={this.onPressHeader.bind(this)}
                 style={{ backgroundColor: '#FFFFFF', shadowColor: "#000000", shadowOpacity: 0.8, shadowRadius: 2, shadowOffset: {height: 1, width: 0 }, elevation: 20, marginLeft: 10, marginRight: 10}}
                 textStyle={{marginLeft: 5, fontWeight: 'bold', color: '#1B1B1B'}}
@@ -80,6 +82,7 @@ export default class Overview extends Component {
                 renderRow={this.renderRow.bind(this)}></TableViewGroup>
             <TableViewGroup
                 title={"Improving"}
+                headerIsEnabled={true}
                 onPress={this.onPressHeader.bind(this)}
                 style={{ backgroundColor: '#FFFFFF', shadowColor: "#000000", shadowOpacity: 0.8, shadowRadius: 2, shadowOffset: {height: 1, width: 0 }, elevation: 20, marginBottom: 20, marginLeft: 10, marginRight: 10}}
                 textStyle={{marginLeft: 5, fontWeight: 'bold', color: '#1B1B1B'}}

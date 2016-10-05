@@ -9,6 +9,7 @@ import { ListView,
         Image,
         View, } from 'react-native';
 
+var Header = require('../../components/header').default
 var { phoneIcon, whiteGradient } = require('../../config/images')
 var TableViewGroup = require('../../components/TableViewGroup').default
 var PatientDetailView = require('../Detail/detail').default
@@ -50,13 +51,12 @@ export default class PatientsView extends Component {
     render() {
         return (
             <View noSpacer={false} noScroll={false}>
+                <Header text={"Patients"}/>
                 <TableViewGroup
                     title={"Patients"}
                     onPress={this._pressData}
                     scrollEnabled={true}
-                    style={{}}
-                    textStyle={{textAlign: 'center', marginTop: 25, color: '#FFFFFF', fontSize: 18, textAlign: 'center', marginTop: 25,}}
-                    headerStyle={{height: 60, backgroundColor: "#3498DB"}}
+                    textStyle={{marginTop: 25, color: '#FFFFFF', fontSize: 18, textAlign: 'center'}}
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow.bind(this)}
                     renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}/>
