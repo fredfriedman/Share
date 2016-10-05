@@ -5,9 +5,6 @@ import { Image, View, StyleSheet, TouchableHighlight, Text } from 'react-native'
 export default class PatientTableViewCell extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            status: ["#d80d0d","#FFD700","#329a22"]
-        }
     }
 
     render() {
@@ -30,7 +27,7 @@ export default class PatientTableViewCell extends Component {
         return (
             <TouchableHighlight onPress={() => { this.props.onPress() }} underlayColor={'#F8F8F8'}>
                 <View style={{flexDirection:'row'}}>
-                    <View style={[styles.statusBar, { backgroundColor: this.state.status[Math.floor(Math.random()*this.state.status.length)]}]}/>
+                    <View style={[styles.statusBar, { backgroundColor: this.props.status}]}/>
                     <Image style={styles.thumb} source={this.props.image} />
                     <View style={styles.stack}>
                         <Text style={styles.text}>{this.props.mainText}</Text>

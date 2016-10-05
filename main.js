@@ -42,7 +42,7 @@ export default class Main extends Component {
                 }}
                 renderScene={(route, navigator) => {
                     if(route.component){
-                        return React.createElement(route.component, { navigator });
+                        return React.createElement(route.component, { ...this.props, ...route.passProps, navigator });
                     }
                 }}
             />
