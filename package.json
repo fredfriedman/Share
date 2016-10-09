@@ -12,9 +12,9 @@
     "react-native": "0.34.1",
     "react-native-button": "^1.7.1",
     "react-native-easy-grid": "^0.1.6",
-    "react-native-gifted-spinner": "^0.1.0",
     "react-native-slider": "^0.9.1",
     "react-native-swipeout": "^2.0.12",
-    "react-native-tab-navigator": "^0.3.3"
+    "react-native-tab-navigator": "^0.3.3",
+    "react-native-textinput-effects": "^0.1.3"
   }
 }

@@ -13,6 +13,7 @@ var {phoneIcon, whiteGradient } = require('../../config/images')
 var TableViewGroup = require('../../components/TableViewGroup').default
 var PatientTableViewCell = require('../../components/patientTableViewCell').default
 var PatientDetailView = require('../Detail/detail').default
+var PatientsView = require('../Home/patients_view').default
 var Header = require('../../components/header').default
 
 export default class Overview extends Component {
@@ -45,7 +46,9 @@ export default class Overview extends Component {
     }
 
     onPressHeader() {
-
+        this.props.navigator.push({
+            component: PatientsView
+        })
     }
 
     onPressPatient(patient) {

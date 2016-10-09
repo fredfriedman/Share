@@ -28,11 +28,11 @@ export default class Assessment extends Component {
         return (
         <View style={{ backgroundColor: '#E9E9E9', flex: 1, flexDirection: 'column', justifyContent: 'center' }}>
             <Header text={"Assessment"}/>
-            
+
             <TouchableHighlight
                 onPress={()=>this.onBack()}
                 style={{position: 'absolute', width: 20, height: 20, top: 25, left: 15, backgroundColor: 'transparent'}}
-                underlayColor={'#f8f8f8f'}>
+                underlayColor={'#f8f8f8'}>
                 <Image source={backIcon}/>
             </TouchableHighlight>
 
@@ -42,4 +42,3 @@ export default class Assessment extends Component {
         );
     }
 }
-

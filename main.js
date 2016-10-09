@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { AppRegistry, Navigator, StyleSheet, View, Text, AsyncStorage } from 'react-native';
+import { AppRegistry, AsyncStorage, Model, Navigator, StyleSheet, View, Text } from 'react-native';
 
-var Login   = require('./app/screens/Login/Login').default
+var Login   = require('./app/screens/Login/home').default
 var TabBar   = require('./app/components/TabBar').default
 var firebase = require('./app/config/firebase')
 
@@ -11,7 +11,6 @@ export default class Main extends Component {
         super(props);
         this.state = {
             component: Login,
-            loaded: false
         };
     }
 
@@ -26,23 +25,32 @@ export default class Main extends Component {
                     .then( function(success) {
                         this.setState({component: TabBar});
                     }, function(error) {
-                        this.setState(component)
+                        console.log(error)
                     });
             }, function(error) {
-                this.setState(component);
+                console.log(error)
             })
     }
 
     render(){
         return (
             <Navigator
+                ref="navigator"
                 initialRoute={{component: this.state.component}}
-                configureScene={() => {
+                configureScene={(route) => {
+                    if (route.sceneConfig) {
+                        return route.sceneConfig;
+                    }
                     return Navigator.SceneConfigs.FloatFromRight;
                 }}
                 renderScene={(route, navigator) => {
                     if(route.component){
                         return React.createElement(route.component, { ...this.props, ...route.passProps, navigator });
+                    }
+                }}
+                onDidFocus={(route) => {
+                    if (route.reset) {
+                        this.refs.navigator.immediatelyResetRouteStack([{ component: route.component }])
                     }
                 }}
             />
