@@ -26,7 +26,7 @@ export default class Login extends Component {
     }
 
     componentDidMount() {
-        //this.refs.email.focus()
+        this.refs.email.refs.input.focus()
     }
 
     onExitScene() {
@@ -99,22 +99,22 @@ export default class Login extends Component {
                     <Hoshi
                         ref="email"
                         style={{width: 50}}
-                        inputStyle={[styles.textInput, {color: '#1da1f2', fontSize: 16}]}
-                        labelStyle={{color: '#1da1f2'}}
+                        inputStyle={[styles.textInput, {color: '#00BCD4', fontSize: 16}]}
+                        labelStyle={{color: '#00BCD4'}}
                         label={'Email Address'}
-                        borderColor={'#1da1f2'}
+                        borderColor={'#00BCD4'}
                         backgroundColor={'transparent'}
                         onChangeText={(text) => this.setState({username: text})}
-                        onSubmitEditing={(event) => {  this.refs.passwordInput.focus(); }}
+                        onSubmitEditing={(event) => {  this.refs.password.refs.passwordInput.focus(); }}
                         autoCapitalize={'none'}
                         autoCorrect={false}/>
                     <Hoshi
                         ref='password'
                         label={'Password'}
-                        labelStyle={{color: '#1da1f2'}}
-                        inputStyle={[styles.textInput, {color: '#1da1f2', fontSize: 16}]}
+                        labelStyle={{color: '#00BCD4'}}
+                        inputStyle={[styles.textInput, {color: '#00BCD4', fontSize: 16}]}
                         style={{width: 50, paddingTop: 20}}
-                        borderColor={'#1da1f2'}
+                        borderColor={'#00BCD4'}
                         backgroundColor={'transparent'}
                         autoCapitalize={'none'}
                         autoCorrect={false}
@@ -128,7 +128,7 @@ export default class Login extends Component {
                     Log In
                 </Button>
                 <Button
-                    style={[styles.bottomLabel, {color: "#1da1f2", paddingTop: 20}]}
+                    style={[styles.bottomLabel, {color: "#00BCD4", paddingTop: 20}]}
                     containerStyle={{}}
                     onPress={this.onPressPasswordReset.bind(this)}>
                     Need Help?

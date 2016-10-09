@@ -34,7 +34,7 @@ export default class Home extends Component {
 
     render() {
         return (
-            <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-between', backgroundColor: "#1da1f2"}}>
+            <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-between', backgroundColor: "#00BCD4"}}>
                 <Image style={{marginLeft: 30, height: 50, width: 50, marginTop: 30}} source={butterfly}/>
                 <View>
                     <Text style={{marginLeft: 50, color: 'white', fontSize: 28, fontWeight: 'bold'}}> Welcome to {"\n"} Share</Text>
@@ -42,7 +42,7 @@ export default class Home extends Component {
                 </View>
                 <View style={{marginBottom: 100}}>
                     <Button
-                        style={{color: '#1da1f2'}}
+                        style={{color: '#00BCD4'}}
                         containerStyle={{borderRadius: 5,
                             borderColor: 'transparent',
                             borderWidth: 0.5,
@@ -55,7 +55,7 @@ export default class Home extends Component {
                         }}
                         styleDisabled={{color: 'red'}}
                         onPress={this.onPressSignUp.bind(this)}>
-                        SignUp
+                        Sign Up
                     </Button>
                     <Button
                         style={{color: 'white'}}

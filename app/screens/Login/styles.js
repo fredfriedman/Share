@@ -5,7 +5,7 @@ module.exports = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: '#1da1f2',
+        backgroundColor: '#00BCD4',
     },
     navBar: {
         backgroundColor: 'transparent',
@@ -54,7 +54,7 @@ module.exports = StyleSheet.create({
         borderWidth: 0.5,
         alignSelf: 'center',
         justifyContent: 'center',
-        backgroundColor: '#1da1f2',
+        backgroundColor: '#00BCD4',
         height: 30,
         width: Dimensions.get('window').width - 20,
         marginTop: 10,

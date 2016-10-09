@@ -20,8 +20,9 @@ export default class signup extends Component {
         name: "temp",
         email: '',
         password: '',
+        hospiceProgram: '',
         animating: false,
-        type: UserType.caregiver
+        isCaregiver: true
         };
     }
 
@@ -36,7 +37,7 @@ export default class signup extends Component {
 
                 firebase.database().ref().child("users/" + user.uid).set({
                     email: self.state.email,
-                    type: self.state.type,
+                    isCaregiver: isCaregiver,
                 });
 
                 self.setState({animating: false})
@@ -73,49 +74,124 @@ export default class signup extends Component {
     }
 
     componentDidMount() {
-        //this.refs.email.focus()
+        this.refs.email.refs.input.focus()
     }
 
     onExitScene() {
         this.props.navigator.pop()
     }
 
-    render() {
+    onSwitchSignIn() {
+        this.setState({isCaregiver: !this.state.isCaregiver})
+    }
+
+    renderCaregiverForm() {
 
         var self = this
 
         return (
+            <View style={[styles.formContainer, {paddingTop: 20}]}>
+                <Hoshi
+                    ref="email"
+                    style={{width: 50}}
+                    inputStyle={[styles.textInput, {color: '#00BCD4', fontSize: 16}]}
+                    labelStyle={{color: '#00BCD4'}}
+                    label={'Email Address'}
+                    borderColor={'#00BCD4'}
+                    backgroundColor={'transparent'}
+                    onChangeText={(text) => this.setState({email: text})}
+                    onSubmitEditing={(event) => {  this.refs.password.refs.input.focus(); }}
+                    autoCapitalize={'none'}
+                    value={this.state.email}
+                    autoCorrect={false}/>
+                <Hoshi
+                    ref='password'
+                    label={'Password'}
+                    labelStyle={{color: '#00BCD4'}}
+                    inputStyle={[styles.textInput, {color: '#00BCD4', fontSize: 16}]}
+                    style={{width: 50, paddingTop: 20}}
+                    borderColor={'#00BCD4'}
+                    backgroundColor={'transparent'}
+                    autoCapitalize={'none'}
+                    autoCorrect={false}
+                    secureTextEntry={true}
+                    value={this.state.password}
+                    secureTextEntry={true}
+                    onChangeText={(text) => this.setState({password: text})}/>
+            </View>
+        );
+    }
+
+    renderNurseForm() {
+
+        var self = this
+
+        return (
+            <View style={[styles.formContainer, {paddingTop: 20}]}>
+                <Hoshi
+                    ref="hospital"
+                    style={{width: 50}}
+                    inputStyle={[styles.textInput, {color: '#00BCD4', fontSize: 16}]}
+                    labelStyle={{color: '#00BCD4'}}
+                    label={'Hospital/Hospice Program'}
+                    borderColor={'#00BCD4'}
+                    backgroundColor={'transparent'}
+                    onChangeText={(text) => this.setState({hospiceProgram: text})}
+                    onSubmitEditing={(event) => {  this.refs.email.refs.input.focus(); }}
+                    autoCapitalize={'none'}
+                    value={this.state.email}
+                    autoCorrect={false}/>
+                <Hoshi
+                    ref="email"
+                    style={{width: 50}}
+                    inputStyle={[styles.textInput, {color: '#00BCD4', fontSize: 16}]}
+                    labelStyle={{color: '#00BCD4'}}
+                    label={'Email Address'}
+                    borderColor={'#00BCD4'}
+                    backgroundColor={'transparent'}
+                    onChangeText={(text) => this.setState({email: text})}
+                    onSubmitEditing={(event) => {  this.refs.password.refs.input.focus(); }}
+                    autoCapitalize={'none'}
+                    value={this.state.email}
+                    autoCorrect={false}/>
+                <Hoshi
+                    ref='password'
+                    label={'Password'}
+                    labelStyle={{color: '#00BCD4'}}
+                    inputStyle={[styles.textInput, {color: '#00BCD4', fontSize: 16}]}
+                    style={{width: 50, paddingTop: 20}}
+                    borderColor={'#00BCD4'}
+                    backgroundColor={'transparent'}
+                    autoCapitalize={'none'}
+                    autoCorrect={false}
+                    secureTextEntry={true}
+                    value={this.state.password}
+                    secureTextEntry={true}
+                    onChangeText={(text) => this.setState({password: text})}/>
+            </View>
+        );
+    }
+
+    renderUserOption() {
+        var value = "Are you a nurse?"
+
+        if (!this.state.isCaregiver) {
+            value = "Are you a caregiver?"
+        }
+        return (
+            <Button
+                style={[styles.bottomLabel, {color: "#00BCD4"}]}
+                containerStyle={{}}
+                onPress={this.onSwitchSignIn.bind(this)}>
+                {value}
+            </Button>
+        )
+    }
+    render() {
+        return (
             <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white'}}>
                 <Image style={{backgroundColor: 'transparent', height: 35, width: 35, top: 20}} source={butterfly}/>
-                <View style={[styles.formContainer, {paddingTop: 20}]}>
-                    <Hoshi
-                        ref="email"
-                        style={{width: 50}}
-                        inputStyle={[styles.textInput, {color: '#1da1f2', fontSize: 16}]}
-                        labelStyle={{color: '#1da1f2'}}
-                        label={'Email Address'}
-                        borderColor={'#1da1f2'}
-                        backgroundColor={'transparent'}
-                        onChangeText={(text) => this.setState({email: text})}
-                        onSubmitEditing={(event) => {  this.refs.passwordInput.focus(); }}
-                        autoCapitalize={'none'}
-                        value={this.state.email}
-                        autoCorrect={false}/>
-                    <Hoshi
-                        ref='password'
-                        label={'Password'}
-                        labelStyle={{color: '#1da1f2'}}
-                        inputStyle={[styles.textInput, {color: '#1da1f2', fontSize: 16}]}
-                        style={{width: 50, paddingTop: 20}}
-                        borderColor={'#1da1f2'}
-                        backgroundColor={'transparent'}
-                        autoCapitalize={'none'}
-                        autoCorrect={false}
-                        secureTextEntry={true}
-                        value={this.state.password}
-                        secureTextEntry={true}
-                        onChangeText={(text) => this.setState({password: text})}/>
-                </View>
+                { this.state.isCaregiver ? this.renderCaregiverForm() : this.renderNurseForm() }
                 <Button
                     style={styles.SubmitLabel}
                     containerStyle={styles.button}
@@ -125,16 +201,20 @@ export default class signup extends Component {
                 </Button>
                 <ActivityIndicator
                     animating={this.state.animating}
-                    style={{height: 80}}
+                    style={{height: 40}}
                     size="large"/>
-                <Button
-                    style={styles.bottomLabel}
-                    containerStyle={styles.transparent_button}
-                    onPress={this.onExitScene.bind(this)}>
-                    Got an Account?
-                </Button>
+                <View style={{paddingTop: 20}}>
+                    { this.renderUserOption() }
+                    <Button
+                        style={[styles.bottomLabel, {color: "#00BCD4"}]}
+                        containerStyle={{}}
+                        onPress={this.onExitScene.bind(this)}>
+                        Have an Account?
+                    </Button>
+                </View>
                 <CloseModalButton action={this.onExitScene.bind(this)} icon={xIcon}/>
             </View>
-        );
+        )
+
     }
 }

@@ -23,7 +23,7 @@ export default class signup extends Component {
     }
 
     componentDidMount() {
-        //this.refs.email.focus()
+        this.refs.email.refs.input.focus()
     }
 
     onInitiateReset(){
@@ -70,9 +70,9 @@ export default class signup extends Component {
                         style={{width: 50, width: Dimensions.get('window').width - 20 }}
                         value={this.state.email}
                         inputStyle={styles.passwordResetTextInput}
-                        labelStyle={{color: '#1da1f2'}}
+                        labelStyle={{color: '#00BCD4'}}
                         label={'Email Address'}
-                        borderColor={'#1da1f2'}
+                        borderColor={'#00BCD4'}
                         backgroundColor={'transparent'}
                         onChangeText={(text) => this.setState({username: text})}
                         autoCapitalize={'none'}
@@ -80,10 +80,10 @@ export default class signup extends Component {
                         onChangeText={(text) => this.setState({email: text})}/>
                 </View>
                 <Button
-                    style={styles.SubmitLabel}
+                    style={styles.submitLabel}
                     containerStyle={styles.submitButton}
                     onPress={this.onInitiateReset.bind(this)}>
-                    Submit
+                    Reset Password
                 </Button>
                 <CloseModalButton action={this.onExitScene.bind(this)} icon={xIcon}/>
             </View>
@@ -104,7 +104,7 @@ var styles = {
         alignSelf: 'center',
         fontSize: 15,
         fontWeight: '300',
-        color: 'white',
+        color: '#ffffff',
         paddingTop: 5
     },
     submitButton: {
@@ -113,7 +113,7 @@ var styles = {
         borderWidth: 0.5,
         alignSelf: 'center',
         justifyContent: 'center',
-        backgroundColor: '#1da1f2',
+        backgroundColor: '#00BCD4',
         height: 30,
         width: Dimensions.get('window').width - 20,
         marginTop: 10,
