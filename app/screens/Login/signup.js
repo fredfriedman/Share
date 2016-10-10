@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { ActivityIndicator, Alert, Image, Navigator, Text, View } from 'react-native';
 import Button from 'react-native-button'
 import { Hoshi } from 'react-native-textinput-effects';
+import dismissKeyboard from 'dismissKeyboard'
 
 let styles   = require('./styles')
 let Login    = require('./Login').default
@@ -42,6 +43,8 @@ export default class signup extends Component {
 
                 self.setState({animating: false})
 
+                dismissKeyboard()
+
                 self.props.navigator.pop()
 
             }, function(error) {
@@ -78,6 +81,8 @@ export default class signup extends Component {
     }
 
     onExitScene() {
+        dismissKeyboard()
+
         this.props.navigator.pop()
     }
 
@@ -86,8 +91,6 @@ export default class signup extends Component {
     }
 
     renderCaregiverForm() {
-
-        var self = this
 
         return (
             <View style={[styles.formContainer, {paddingTop: 20}]}>
@@ -98,7 +101,6 @@ export default class signup extends Component {
                     labelStyle={{color: '#00BCD4'}}
                     label={'Email Address'}
                     borderColor={'#00BCD4'}
-                    backgroundColor={'transparent'}
                     onChangeText={(text) => this.setState({email: text})}
                     onSubmitEditing={(event) => {  this.refs.password.refs.input.focus(); }}
                     autoCapitalize={'none'}
@@ -111,20 +113,16 @@ export default class signup extends Component {
                     inputStyle={[styles.textInput, {color: '#00BCD4', fontSize: 16}]}
                     style={{width: 50, paddingTop: 20}}
                     borderColor={'#00BCD4'}
-                    backgroundColor={'transparent'}
                     autoCapitalize={'none'}
                     autoCorrect={false}
                     secureTextEntry={true}
                     value={this.state.password}
-                    secureTextEntry={true}
                     onChangeText={(text) => this.setState({password: text})}/>
             </View>
         );
     }
 
     renderNurseForm() {
-
-        var self = this
 
         return (
             <View style={[styles.formContainer, {paddingTop: 20}]}>
@@ -135,7 +133,6 @@ export default class signup extends Component {
                     labelStyle={{color: '#00BCD4'}}
                     label={'Hospital/Hospice Program'}
                     borderColor={'#00BCD4'}
-                    backgroundColor={'transparent'}
                     onChangeText={(text) => this.setState({hospiceProgram: text})}
                     onSubmitEditing={(event) => {  this.refs.email.refs.input.focus(); }}
                     autoCapitalize={'none'}
@@ -148,7 +145,6 @@ export default class signup extends Component {
                     labelStyle={{color: '#00BCD4'}}
                     label={'Email Address'}
                     borderColor={'#00BCD4'}
-                    backgroundColor={'transparent'}
                     onChangeText={(text) => this.setState({email: text})}
                     onSubmitEditing={(event) => {  this.refs.password.refs.input.focus(); }}
                     autoCapitalize={'none'}
@@ -161,12 +157,10 @@ export default class signup extends Component {
                     inputStyle={[styles.textInput, {color: '#00BCD4', fontSize: 16}]}
                     style={{width: 50, paddingTop: 20}}
                     borderColor={'#00BCD4'}
-                    backgroundColor={'transparent'}
                     autoCapitalize={'none'}
                     autoCorrect={false}
                     secureTextEntry={true}
                     value={this.state.password}
-                    secureTextEntry={true}
                     onChangeText={(text) => this.setState({password: text})}/>
             </View>
         );

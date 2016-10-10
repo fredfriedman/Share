@@ -13,4 +13,5 @@ module.exports = {
 	assignmentIcon: require("../images/assignment.png"),
 	butterfly: require("../images/butterfly.png"),
 	xIcon: require("../images/x.png"),
+	plusIcon: require("../images/plus.png"),
 };

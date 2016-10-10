@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { ActivityIndicator, Alert, AsyncStorage, Image, Navigator, Text, View } from 'react-native';
 import Button from 'react-native-button'
 import { Hoshi } from 'react-native-textinput-effects';
+import dismissKeyboard from 'dismissKeyboard'
 
 let styles   = require('./styles')
 var firebase = require('../../config/firebase')
@@ -30,10 +31,12 @@ export default class Login extends Component {
     }
 
     onExitScene() {
+        dismissKeyboard()
         this.props.navigator.pop()
     }
 
     onPressPasswordReset() {
+        dismissKeyboard()
         this.props.navigator.push({
             title: 'Password Reset',
             sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
@@ -59,6 +62,8 @@ export default class Login extends Component {
                         let component = snapshot.val().type === "caregiver" ? CaregiverHome : TabBar
 
                         self.setState({animating: false})
+
+                        dismissKeyboard()
 
                         self.props.navigator.push({ component: component, reset: true })
 
@@ -103,9 +108,8 @@ export default class Login extends Component {
                         labelStyle={{color: '#00BCD4'}}
                         label={'Email Address'}
                         borderColor={'#00BCD4'}
-                        backgroundColor={'transparent'}
                         onChangeText={(text) => this.setState({username: text})}
-                        onSubmitEditing={(event) => {  this.refs.password.refs.passwordInput.focus(); }}
+                        onSubmitEditing={(event) => {  this.refs.password.refs.input.focus(); }}
                         autoCapitalize={'none'}
                         autoCorrect={false}/>
                     <Hoshi
@@ -115,7 +119,6 @@ export default class Login extends Component {
                         inputStyle={[styles.textInput, {color: '#00BCD4', fontSize: 16}]}
                         style={{width: 50, paddingTop: 20}}
                         borderColor={'#00BCD4'}
-                        backgroundColor={'transparent'}
                         autoCapitalize={'none'}
                         autoCorrect={false}
                         secureTextEntry={true}

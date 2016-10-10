@@ -4,6 +4,7 @@ import { Alert, Image, Text, StyleSheet, View } from 'react-native';
 import Button from 'react-native-button'
 import Dimensions from 'Dimensions';
 import { Hoshi } from 'react-native-textinput-effects';
+import dismissKeyboard from 'dismissKeyboard'
 
 let Login    = require('./Login').default
 var firebase = require('../../config/firebase')
@@ -57,6 +58,8 @@ export default class signup extends Component {
     }
 
     onExitScene() {
+        dismissKeyboard()
+
         this.props.navigator.pop()
     }
 
@@ -67,14 +70,12 @@ export default class signup extends Component {
                 <View style={{width: Dimensions.get('window').width - 20, paddingTop: 40}}>
                     <Hoshi
                         ref="email"
-                        style={{width: 50, width: Dimensions.get('window').width - 20 }}
+                        style={{width: Dimensions.get('window').width - 20 }}
                         value={this.state.email}
                         inputStyle={styles.passwordResetTextInput}
                         labelStyle={{color: '#00BCD4'}}
                         label={'Email Address'}
                         borderColor={'#00BCD4'}
-                        backgroundColor={'transparent'}
-                        onChangeText={(text) => this.setState({username: text})}
                         autoCapitalize={'none'}
                         autoCorrect={false}
                         onChangeText={(text) => this.setState({email: text})}/>
