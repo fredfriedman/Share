@@ -7,6 +7,7 @@ import { ListView,
         RecyclerViewBackedScrollView,
         Text,
         Image,
+        ScrollView,
         View, } from 'react-native';
 import Communications from 'react-native-communications';
 
@@ -29,16 +30,16 @@ export default class Overview extends Component {
         this.state = {
             dataSourceImproving: dataSource.cloneWithRows(
                 [{name:'Bill Clinton', phone:"732-882-3145", status:"#388E3C"},
-                {name:'Cindy Johnson', phone:"792-822-3145", status:"#388E3C"},
-                {name:'Tom Haverford', phone:"342-822-3243", status: "#388E3C"}]),
+                {name:'Cindy Johnson', phone:"792-822-3145", status:"#8BC34A"},
+                {name:'Tom Haverford', phone:"342-822-3243", status: "#CDDC39"}]),
             dataSourceCritical: dataSource.cloneWithRows(
                 [{name:'Homer Simpson', phone:"552-822-0874", status:"#D32F2F"},
-                {name:'Chase Jeter', phone:"398-112-4458", status:"#D32F2F"},
-                {name:'Max Kellermueller', phone:"685-919-2231", status:"#D32F2F"}]),
+                {name:'Chase Jeter', phone:"398-112-4458", status:"#F44336"},
+                {name:'Max Kellermueller', phone:"685-919-2231", status:"#F57C00"}]),
             dataSourceStatic: dataSource.cloneWithRows(
-                [{name:'Marge Simpson', phone:"443-822-0842", status: "#FFEB3B"},
-                {name:'Claire Fox', phone:"661-333-4444", status: "#FFEB3B"},
-                {name:'Jabari Parker', phone:"773-731-0981", status: "#FFEB3B"}]),
+                [{name:'Marge Simpson', phone:"443-822-0842", status: "#FFC107"},
+                {name:'Claire Fox', phone:"661-333-4444", status: "#FDD835"},
+                {name:'Jabari Parker', phone:"773-731-0981", status: "#FFEE58"}]),
         }
     }
 
@@ -112,42 +113,41 @@ export default class Overview extends Component {
 
     render() {
         return (
-        <View style={{ backgroundColor: '#FAFAFA', flex: 1, flexDirection: 'column', justifyContent: 'space-between' }}>
-            <Header
-                text={"Overview"}
-                rightAction={this.onAddPatient.bind(this)}
-                rightIcon={plusIcon}/>
-            <TableViewGroup
-                title={"Critical"}
-                headerIsEnabled={true}
-                onPress={this.onPressHeader.bind(this)}
-                onPressArchive={this.onPressArchive.bind(this)}
-                style={styles.tableView}
-                textStyle={styles.tableViewText}
-                headerStyle={[styles.headerStyle, {backgroundColor: "#EF9A9A"}]}
-                dataSource={this.state.dataSourceCritical}
-                renderRow={this.renderRow.bind(this)}/>
-            <TableViewGroup
-                title={"Static"}
-                headerIsEnabled={true}
-                onPress={this.onPressHeader.bind(this)}
-                onPressArchive={this.onPressArchive.bind(this)}
-                style={styles.tableView}
-                textStyle={styles.tableViewText}
-                headerStyle={[styles.headerStyle, {backgroundColor: "#FFF59D"}]}
-                dataSource={this.state.dataSourceStatic}
-                renderRow={this.renderRow.bind(this)}/>
-            <TableViewGroup
-                title={"Improving"}
-                headerIsEnabled={true}
-                onPress={this.onPressHeader.bind(this)}
-                onPressArchive={this.onPressArchive.bind(this)}
-                style={styles.tableView}
-                textStyle={styles.tableViewText}
-                headerStyle={[styles.headerStyle, {backgroundColor: "#A5D6A7"}]}
-                dataSource={this.state.dataSourceImproving}
-                renderRow={this.renderRow.bind(this)}/>
-        </View>
+            <View style={{flexDirection: 'column', flex: 1 }}>
+                <Header text={"Overview"} rightAction={this.onAddPatient.bind(this)} rightIcon={plusIcon}/>
+                <ScrollView style={{backgroundColor: '#f8f8f8'}} contentContainerStyle={{paddingTop: 10, paddingBottom: 10}}>
+                    <TableViewGroup
+                        title={"Critical"}
+                        headerIsEnabled={true}
+                        onPress={this.onPressHeader.bind(this)}
+                        onPressArchive={this.onPressArchive.bind(this)}
+                        style={styles.tableView}
+                        textStyle={styles.tableViewText}
+                        headerStyle={[styles.headerStyle, {backgroundColor: "#EF9A9A"}]}
+                        dataSource={this.state.dataSourceCritical}
+                        renderRow={this.renderRow.bind(this)}/>
+                    <TableViewGroup
+                        title={"Static"}
+                        headerIsEnabled={true}
+                        onPress={this.onPressHeader.bind(this)}
+                        onPressArchive={this.onPressArchive.bind(this)}
+                        style={[styles.tableView, {marginTop: 20, marginBottom: 20}]}
+                        textStyle={styles.tableViewText}
+                        headerStyle={[styles.headerStyle, {backgroundColor: "#FFF59D"}]}
+                        dataSource={this.state.dataSourceStatic}
+                        renderRow={this.renderRow.bind(this)}/>
+                    <TableViewGroup
+                        title={"Improving"}
+                        headerIsEnabled={true}
+                        onPress={this.onPressHeader.bind(this)}
+                        onPressArchive={this.onPressArchive.bind(this)}
+                        style={styles.tableView}
+                        textStyle={styles.tableViewText}
+                        headerStyle={[styles.headerStyle, {backgroundColor: "#A5D6A7"}]}
+                        dataSource={this.state.dataSourceImproving}
+                        renderRow={this.renderRow.bind(this)}/>
+                </ScrollView>
+            </View>
         );
     }
 
