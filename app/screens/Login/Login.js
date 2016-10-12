@@ -1,14 +1,19 @@
 import Firebase from 'firebase';
 import React, { Component } from 'react';
-import { AsyncStorage, Image, KeyboardAvoidingView, AppRegistry, TextInput, View, StyleSheet, TouchableHighlight, Text, ScrollView } from 'react-native';
+import { ActivityIndicator, Alert, AsyncStorage, Image, Navigator, Text, View } from 'react-native';
+import Button from 'react-native-button'
+import { Hoshi } from 'react-native-textinput-effects';
+import dismissKeyboard from 'dismissKeyboard'
 
-var styles   = require('./styles')
+let styles   = require('./styles')
 var firebase = require('../../config/firebase')
-let SignUp   = require('./signup').default
-let TabBar   = require('../../components/TabBar').default
+let {xIcon, butterfly} = require('../../config/images')
+
+let PasswordReset = require('./passwordReset').default
 let CaregiverHome = require('../CaregiverHome/overview').default
-var Button   = require('../../components/button').default
-var { whiteGradient } = require('../../config/images')
+let TabBar  = require('../../components/TabBar').default
+let CloseModalButton   = require('../../components/TopLeftAction').default
+
 
 
 export default class Login extends Component {
@@ -17,110 +22,126 @@ export default class Login extends Component {
         this.state = {
             username: '',
             password: '',
-            loaded: false
+            animating: false,
         }
     }
 
-    loginPress() {
-
-        var self = this;
-        self.props.navigator.push({
-          component: TabBar
-      })
-        firebase.auth().signInWithEmailAndPassword(this.state.username, this.state.password)
-            .then(function(token) {
-                AsyncStorage.setItem('user_data', JSON.stringify(token));
-                    self.props.navigator.push({
-                      component: TabBar
-                });
-            }, function(error) {
-                // Something went wrong.
-                var errorCode = error.code;
-                var errorMessage = error.message;
-
-                console.log(errorCode,errorMessage)
-            })
+    componentDidMount() {
+        this.refs.email.refs.input.focus()
     }
 
-    caregiverLoginPress() {
+    onExitScene() {
+        dismissKeyboard()
+        this.props.navigator.pop()
+    }
+
+    onPressPasswordReset() {
+        dismissKeyboard()
         this.props.navigator.push({
-            component: CaregiverHome
+            title: 'Password Reset',
+            sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
+            component: PasswordReset,
+            passProps: {}
         })
     }
 
-    signUp() {
-        this.props.navigator.push({
-            component: SignUp
-        });
-    }
+    onPressLogin() {
 
-    passwordReset() {
-        /*
-            1. Change view to show email textInput
-            2. Send Email
-        */
-        let email = ""
+        var self = this;
 
-        firebase.auth().sendPasswordResetEmail(email)
-            .then(function(success) {
-                // Change view to comfirm password reset
+        this.setState({animating: true})
+
+        firebase.auth().signInWithEmailAndPassword(this.state.username, this.state.password)
+            .then(function(user) {
+
+                AsyncStorage.setItem('user_data', JSON.stringify(user));
+
+                firebase.database().ref().child("users/" + user.uid).once('value')
+                    .then(function(snapshot) {
+
+                        let component = snapshot.val().type === "caregiver" ? CaregiverHome : TabBar
+
+                        self.setState({animating: false})
+
+                        dismissKeyboard()
+
+                        self.props.navigator.push({ component: component, reset: true })
+
+                    }, function(error) {
+                        console.log(error)
+                    })
 
             }, function(error) {
-                switch(error.code){
-                    case "auth/invalid-email" : break
-                    case "auth/user-not-found": break
+
+                var alertTitle = "Oops something went wrong"
+                var alertMessage = "Please try again."
+
+                switch (error.code) {
+                    case "auth/invalid-email":
+                        alertTitle = "Incorrect Email"
+                        alertMessage = "It looks like you may have misspelled your email.\n Please try again."
+                        break;
+                    case "auth/wrong-password":
+                        alertTitle = "Incorrect Password"
+                        alertMessage = "The password you entered is incorrect.\n Please try again."
+                        break;
+                    default:
+                        alertTitle = "Oops something went wrong"
+                        alertMessage = "Please try again."
                 }
+
+                Alert.alert(alertTitle, alertMessage, [ {text: 'OK', onPress: () => console.log('OK Pressed!')}, ])
+
+                self.setState({animating: false})
             })
     }
 
     render() {
         return (
-            <View style={styles.container}>
-                <Image
-                    source={ whiteGradient }
-                    style={styles.backgroundImage}>
-                    <KeyboardAvoidingView behavior="padding" style={styles.loginContainer}>
-                        <TextInput
-                            style={styles.textInput}
-                            onChangeText={(text) => this.setState({username: text})}
-                            placeholder={'Email'}
-                            autoCorrect={false}
-                            multiline={false}
-                            onSubmitEditing={(event) => {  this.refs.passwordInput.focus(); }}/>
-                        <TextInput
-                            secureTextEntry={true}
-                            style={styles.textInput}
-                            ref='passwordInput'
-                            onChangeText={(text) => this.setState({password: text})}
-                            placeholder={'Password'}
-                            multiline={false}/>
-                        <Button
-                            text="LOGIN"
-                            onpress={this.loginPress.bind(this)}
-                            button_styles={styles.button}
-                            button_text_styles={styles.LoginLabel} />
-                        <Button
-                            text="CAREGIVER LOGIN"
-                            onpress={this.caregiverLoginPress.bind(this)}
-                            button_styles={styles.button}
-                            button_text_styles={styles.LoginLabel} />
-                        <Button
-                            text="Forgot Password?"
-                            underlayColor={"transparent"}
-                            onpress={this.passwordReset.bind(this)}
-                            button_styles={styles.forgotPasswordButton}
-                            button_text_styles={styles.bottomLabel} />
-                    </KeyboardAvoidingView>
-                    <Button
-                        text="Don't have an account? Sign Up"
-                        underlayColor={"transparent"}
-                        onpress={this.signUp.bind(this)}
-                        button_styles={styles.signUpButton}
-                        button_text_styles={styles.bottomLabel} />
-                </Image>
+            <View style={{flex: 1, alignItems: 'center', backgroundColor: 'white',}}>
+                <Image style={{backgroundColor: 'transparent', height: 35, width: 35, top: 20}} source={butterfly}/>
+                <View style={[styles.formContainer, {paddingTop: 20}]}>
+                    <Hoshi
+                        ref="email"
+                        style={{width: 50}}
+                        inputStyle={[styles.textInput, {color: '#00BCD4', fontSize: 16}]}
+                        labelStyle={{color: '#00BCD4'}}
+                        label={'Email Address'}
+                        borderColor={'#00BCD4'}
+                        onChangeText={(text) => this.setState({username: text})}
+                        onSubmitEditing={(event) => {  this.refs.password.refs.input.focus(); }}
+                        autoCapitalize={'none'}
+                        autoCorrect={false}/>
+                    <Hoshi
+                        ref='password'
+                        label={'Password'}
+                        labelStyle={{color: '#00BCD4'}}
+                        inputStyle={[styles.textInput, {color: '#00BCD4', fontSize: 16}]}
+                        style={{width: 50, paddingTop: 20}}
+                        borderColor={'#00BCD4'}
+                        autoCapitalize={'none'}
+                        autoCorrect={false}
+                        secureTextEntry={true}
+                        onChangeText={(text) => this.setState({password: text})}/>
+                </View>
+                <Button
+                    style={styles.SubmitLabel}
+                    containerStyle={styles.button}
+                    onPress={this.onPressLogin.bind(this)}>
+                    Log In
+                </Button>
+                <Button
+                    style={[styles.bottomLabel, {color: "#00BCD4", paddingTop: 20}]}
+                    containerStyle={{}}
+                    onPress={this.onPressPasswordReset.bind(this)}>
+                    Need Help?
+                </Button>
+                <ActivityIndicator
+                    animating={this.state.animating}
+                    style={{height: 60}}
+                    size="large" />
+                <CloseModalButton action={this.onExitScene.bind(this)} icon={xIcon}/>
             </View>
         );
-        }
     }
-
-AppRegistry.registerComponent('Login', () => Login);
+}

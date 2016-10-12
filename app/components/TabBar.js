@@ -33,60 +33,58 @@ export default class TabBar extends Component {
             <TabNavigator.Item
                 selected={this.state.selectedTab === 'Profile'}
                 title="Profile"
-                titleStyle={styles.navBarItem}
-                renderIcon={() => <Image source={homeIcon} />}
-                renderSelectedIcon={() => <Image source={homeIcon} />}
+                titleStyle={styles.tabBarTitle}
+                selectedTitleStyle={styles.tabBarSelectedTitle}
+                renderIcon={() => <Image style={styles.icon} source={homeIcon} />}
+                renderSelectedIcon={() => <Image style={styles.icon} source={homeIcon} />}
                 onPress={() => this.setTab('Profile')}>
                 <Profile navigator={this.props.navigator}/>
             </TabNavigator.Item>
             <TabNavigator.Item
                 selected={this.state.selectedTab === 'Overview'}
                 title="Overview"
-                titleStyle={styles.navBarItem}
-                renderIcon={() => <Image source={overviewIcon} />}
-                renderSelectedIcon={() => <Image source={overviewIcon} />}
+                titleStyle={styles.tabBarTitle}
+                selectedTitleStyle={styles.tabBarSelectedTitle}
+                renderIcon={() => <Image style={styles.icon} source={overviewIcon} />}
+                renderSelectedIcon={() => <Image style={styles.icon} source={overviewIcon} />}
                 onPress={() => this.setTab('Overview')}>
                 <Overview navigator={this.props.navigator}/>
             </TabNavigator.Item>
             <TabNavigator.Item
                 selected={this.state.selectedTab === 'Calendar'}
                 title="Calendar"
-                titleStyle={styles.navBarItem}
-                renderIcon={() => <Image source={calIcon} />}
-                renderSelectedIcon={() => <Image source={calIcon} />}
+                titleStyle={styles.tabBarTitle}
+                selectedTitleStyle={styles.tabBarSelectedTitle}
+                renderIcon={() => <Image style={styles.icon} source={calIcon} />}
+                renderSelectedIcon={() => <Image style={styles.icon} source={calIcon} />}
                 onPress={() => this.setTab('Calendar')}>
                 <Patients navigator={this.props.navigator}/>
-            </TabNavigator.Item>
-            <TabNavigator.Item
-                selected={this.state.selectedTab === 'Settings'}
-                title="Settings"
-                titleStyle={styles.navBarItem}
-                renderIcon={() => <Image source={settingsIcon} />}
-                renderSelectedIcon={() => <Image source={settingsIcon} />}
-                onPress={() => this.setTab('Settings')}>
-                <Settings navigator={this.props.navigator}/>
             </TabNavigator.Item>
         </TabNavigator>
       );
     }
 }
 
-AppRegistry.registerComponent('TabBar', () => TabBar);
-
 var styles = {
     view: {
         height: 10
     },
     tabBar: {
-        backgroundColor: '#EFEFF4',
-        borderTopColor: '#CECED2',
-        borderTopWidth: 1,
-        height: 49
+        backgroundColor: '#ECEFF1',
+        height: 40
     },
-    navBarItem: {
+    tabBarTitle: {
         fontFamily: 'Helvetica',
         fontWeight: '100',
         fontSize: 10,
-        color: '#8E8E93'
+        color: '#90A4AE'
+    },
+    icon: {
+        marginBottom: -3,
+        height: 24,
+        width: 24
+    },
+    tabBarSelectedTitle: {
+        color: '#0097A7'
     }
 }
