@@ -11,7 +11,7 @@ import { ListView,
         View, } from 'react-native';
 import Communications from 'react-native-communications';
 
-var {plusIcon, phoneIcon, whiteGradient } = require('../../config/images')
+var {plusIcon, phoneIcon, personIcon } = require('../../config/images')
 var TableViewGroup = require('../../components/TableViewGroup').default
 var PatientTableViewCell = require('../../components/patientTableViewCell').default
 var PatientDetailView = require('../Detail/detail').default
@@ -22,24 +22,22 @@ export default class Overview extends Component {
 
     constructor() {
         super();
-        var dataSource = new ListView.DataSource({
+
+        this.dataSource = new ListView.DataSource({
             rowHasChanged: (r1, r2) => r1 !== r2,
             sectionHeaderHasChanged: (s1, s2) => s1 !== s2
         });
 
         this.state = {
-            dataSourceImproving: dataSource.cloneWithRows(
-                [{name:'Bill Clinton', phone:"732-882-3145", status:"#388E3C"},
-                {name:'Cindy Johnson', phone:"792-822-3145", status:"#8BC34A"},
-                {name:'Tom Haverford', phone:"342-822-3243", status: "#CDDC39"}]),
-            dataSourceCritical: dataSource.cloneWithRows(
-                [{name:'Homer Simpson', phone:"552-822-0874", status:"#D32F2F"},
-                {name:'Chase Jeter', phone:"398-112-4458", status:"#F44336"},
-                {name:'Max Kellermueller', phone:"685-919-2231", status:"#F57C00"}]),
-            dataSourceStatic: dataSource.cloneWithRows(
-                [{name:'Marge Simpson', phone:"443-822-0842", status: "#FFC107"},
-                {name:'Claire Fox', phone:"661-333-4444", status: "#FDD835"},
-                {name:'Jabari Parker', phone:"773-731-0981", status: "#FFEE58"}]),
+            improvingPatients: [{name:'Bill Clinton', phone:"732-882-3145", status:"#388E3C"},
+                              {name:'Cindy Johnson', phone:"792-822-3145", status:"#8BC34A"},
+                              {name:'Tom Haverford', phone:"342-822-3243", status: "#CDDC39"}],
+            criticalPatients: [{name:'Homer Simpson', phone:"552-822-0874", status:"#D32F2F"},
+                                {name:'Chase Jeter', phone:"398-112-4458", status:"#F44336"},
+                                {name:'Max Kellermueller', phone:"685-919-2231", status:"#F57C00"}],
+            staticPatients: [{name:'Marge Simpson', phone:"443-822-0842", status: "#FFC107"},
+                            {name:'Claire Fox', phone:"661-333-4444", status: "#FDD835"},
+                            {name:'Jabari Parker', phone:"773-731-0981", status: "#FFEE58"}],
         }
     }
 
@@ -107,8 +105,26 @@ export default class Overview extends Component {
 
         Archives the selected patient; removing it from the table view
     */
-    onPressArchive(patient) {
-        console.log(patient)
+    onPressArchive(title, data, secdId, rowId) {
+
+        // TODO: Call firebase to actually archive data
+
+        switch(title) {
+            case "Critical":
+                var items = this.state.criticalPatients
+                items.splice(rowId, 1)
+                this.setState({criticalPatients: items})
+                break
+            case "Static":
+                var items = this.state.staticPatients
+                items.splice(rowId, 1)
+                this.setState({staticPatients: items})
+                break
+            case "Improving":
+                var items = this.state.improvingPatients
+                items.splice(rowId, 1)
+                this.setState({improvingPatients: items})
+        }
     }
 
     render() {
@@ -124,7 +140,7 @@ export default class Overview extends Component {
                         style={styles.tableView}
                         textStyle={styles.tableViewText}
                         headerStyle={[styles.headerStyle, {backgroundColor: "#EF9A9A"}]}
-                        dataSource={this.state.dataSourceCritical}
+                        dataSource={this.dataSource.cloneWithRows(this.state.criticalPatients)}
                         renderRow={this.renderRow.bind(this)}/>
                     <TableViewGroup
                         title={"Static"}
@@ -134,7 +150,7 @@ export default class Overview extends Component {
                         style={[styles.tableView, {marginTop: 20, marginBottom: 20}]}
                         textStyle={styles.tableViewText}
                         headerStyle={[styles.headerStyle, {backgroundColor: "#FFF59D"}]}
-                        dataSource={this.state.dataSourceStatic}
+                        dataSource={this.dataSource.cloneWithRows(this.state.staticPatients)}
                         renderRow={this.renderRow.bind(this)}/>
                     <TableViewGroup
                         title={"Improving"}
@@ -144,7 +160,7 @@ export default class Overview extends Component {
                         style={styles.tableView}
                         textStyle={styles.tableViewText}
                         headerStyle={[styles.headerStyle, {backgroundColor: "#A5D6A7"}]}
-                        dataSource={this.state.dataSourceImproving}
+                        dataSource={this.dataSource.cloneWithRows(this.state.improvingPatients)}
                         renderRow={this.renderRow.bind(this)}/>
                 </ScrollView>
             </View>
@@ -157,7 +173,7 @@ export default class Overview extends Component {
                 onPress={()=>this.onPressPatient(patient)}
                 onPressIcon={()=>this.onPressAction(patient)}
                 status={patient.status}
-                image={whiteGradient}
+                image={personIcon}
                 actionIcon={phoneIcon}
                 mainText={patient.name}
                 subTitleText={patient.phone}/>

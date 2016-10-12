@@ -45,12 +45,12 @@ var styles = StyleSheet.create({
         backgroundColor: '#F6F6F6',
     },
     thumb: {
-        marginTop: 2,
-        width: 40,
-        height: 40,
-        marginLeft: 1,
+        marginTop: 10,
+        width: 20,
+        height: 25,
+        marginLeft: 3,
         marginRight: 10,
-        borderRadius: 20,
+        borderRadius: 10,
     },
     text: {
         flex: 0,

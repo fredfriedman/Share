@@ -19,9 +19,11 @@ export default class PatientsView extends Component {
 
     constructor() {
         super();
-        const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
+        this.dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
         this.state = {
-            dataSource: ds.cloneWithRows([
+            patients: [
             {name:'Homer Simpson', phone:"552-822-0874", status:"#D32F2F"},
             {name:'Chase Jeter', phone:"398-112-4458", status:"#F44336"},
             {name:'Max Kellermueller', phone:"685-919-2231", status:"#F57C00"},
@@ -31,7 +33,7 @@ export default class PatientsView extends Component {
             {name:'Tom Haverford', phone:"342-822-3243", status: "#CDDC39"},
             {name:'Cindy Johnson', phone:"792-822-3145", status:"#8BC34A"},
             {name:'Bill Clinton', phone:"732-882-3145", status:"#388E3C"}
-            ]),
+            ]
         };
     }
 
@@ -43,6 +45,22 @@ export default class PatientsView extends Component {
               patient: patient,
           }
       })
+    }
+/**
+    Called when hidden archive button is selected
+
+    Parameters:
+        - patient: the selected patient
+
+    Archives the selected patient; removing it from the table view
+*/
+    onPressArchive(title, data, secdId, rowId) {
+
+        // TODO: Call firebase to actually archive data
+
+        var items = this.state.patients
+        items.splice(rowId, 1)
+        this.setState({patients: items})
     }
 
     onPressIcon(sectionID, rowID) {
@@ -56,20 +74,15 @@ export default class PatientsView extends Component {
     render() {
         return (
             <View style={{flexDirection: 'column', flex: 1 }} noSpacer={false} noScroll={false}>
-                <Header text={"Patients"}/>
-                <TouchableHighlight
-                    onPress={this.onBack.bind(this)}
-                    style={{position: 'absolute', width: 20, height: 20, top: 25, left: 15, backgroundColor: 'transparent'}}
-                    underlayColor={'#f8f8f8'}>
-                    <Image source={backIcon}/>
-                </TouchableHighlight>
+                <Header leftAction={this.onBack.bind(this)} leftIcon={backIcon} text={"Patients"}/>
                 <TableViewGroup
                     title={"Patients"}
-                    style={{backgroundColor: 'red', flex: 1}}
+                    style={{backgroundColor: '#f8f8f8', flex: 1}}
                     onPress={this._pressData}
+                    onPressArchive={this.onPressArchive.bind(this)}
                     scrollEnabled={true}
                     textStyle={{marginTop: 25, color: '#FFFFFF', fontSize: 18, textAlign: 'center'}}
-                    dataSource={this.state.dataSource}
+                    dataSource={this.dataSource.cloneWithRows(this.state.patients)}
                     renderRow={this.renderRow.bind(this)}
                     renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}/>
             </View>
