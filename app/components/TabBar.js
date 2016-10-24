@@ -29,7 +29,7 @@ export default class TabBar extends Component {
 
     render() {
       return (
-        <TabNavigator tabBarStyle={styles.tabBar}>
+        <TabNavigator tabBarShadowStyle={styles.tabBarShadow} tabBarStyle={styles.tabBar}>
             <TabNavigator.Item
                 selected={this.state.selectedTab === 'Profile'}
                 title="Profile"
@@ -72,6 +72,17 @@ var styles = {
     tabBar: {
         backgroundColor: '#ECEFF1',
         height: 40
+    },
+    tabBarShadow: {
+        backgroundColor: '#ECEFF1',
+        shadowColor: "#05054F",
+        shadowOpacity: 0.5,
+        shadowRadius: 3,
+        shadowOffset: {
+            height: 1,
+            width: 0
+        },
+        elevation: 20,
     },
     tabBarTitle: {
         fontFamily: 'Helvetica',

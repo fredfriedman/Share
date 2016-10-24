@@ -10,6 +10,14 @@ export default class TableViewGroup extends Component {
 
     constructor() {
         super();
+
+        this.state = {
+            name: 'default'
+        }
+    }
+
+    componentDidMount() {
+        this.setState({name: this.props.title})
     }
 
     render() {
@@ -21,14 +29,14 @@ export default class TableViewGroup extends Component {
                     dataSource={this.props.dataSource}
                     renderRow={this.props.renderRow}
                     scrollEnabled={this.props.scrollEnabled ? this.props.scrollEnabled : false }
-                    renderHiddenRow={ patient => this.renderHiddenRow(patient)}
+                    renderHiddenRow={ (data, secId, rowId) => this.renderHiddenRow(data, secId, rowId)}
                     rightOpenValue={-75}
                     disableRightSwipe={true}/>
             </View>
         )
     }
 
-    renderHiddenRow(patient) {
+    renderHiddenRow(data, secId, rowId) {
         return (
             <View style={{
                 flexDirection: 'row',
@@ -38,7 +46,7 @@ export default class TableViewGroup extends Component {
                 height: 44}}>
                 <TouchableHighlight
                     style={{height: 44, width: 60, backgroundColor: '#FFF8E1', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}
-                    onPress={() => { this.props.onPressArchive(patient) }}
+                    onPress={() => { this.props.onPressArchive(this.state.name, data, secId, rowId) }}
                     underlayColor={'#FFC107'}>
                     <Text style={{color: '#0097A7', fontFamily: 'Helvetica', fontWeight: '500'}}>Archive</Text>
                 </TouchableHighlight>
@@ -51,7 +59,8 @@ export default class TableViewGroup extends Component {
             return (
                 <TouchableHighlight
                     style={this.props.headerStyle}
-                    onPress={this.props.onPress}>
+                    onPress={this.props.onPress}
+                    underlayColor={'#B0BEC5'}>
                     <View style={{flexDirection: 'row'}}>
                         <Text style={this.props.textStyle}> {this.props.title} </Text>
                         <View style={{flex: 1}} />
