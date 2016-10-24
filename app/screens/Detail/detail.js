@@ -38,7 +38,7 @@ export default class PatientDetailView  extends Component {
                 <TouchableHighlight
                     onPress={()=>this.onBack()}
                     style={{position: 'absolute', width: 20, height: 20, top: 25, left: 15, backgroundColor: 'transparent'}}
-                    underlayColor={'#f8f8f8f'}>
+                    underlayColor={'#f8f8f8'}>
                     <Image source={backIcon}/>
                 </TouchableHighlight>
             </View>

@@ -1,26 +1,55 @@
 import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, View, Text } from 'react-native';
+import { Image, Text, TouchableHighlight, StyleSheet, View } from 'react-native';
+import Dimensions from 'Dimensions';
 
 export default class header extends Component {
 
-  render(){
-    return (
-      <View style={styles.header}>
-        <View style={styles.header_item}>
-          <Text style={styles.header_text}>{this.props.text}</Text>
-        </View>
-      </View>
-    );
-  }
+    renderTopLeftAction() {
+        if (this.props.leftAction == null) {
+            return null
+        }
+        return (
+            <TouchableHighlight
+                onPress={this.props.leftAction}
+                style={{position: 'absolute', width: 20, height: 20, top: 27, left: 15, backgroundColor: 'transparent'}}
+                underlayColor={'transparent'}>
+                <Image style={{height: 20, width: 20}} source={this.props.leftIcon}/>
+            </TouchableHighlight>
+        )
+    }
 
+    renderTopRightAction() {
+        if (this.props.rightAction == null) {
+            return null
+        }
+        return (
+            <TouchableHighlight
+                onPress={this.props.rightAction}
+                style={{position: 'absolute', width: 20, height: 20, top: 27, right: 15, backgroundColor: 'transparent'}}
+                underlayColor={'transparent'}>
+                <Image style={{height: 20, width: 20}} source={this.props.rightIcon}/>
+            </TouchableHighlight>
+        )
+    }
 
+    render(){
+        return (
+            <View style={styles.header}>
+                <View style={styles.header_item}>
+                    <Text style={styles.header_text}>{this.props.text}</Text>
+                </View>
+                {this.renderTopLeftAction()}
+                {this.renderTopRightAction()}
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     height: 60,
-    backgroundColor: '#3498DB',
+    backgroundColor: '#0097A7',
     borderColor: '#AAAAAA',
     borderBottomWidth: 0.5,
   },
@@ -30,10 +59,9 @@ const styles = StyleSheet.create({
   },
   header_text: {
     color: '#FFFFFF',
-    fontSize: 18,
+    fontSize: 16,
+    fontWeight: 'bold',
     textAlign: 'center',
     marginTop: 25,
   }
 });
-
-AppRegistry.registerComponent('header', () => header);

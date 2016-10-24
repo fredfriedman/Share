@@ -1,9 +1,11 @@
 import { StyleSheet} from 'react-native';
+import Dimensions from 'Dimensions';
 
 module.exports = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
+        backgroundColor: '#00BCD4',
     },
     navBar: {
         backgroundColor: 'transparent',
@@ -15,52 +17,57 @@ module.exports = StyleSheet.create({
         backgroundColor: 'transparent',
     },
     backgroundImage: {
-        // Have to figure out how to change these to device size
-        width: 375,
-        height: 700,
-        justifyContent: 'center',
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
     },
-    loginContainer: {
+    KeyboardAvoidingViewContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'transparent',
         paddingHorizontal: 20,
         paddingTop: 20,
-        top: 150,
+    },
+    formContainer: {
+        width: Dimensions.get('window').width - 20,
+    },
+    line: {
+        marginTop: 5,
+        flex: 0,
+        height: StyleSheet.hairlineWidth,
+        backgroundColor: '#8E8E8E',
+        width: Dimensions.get('window').width - 20,
     },
     textInput: {
-        width: 250,
-        height: 50,
-        padding: 5,
-        borderColor: '#191919',
-        borderWidth: 0.5,
+        width: Dimensions.get('window').width - 30,
+        height: 35,
         alignSelf: 'center',
         backgroundColor: 'transparent',
         fontFamily: 'Helvetica',
         fontWeight: '100',
         fontSize: 11,
-        color: '#000000'
+        color: 'black'
     },
     button: {
-        padding: 10,
-        marginTop: 15,
-        backgroundColor: '#191919'
+        borderRadius: 2.5,
+        borderColor: 'transparent',
+        borderWidth: 0.5,
+        alignSelf: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#00BCD4',
+        height: 30,
+        width: Dimensions.get('window').width - 20,
+        marginTop: 10,
     },
-    forgotPasswordButton: {
-        paddingTop:10,
-    },
-    signUpButton: {
-        marginBottom: 50,
-    },
-    LoginLabel: {
-        width: 230,
+    SubmitLabel: {
         flex: 1,
-        marginBottom: -5,
+        width: 230,
         textAlign: 'center',
-        fontSize: 16,
-        fontWeight: '200',
-        color: '#ffffff'
+        alignSelf: 'center',
+        fontSize: 15,
+        fontWeight: '300',
+        color: '#ffffff',
+        paddingTop: 5
     },
     placeholderLabel: {
         fontSize: 12,
@@ -73,8 +80,9 @@ module.exports = StyleSheet.create({
         alignSelf: 'center',
         textAlign: 'center',
         fontSize: 11,
-        fontWeight: '100',
-        color: '#ffffff'
+        fontWeight: '300',
+        color: '#ffffff',
+        marginBottom: 20,
     },
     transparent_button: {
         marginTop: 10,

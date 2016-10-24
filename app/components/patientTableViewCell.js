@@ -9,23 +9,8 @@ export default class PatientTableViewCell extends Component {
 
     render() {
 
-        let swipeBtns = [
-            {
-                text: 'Delete',
-                backgroundColor: 'red',
-                underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
-                onPress: () => {()=> console.log(1)}
-            },
-            {
-                text: 'Duplicate',
-                backgroundColor: 'blue',
-                underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
-                onPress: () => { ()=> console.log(1)}
-            }
-        ];
-
         return (
-            <TouchableHighlight onPress={() => { this.props.onPress() }} underlayColor={'#F8F8F8'}>
+            <TouchableHighlight style={styles.row} onPress={() => { this.props.onPress() }} underlayColor={'#F8F8F8'}>
                 <View style={{flexDirection:'row'}}>
                     <View style={[styles.statusBar, { backgroundColor: this.props.status}]}/>
                     <Image style={styles.thumb} source={this.props.image} />
@@ -33,15 +18,13 @@ export default class PatientTableViewCell extends Component {
                         <Text style={styles.text}>{this.props.mainText}</Text>
                         <Text style={styles.subTitle}>{this.props.subTitleText}</Text>
                     </View>
-                    <View style={{flex: 1}} />
-                    <View style={{width: 50}}>
-                        <TouchableHighlight
-                            onPress={() => { this.props.onPressIcon() }}
-                            style={styles.actionIcon}
-                            underlayColor={'transparent'}>
-                            <Image style={styles.icon} source={this.props.actionIcon} />
-                        </TouchableHighlight>
-                    </View>
+                    <View style={{flex: 1}}/>
+                    <TouchableHighlight
+                        onPress={() => { this.props.onPressIcon() }}
+                        style={styles.actionIcon}
+                        underlayColor={'transparent'}>
+                        <Image style={styles.icon} source={this.props.actionIcon} />
+                    </TouchableHighlight>
                 </View>
             </TouchableHighlight>
         )
@@ -55,13 +38,9 @@ var styles = StyleSheet.create({
     statusBar: {
         backgroundColor: 'red',
         width: 6,
-        height: 43,
-        marginTop: 0.5,
+        height: 44,
     },
     row: {
-        alignItems: 'center',
-        flexDirection: 'row',
-        marginVertical: 5,
         height: 44,
         backgroundColor: '#F6F6F6',
     },
@@ -71,6 +50,7 @@ var styles = StyleSheet.create({
         height: 40,
         marginLeft: 1,
         marginRight: 10,
+        borderRadius: 20,
     },
     text: {
         flex: 0,
@@ -85,11 +65,14 @@ var styles = StyleSheet.create({
         fontWeight: '100',
     },
     icon: {
-        width: 30,
-        height: 30,
+        position: 'absolute',
+        width: 25,
+        height: 25,
+        marginTop: 2,
+        marginRight: 10,
     },
     actionIcon: {
-        marginRight: 5,
         marginTop: 7,
+        marginRight: 30
     }
 });

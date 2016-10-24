@@ -9,5 +9,9 @@ module.exports = {
 	writeIcon: require("../images/write-simple.png"),
 	phoneIcon: require("../images/phone.png"),
 	backIcon: require("../images/back.png"),
-	disclosureIcon: require("../images/disclosure.png")
+	disclosureIcon: require("../images/disclosure.png"),
+	assignmentIcon: require("../images/assignment.png"),
+	butterfly: require("../images/butterfly.png"),
+	xIcon: require("../images/x.png"),
+	plusIcon: require("../images/plus.png"),
 };
