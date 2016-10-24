@@ -11,6 +11,7 @@ import Button from 'react-native-button'
 var Header = require('../../components/header').default
 var {assignmentIcon} = require('../../config/images')
 let CaregiverAssessment = require('../CaregiverAssessment/assessment').default
+let CaregiverHistory = require('../CaregiverHistory/history').default
 
 
 export default class Overview extends Component {
@@ -19,9 +20,14 @@ export default class Overview extends Component {
         super();
     }
 
-    handlePress() {
-    	console.log(this.props.buttype);
-    	switch (this.props.buttype) {
+    handlePress(component) {
+    	switch (component) {
+            //test history
+            case "history":
+                this.props.navigator.push({
+                    component: CaregiverHistory
+                })
+                break;
     		case "assessment":
     			this.props.navigator.push({
     				component: CaregiverAssessment
@@ -45,7 +51,7 @@ export default class Overview extends Component {
 	            			style={{fontSize: 20, color: 'steelblue'}}
 					        styleDisabled={{color: 'red'}}
 					        buttype={'assessment'}
-					        onPress={() => this.handlePress()}>
+					        onPress={() => this.handlePress.bind(this)}>
 					        What would you like to do?
 					    </Button>
                 </Row>
@@ -55,7 +61,7 @@ export default class Overview extends Component {
 	            			containerStyle={{flex: 1, margin:5, overflow:'hidden', borderRadius:4, backgroundColor: 'steelblue', justifyContent: 'center'}}
 	            			style={{color: 'skyblue'}}
 					        styleDisabled={{color: 'red'}}
-					        onPress={() => this.handlePress()}>
+					        onPress={this.handlePress.bind(this)}>
 					        Complete Daily Assessment
 				    	</Button>
 				    </Col>
@@ -64,7 +70,7 @@ export default class Overview extends Component {
 	            			containerStyle={{flex: 1, margin:5, overflow:'hidden', borderRadius:4, backgroundColor: 'skyblue', justifyContent: 'center'}}
 	            			style={{color: 'steelblue'}}
 					        styleDisabled={{color: 'red'}}
-					        onPress={() => this._handlePress()}>
+					        onPress={() => this.handlePress()}>
 					        Message Nurse
 				    	</Button>
 				    </Col>
@@ -75,7 +81,7 @@ export default class Overview extends Component {
 	            			containerStyle={{flex: 1, margin:5, overflow:'hidden', borderRadius:4, backgroundColor: 'skyblue', justifyContent: 'center'}}
 	            			style={{color: 'steelblue'}}
 					        styleDisabled={{color: 'red'}}
-					        onPress={() => this._handlePress()}>
+					        onPress={() => this.handlePress('history')}>
 					        View Assessment History
 				    	</Button>
 				    </Col>

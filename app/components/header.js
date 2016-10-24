@@ -34,7 +34,8 @@ export default class header extends Component {
 
     render(){
         return (
-            <View style={styles.header}>
+            <View
+                style={this.props.headerStyle || styles.header}>
                 <View style={styles.header_item}>
                     <Text style={styles.header_text}>{this.props.text}</Text>
                 </View>
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     height: 60,
-    backgroundColor: '#0097A7',
+    backgroundColor: '#00BCD4',
     borderColor: '#AAAAAA',
     borderBottomWidth: 0.5,
   },
