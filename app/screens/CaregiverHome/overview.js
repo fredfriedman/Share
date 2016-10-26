@@ -48,7 +48,7 @@ export default class Overview extends Component {
             	<Row style={{flex: 1}}>
 	            		<Button
 	            			containerStyle={{flex: 1, justifyContent: 'center'}}
-	            			style={{fontSize: 20, color: 'steelblue'}}
+	            			style={{fontSize: 20, color: '#00ACC1'}}
 					        styleDisabled={{color: 'red'}}
 					        buttype={'assessment'}
 					        onPress={() => this.handlePress.bind(this)}>
@@ -58,8 +58,8 @@ export default class Overview extends Component {
             	<Row>
             		<Col>
             			<Button
-	            			containerStyle={{flex: 1, margin:5, overflow:'hidden', borderRadius:4, backgroundColor: 'steelblue', justifyContent: 'center'}}
-	            			style={{color: 'skyblue'}}
+	            			containerStyle={{flex: 1, margin:5, overflow:'hidden', borderRadius:4, backgroundColor: '#00ACC1', justifyContent: 'center'}}
+	            			style={{color: '#FFFFFF'}}
 					        styleDisabled={{color: 'red'}}
 					        onPress={this.handlePress.bind(this)}>
 					        Complete Daily Assessment
@@ -67,8 +67,8 @@ export default class Overview extends Component {
 				    </Col>
             		<Col>
             			<Button
-	            			containerStyle={{flex: 1, margin:5, overflow:'hidden', borderRadius:4, backgroundColor: 'skyblue', justifyContent: 'center'}}
-	            			style={{color: 'steelblue'}}
+	            			containerStyle={{flex: 1, margin:5, overflow:'hidden', borderRadius:4, backgroundColor: '#80DEEA', justifyContent: 'center'}}
+	            			style={{color: '#FFFFFF'}}
 					        styleDisabled={{color: 'red'}}
 					        onPress={() => this.handlePress()}>
 					        Message Nurse
@@ -78,8 +78,8 @@ export default class Overview extends Component {
             	<Row>
             		<Col>
             			<Button
-	            			containerStyle={{flex: 1, margin:5, overflow:'hidden', borderRadius:4, backgroundColor: 'skyblue', justifyContent: 'center'}}
-	            			style={{color: 'steelblue'}}
+	            			containerStyle={{flex: 1, margin:5, overflow:'hidden', borderRadius:4, backgroundColor: '#80DEEA', justifyContent: 'center'}}
+	            			style={{color: '#FFFFFF'}}
 					        styleDisabled={{color: 'red'}}
 					        onPress={() => this.handlePress('history')}>
 					        View Assessment History
@@ -87,8 +87,8 @@ export default class Overview extends Component {
 				    </Col>
             		<Col>
             			<Button
-	            			containerStyle={{flex: 1, margin:5, overflow:'hidden', borderRadius:4, backgroundColor: 'steelblue', justifyContent: 'center'}}
-	            			style={{color: 'skyblue'}}
+	            			containerStyle={{flex: 1, margin:5, overflow:'hidden', borderRadius:4, backgroundColor: '#00ACC1', justifyContent: 'center'}}
+	            			style={{color: '#FFFFFF'}}
 					        styleDisabled={{color: 'red'}}
 					        onPress={() => this._handlePress()}>
 					        Settings
