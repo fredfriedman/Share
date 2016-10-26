@@ -11,8 +11,9 @@ import {
     } from 'react-native';
 import dismissKeyboard from 'dismissKeyboard'
 
-var Header = require('./header').default
-var { xIcon, butterfly } = require('../config/images')
+var Header = require('../../components/header').default
+var { xIcon, butterfly } = require('../../config/images')
+var firebase = require('../../config/firebase')
 
 export default class noteInput extends Component {
 
@@ -21,13 +22,29 @@ export default class noteInput extends Component {
 
         this.state = {
             text: "",
-            isSubmitActive: false
+            isSubmitActive: false,
+            notesRef: this.getRef().child('caregivers')
         }
+    }
+
+    componentWillMount() {
+        this.setState({notesRef: this.getRef().child('caregivers').child(this.props.caregiver.name).child('notes') })
+    }
+
+    getRef() {
+        return firebase.database().ref();
     }
 
     onSubmit() {
 
         // Submit to firebase
+        this.state.notesRef.push({
+            pid: "uid",
+            poster: "username", // get from props
+            text: this.state.text,
+            timestamp: new Date().getTime(),
+        })
+
         dismissKeyboard()
         this.props.navigator.pop()
     }

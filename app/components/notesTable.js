@@ -14,7 +14,7 @@ export default class NotesTable extends Component {
                 renderFooter={() =>
                     <View style={styles.footer}>
                         <TouchableHighlight
-                            onPress={()=>this.props.onComment()}
+                            onPress={()=>this.props.addNote()}
                             style={styles.button}
                             underlayColor={'transparent'}>
                             <Text style={styles.text}> Comment </Text>

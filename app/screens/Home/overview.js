@@ -132,7 +132,7 @@ export default class Overview extends Component {
             <View style={{flexDirection: 'column', flex: 1 }}>
                 <Header
                     text={"Overview"}
-                    rightAction={this.onAddPatient.bind(this)} 
+                    rightAction={this.onAddPatient.bind(this)}
                     rightIcon={plusIcon}/>
                 <ScrollView style={{backgroundColor: '#f8f8f8'}} contentContainerStyle={{paddingTop: 10, paddingBottom: 10}}>
                     <TableViewGroup

@@ -17,8 +17,7 @@ import PageControl from 'react-native-page-control'
 var { backIcon, personIcon } = require('../../config/images')
 var Header = require('../../components/header').default
 var PatientTrend = require('../../components/PatientTrendChart').default
-var NotesTable = require('../../components/notesTable').default
-var NoteInput = require('../../components/note_input').default
+var NotesPage = require('./notesPage').default
 
 export default class PatientDetailView  extends Component {
 
@@ -67,13 +66,6 @@ export default class PatientDetailView  extends Component {
         this.setState({ currentPage: index });
     }
 
-    onPostNote() {
-        this.props.navigator.push({
-            component: NoteInput,
-            sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
-        })
-    }
-
     render() {
         return (
             <View style={{flexDirection: 'column', flex: 1}}>
@@ -99,12 +91,7 @@ export default class PatientDetailView  extends Component {
                             <Text style={{color: 'white', paddingTop: 20}}> Recent History </Text>
                         </View>
 
-                        <View style={styles.scrollView}>
-                            <Text style={{color: 'white', paddingTop: 20}}> Notes </Text>
-                            <NotesTable
-                                dataSource={this.dataSource.cloneWithRows(this.state.notes)}
-                                onComment={this.onPostNote.bind(this)}/>
-                        </View>
+                        <NotesPage navigator={this.props.navigator} caregiver={this.props.patient}/>
                     </ScrollView>
                 </View>
                 <PageControl style={{position:'absolute', left:0, right:0, bottom:10}}
