@@ -1,3 +1,10 @@
-# app
+# Share
 
-PLEASE CHANGE ME
+> Simplifying Hospice Care
+
+## Members
+
+- Aaron Liberatore
+- Michael Lee
+- Daniel Song
+
