@@ -40,6 +40,7 @@ export default class NotesPage extends Component {
             component: NotesInput,
             sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
             passProps: {
+                user: this.props.user,
                 caregiver: this.props.caregiver,
             }
         })

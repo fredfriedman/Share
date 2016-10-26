@@ -91,7 +91,7 @@ export default class PatientDetailView  extends Component {
                             <Text style={{color: 'white', paddingTop: 20}}> Recent History </Text>
                         </View>
 
-                        <NotesPage navigator={this.props.navigator} caregiver={this.props.patient}/>
+                        <NotesPage navigator={this.props.navigator} user={this.props.user} caregiver={this.props.patient}/>
                     </ScrollView>
                 </View>
                 <PageControl style={{position:'absolute', left:0, right:0, bottom:10}}

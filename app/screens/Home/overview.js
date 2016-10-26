@@ -63,7 +63,10 @@ export default class Overview extends Component {
     */
     onPressHeader() {
         this.props.navigator.push({
-            component: PatientsView
+            component: PatientsView,
+            passProps: {
+                user: this.props.user,
+            }
         })
     }
 
@@ -81,6 +84,7 @@ export default class Overview extends Component {
             backButtonTitle: 'Back',
             passProps: {
                 patient: patient,
+                user: this.props.user,
             }
         })
     }

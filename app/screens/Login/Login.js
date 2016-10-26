@@ -11,7 +11,7 @@ let {xIcon, butterfly} = require('../../config/images')
 
 let PasswordReset = require('./passwordReset').default
 let CaregiverHome = require('../CaregiverHome/overview').default
-let TabBar  = require('../../components/TabBar').default
+let TabBar  = require('../Home/TabBar').default
 let CloseModalButton   = require('../../components/TopLeftAction').default
 
 
@@ -65,7 +65,7 @@ export default class Login extends Component {
 
                         dismissKeyboard()
 
-                        self.props.navigator.push({ component: component, reset: true })
+                        self.props.navigator.resetTo({ component: component, passProps: {user: snapshot.val()} })
 
                     }, function(error) {
                         console.log(error)

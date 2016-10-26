@@ -36,11 +36,10 @@ export default class noteInput extends Component {
     }
 
     onSubmit() {
-
         // Submit to firebase
         this.state.notesRef.push({
             pid: "uid",
-            poster: "username", // get from props
+            poster: this.props.user.email, // get from props
             text: this.state.text,
             timestamp: new Date().getTime(),
         })
