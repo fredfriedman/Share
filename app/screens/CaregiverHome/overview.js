@@ -11,7 +11,7 @@ import Button from 'react-native-button'
 var Header = require('../../components/header').default
 var {assignmentIcon} = require('../../config/images')
 let CaregiverAssessment = require('../CaregiverAssessment/assessment').default
-let CaregiverHistory = require('../CaregiverHistory/history').default
+let CaregiverHistory = require('../CaregiverHistory/historyTest').default
 
 
 export default class Overview extends Component {
