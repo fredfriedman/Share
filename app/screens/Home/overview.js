@@ -63,7 +63,10 @@ export default class Overview extends Component {
     */
     onPressHeader() {
         this.props.navigator.push({
-            component: PatientsView
+            component: PatientsView,
+            passProps: {
+                user: this.props.user,
+            }
         })
     }
 
@@ -81,6 +84,7 @@ export default class Overview extends Component {
             backButtonTitle: 'Back',
             passProps: {
                 patient: patient,
+                user: this.props.user,
             }
         })
     }
@@ -132,7 +136,7 @@ export default class Overview extends Component {
             <View style={{flexDirection: 'column', flex: 1 }}>
                 <Header
                     text={"Overview"}
-                    rightAction={this.onAddPatient.bind(this)} 
+                    rightAction={this.onAddPatient.bind(this)}
                     rightIcon={plusIcon}/>
                 <ScrollView style={{backgroundColor: '#f8f8f8'}} contentContainerStyle={{paddingTop: 10, paddingBottom: 10}}>
                     <TableViewGroup

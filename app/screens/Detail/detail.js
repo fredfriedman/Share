@@ -8,6 +8,7 @@ import {
         StyleSheet,
         TouchableHighlight,
         Text,
+        TextInput,
         View, } from 'react-native';
 
 import Dimensions from 'Dimensions';
@@ -16,8 +17,7 @@ import PageControl from 'react-native-page-control'
 var { backIcon, personIcon } = require('../../config/images')
 var Header = require('../../components/header').default
 var PatientTrend = require('../../components/PatientTrendChart').default
-var Note = require('../../components/note').default
-var NoteInput = require('../../components/note_input').default
+var NotesPage = require('./notesPage').default
 
 export default class PatientDetailView  extends Component {
 
@@ -66,20 +66,13 @@ export default class PatientDetailView  extends Component {
         this.setState({ currentPage: index });
     }
 
-    postNote() {
-        this.props.navigator.push({
-            component: NoteInput,
-            sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
-        })
-    }
-
     render() {
         return (
             <View style={{flexDirection: 'column', flex: 1}}>
                 <View style={styles.topBox}>
                     <Text style={styles.patientName}> {this.props.patient.name} </Text>
                 </View>
-                <View style={{backgroundColor: '#607D8B'}}>
+                <View style={styles.bottomBox}>
                     <Text style={styles.patientPhone}> {this.props.patient.phone} </Text>
                     <ScrollView
                         ref="pageControl"
@@ -98,33 +91,18 @@ export default class PatientDetailView  extends Component {
                             <Text style={{color: 'white', paddingTop: 20}}> Recent History </Text>
                         </View>
 
-                        <View style={[styles.scrollView, {height: Dimensions.get('window').height}]}>
-                            <Text style={{color: 'white', paddingTop: 20}}> Notes </Text>
-                            <ListView
-                                dataSource={this.dataSource.cloneWithRows(this.state.notes)}
-                                renderRow={(note) => <Note note={note} poster={personIcon}/>}
-                                renderFooter={() =>
-                                    <View>
-                                        <TouchableHighlight onPress={this.postNote.bind(this)}>
-                                            <Text> New Post </Text>
-                                        </TouchableHighlight>
-                                    </View>}
-                                scrollEnabled={true}/>
-
-                        </View>
-
+                        <NotesPage navigator={this.props.navigator} user={this.props.user} caregiver={this.props.patient}/>
                     </ScrollView>
-                    <PageControl style={{position:'absolute', left:0, right:0, bottom:10}}
-                        numberOfPages={3}
-                        currentPage={this.state.currentPage}
-                        pageIndicatorTintColor='white'
-                        currentPageIndicatorTintColor='#18FFFF'
-                        indicatorStyle={{borderRadius: 5}}
-                        currentIndicatorStyle={{borderRadius: 5}}
-                        indicatorSize={{width:8, height:8}}
-                        onPageIndicatorPress={this.onItemTap.bind(this)} />
-
                 </View>
+                <PageControl style={{position:'absolute', left:0, right:0, bottom:10}}
+                    numberOfPages={3}
+                    currentPage={this.state.currentPage}
+                    pageIndicatorTintColor='white'
+                    currentPageIndicatorTintColor='#18FFFF'
+                    indicatorStyle={{borderRadius: 5}}
+                    currentIndicatorStyle={{borderRadius: 5}}
+                    indicatorSize={{width:8, height:8}}
+                    onPageIndicatorPress={this.onItemTap.bind(this)} />
                 <Image style={styles.profilePicture} source={personIcon}/>
                 <TouchableHighlight
                     onPress={()=>this.onBack()}
@@ -146,6 +124,9 @@ var styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'flex-end'
     },
+    bottomBox: {
+        backgroundColor: '#607D8B'
+    },
     patientName: {
         marginLeft: 100,
         fontSize: 18,
@@ -161,7 +142,7 @@ var styles = StyleSheet.create({
     },
     scrollView: {
         width: Dimensions.get('window').width,
-        height:164,
+        height: Dimensions.get('window').height - Dimensions.get('window').height/2.5,
         backgroundColor:'transparent',
         flex: 1
     },
