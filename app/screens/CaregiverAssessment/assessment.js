@@ -47,6 +47,8 @@ export default class Assessment extends Component {
             width={this.state.size.width}
             loop={false}
             animate={false}
+            indicatorAtBottom={true}
+            indicatorOffset={50}
         >
 
             <View style={{ backgroundColor: '#E9E9E9', flex: 1, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'stretch' }}>
@@ -59,7 +61,9 @@ export default class Assessment extends Component {
                     <Image source={backIcon}/>
                 </TouchableHighlight>
 
-                <Text>Please indicate the severity of your pain on a scale of 0 - 10 with 0 being "No pain" and 10 being "Worst pain possible".</Text>
+                <Text style={{ padding: 10, textAlign: 'center', fontWeight: 'bold', color: 'steelblue' }}>
+                    Please indicate the severity of your pain on a scale of 0 - 10 with 0 being "No pain" and 10 being "Worst pain possible".
+                </Text>
 
                 <Slider
                     style={{ justifyContent: 'center' }}
@@ -72,10 +76,61 @@ export default class Assessment extends Component {
                     minimumTrackTintColor='#00BCD4'
                     maximumTrackTintColor='#b7b7b7'
                 />
-                <Text>Value: {this.state.sliderVal}</Text>
+                <Text style={{ fontSize: 45, textAlign: 'center', color: 'steelblue', paddingBottom: 15 }}>
+                    {this.state.sliderVal}
+                </Text>
+
+                <Text style={{ padding: 10, textAlign: 'center', fontWeight: 'bold', color: 'steelblue' }}>
+                    Have there been any changes in medication use for this symptom?
+                </Text>
+                <Button
+                    containerStyle={{margin:5, overflow:'hidden', borderRadius:4, backgroundColor: 'steelblue', justifyContent: 'center'}}
+                    style={{color: 'skyblue'}}
+                    styleDisabled={{color: 'red'}}>
+                    More
+                </Button>
+                <Button
+                    containerStyle={{margin:5, overflow:'hidden', borderRadius:4, backgroundColor: 'skyblue', justifyContent: 'center'}}
+                    style={{color: 'steelblue'}}
+                    styleDisabled={{color: 'red'}}>
+                    None
+                </Button>
+                <Button
+                    containerStyle={{margin:5, overflow:'hidden', borderRadius:4, backgroundColor: 'steelblue', justifyContent: 'center'}}
+                    style={{color: 'skyblue'}}
+                    styleDisabled={{color: 'red'}}>
+                    Less
+                </Button>
             </View>
-            <View style={styles.container}>
-              <Text>Page 2</Text>
+            <View style={{ backgroundColor: '#E9E9E9', flex: 1, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'stretch' }}>
+                <Header text={"Assessment"}/>
+
+                <TouchableHighlight
+                    onPress={()=>this.onBack()}
+                    style={{position: 'absolute', width: 20, height: 20, top: 25, left: 15, backgroundColor: 'transparent'}}
+                    underlayColor={'#f8f8f8'}>
+                    <Image source={backIcon}/>
+                </TouchableHighlight>
+
+                <Text style={{ padding: 10, textAlign: 'center', fontWeight: 'bold', color: 'steelblue' }}>
+                    Regarding your duties as a caregiver, on a scale of 0 to 10, how much distress have you been experiencing over the past week?
+                </Text>
+
+                <Slider
+                    style={{ justifyContent: 'center' }}
+                    value={this.state.sliderVal}
+                    trackStyle={iosStyles.track}
+                    thumbStyle={iosStyles.thumb}
+                    onValueChange={(value) => this.setState({sliderVal: value})}
+                    maximumValue={10}
+                    step={1} 
+                    minimumTrackTintColor='#00BCD4'
+                    maximumTrackTintColor='#b7b7b7'
+                />
+                
+                <Text style={{ fontSize: 45, textAlign: 'center', color: 'steelblue', paddingBottom: 15 }}>
+                    {this.state.sliderVal}
+                </Text>
             </View>
             <View style={styles.container}>
               <Text>Page 3</Text>
