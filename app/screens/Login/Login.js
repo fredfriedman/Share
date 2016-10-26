@@ -51,7 +51,7 @@ export default class Login extends Component {
 
         this.setState({animating: true})
 
-        firebase.auth().signInWithEmailAndPassword(this.state.username, this.state.password)
+        firebase.auth().signInWithEmailAndPassword('caregiver@duke.edu', 'caregiver')
             .then(function(user) {
 
                 AsyncStorage.setItem('user_data', JSON.stringify(user));
