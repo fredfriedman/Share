@@ -96,8 +96,7 @@ export default class signup extends Component {
             <View style={[styles.formContainer, {paddingTop: 20}]}>
                 <Hoshi
                     ref="email"
-                    style={{width: 50}}
-                    inputStyle={[styles.textInput, {color: '#00BCD4', fontSize: 16}]}
+                    inputStyle={[styles.textInput, {color: '#44688E', fontSize: 16}]}
                     labelStyle={{color: '#00BCD4'}}
                     label={'Email Address'}
                     borderColor={'#00BCD4'}
@@ -110,8 +109,7 @@ export default class signup extends Component {
                     ref='password'
                     label={'Password'}
                     labelStyle={{color: '#00BCD4'}}
-                    inputStyle={[styles.textInput, {color: '#00BCD4', fontSize: 16}]}
-                    style={{width: 50, paddingTop: 20}}
+                    inputStyle={[styles.textInput, {color: '#44688E', fontSize: 16}]}
                     borderColor={'#00BCD4'}
                     autoCapitalize={'none'}
                     autoCorrect={false}
@@ -129,19 +127,19 @@ export default class signup extends Component {
                 <Hoshi
                     ref="hospital"
                     style={{width: 50}}
-                    inputStyle={[styles.textInput, {color: '#00BCD4', fontSize: 16}]}
+                    inputStyle={[styles.textInput, {color: '#44688E', fontSize: 16}]}
                     labelStyle={{color: '#00BCD4'}}
                     label={'Hospital/Hospice Program'}
                     borderColor={'#00BCD4'}
                     onChangeText={(text) => this.setState({hospiceProgram: text})}
                     onSubmitEditing={(event) => {  this.refs.email.refs.input.focus(); }}
                     autoCapitalize={'none'}
-                    value={this.state.email}
+                    value={this.state.hospiceProgram}
                     autoCorrect={false}/>
                 <Hoshi
                     ref="email"
                     style={{width: 50}}
-                    inputStyle={[styles.textInput, {color: '#00BCD4', fontSize: 16}]}
+                    inputStyle={[styles.textInput, {color: '#44688E', fontSize: 16}]}
                     labelStyle={{color: '#00BCD4'}}
                     label={'Email Address'}
                     borderColor={'#00BCD4'}
@@ -154,7 +152,7 @@ export default class signup extends Component {
                     ref='password'
                     label={'Password'}
                     labelStyle={{color: '#00BCD4'}}
-                    inputStyle={[styles.textInput, {color: '#00BCD4', fontSize: 16}]}
+                    inputStyle={[styles.textInput, {color: '#44688E', fontSize: 16}]}
                     style={{width: 50, paddingTop: 20}}
                     borderColor={'#00BCD4'}
                     autoCapitalize={'none'}
@@ -167,23 +165,18 @@ export default class signup extends Component {
     }
 
     renderUserOption() {
-        var value = "Are you a nurse?"
-
-        if (!this.state.isCaregiver) {
-            value = "Are you a caregiver?"
-        }
         return (
             <Button
-                style={[styles.bottomLabel, {color: "#00BCD4"}]}
+                style={[styles.userTypeLabel, {color: "#00BCD4"}]}
                 containerStyle={{}}
                 onPress={this.onSwitchSignIn.bind(this)}>
-                {value}
+                {!this.state.isCaregiver ? "Are you a caregiver?" : "Are you a nurse?"}
             </Button>
         )
     }
     render() {
         return (
-            <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white'}}>
+            <View style={{flex: 1, alignItems: 'center', backgroundColor: 'white'}}>
                 <Image style={{backgroundColor: 'transparent', height: 35, width: 35, top: 20}} source={butterfly}/>
                 { this.state.isCaregiver ? this.renderCaregiverForm() : this.renderNurseForm() }
                 <Button
@@ -197,15 +190,19 @@ export default class signup extends Component {
                     animating={this.state.animating}
                     style={{height: 40}}
                     size="large"/>
-                <View style={{paddingTop: 20}}>
-                    { this.renderUserOption() }
-                    <Button
-                        style={[styles.bottomLabel, {color: "#00BCD4"}]}
-                        containerStyle={{}}
-                        onPress={this.onExitScene.bind(this)}>
-                        Have an Account?
-                    </Button>
-                </View>
+                <Button
+                    style={[styles.userTypeLabel, {color: "#00BCD4"}]}
+                    containerStyle={{}}
+                    onPress={this.onSwitchSignIn.bind(this)}>
+                    {!this.state.isCaregiver ? "Are you a caregiver?" : "Are you a nurse?"}
+                </Button>
+                <View style={{flex: 1}}></View>
+                <Button
+                    style={[styles.bottomLabel, {color: "#00BCD4"}]}
+                    containerStyle={{}}
+                    onPress={this.onExitScene.bind(this)}>
+                    Have an Account?
+                </Button>
                 <CloseModalButton action={this.onExitScene.bind(this)} icon={xIcon}/>
             </View>
         )

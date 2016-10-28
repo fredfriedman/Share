@@ -28,7 +28,7 @@ export default class NotesPage extends Component {
     }
 
     componentDidMount() {
-        this.listenForItems(this.notesRef);
+        //this.listenForItems(this.notesRef);
     }
 
     getRef() {
@@ -72,7 +72,7 @@ export default class NotesPage extends Component {
             <View style={styles.scrollView}>
                 <Text style={{color: 'white', paddingTop: 20}}> Notes </Text>
                 <NotesTable
-                    dataSource={this.state.dataSource}
+                    dataSource={this.props.notes}
                     addNote={this.addNote.bind(this)}/>
             </View>
         );

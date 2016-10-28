@@ -11,6 +11,7 @@ export default class NotesTable extends Component {
             <ListView
                 dataSource={this.props.dataSource}
                 renderRow={(note) => <Note note={note} poster={personIcon}/>}
+                renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
                 renderFooter={() =>
                     <View style={styles.footer}>
                         <TouchableHighlight
@@ -20,14 +21,17 @@ export default class NotesTable extends Component {
                             <Text style={styles.text}> Comment </Text>
                         </TouchableHighlight>
                     </View>}
-                scrollEnabled={true}/>
+                scrollEnabled={true}
+                enableEmptySections={true} />
         );
     }
 }
 
 var styles = StyleSheet.create({
     footer: {
+        paddingVertical: 20,
         flexDirection: "row",
+        alignItems: "center",
         justifyContent: "flex-end"
     },
     button: {
@@ -41,5 +45,10 @@ var styles = StyleSheet.create({
     },
     text: {
         color: 'white'
+    },
+    separator: {
+        flex: 1,
+        height: StyleSheet.hairlineWidth,
+        backgroundColor: '#8E8E8E',
     },
 })

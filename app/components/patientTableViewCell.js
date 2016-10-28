@@ -13,10 +13,8 @@ export default class PatientTableViewCell extends Component {
             <TouchableHighlight style={styles.row} onPress={() => { this.props.onPress() }} underlayColor={'#F8F8F8'}>
                 <View style={{flexDirection:'row'}}>
                     <View style={[styles.statusBar, { backgroundColor: this.props.status}]}/>
-                    <Image style={styles.thumb} source={this.props.image} />
                     <View style={styles.stack}>
                         <Text style={styles.text}>{this.props.mainText}</Text>
-                        <Text style={styles.subTitle}>{this.props.subTitleText}</Text>
                     </View>
                     <View style={{flex: 1}}/>
                     <TouchableHighlight
@@ -48,31 +46,32 @@ var styles = StyleSheet.create({
         marginTop: 10,
         width: 20,
         height: 25,
-        marginLeft: 3,
+        marginLeft: 5,
         marginRight: 10,
         borderRadius: 10,
     },
     text: {
         flex: 0,
-        marginTop: 7,
+        paddingTop: 10,
+        paddingLeft: 2.5,
         fontSize: 14,
         fontWeight: '100',
     },
-    subTitle: {
+    caregiverText: {
         flex: 0,
-        paddingTop: 5,
+        paddingLeft: 1,
+        width: 90,
         fontSize: 10,
         fontWeight: '100',
     },
     icon: {
-        position: 'absolute',
+        //position: 'absolute',
         width: 25,
         height: 25,
-        marginTop: 2,
+        marginTop: 5,
         marginRight: 10,
     },
     actionIcon: {
         marginTop: 7,
-        marginRight: 30
     }
 });

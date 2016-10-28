@@ -3,6 +3,7 @@ import { View, ListView, StyleSheet, Text } from 'react-native';
 import Row from './Row1';
 import Data from './demoData';
 var Header = require('../../components/header').default
+var { backIcon } = require('../../config/images')
 
 const styles = StyleSheet.create({
   container: {
@@ -20,10 +21,15 @@ class HistoryTest extends Component {
       dataSource: ds.cloneWithRows(Data),
     };
   }
+
+  onBack() {
+      this.props.navigator.pop()
+  }
+
   render() {
     return (
 	    <View>
-	      <Header text={"Patient Questionaire History"}/>
+	      <Header text={"Patient Questionaire History"} leftAction={this.onBack.bind(this)} leftIcon={backIcon}/>
 	      <ListView
 	        style={styles.container}
 	        dataSource={this.state.dataSource}

@@ -14,6 +14,7 @@ import {
 import Dimensions from 'Dimensions';
 import PageControl from 'react-native-page-control'
 
+var firebase = require('../../config/firebase')
 var { backIcon, personIcon } = require('../../config/images')
 var Header = require('../../components/header').default
 var PatientTrend = require('../../components/PatientTrendChart').default
@@ -21,34 +22,84 @@ var NotesPage = require('./notesPage').default
 
 export default class PatientDetailView  extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
-        this.dataSource = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2, });
+        this.historyRef = this.getRef().child('Patients/' + props.patient.pID + "/Assessments")
+        this.notesRef = this.getRef().child('Patients/' + props.patient.pID + "/Notes/")
+        this.patientRef = this.getRef().child('Patients/' + props.patient.pID)
 
         this.state = {
-            data: [{painScore: 0, date: Date("JANUARY, 1, 2015")},
-                   {painScore: 0, date: Date("JANUARY, 2, 2015")},
-                   {painScore: 3, date: Date("JANUARY, 3, 2015")},
-                   {painScore: 2, date: Date("JANUARY, 4, 2015")},
-                   {painScore: 2, date: Date("JANUARY, 5, 2015")},
-                   {painScore: 4, date: Date("JANUARY, 6, 2015")},
-                   {painScore: 4, date: Date("JANUARY, 7, 2015")},
-                   {painScore: 5, date: Date("JANUARY, 8, 2015")},
-                   {painScore: 5, date: Date("JANUARY, 9, 2015")},
-                   {painScore: 7, date: Date("JANUARY, 10, 2015")},
-                   {painScore: 8, date: Date("JANUARY, 11, 2015")},
-                   {painScore: 7, date: Date("JANUARY, 12, 2015")},
-                   {painScore: 9, date: Date("JANUARY, 13, 2015")},
-                   {painScore: 10, date: Date("JANUARY, 14, 2015")},
-                   {painScore: 9, date: Date("JANUARY, 15, 2015")}],
-            notes: [{poster: "John See", date: "2h ago", title: "Need to call", text: "I called"},
-                    {poster: "Pam Oliver", date: "1d ago", title: "Need to call", text: "I haven't called yet"},
-                    {poster: "Pam Oliver", date: "2d ago", title: "Need to call", text: "Client was falling when I visited"},
-                    {poster: "Pam Oliver", date: "3d ago", title: "Need to call", text: "I haven't called yet"}],
+            data: [],
+            history: new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2, }),
+            notes: new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2, }),
             currentPage: 0
         };
     }
+
+    componentDidMount() {
+        this.listenForItems(this.notesRef, this.setNotes.bind(this), this.parseNotes);
+        this.listenForItems(this.historyRef, this.setHistory.bind(this), this.parseAssessments);
+    }
+
+    getRef() {
+        return firebase.database().ref();
+    }
+
+    createGraphs(history) {
+        var painScores = []
+        history.forEach((entry) => {
+            var ent = entry.results["Pain"]
+            ent["timestamp"] = entry.timestamp
+            painScores.push(ent)
+        })
+        this.setState({ data: painScores })
+    }
+    //////////////
+    // Firebase //
+    //////////////
+
+    parseNotes(snap) {
+        return {
+            poster: snap.val().poster,
+            text: snap.val().text,
+            timestamp: snap.val().timestamp,
+        }
+    }
+
+    parseAssessments(snap) {
+        return {
+            completed: snap.val().completed,
+            timestamp: snap.val().timestamp,
+            filler: snap.val().filler,
+            results: snap.val().Results,
+        }
+    }
+
+    setNotes(notes) {
+        this.setState({ notes: this.state.notes.cloneWithRows(notes) });
+    }
+
+    setHistory(hist) {
+        this.setState({ history: this.state.history.cloneWithRows(hist) });
+        this.createGraphs(hist)
+    }
+
+    listenForItems(ref, callback, parser) {
+
+        ref.on('value', (snap) => {
+
+            var items = [];
+
+            snap.forEach((child) => { items.push(parser(child)); });
+
+            callback(items)
+        });
+    }
+
+    //////////////////////
+    //Callback Functions//
+    //////////////////////
 
     onBack() {
         this.props.navigator.pop()
@@ -69,7 +120,7 @@ export default class PatientDetailView  extends Component {
     render() {
         return (
             <View style={{flexDirection: 'column', flex: 1}}>
-                <View style={styles.topBox}>
+                <View style={[styles.topBox, {borderBottomColor: this.props.patient.status}]}>
                     <Text style={styles.patientName}> {this.props.patient.name} </Text>
                 </View>
                 <View style={styles.bottomBox}>
@@ -91,7 +142,7 @@ export default class PatientDetailView  extends Component {
                             <Text style={{color: 'white', paddingTop: 20}}> Recent History </Text>
                         </View>
 
-                        <NotesPage navigator={this.props.navigator} user={this.props.user} caregiver={this.props.patient}/>
+                        <NotesPage navigator={this.props.navigator} user={this.props.user} caregiver={this.props.patient} notes={this.state.notes}/>
                     </ScrollView>
                 </View>
                 <PageControl style={{position:'absolute', left:0, right:0, bottom:10}}
@@ -103,7 +154,7 @@ export default class PatientDetailView  extends Component {
                     currentIndicatorStyle={{borderRadius: 5}}
                     indicatorSize={{width:8, height:8}}
                     onPageIndicatorPress={this.onItemTap.bind(this)} />
-                <Image style={styles.profilePicture} source={personIcon}/>
+                <Image style={[styles.profilePicture, {borderWidth: 1, borderColor: this.props.patient.status}]} source={personIcon}/>
                 <TouchableHighlight
                     onPress={()=>this.onBack()}
                     style={{position: 'absolute', width: 20, height: 20, top: 25, left: 15, backgroundColor: 'transparent'}}
@@ -118,14 +169,14 @@ export default class PatientDetailView  extends Component {
 var styles = StyleSheet.create({
     topBox: {
         borderBottomColor: '#18FFFF',
-        borderBottomWidth: 2,
+        borderBottomWidth: 3,
         height: Dimensions.get('window').height/2.5,
         backgroundColor: '#4DD0E1',
         flexDirection: 'column',
         justifyContent: 'flex-end'
     },
     bottomBox: {
-        backgroundColor: '#607D8B'
+        backgroundColor: '#44688E'
     },
     patientName: {
         marginLeft: 100,
@@ -151,6 +202,7 @@ var styles = StyleSheet.create({
         height: 75,
         width: 75,
         borderRadius: 40,
+        borderWidth: 3,
         top: Dimensions.get('window').height/2.5 - 37.5,
         left: 15,
         backgroundColor: 'transparent'

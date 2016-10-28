@@ -1,15 +1,18 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { ListView,
-        TouchableHighlight,
-        StyleSheet,
-        RecyclerViewBackedScrollView,
-        Text,
+import {
         Image,
+        ListView,
+        Modal,
         ScrollView,
+        StyleSheet,
+        Text,
+        TouchableHighlight,
         View, } from 'react-native';
 import Communications from 'react-native-communications';
+import Dimensions from 'Dimensions';
+import Button from 'react-native-button'
 
 var {plusIcon, phoneIcon, personIcon } = require('../../config/images')
 var TableViewGroup = require('../../components/TableViewGroup').default
@@ -17,42 +20,81 @@ var PatientTableViewCell = require('../../components/patientTableViewCell').defa
 var PatientDetailView = require('../Detail/detail').default
 var PatientsView = require('../Home/patients_view').default
 var Header = require('../../components/header').default
+var ModalCallCell = require('../../components/modalCallCell').default
+var firebase = require('../../config/firebase')
 
 export default class Overview extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
-        this.dataSource = new ListView.DataSource({
-            rowHasChanged: (r1, r2) => r1 !== r2,
-            sectionHeaderHasChanged: (s1, s2) => s1 !== s2
-        });
+        this.patientsRef = this.getRef().child('Patients/')
+        this.myPatientsRef = this.getRef().child('Nurses/' + props.user.id + "/Patients")
 
         this.state = {
-            improvingPatients: [{name:'Bill Clinton', phone:"732-882-3145", status:"#388E3C"},
-                              {name:'Cindy Johnson', phone:"792-822-3145", status:"#8BC34A"},
-                              {name:'Tom Haverford', phone:"342-822-3243", status: "#CDDC39"}],
-            criticalPatients: [{name:'Homer Simpson', phone:"552-822-0874", status:"#D32F2F"},
-                                {name:'Chase Jeter', phone:"398-112-4458", status:"#F44336"},
-                                {name:'Max Kellermueller', phone:"685-919-2231", status:"#F57C00"}],
-            staticPatients: [{name:'Marge Simpson', phone:"443-822-0842", status: "#FFC107"},
-                            {name:'Claire Fox', phone:"661-333-4444", status: "#FDD835"},
-                            {name:'Jabari Parker', phone:"773-731-0981", status: "#FFEE58"}],
+            dataSource: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2, }),
+
+            modalVisible: false
         }
     }
 
+    componentDidMount() {
+        this.listenForItems(this.patientsRef);
+    }
+
+    getRef() {
+        return firebase.database().ref();
+    }
+
+    listenForItems(patientsRef) {
+
+        var self = this
+
+        this.myPatientsRef.on('child_added', (snap) => {
+
+            var items = [];
+
+            self.patientsRef.child(snap.key).on('value', (snap) => {
+
+                if (snap.val().active) {
+                    items.push({
+                        pID: snap.key,
+                        name: snap.val().name,
+                    });
+                }
+                self.setState({
+                    dataSource: self.state.dataSource.cloneWithRows(items)
+                });
+            });
+        });
+    }
+
+    //////////////////////////
+    // Phone Call Functions //
+    //////////////////////////
+
+    onCallCaregiver(caregiver) {
+        Communications.phonecall(caregiver.phone.replace(/ /g,'-'), true)
+    }
+
+    setModalVisible(visible) {
+        this.setState({modalVisible: visible});
+    }
     /**
-        Called when section header is selected
+        Called when the phone icon is selected
 
         Parameters:
             - patient : the patient or caregiver that was selected
 
-        Calls the selected patient
+        Presents a modal view to calls the selected patients caregivers
     */
-    onPressAction(patient) {
-        Communications.phonecall(patient.phone.replace(/ /g,'-'), true)
+    onPressAction() {
+        this.setModalVisible(true)
     }
 
+    //////////////////////////
+    // TableViewGroup Functions //
+    //////////////////////////
     /**
         Called when section header is selected
 
@@ -90,6 +132,30 @@ export default class Overview extends Component {
     }
 
     /**
+        Called when hidden archive button is selected
+
+        Parameters:
+            - patient: the selected patient
+
+        Archives the selected patient; removing it from the table view
+    */
+    onPressArchive(title, data, secdId, rowId) {
+
+        this.patientsRef.child(data.pid + "/active").set(false);
+
+        switch(title) {
+            case "Critical":
+
+                break
+            case "Static":
+
+                break
+            case "Improving":
+
+        }
+    }
+
+    /**
         Called when corner add button is selected
 
         Parameters:
@@ -100,37 +166,29 @@ export default class Overview extends Component {
     onAddPatient() {
 
     }
-
-    /**
-        Called when hidden archive button is selected
-
-        Parameters:
-            - patient: the selected patient
-
-        Archives the selected patient; removing it from the table view
-    */
-    onPressArchive(title, data, secdId, rowId) {
-
-        // TODO: Call firebase to actually archive data
-
-        switch(title) {
-            case "Critical":
-                var items = this.state.criticalPatients
-                items.splice(rowId, 1)
-                this.setState({criticalPatients: items})
-                break
-            case "Static":
-                var items = this.state.staticPatients
-                items.splice(rowId, 1)
-                this.setState({staticPatients: items})
-                break
-            case "Improving":
-                var items = this.state.improvingPatients
-                items.splice(rowId, 1)
-                this.setState({improvingPatients: items})
-        }
-    }
-
+/*
+<Modal
+    animationType={"fade"}
+    transparent={true}
+    visible={this.state.modalVisible}
+    onRequestClose={() => {alert("Modal has been closed.")}}>
+    <View style={styles.container}>
+        <View style={styles.innerContainer}>
+            <Text style={{alignSelf: 'center',paddingBottom: 5, fontSize: 18, fontWeight: '500'}}> Listed Caregivers </Text>
+            <ListView
+                dataSource={this.dataSource.cloneWithRows(this.state.caregivers)}
+                renderRow={this.renderCallRow.bind(this)}
+                renderSeparator={(sectionId, rowId) => <View key={rowId} style={{flex: 1, height: StyleSheet.hairlineWidth, backgroundColor: '#8E8E8E'}} />}
+                scrollEnabled={false}/>
+            <Button
+                onPress={this.setModalVisible.bind(this, false)}
+                style={styles.modalButton}>
+                Close
+            </Button>
+        </View>
+    </View>
+</Modal>
+*/
     render() {
         return (
             <View style={{flexDirection: 'column', flex: 1 }}>
@@ -138,6 +196,7 @@ export default class Overview extends Component {
                     text={"Overview"}
                     rightAction={this.onAddPatient.bind(this)}
                     rightIcon={plusIcon}/>
+
                 <ScrollView style={{backgroundColor: '#f8f8f8'}} contentContainerStyle={{paddingTop: 10, paddingBottom: 10}}>
                     <TableViewGroup
                         title={"Critical"}
@@ -147,7 +206,7 @@ export default class Overview extends Component {
                         style={styles.tableView}
                         textStyle={styles.tableViewText}
                         headerStyle={[styles.headerStyle, {backgroundColor: "#EF9A9A"}]}
-                        dataSource={this.dataSource.cloneWithRows(this.state.criticalPatients)}
+                        dataSource={this.state.dataSource}
                         renderRow={this.renderRow.bind(this)}/>
                     <TableViewGroup
                         title={"Static"}
@@ -157,7 +216,7 @@ export default class Overview extends Component {
                         style={[styles.tableView, {marginTop: 20, marginBottom: 20}]}
                         textStyle={styles.tableViewText}
                         headerStyle={[styles.headerStyle, {backgroundColor: "#FFF59D"}]}
-                        dataSource={this.dataSource.cloneWithRows(this.state.staticPatients)}
+                        dataSource={this.state.dataSource}
                         renderRow={this.renderRow.bind(this)}/>
                     <TableViewGroup
                         title={"Improving"}
@@ -167,7 +226,7 @@ export default class Overview extends Component {
                         style={styles.tableView}
                         textStyle={styles.tableViewText}
                         headerStyle={[styles.headerStyle, {backgroundColor: "#A5D6A7"}]}
-                        dataSource={this.dataSource.cloneWithRows(this.state.improvingPatients)}
+                        dataSource={this.state.dataSource}
                         renderRow={this.renderRow.bind(this)}/>
                 </ScrollView>
             </View>
@@ -186,9 +245,30 @@ export default class Overview extends Component {
                 subTitleText={patient.phone}/>
         )
     }
+    renderCallRow(caregiver: Object, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) {
+        return (
+            <ModalCallCell
+                onPress={()=>this.onCallCaregiver(caregiver)}
+                caregiver={caregiver}/>
+        )
+    }
 }
 
 var styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        padding: 20,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)'
+    },
+    innerContainer: {
+        borderRadius: 10,
+        backgroundColor: '#fff',
+        padding: 5
+    },
+    modalButton: {
+        marginTop: 10,
+    },
     headerStyle: {
         height: 20,
         backgroundColor: "blue"

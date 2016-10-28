@@ -77,7 +77,7 @@ var styles = {
         backgroundColor: '#ECEFF1',
         shadowColor: "#05054F",
         shadowOpacity: 0.5,
-        shadowRadius: 3,
+        shadowRadius: 0.5,
         shadowOffset: {
             height: 1,
             width: 0

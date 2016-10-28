@@ -29,6 +29,7 @@ module.exports = StyleSheet.create({
         paddingTop: 20,
     },
     formContainer: {
+        marginTop: 5,
         width: Dimensions.get('window').width - 20,
     },
     line: {
@@ -48,6 +49,17 @@ module.exports = StyleSheet.create({
         fontSize: 11,
         color: 'black'
     },
+    signInBox: {
+        //flex: 1,
+        alignItems: 'flex-start',
+        flexDirection: 'row',
+        height: 45,
+        width: Dimensions.get('window').width,
+        borderTopWidth: 1,
+        borderTopColor: '#bdbdbd',
+        paddingVertical: 10,
+        backgroundColor: '#f7f7f7',
+    },
     button: {
         borderRadius: 2.5,
         borderColor: 'transparent',
@@ -60,14 +72,11 @@ module.exports = StyleSheet.create({
         marginTop: 10,
     },
     SubmitLabel: {
-        flex: 1,
-        width: 230,
         textAlign: 'center',
         alignSelf: 'center',
         fontSize: 15,
         fontWeight: '300',
         color: '#ffffff',
-        paddingTop: 5
     },
     placeholderLabel: {
         fontSize: 12,
@@ -76,10 +85,9 @@ module.exports = StyleSheet.create({
     },
     bottomLabel: {
         width: 400,
-        flex: 1,
         alignSelf: 'center',
         textAlign: 'center',
-        fontSize: 11,
+        fontSize: 14,
         fontWeight: '300',
         color: '#ffffff',
         marginBottom: 20,
@@ -101,4 +109,12 @@ module.exports = StyleSheet.create({
         color: '#FFF',
         fontSize: 18
     },
+    userTypeLabel: {
+        alignSelf: 'center',
+        textAlign: 'center',
+        fontSize: 14,
+        fontWeight: '300',
+        color: '#00BCD4',
+        paddingTop: 15,
+    }
 });

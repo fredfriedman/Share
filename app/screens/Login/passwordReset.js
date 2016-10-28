@@ -126,8 +126,8 @@ var styles = {
         backgroundColor: 'transparent',
         fontFamily: 'Helvetica',
         fontWeight: '100',
-        fontSize: 11,
-        color: 'black'
+        fontSize: 16,
+        color: '#44688E'
     },
     bottomLabel: {
         width: 400,
