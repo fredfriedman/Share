@@ -7,6 +7,15 @@ module.exports = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#00BCD4',
     },
+    userTypeButton: {
+        marginTop: -15,
+        width: 120,
+        height: 30,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 15,
+        backgroundColor: '#00BCD4',
+    },
     navBar: {
         backgroundColor: 'transparent',
         height: 100,
@@ -30,7 +39,10 @@ module.exports = StyleSheet.create({
     },
     formContainer: {
         marginTop: 5,
-        width: Dimensions.get('window').width - 20,
+        width: Dimensions.get('window').width,
+    },
+    input: {
+        //marginTop: 4,
     },
     line: {
         marginTop: 5,
@@ -56,9 +68,17 @@ module.exports = StyleSheet.create({
         height: 45,
         width: Dimensions.get('window').width,
         borderTopWidth: 1,
+        paddingVertical: 4,
         borderTopColor: '#bdbdbd',
-        paddingVertical: 10,
         backgroundColor: '#f7f7f7',
+    },
+    signInBoxButton: {
+        justifyContent: 'center',
+        marginRight: 5,
+        width: 85,
+        backgroundColor: "#00BCD4",
+        borderRadius: 8,
+        height: 27.5
     },
     button: {
         borderRadius: 2.5,

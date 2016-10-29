@@ -37,7 +37,7 @@ export default class header extends Component {
             <View
                 style={this.props.headerStyle || styles.header}>
                 <View style={styles.header_item}>
-                    <Text style={styles.header_text}>{this.props.text}</Text>
+                    <Text style={this.props.textStyle || styles.header_text}>{this.props.text}</Text>
                 </View>
                 {this.renderTopLeftAction()}
                 {this.renderTopRightAction()}

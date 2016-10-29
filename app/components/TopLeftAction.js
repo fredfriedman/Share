@@ -11,7 +11,7 @@ export default class button extends Component {
             onPress={this.props.action}
             style={{position: 'absolute', width: 20, height: 20, top: 25, left: 15, backgroundColor: 'transparent'}}
             underlayColor={'transparent'}>
-            <Image style={{height: 20, width: 20}} source={this.props.icon}/>
+            {this.props.icon}
         </TouchableHighlight>
     );
   }

@@ -49,7 +49,7 @@ export default class Home extends Component {
                             alignSelf: 'center',
                             justifyContent: 'center',
                             backgroundColor: '#f7f7f7',
-                            height: 30,
+                            height: 45,
                             width: Dimensions.get('window').width - 100,
                             marginTop: 10
                         }}
@@ -59,7 +59,7 @@ export default class Home extends Component {
                     </Button>
                     <Button
                         style={{color: 'white'}}
-                        containerStyle={{paddingTop: 5}}
+                        containerStyle={{paddingTop: 15, height: 45}}
                         styleDisabled={{color: 'red'}}
                         onPress={this.onPressLogin.bind(this)}>
                         Log In

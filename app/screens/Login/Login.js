@@ -4,17 +4,17 @@ import { ActivityIndicator, Alert, AsyncStorage, Image, KeyboardAvoidingView, Na
 import Button from 'react-native-button'
 import { Hoshi } from 'react-native-textinput-effects';
 import dismissKeyboard from 'dismissKeyboard'
+import Icon from 'react-native-vector-icons/Ionicons';
 
 let styles   = require('./styles')
 var firebase = require('../../config/firebase')
-let {xIcon, butterfly} = require('../../config/images')
+let { butterfly} = require('../../config/images')
 
 let PasswordReset = require('./passwordReset').default
 let CaregiverHome = require('../CaregiverHome/overview').default
 let TabBar  = require('../Home/TabBar').default
 let CloseModalButton   = require('../../components/TopLeftAction').default
-
-
+var { dimensions } = require('../../config/dimensions')
 
 export default class Login extends Component {
     constructor(props) {
@@ -51,7 +51,7 @@ export default class Login extends Component {
 
         this.setState({animating: true})
 
-        firebase.auth().signInWithEmailAndPassword(this.state.username, this.state.password)
+        firebase.auth().signInWithEmailAndPassword("nurse@duke.edu", "nurse1")
             .then(function(user) {
 
                 AsyncStorage.setItem('user_data', JSON.stringify(user));
@@ -115,6 +115,9 @@ export default class Login extends Component {
     }
 
     render() {
+
+        const xIcon = (<Icon name="ios-close" size={dimensions.iconSize} color="gray" />);
+
         return (
             <View style={{flex: 1}}>
                 <View style={{alignItems: 'center', backgroundColor: 'white'}}>
@@ -152,15 +155,15 @@ export default class Login extends Component {
                 <KeyboardAvoidingView style={{flex: 1, justifyContent: 'flex-end'}} behavior={'padding'}>
                     <View style={styles.signInBox}>
                         <Button
-                            style={{paddingLeft: 5, fontWeight: '300', fontSize: 12, color: "#00BCD4"}}
-                            containerStyle={{}}
+                            style={{paddingLeft: 5, fontWeight: '300', fontSize: 13, color: "#00BCD4"}}
+                            containerStyle={[styles.signInBoxButton, {backgroundColor: 'transparent'}]}
                             onPress={this.onPressPasswordReset.bind(this)}>
                             Need Help?
                         </Button>
                         <View style={{flex: 1}}></View>
                         <Button
                             style={styles.SubmitLabel}
-                            containerStyle={{marginRight: 5, width: 80, backgroundColor: "#00BCD4", borderRadius: 8, height: 20}}
+                            containerStyle={styles.signInBoxButton}
                             onPress={this.onPressLogin.bind(this)}>
                             Log In
                         </Button>

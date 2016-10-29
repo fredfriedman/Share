@@ -5,6 +5,7 @@ import {
         Image,
         ListView,
         Modal,
+        Platform,
         ScrollView,
         StyleSheet,
         Text,
@@ -13,8 +14,8 @@ import {
 import Communications from 'react-native-communications';
 import Dimensions from 'Dimensions';
 import Button from 'react-native-button'
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-var {plusIcon, phoneIcon, personIcon } = require('../../config/images')
 var TableViewGroup = require('../../components/TableViewGroup').default
 var PatientTableViewCell = require('../../components/patientTableViewCell').default
 var PatientDetailView = require('../Detail/detail').default
@@ -22,6 +23,7 @@ var PatientsView = require('../Home/patients_view').default
 var Header = require('../../components/header').default
 var ModalCallCell = require('../../components/modalCallCell').default
 var firebase = require('../../config/firebase')
+var { dimensions } = require('../../config/dimensions')
 
 export default class Overview extends Component {
 
@@ -190,14 +192,15 @@ export default class Overview extends Component {
 </Modal>
 */
     render() {
+
         return (
             <View style={{flexDirection: 'column', flex: 1 }}>
                 <Header
                     text={"Overview"}
-                    rightAction={this.onAddPatient.bind(this)}
-                    rightIcon={plusIcon}/>
-
-                <ScrollView style={{backgroundColor: '#f8f8f8'}} contentContainerStyle={{paddingTop: 10, paddingBottom: 10}}>
+                    headerStyle={{shadowColor: "#000000", shadowOpacity: 0.8, shadowRadius: 1, shadowOffset: { height: 1, width: 0 },
+                    elevation: 20, height: 150, backgroundColor: 'white'}}
+                    textStyle={{fontFamily: (Platform.OS === 'ios') ? 'Helvetica Neue' : "Noto", color: '#333333', fontSize: 32, fontWeight: '400', marginLeft: 10, marginTop: 65}}/>
+                <ScrollView style={{marginTop: 5, backgroundColor: '#f8f8f8'}} contentContainerStyle={{paddingTop: 10, paddingBottom: 10}}>
                     <TableViewGroup
                         title={"Critical"}
                         headerIsEnabled={true}
@@ -209,21 +212,11 @@ export default class Overview extends Component {
                         dataSource={this.state.dataSource}
                         renderRow={this.renderRow.bind(this)}/>
                     <TableViewGroup
-                        title={"Static"}
+                        title={"Recent Update"}
                         headerIsEnabled={true}
                         onPress={this.onPressHeader.bind(this)}
                         onPressArchive={this.onPressArchive.bind(this)}
-                        style={[styles.tableView, {marginTop: 20, marginBottom: 20}]}
-                        textStyle={styles.tableViewText}
-                        headerStyle={[styles.headerStyle, {backgroundColor: "#FFF59D"}]}
-                        dataSource={this.state.dataSource}
-                        renderRow={this.renderRow.bind(this)}/>
-                    <TableViewGroup
-                        title={"Improving"}
-                        headerIsEnabled={true}
-                        onPress={this.onPressHeader.bind(this)}
-                        onPressArchive={this.onPressArchive.bind(this)}
-                        style={styles.tableView}
+                        style={[styles.tableView, {marginTop: 20}]}
                         textStyle={styles.tableViewText}
                         headerStyle={[styles.headerStyle, {backgroundColor: "#A5D6A7"}]}
                         dataSource={this.state.dataSource}
@@ -234,12 +227,14 @@ export default class Overview extends Component {
     }
 
     renderRow(patient: Object, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) {
+
+        const phoneIcon = (<Icon name="phone" size={dimensions.iconSize} color="gray" />);
+
         return (
             <PatientTableViewCell
                 onPress={()=>this.onPressPatient(patient)}
                 onPressIcon={()=>this.onPressAction(patient)}
                 status={patient.status}
-                image={personIcon}
                 actionIcon={phoneIcon}
                 mainText={patient.name}
                 subTitleText={patient.phone}/>

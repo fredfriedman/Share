@@ -5,11 +5,13 @@ import Button from 'react-native-button'
 import Dimensions from 'Dimensions';
 import { Hoshi } from 'react-native-textinput-effects';
 import dismissKeyboard from 'dismissKeyboard'
+import Icon from 'react-native-vector-icons/Ionicons';
 
 let Login    = require('./Login').default
 var firebase = require('../../config/firebase')
-let {xIcon, butterfly} = require('../../config/images')
-let CloseModalButton   = require('../../components/TopLeftAction').default
+let { butterfly} = require('../../config/images')
+var { dimensions } = require('../../config/dimensions')
+let CloseModalButton  = require('../../components/TopLeftAction').default
 
 export default class signup extends Component {
 
@@ -64,6 +66,9 @@ export default class signup extends Component {
     }
 
     render() {
+
+        const xIcon = (<Icon name="ios-close" size={dimensions.iconSize} color="gray" />);
+
         return (
             <View style={styles.container}>
                 <Image style={{backgroundColor: 'transparent', height: 35, width: 35, top: 20}} source={butterfly}/>
