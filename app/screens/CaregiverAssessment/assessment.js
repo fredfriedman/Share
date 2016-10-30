@@ -23,7 +23,7 @@ export default class Assessment extends Component {
     constructor() {
         super();
         this.state = { 
-            sliderVal: 0, 
+            symptoms: ["Pain", "Tiredness", "Nausea", "Depression", "Anxiety", "Drowsiness", "Appetite", "Shortness of Breath"], 
             size: { width, height }
         };
     }
@@ -38,47 +38,27 @@ export default class Assessment extends Component {
     }
 
     render() {
-        return (
-        <Carousel 
-            width={this.state.size.width}
-            loop={false}
-            animate={false}
-            indicatorAtBottom={true}
-            indicatorOffset={50}
-            indicatorColor='#0097A7'
-            inactiveIndicatorColor='#B2EBF2'
-        >
 
-            <View style={{ backgroundColor: '#FFFFFF', flex: 1, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'stretch' }}>
-                <Header text={"Assessment"}/>
+        var assessmentQuestions = [];
+        for (var i = 0; i < this.state.symptoms.length; i++) {
+            assessmentQuestions.push(
+                <View style={{ backgroundColor: '#FFFFFF', flex: 1, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'stretch' }}>
+                    <Header text={"Assessment"}/>
 
-                <TouchableHighlight
-                    onPress={()=>this.onBack()}
-                    style={{position: 'absolute', width: 20, height: 20, top: 25, left: 15, backgroundColor: 'transparent'}}
-                    underlayColor={'#f8f8f8'}>
-                    <Image source={backIcon}/>
-                </TouchableHighlight>
+                    <TouchableHighlight
+                        onPress={()=>this.onBack()}
+                        style={{position: 'absolute', width: 20, height: 20, top: 25, left: 15, backgroundColor: 'transparent'}}
+                        underlayColor={'#f8f8f8'}>
+                        <Image source={backIcon}/>
+                    </TouchableHighlight>
 
-                <Question
-                    symptom='Pain'
-                />
-            </View>
-
-            <View style={{ backgroundColor: '#FFFFFF', flex: 1, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'stretch' }}>
-                <Header text={"Assessment"}/>
-
-                <TouchableHighlight
-                    onPress={()=>this.onBack()}
-                    style={{position: 'absolute', width: 20, height: 20, top: 25, left: 15, backgroundColor: 'transparent'}}
-                    underlayColor={'#f8f8f8'}>
-                    <Image source={backIcon}/>
-                </TouchableHighlight>
-
-                <Question
-                    symptom='Nausea'
-                />
-            </View>
-
+                    <Question
+                        symptom={this.state.symptoms[i]}
+                    />
+                </View>
+            );
+        }
+        assessmentQuestions.push(
             <View style={{ backgroundColor: '#FFFFFF', flex: 1, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'stretch' }}>
                 <Header text={"Assessment"}/>
 
@@ -90,19 +70,21 @@ export default class Assessment extends Component {
                 </TouchableHighlight>
                 <Question/>
             </View>
+        );
 
-        </Carousel>
+        return (
+            <Carousel 
+                width={this.state.size.width}
+                loop={false}
+                animate={false}
+                indicatorAtBottom={true}
+                indicatorOffset={50}
+                indicatorColor='#0097A7'
+                inactiveIndicatorColor='#B2EBF2'
+            >
+                {assessmentQuestions}
+            </Carousel>
         );
     }
 }
-
-var styles = StyleSheet.create({
-  container: {
-    width: 375,
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'transparent',
-  },
-});
 
