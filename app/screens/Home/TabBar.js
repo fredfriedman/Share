@@ -5,8 +5,7 @@ import { AppRegistry, ViewPagerAndroid, View, Text, Image } from 'react-native';
 import TabNavigator from 'react-native-tab-navigator';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-var { dimensions } = require('../../config/dimensions')
-var { whiteGradient, homeIcon, writeIcon, calIcon, settingsIcon, overviewIcon } = require('../../config/images')
+var dStyles = require('../../config/styles')
 
 // Page in Tab Bar
 var Profile = require('./profile').default
@@ -30,12 +29,12 @@ export default class TabBar extends Component {
     }
 
     render() {
-        const home = (<Icon name="home" size={dimensions.iconSize} color="gray" />);
-        const cal = (<Icon name="calendar" size={dimensions.iconSize} color="gray" />);
-        const over = (<Icon name="modx" size={dimensions.iconSize} color="gray" />);
-        const homeS = (<Icon name="home" size={dimensions.iconSize} color="#00BCD4" />);
-        const calS = (<Icon name="calendar" size={dimensions.iconSize} color="#00BCD4" />);
-        const overS = (<Icon name="modx" size={dimensions.iconSize} color="#00BCD4" />);
+        const home = (<Icon name="home" size={30} color="gray" />);
+        const cal = (<Icon name="calendar" size={30} color="gray" />);
+        const over = (<Icon name="modx" size={30} color="gray" />);
+        const homeS = (<Icon name="home" size={30} color="#00BCD4" />);
+        const calS = (<Icon name="calendar" size={30} color="#00BCD4" />);
+        const overS = (<Icon name="modx" size={30} color="#00BCD4" />);
 
         return (
         <TabNavigator tabBarShadowStyle={styles.tabBarShadow} tabBarStyle={styles.tabBar}>

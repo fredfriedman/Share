@@ -63,7 +63,7 @@ var styles = StyleSheet.create({
     row: {
         height: 100,
         backgroundColor: 'transparent',
-        borderColor: 'gray',
+        borderColor: '#1e1e1e',
         borderWidth: 1,
         width: Dimensions.get('window').width
     },
@@ -71,16 +71,16 @@ var styles = StyleSheet.create({
         marginRight: 10,
         fontSize: 13,
         fontWeight: 'bold',
-        color: 'white'
+        color: '#1e1e1e'
     },
     title: {
         fontSize: 13,
         fontWeight: '500',
-        color: 'white'
+        color: '#1e1e1e'
     },
     text: {
         fontSize: 10,
         fontWeight: '200',
-        color: 'white'
+        color: '#1e1e1e'
     },
 });

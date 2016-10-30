@@ -1,6 +1,14 @@
 import Firebase from 'firebase';
 import React, { Component } from 'react';
-import { ActivityIndicator, Alert, AsyncStorage, Image, KeyboardAvoidingView, Navigator, Text, View } from 'react-native';
+import {
+    ActivityIndicator,
+    Alert,
+    AsyncStorage,
+    Image,
+    KeyboardAvoidingView,
+    Navigator,
+    Text,
+    View } from 'react-native';
 import Button from 'react-native-button'
 import { Hoshi } from 'react-native-textinput-effects';
 import dismissKeyboard from 'dismissKeyboard'
@@ -14,7 +22,7 @@ let PasswordReset = require('./passwordReset').default
 let CaregiverHome = require('../CaregiverHome/overview').default
 let TabBar  = require('../Home/TabBar').default
 let CloseModalButton   = require('../../components/TopLeftAction').default
-var { dimensions } = require('../../config/dimensions')
+
 
 export default class Login extends Component {
     constructor(props) {
@@ -51,7 +59,7 @@ export default class Login extends Component {
 
         this.setState({animating: true})
 
-        firebase.auth().signInWithEmailAndPassword("nurse@duke.edu", "nurse1")
+        firebase.auth().signInWithEmailAndPassword(this.state.username, this.state.password)
             .then(function(user) {
 
                 AsyncStorage.setItem('user_data', JSON.stringify(user));
@@ -116,7 +124,7 @@ export default class Login extends Component {
 
     render() {
 
-        const xIcon = (<Icon name="ios-close" size={dimensions.iconSize} color="gray" />);
+        const xIcon = (<Icon name="ios-close" size={30} color="gray" />);
 
         return (
             <View style={{flex: 1}}>

@@ -24,7 +24,6 @@ let Login = require('./Login').default
 let styles = require('./styles')
 var firebase = require('../../config/firebase')
 let {butterfly} = require('../../config/images')
-var { dimensions } = require('../../config/dimensions')
 let CloseModalButton   = require('../../components/TopLeftAction').default
 
 export default class signup extends Component {
@@ -295,7 +294,7 @@ export default class signup extends Component {
 
     render() {
 
-        const xIcon = (<Ionicons name="ios-close" size={dimensions.iconSize} color="gray" />);
+        const xIcon = (<Ionicons name="ios-close" size={30} color="gray" />);
 
         return (
             <View style={{flex: 1, alignItems: 'center', backgroundColor: 'white'}}>

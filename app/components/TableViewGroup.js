@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { TouchableHighlight, ListView, StyleSheet, Text, View, Image } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import Icon from 'react-native-vector-icons/Ionicons';
-var { dimensions } = require('../config/dimensions')
+var styles = require('../config/styles')
 
 export default class TableViewGroup extends Component {
 

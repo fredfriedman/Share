@@ -1,6 +1,7 @@
 'use strict';
 import React, { Component } from 'react';
 import {
+        Image,
         KeyboardAvoidingView,
         Navigator,
         StyleSheet,
@@ -10,25 +11,22 @@ import {
         View
     } from 'react-native';
 import dismissKeyboard from 'dismissKeyboard'
+import Icon from 'react-native-vector-icons/Ionicons';
 
 var Header = require('../../components/header').default
-var { xIcon, butterfly } = require('../../config/images')
+var { butterfly } = require('../../config/images')
 var firebase = require('../../config/firebase')
 
 export default class noteInput extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             text: "",
             isSubmitActive: false,
-            notesRef: this.getRef().child('caregivers')
+            notesRef: this.getRef().child('Patients').child(this.props.patient.pID).child('Notes')
         }
-    }
-
-    componentWillMount() {
-        this.setState({notesRef: this.getRef().child('caregivers').child(this.props.caregiver.name).child('notes') })
     }
 
     getRef() {
@@ -36,10 +34,9 @@ export default class noteInput extends Component {
     }
 
     onSubmit() {
-        // Submit to firebase
         this.state.notesRef.push({
-            pid: "uid",
-            poster: this.props.user.email, // get from props
+            pid: this.props.user.id,
+            poster: this.props.user.Profile.name,
             text: this.state.text,
             timestamp: new Date().getTime(),
         })
@@ -59,13 +56,15 @@ export default class noteInput extends Component {
     }
 
     render(){
+        const backIcon = ( <Icon name="ios-close" ios="ios-close" md="md-close" style={{marginTop: -10}} size={30} color="#1e1e1e" />);
+
         return (
-            <View stye={{backgroundColor: "white"}}>
+            <View stye={{alignItems: 'center', backgroundColor: "white"}}>
                 <Header
                     leftAction={() => console.log()}
-                    leftIcon={butterfly}
+                    leftIcon={<Image style={{height:30, width: 30}}source={butterfly}/>}
                     rightAction={this.exit.bind(this)}
-                    rightIcon={xIcon}
+                    rightIcon={backIcon}
                     headerStyle={{ alignItems: 'center', height: 60, backgroundColor: 'white' }}/>
                 <TextInput
                     maxLength={160}
@@ -82,10 +81,9 @@ export default class noteInput extends Component {
                         underlayColor={'#00BCD4'}
                         onPress={this.onSubmit.bind(this)}
                         style={this.state.isSubmitActive ? styles.activePost : styles.inActivePost}>
-                        <Text style={this.state.isSubmitActive ? styles.activeText : styles.inActiveText}> Post </Text>
+                        <View><Text style={this.state.isSubmitActive ? styles.activeText : styles.inActiveText}> Post </Text></View>
                     </TouchableHighlight>
                 </View>
-
             </View>
         );
     }

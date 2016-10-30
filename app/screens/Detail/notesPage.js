@@ -9,30 +9,16 @@ import {
     View
 } from 'react-native';
 import Dimensions from 'Dimensions';
+
 var { personIcon } = require('../../config/images')
 var firebase = require('../../config/firebase')
-var NotesTable = require('../../components/notesTable').default
 var NotesInput = require('./notesInput').default
+var Note = require('../../components/note').default
 
 export default class NotesPage extends Component {
 
     constructor(props) {
         super(props);
-
-        this.state = {
-            dataSource: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2, }),
-        }
-        this.notesRef = this.getRef().child('caregivers')
-                                     .child(props.caregiver.name)
-                                     .child('notes')
-    }
-
-    componentDidMount() {
-        //this.listenForItems(this.notesRef);
-    }
-
-    getRef() {
-        return firebase.database().ref();
     }
 
     addNote() {
@@ -41,39 +27,29 @@ export default class NotesPage extends Component {
             sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
             passProps: {
                 user: this.props.user,
-                caregiver: this.props.caregiver,
+                patient: this.props.patient,
             }
         })
-    }
-
-    listenForItems(notesRef) {
-        notesRef.on('value', (snap) => {
-
-            // get children as an array
-            var items = [];
-            snap.forEach((child) => {
-                items.push({
-                    _key: child.key,
-                    pID: child.val().pid,
-                    poster: child.val().poster,
-                    text: child.val().text,
-                    timestamp: child.val().timestamp
-                });
-            });
-
-            this.setState({
-                dataSource: this.state.dataSource.cloneWithRows(items)
-            });
-        });
     }
 
     render(){
         return (
             <View style={styles.scrollView}>
-                <Text style={{color: 'white', paddingTop: 20}}> Notes </Text>
-                <NotesTable
+                <ListView
                     dataSource={this.props.notes}
-                    addNote={this.addNote.bind(this)}/>
+                    renderRow={(note) => <Note note={note} poster={personIcon}/>}
+                    renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
+                    renderFooter={() =>
+                        <View style={styles.footer}>
+                            <TouchableHighlight
+                                onPress={this.addNote.bind(this)}
+                                style={styles.button}
+                                underlayColor={'transparent'}>
+                                <Text style={styles.text}> Comment </Text>
+                            </TouchableHighlight>
+                        </View>}
+                    scrollEnabled={true}
+                    enableEmptySections={true} />
             </View>
         );
     }
@@ -85,5 +61,28 @@ var styles = StyleSheet.create({
         height: Dimensions.get('window').height - Dimensions.get('window').height/2.5,
         backgroundColor:'transparent',
         flex: 1
-    }
+    },
+    footer: {
+        paddingVertical: 20,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "flex-end"
+    },
+    button: {
+        borderWidth: 1,
+        borderRadius: 5,
+        borderColor: '#1e1e1e',
+        width: 100,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 30
+    },
+    text: {
+        color: '#1e1e1e'
+    },
+    separator: {
+        flex: 1,
+        height: StyleSheet.hairlineWidth,
+        backgroundColor: '#8E8E8E',
+    },
 })

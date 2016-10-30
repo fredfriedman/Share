@@ -1,24 +1,13 @@
-import { StyleSheet} from 'react-native';
+import { Platform, StyleSheet} from 'react-native';
 import Dimensions from 'Dimensions';
+
+var styles = require('../../config/styles')
 
 module.exports = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
         backgroundColor: '#00BCD4',
-    },
-    userTypeButton: {
-        marginTop: -15,
-        width: 120,
-        height: 30,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 15,
-        backgroundColor: '#00BCD4',
-    },
-    navBar: {
-        backgroundColor: 'transparent',
-        height: 100,
     },
     body: {
         flex: 9,
@@ -29,6 +18,17 @@ module.exports = StyleSheet.create({
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height,
     },
+    formContainer: {
+        marginTop: 5,
+        width: Dimensions.get('window').width,
+    },
+    icon: {
+        height: (Platform.OS === 'ios') ? 30 : 25,
+		width: (Platform.OS === 'ios') ? 30 : 25,
+    },
+    input: {
+        //marginTop: 4,
+    },
     KeyboardAvoidingViewContainer: {
         flex: 1,
         justifyContent: 'center',
@@ -37,19 +37,16 @@ module.exports = StyleSheet.create({
         paddingHorizontal: 20,
         paddingTop: 20,
     },
-    formContainer: {
-        marginTop: 5,
-        width: Dimensions.get('window').width,
-    },
-    input: {
-        //marginTop: 4,
-    },
     line: {
         marginTop: 5,
         flex: 0,
         height: StyleSheet.hairlineWidth,
         backgroundColor: '#8E8E8E',
         width: Dimensions.get('window').width - 20,
+    },
+    navBar: {
+        backgroundColor: 'transparent',
+        height: 100,
     },
     textInput: {
         width: Dimensions.get('window').width - 30,
@@ -81,6 +78,27 @@ module.exports = StyleSheet.create({
         height: 27.5
     },
     button: {
+        borderRadius: 2.5,
+        borderColor: 'transparent',
+        borderWidth: 0.5,
+        alignSelf: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#00BCD4',
+        height: 30,
+        width: Dimensions.get('window').width - 20,
+        marginTop: 10,
+    },
+    passwordResetTextInput: {
+        width: Dimensions.get('window').width - 30,
+        height: 35,
+        alignSelf: 'center',
+        backgroundColor: 'transparent',
+        fontFamily: 'Helvetica',
+        fontWeight: '100',
+        fontSize: 16,
+        color: '#44688E'
+    },
+    submitButton: {
         borderRadius: 2.5,
         borderColor: 'transparent',
         borderWidth: 0.5,
@@ -128,6 +146,15 @@ module.exports = StyleSheet.create({
     primary_button_text: {
         color: '#FFF',
         fontSize: 18
+    },
+    userTypeButton: {
+        marginTop: -15,
+        width: 120,
+        height: 30,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 15,
+        backgroundColor: '#00BCD4',
     },
     userTypeLabel: {
         alignSelf: 'center',

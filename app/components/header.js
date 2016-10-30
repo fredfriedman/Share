@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Image, Text, TouchableHighlight, StyleSheet, View } from 'react-native';
 import Dimensions from 'Dimensions';
 
-export default class header extends Component {
+export default class Header extends Component {
 
     renderTopLeftAction() {
         if (this.props.leftAction == null) {

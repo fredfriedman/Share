@@ -11,7 +11,6 @@ import {
         Text,
         TouchableHighlight,
         View, } from 'react-native';
-import Dimensions from 'Dimensions';
 import Button from 'react-native-button'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -22,7 +21,7 @@ var PatientsView = require('../Home/patients_view').default
 var ModalView = require('./modalCallView').default
 var Header = require('../../components/header').default
 var firebase = require('../../config/firebase')
-var { dimensions } = require('../../config/dimensions')
+var dStyles = require('../../config/styles')
 
 export default class Overview extends Component {
 
@@ -183,7 +182,7 @@ export default class Overview extends Component {
 
     renderRow(patient: Object, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) {
 
-        const phoneIcon = (<Icon name="phone-square" size={dimensions.iconSize} color="#1e1e1e" />);
+        const phoneIcon = (<Icon name="phone-square" size={30} color="#1e1e1e" />);
 
         return (
             <PatientTableViewCell
