@@ -42,48 +42,36 @@ export default class Assessment extends Component {
         var assessmentQuestions = [];
         for (var i = 0; i < this.state.symptoms.length; i++) {
             assessmentQuestions.push(
-                <View style={{ backgroundColor: '#FFFFFF', flex: 1, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'stretch' }}>
-                    <Header text={"Assessment"}/>
-
-                    <TouchableHighlight
-                        onPress={()=>this.onBack()}
-                        style={{position: 'absolute', width: 20, height: 20, top: 25, left: 15, backgroundColor: 'transparent'}}
-                        underlayColor={'#f8f8f8'}>
-                        <Image source={backIcon}/>
-                    </TouchableHighlight>
-
-                    <Question
-                        symptom={this.state.symptoms[i]}
-                    />
-                </View>
+                <Question
+                    symptom={this.state.symptoms[i]}
+                />
             );
         }
         assessmentQuestions.push(
+            <Question/>
+        );
+
+        return (
             <View style={{ backgroundColor: '#FFFFFF', flex: 1, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'stretch' }}>
                 <Header text={"Assessment"}/>
-
                 <TouchableHighlight
                     onPress={()=>this.onBack()}
                     style={{position: 'absolute', width: 20, height: 20, top: 25, left: 15, backgroundColor: 'transparent'}}
                     underlayColor={'#f8f8f8'}>
                     <Image source={backIcon}/>
                 </TouchableHighlight>
-                <Question/>
+                <Carousel 
+                    width={this.state.size.width}
+                    loop={false}
+                    animate={false}
+                    indicatorAtBottom={true}
+                    indicatorOffset={50}
+                    indicatorColor='#0097A7'
+                    inactiveIndicatorColor='#B2EBF2'
+                >
+                    {assessmentQuestions}
+                </Carousel>
             </View>
-        );
-
-        return (
-            <Carousel 
-                width={this.state.size.width}
-                loop={false}
-                animate={false}
-                indicatorAtBottom={true}
-                indicatorOffset={50}
-                indicatorColor='#0097A7'
-                inactiveIndicatorColor='#B2EBF2'
-            >
-                {assessmentQuestions}
-            </Carousel>
         );
     }
 }
