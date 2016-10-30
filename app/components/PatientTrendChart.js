@@ -84,12 +84,10 @@ export default class PatientTrend extends Component {
         }
         const {unitHeight} = this
         const footData = this.calculateLog(data)
-        console.log(footData)
         const scrollHeight = footData.high * unitHeight + Math.abs(footData.low) * unitHeight + barItemTop
 
         return (
             <View style={styles.container}>
-                <Text style={styles.title}> Pain Score </Text>
                 <ScrollView
                     horizontal
                     showsHorizontalScrollIndicator={false}
@@ -100,22 +98,7 @@ export default class PatientTrend extends Component {
                     {this.renderBars(data.map(d => d.level), footData.high, footData.low, color)}
                 </ScrollView>
                 <View style={styles.summary}>
-                    <View style={styles.sumLeft}>
-                        <Text style={styles.sumAvg}>{(footData.avg).toFixed(2)}</Text>
-                        <Text style={styles.sumAvgLabel}>avg</Text>
-                    </View>
-                    <View style={styles.sumRight}>
-                        <View style={styles.sumPolarItem}>
-                            <Text style={styles.sumPolarLabel}>Highest:</Text>
-                            <Text style={styles.sumPolarNumber}>{footData.high}</Text>
-                            <Text style={styles.sumPolarLabel}>{': ' + footData.highDate.getMonth() + "-" + footData.highDate.getDay() + "-" + footData.highDate.getFullYear()}</Text>
-                        </View>
-                        <View style={styles.sumPolarItem}>
-                            <Text style={styles.sumPolarLabel}>Lowest:</Text>
-                            <Text style={styles.sumPolarNumber}>{footData.low}</Text>
-                            <Text style={styles.sumPolarLabel}>{': ' + footData.lowDate.getMonth() + "-" + footData.lowDate.getDay() + "-" + footData.lowDate.getFullYear()}</Text>
-                        </View>
-                    </View>
+                    <Text style={styles.title}> Pain Trend </Text>
                 </View>
             </View>
         )
@@ -129,7 +112,7 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
   },
   title: {
-    color: '#ffffff',
+    color: 'black',
     fontSize: 13,
     fontWeight: '600'
   },
@@ -152,12 +135,12 @@ const styles = StyleSheet.create({
     position: 'relative'
   },
   sumAvg: {
-    color: '#ffffff',
+    color: 'black',
     fontSize: 25,
     fontWeight: '200'
   },
   sumAvgLabel: {
-    color: '#ffffff',
+    color: 'black',
     marginLeft: 2,
     position: 'relative',
     top: -3
@@ -173,12 +156,12 @@ const styles = StyleSheet.create({
     marginTop: 2
   },
   sumPolarLabel: {
-    color: '#ffffff',
+    color: 'black',
     fontSize: 11,
     marginLeft: 3
   },
   sumPolarNumber: {
-    color: '#ffffff',
+    color: 'black',
     fontSize: 15,
     marginLeft: 3,
     position: 'relative',

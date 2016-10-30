@@ -4,7 +4,6 @@ import { Image, View, StyleSheet, TouchableHighlight, Text } from 'react-native'
 export default class ModalCallCell extends Component {
     constructor(props) {
         super(props);
-        console.log(props)
     }
 
     render() {

@@ -21,8 +21,9 @@ export default class PatientTableViewCell extends Component {
                         onPress={() => { this.props.onPressIcon() }}
                         style={styles.actionIcon}
                         underlayColor={'transparent'}>
-                        <Image style={styles.icon} source={this.props.actionIcon} />
+                        {this.props.actionIcon}
                     </TouchableHighlight>
+                    <View style={{width: 10}}/>
                 </View>
             </TouchableHighlight>
         )

@@ -3,7 +3,7 @@ import {
         Image,
         ListView,
         Navigator,
-        RecyclerViewBackedScrollView,
+        Platform,
         ScrollView,
         StyleSheet,
         TouchableHighlight,
@@ -13,12 +13,15 @@ import {
 
 import Dimensions from 'Dimensions';
 import PageControl from 'react-native-page-control'
+import Icon from 'react-native-vector-icons/Ionicons';
+import Button from 'react-native-button'
+import { Col, Row, Grid } from "react-native-easy-grid";
 
 var firebase = require('../../config/firebase')
-var { backIcon, personIcon } = require('../../config/images')
 var Header = require('../../components/header').default
 var PatientTrend = require('../../components/PatientTrendChart').default
 var NotesPage = require('./notesPage').default
+var { dimensions } = require('../../config/dimensions')
 
 export default class PatientDetailView  extends Component {
 
@@ -117,100 +120,143 @@ export default class PatientDetailView  extends Component {
         this.setState({ currentPage: index });
     }
 
+    setPage(page) {
+        this.setState({ currentPage: page });
+    }
+
     render() {
+        const backIcon = (<Icon name="ios-arrow-back" ios="ios-arrow-back" md="md-arrow-back" style={{marginTop: -10}} size={dimensions.iconSize} color="#1e1e1e" />);
+        const personIcon = (<Icon name="ios-person" ios="ios-person" md="md-person" style={{marginTop: -5}} size={dimensions.iconSize} color="white" />);
+        const clockIcon = (<Icon name="ios-time-outline" ios="ios-time-outline" md="md-time" style={{marginTop: -2}} size={20} color="#00BCD4" />);
+
         return (
-            <View style={{flexDirection: 'column', flex: 1}}>
-                <View style={[styles.topBox, {borderBottomColor: this.props.patient.status}]}>
-                    <Text style={styles.patientName}> {this.props.patient.name} </Text>
-                </View>
-                <View style={styles.bottomBox}>
-                    <Text style={styles.patientPhone}> {this.props.patient.phone} </Text>
+            <View style={{flexDirection: 'column', flex: 1 }}>
+                <Header text={"Profile"} headerStyle={styles.header} textStyle={styles.text} leftAction={this.onBack.bind(this)} leftIcon={backIcon}/>
+                <View style={{height: 50}}>
                     <ScrollView
                         ref="pageControl"
                         pagingEnabled={true}
                         horizontal={true}
-                        showsHorizontalScrollIndicator={false}
-                        bounces={false}
+                        showsHorizontalScrollIndicator={true}
+                        bounces={true}
+                        style={styles.optionBox}
                         onScroll={this.onScroll.bind(this)}
                         scrollEventThrottle={16}>
-
                         <View style={styles.scrollView}>
-                            <PatientTrend data={this.state.data} color={'#FFC107'}/>
+                            <Button
+                                style={[styles.buttonFont, {marginLeft: 10}]}
+                                containerStyle={{height: 40}}
+                                onPress={() => this.setPage("graphs")}>
+                                Summary
+                            </Button>
                         </View>
-
                         <View style={styles.scrollView}>
-                            <Text style={{color: 'white', paddingTop: 20}}> Recent History </Text>
+                            <Button
+                                style={[styles.buttonFont, {marginLeft: 10}]}
+                                containerStyle={{height: 40}}
+                                onPress={() => this.setPage("history")}>
+                                History
+                            </Button>
                         </View>
-
-                        <NotesPage navigator={this.props.navigator} user={this.props.user} caregiver={this.props.patient} notes={this.state.notes}/>
-                    </ScrollView>
+                        <View style={styles.scrollView}>
+                            <Button
+                                style={[styles.buttonFont, {marginLeft: 10}]}
+                                containerStyle={{height: 40}}
+                                onPress={() => this.setPage("graphs")}>
+                                Notes
+                            </Button>
+                        </View>
+                        </ScrollView>
                 </View>
-                <PageControl style={{position:'absolute', left:0, right:0, bottom:10}}
-                    numberOfPages={3}
-                    currentPage={this.state.currentPage}
-                    pageIndicatorTintColor='white'
-                    currentPageIndicatorTintColor='#18FFFF'
-                    indicatorStyle={{borderRadius: 5}}
-                    currentIndicatorStyle={{borderRadius: 5}}
-                    indicatorSize={{width:8, height:8}}
-                    onPageIndicatorPress={this.onItemTap.bind(this)} />
-                <Image style={[styles.profilePicture, {borderWidth: 1, borderColor: this.props.patient.status}]} source={personIcon}/>
-                <TouchableHighlight
-                    onPress={()=>this.onBack()}
-                    style={{position: 'absolute', width: 20, height: 20, top: 25, left: 15, backgroundColor: 'transparent'}}
-                    underlayColor={'transparent'}>
-                    <Image source={backIcon}/>
-                </TouchableHighlight>
+                <View style={styles.summaryBox}>
+                    <View style={{flexDirection: 'row', marginTop: 25}}>
+                        { clockIcon }
+                        <Text style={[styles.text,{paddingLeft: 5, color: 'white', fontSize: 13, fontWeight: '200'}]}> Last Entry: Jan 16, 2016  </Text>
+                    </View>
+                    <View>
+                        <View style={{ alignItems: 'center', flexDirection: 'row'}}>
+                            <View style={{width: 5, backgroundColor: 'orange', borderRadius: 5, height: 30}}/>
+                            <Text style={[styles.text,{color: 'white', fontSize: 52, fontWeight: '200'}]}> 67 </Text>
+                        </View>
+                        <Text style={[styles.text,{color: 'gray', fontSize: 20, fontWeight: '400'}]}> Current Status </Text>
+                    </View>
+                    <Text style={[styles.text,{color: 'white', fontSize: 20, fontWeight: '400'}]}> {this.props.patient.name} </Text>
+                </View>
+                <View style={styles.bottomBox}>
+                    <Grid style={{flex: 1}}>
+                    	<Row style={{flex: 1}}>
+                            <Col style={{alignItems: 'center', justifyContent: 'center'}}>
+                                <View>
+                                    <Text style={[styles.text, {color: '#1e1e1e', fontSize: 36, fontWeight: '400'}]}> 80 </Text>
+                                    <Text style={[styles.text, {color: 'gray', fontSize: 14, fontWeight: '400'}]}> Avg Score </Text>
+                                </View>
+                            </Col>
+                            <Col style={{alignItems: 'center', justifyContent: 'center'}}>
+                                <View>
+                                    <Text style={[styles.text, {color: '#1e1e1e', fontSize: 36, fontWeight: '400'}]}> 10 </Text>
+                                    <Text style={[styles.text, {color: 'gray', fontSize: 14, fontWeight: '400'}]}> High Score </Text>
+                                </View>
+                            </Col>
+                            <Col style={{alignItems: 'center', justifyContent: 'center'}}>
+                                <View>
+                                    <Text style={[styles.text, {color: '#1e1e1e', fontSize: 36, fontWeight: '400'}]}> 5 </Text>
+                                    <Text style={[styles.text, {color: 'gray', fontSize: 14, fontWeight: '400'}]}> Low Score </Text>
+                                </View>
+                            </Col>
+                        </Row>
+                        <Row style={{flex: 1}}>
+                            <Col style={{paddingLeft: 20, flex: 0.667}}>
+                                <PatientTrend data={this.state.data} color={'#FFC107'}/>
+                            </Col>
+                            <Col style={{flex: 0.33, alignItems: 'center', justifyContent: 'center'}}>
+
+                            </Col>
+
+                        </Row>
+                    </Grid>
+                </View>
             </View>
         );
     }
 }
 
 var styles = StyleSheet.create({
-    topBox: {
-        borderBottomColor: '#18FFFF',
-        borderBottomWidth: 3,
-        height: Dimensions.get('window').height/2.5,
-        backgroundColor: '#4DD0E1',
-        flexDirection: 'column',
-        justifyContent: 'flex-end'
-    },
     bottomBox: {
-        backgroundColor: '#44688E'
+        flex: 0.8,
+        backgroundColor: '#ECEFF1'
     },
-    patientName: {
-        marginLeft: 100,
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: 'white'
+    buttonFont: {
+        fontFamily: (Platform.OS === 'ios') ? 'Helvetica Neue' : "Noto",
+        fontSize: 14,
+        color: '#C7C7CC',
     },
-    patientPhone: {
-        marginLeft: 100,
-        marginTop: 5,
-        fontSize: 12,
+    header: {
+        height: 60,
+        backgroundColor: '#ECEFF1',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderBottomWidth: 0.5,
+        borderBottomColor: '#2e2e2e'
+    },
+    text: {
+        fontFamily: (Platform.OS === 'ios') ? 'Helvetica Neue' : "Noto",
+        color: '#212121',
+        fontSize: 16,
         fontWeight: 'bold',
-        color: 'white'
+    },
+    optionBox: {
+        paddingVertical: 15,
+        backgroundColor: '#00ACC1',
+        height: 50,
+    },
+    summaryBox: {
+        flex: .67,
+        paddingLeft: 30,
+        backgroundColor: '#1e1e1e',
+        justifyContent: 'space-between'
     },
     scrollView: {
         width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height - Dimensions.get('window').height/2.5,
-        backgroundColor:'transparent',
-        flex: 1
-    },
-    profilePicture: {
-        position: 'absolute',
-        height: 75,
-        width: 75,
-        borderRadius: 40,
-        borderWidth: 3,
-        top: Dimensions.get('window').height/2.5 - 37.5,
-        left: 15,
-        backgroundColor: 'transparent'
-    },
-    profileHeaderView: {
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
+        height: 50,
     },
 });

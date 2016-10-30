@@ -8,12 +8,15 @@ import { ListView,
         Text,
         Image,
         View, } from 'react-native';
+import FAIcon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 var Header = require('../../components/header').default
-var { backIcon, phoneIcon, whiteGradient } = require('../../config/images')
 var TableViewGroup = require('../../components/TableViewGroup').default
 var PatientDetailView = require('../Detail/detail').default
 var PatientTableViewCell = require('../../components/patientTableViewCell').default
+
+var { dimensions } = require('../../config/dimensions')
 
 export default class PatientsView extends Component {
 
@@ -72,6 +75,9 @@ export default class PatientsView extends Component {
     }
 
     render() {
+
+        const backIcon = (<Icon name="ios-arrow-back" ios="ios-arrow-back" md="md-arrow-back" style={{marginTop: -5}} size={dimensions.iconSize} color="white" />);
+
         return (
             <View style={{flexDirection: 'column', flex: 1 }} noSpacer={false} noScroll={false}>
                 <Header leftAction={this.onBack.bind(this)} leftIcon={backIcon} text={"Patients"}/>
@@ -90,12 +96,14 @@ export default class PatientsView extends Component {
     }
 
     renderRow(patient: Object, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) {
+
+        const phoneIcon = (<FAIcon name="phone" size={dimensions.iconSize} color="#212121" />);
+
         return (
             <PatientTableViewCell
                 onPress={()=>this.onPressPatient(patient)}
                 onPressIcon={()=>this.onPressIcon(sectionID, rowID)}
                 status={patient.status}
-                image={whiteGradient}
                 actionIcon={phoneIcon}
                 mainText={patient.name}
                 subTitleText={patient.phone}

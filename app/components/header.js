@@ -13,7 +13,7 @@ export default class header extends Component {
                 onPress={this.props.leftAction}
                 style={{position: 'absolute', width: 20, height: 20, top: 27, left: 15, backgroundColor: 'transparent'}}
                 underlayColor={'transparent'}>
-                <Image style={{height: 20, width: 20}} source={this.props.leftIcon}/>
+                {this.props.leftIcon}
             </TouchableHighlight>
         )
     }
@@ -27,7 +27,7 @@ export default class header extends Component {
                 onPress={this.props.rightAction}
                 style={{position: 'absolute', width: 20, height: 20, top: 27, right: 15, backgroundColor: 'transparent'}}
                 underlayColor={'transparent'}>
-                <Image style={{height: 20, width: 20}} source={this.props.rightIcon}/>
+                {this.props.rightIcon}
             </TouchableHighlight>
         )
     }
