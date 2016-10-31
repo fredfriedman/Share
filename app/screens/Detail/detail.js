@@ -114,8 +114,8 @@ export default class PatientDetailView  extends Component {
         this.setState({ currentPage: index });
     }
     render() {
-        const backIcon = (<Icon name="ios-arrow-back" ios="ios-arrow-back" md="md-arrow-back" style={{marginTop: -10}} size={30} color="#1e1e1e" />);
-        const clockIcon = (<Icon name="ios-time-outline" ios="ios-time-outline" md="md-time" style={{marginTop: -2}} size={20} color="#00ACC1" />);
+        const backIcon = (<Icon name="ios-arrow-back" ios="ios-arrow-back" md="md-arrow-back" size={30} color="#1e1e1e" />);
+        const clockIcon = (<Icon name="ios-time-outline" ios="ios-time-outline" md="md-time" size={20} color="#00ACC1" />);
 
         return (
             <View style={{flexDirection: 'column', flex: 1}}>
@@ -245,10 +245,6 @@ var styles = StyleSheet.create({
     header: {
         height: 60,
         backgroundColor: '#ECEFF1',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderBottomWidth: 0.5,
-        borderBottomColor: '#2e2e2e'
     },
     text: {
         fontFamily: 'Helvetica Neue',

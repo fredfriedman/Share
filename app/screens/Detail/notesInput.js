@@ -62,7 +62,7 @@ export default class noteInput extends Component {
             <View stye={{alignItems: 'center', backgroundColor: "white"}}>
                 <Header
                     leftAction={() => console.log()}
-                    leftIcon={<Image style={{height:30, width: 30}}source={butterfly}/>}
+                    leftIcon={<Image style={{height:30, width: 30}} source={butterfly}/>}
                     rightAction={this.exit.bind(this)}
                     rightIcon={backIcon}
                     headerStyle={{ alignItems: 'center', height: 60, backgroundColor: 'white' }}/>

@@ -197,7 +197,6 @@ export default class signup extends Component {
                     iconName={'user'}
                     iconColor={'#00BCD4'}
                     ref='nurseName'
-                    labelStyle={{color: 'white'}}
                     label={'Name'}
                     style={{width: Dimensions.get('window').width - 20, borderTopLeftRadius: 5, borderTopRightRadius: 5}}
                     labelStyle={{color: '#00BCD4'}}
@@ -214,7 +213,6 @@ export default class signup extends Component {
                     label={'Hospital/Hospice Program'}
                     labelStyle={{color: '#00BCD4'}}
                     style={{width: Dimensions.get('window').width - 20}}
-                    labelStyle={{color: '#00BCD4'}}
                     onChangeText={(text) => this.setState({nurseHospital: text})}
                     onSubmitEditing={(event) => {  this.refs.nurseEmail.refs.input.focus(); }}
                     autoCapitalize={'none'}

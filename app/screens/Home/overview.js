@@ -149,7 +149,7 @@ export default class Overview extends Component {
                 <Header
                     text={"Overview"}
                     headerStyle={styles.header}
-                    textStyle={{fontFamily: (Platform.OS === 'ios') ? 'Helvetica Neue' : "Noto", color: '#333333', fontSize: 32, fontWeight: '400', marginLeft: 10, marginTop: 65}}/>
+                    textStyle={styles.header_text}/>
                 <ScrollView style={{marginTop: 5, backgroundColor: '#f8f8f8'}} contentContainerStyle={{paddingTop: 10, paddingBottom: 10}}>
                     <TableViewGroup
                         title={"Critical"}
@@ -199,20 +199,14 @@ export default class Overview extends Component {
 
 var styles = StyleSheet.create({
     header: {
-        shadowColor: "#000000",
-        shadowOpacity: 0.8,
-        shadowRadius: 1,
-        shadowOffset: {
-            height: 1,
-            width: 0
-        },
-        elevation: 20,
-        height: 150,
-        backgroundColor: 'white'
+        height: 60,
+        backgroundColor: '#ECEFF1',
     },
-    headerStyle: {
-        height: 20,
-        backgroundColor: "blue"
+    header_text: {
+        fontFamily: (Platform.OS === 'ios') ? 'Helvetica Neue' : "Noto",
+        color: '#333333',
+        fontSize: 18,
+        fontWeight: '400', 
     },
     tableView: {
         backgroundColor: '#FFFFFF',

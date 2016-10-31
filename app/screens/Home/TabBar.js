@@ -81,6 +81,9 @@ var styles = {
     tabBar: {
         backgroundColor: '#F7F7F7',
     },
+    tabBarShadow: {
+        backgroundColor: '#F7F7F7',
+    },
     tabBarTitle: {
         fontFamily: 'Helvetica',
         fontWeight: '100',
