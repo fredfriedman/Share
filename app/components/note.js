@@ -16,32 +16,32 @@ export default class Note extends Component {
         var interval = Math.floor(seconds / 31536000);
 
         if (interval > 1) {
-            return interval + " years";
+            return interval + " yrs";
         }
         interval = Math.floor(seconds / 2592000);
         if (interval > 1) {
-            return interval + " months";
+            return interval + " mths";
         }
         interval = Math.floor(seconds / 86400);
         if (interval > 1) {
-            return interval + " days";
+            return interval + " d";
         }
         interval = Math.floor(seconds / 3600);
         if (interval > 1) {
-            return interval + " hours";
+            return interval + " h";
         }
         interval = Math.floor(seconds / 60);
         if (interval > 1) {
-            return interval + " minutes";
+            return interval + " m";
         }
-        return Math.floor(seconds) + " seconds";
+        return Math.floor(seconds) + " s";
     }
 
     render() {
         return (
-            <View style={{flexDirection: 'row'}}>
+            <View style={{flexDirection: 'row', paddingVertical: 10}}>
                 <Image style={styles.posterPicture} source={this.props.poster}/>
-                <View style={{marginTop: 7, paddingLeft: 10, flexDirection: 'column'}}>
+                <View style={{paddingLeft: 10, flexDirection: 'column'}}>
                     <Text style={styles.title}>{this.props.note.poster}</Text>
                     <Text style={styles.text}>{this.props.note.text}</Text>
                 </View>
@@ -54,7 +54,6 @@ export default class Note extends Component {
 
 var styles = StyleSheet.create({
     posterPicture: {
-        marginTop: 7,
         marginLeft: 5,
         height: 40,
         width: 40,
@@ -62,27 +61,26 @@ var styles = StyleSheet.create({
         backgroundColor: 'transparent'
     },
     row: {
-        height: 60,
+        height: 100,
         backgroundColor: 'transparent',
-        borderColor: 'gray',
+        borderColor: '#1e1e1e',
         borderWidth: 1,
         width: Dimensions.get('window').width
     },
     date: {
-        marginTop: 7,
         marginRight: 10,
-        fontSize: 11,
+        fontSize: 13,
         fontWeight: 'bold',
-        color: 'white'
+        color: '#1e1e1e'
     },
     title: {
-        fontSize: 12,
+        fontSize: 13,
         fontWeight: '500',
-        color: 'white'
+        color: '#1e1e1e'
     },
     text: {
-        fontSize: 9,
+        fontSize: 10,
         fontWeight: '200',
-        color: 'white'
+        color: '#1e1e1e'
     },
 });

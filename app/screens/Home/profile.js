@@ -19,7 +19,7 @@ export default class Profile extends Component {
 
     render() {
         return (
-        <View style={{ backgroundColor: '#E9E9E9', flex: 1, flexDirection: 'column', justifyContent: 'space-between' }}>
+        <View style={{ backgroundColor: '#f7f7f7', flex: 1, flexDirection: 'column', justifyContent: 'space-between' }}>
             <Header text={"Profile"}/>
         </View>
         );

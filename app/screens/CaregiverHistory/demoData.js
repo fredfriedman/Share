@@ -1,22 +1,22 @@
 export default data = [
   {
     "date": "10/22/2016: ",
-    "completed": "http://www.iconsdb.com/icons/preview/royal-blue/check-mark-xl.png",
+    "completed": "https://cdn1.iconfinder.com/data/icons/everyday-2/64/check_mark_ok_marked-128.png",
     "des": "baseline test"
   },
   {
     "date": "10/23/2016: ",
-    "completed": "http://www.iconsdb.com/icons/preview/royal-blue/check-mark-xl.png",
-    "des": "patient feeling nausea, lack of appetite"
+    "completed": "https://cdn1.iconfinder.com/data/icons/everyday-2/64/check_mark_ok_marked-128.png",
+    "des": "feels nausea, lack of appetite"
   },
   {
     "date": "10/24/2016: ",
-    "completed": "http://www.iconsdb.com/icons/preview/royal-blue/check-mark-xl.png",
+    "completed": "https://cdn1.iconfinder.com/data/icons/everyday-2/64/check_mark_ok_marked-128.png",
     "des": "mild pain, not getting worse"
   },
     {
     "date": "10/25/2016: ",
-    "completed": "http://www.iconsdb.com/icons/preview/royal-blue/check-mark-xl.png",
+    "completed": "https://cdn1.iconfinder.com/data/icons/everyday-2/64/check_mark_ok_marked-128.png",
     "des": "mild pain, not getting worse"
   },
   {

@@ -1,15 +1,13 @@
-import { StyleSheet} from 'react-native';
+import { Platform, StyleSheet} from 'react-native';
 import Dimensions from 'Dimensions';
+
+var styles = require('../../config/styles')
 
 module.exports = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
         backgroundColor: '#00BCD4',
-    },
-    navBar: {
-        backgroundColor: 'transparent',
-        height: 100,
     },
     body: {
         flex: 9,
@@ -20,6 +18,17 @@ module.exports = StyleSheet.create({
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height,
     },
+    formContainer: {
+        marginTop: 5,
+        width: Dimensions.get('window').width,
+    },
+    icon: {
+        height: (Platform.OS === 'ios') ? 30 : 25,
+		width: (Platform.OS === 'ios') ? 30 : 25,
+    },
+    input: {
+        //marginTop: 4,
+    },
     KeyboardAvoidingViewContainer: {
         flex: 1,
         justifyContent: 'center',
@@ -28,15 +37,16 @@ module.exports = StyleSheet.create({
         paddingHorizontal: 20,
         paddingTop: 20,
     },
-    formContainer: {
-        width: Dimensions.get('window').width - 20,
-    },
     line: {
         marginTop: 5,
         flex: 0,
         height: StyleSheet.hairlineWidth,
         backgroundColor: '#8E8E8E',
         width: Dimensions.get('window').width - 20,
+    },
+    navBar: {
+        backgroundColor: 'transparent',
+        height: 100,
     },
     textInput: {
         width: Dimensions.get('window').width - 30,
@@ -47,6 +57,25 @@ module.exports = StyleSheet.create({
         fontWeight: '100',
         fontSize: 11,
         color: 'black'
+    },
+    signInBox: {
+        //flex: 1,
+        alignItems: 'flex-start',
+        flexDirection: 'row',
+        height: 45,
+        width: Dimensions.get('window').width,
+        borderTopWidth: 1,
+        paddingVertical: 4,
+        borderTopColor: '#bdbdbd',
+        backgroundColor: '#f7f7f7',
+    },
+    signInBoxButton: {
+        justifyContent: 'center',
+        marginRight: 5,
+        width: 85,
+        backgroundColor: "#00BCD4",
+        borderRadius: 8,
+        height: 27.5
     },
     button: {
         borderRadius: 2.5,
@@ -59,15 +88,33 @@ module.exports = StyleSheet.create({
         width: Dimensions.get('window').width - 20,
         marginTop: 10,
     },
+    passwordResetTextInput: {
+        width: Dimensions.get('window').width - 30,
+        height: 35,
+        alignSelf: 'center',
+        backgroundColor: 'transparent',
+        fontFamily: 'Helvetica',
+        fontWeight: '100',
+        fontSize: 16,
+        color: '#44688E'
+    },
+    submitButton: {
+        borderRadius: 2.5,
+        borderColor: 'transparent',
+        borderWidth: 0.5,
+        alignSelf: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#00BCD4',
+        height: 30,
+        width: Dimensions.get('window').width - 20,
+        marginTop: 10,
+    },
     SubmitLabel: {
-        flex: 1,
-        width: 230,
         textAlign: 'center',
         alignSelf: 'center',
         fontSize: 15,
         fontWeight: '300',
         color: '#ffffff',
-        paddingTop: 5
     },
     placeholderLabel: {
         fontSize: 12,
@@ -76,10 +123,9 @@ module.exports = StyleSheet.create({
     },
     bottomLabel: {
         width: 400,
-        flex: 1,
         alignSelf: 'center',
         textAlign: 'center',
-        fontSize: 11,
+        fontSize: 14,
         fontWeight: '300',
         color: '#ffffff',
         marginBottom: 20,
@@ -101,4 +147,21 @@ module.exports = StyleSheet.create({
         color: '#FFF',
         fontSize: 18
     },
+    userTypeButton: {
+        marginTop: -15,
+        width: 120,
+        height: 30,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 15,
+        backgroundColor: '#00BCD4',
+    },
+    userTypeLabel: {
+        alignSelf: 'center',
+        textAlign: 'center',
+        fontSize: 14,
+        fontWeight: '300',
+        color: '#00BCD4',
+        paddingTop: 15,
+    }
 });

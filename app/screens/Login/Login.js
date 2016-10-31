@@ -1,19 +1,27 @@
 import Firebase from 'firebase';
 import React, { Component } from 'react';
-import { ActivityIndicator, Alert, AsyncStorage, Image, Navigator, Text, View } from 'react-native';
+import {
+    ActivityIndicator,
+    Alert,
+    AsyncStorage,
+    Image,
+    KeyboardAvoidingView,
+    Navigator,
+    Text,
+    View } from 'react-native';
 import Button from 'react-native-button'
 import { Hoshi } from 'react-native-textinput-effects';
 import dismissKeyboard from 'dismissKeyboard'
+import Icon from 'react-native-vector-icons/Ionicons';
 
 let styles   = require('./styles')
 var firebase = require('../../config/firebase')
-let {xIcon, butterfly} = require('../../config/images')
+let { butterfly} = require('../../config/images')
 
 let PasswordReset = require('./passwordReset').default
 let CaregiverHome = require('../CaregiverHome/overview').default
 let TabBar  = require('../Home/TabBar').default
 let CloseModalButton   = require('../../components/TopLeftAction').default
-
 
 
 export default class Login extends Component {
@@ -56,17 +64,35 @@ export default class Login extends Component {
 
                 AsyncStorage.setItem('user_data', JSON.stringify(user));
 
-                firebase.database().ref().child("users/" + user.uid).once('value')
+                firebase.database().ref().child("Caregivers/" + user.uid).once('value')
                     .then(function(snapshot) {
+                        if (snapshot.val() !== null) {
 
-                        let component = snapshot.val().type === "caregiver" ? CaregiverHome : TabBar
+                            self.setState({animating: false})
 
-                        self.setState({animating: false})
+                            dismissKeyboard()
 
-                        dismissKeyboard()
+                            var usr = snapshot.val()
+                            usr["id"] = snapshot.key
 
-                        self.props.navigator.resetTo({ component: component, passProps: {user: snapshot.val()} })
+                            self.props.navigator.resetTo({ component: CaregiverHome, passProps: {user: usr} })
+                        } else {
+                            firebase.database().ref().child("Nurses/" + user.uid).once('value')
+                                .then(function(snapshot) {
+                                    if (snapshot.val() !== null) {
+                                        self.setState({animating: false})
 
+                                        dismissKeyboard()
+
+                                        var usr = snapshot.val()
+                                        usr["id"] = snapshot.key
+
+                                        self.props.navigator.resetTo({ component: TabBar, passProps: {user: usr} })
+                                    }
+                                }, function(error) {
+                                    console.log(error)
+                                })
+                        }
                     }, function(error) {
                         console.log(error)
                     })
@@ -97,49 +123,60 @@ export default class Login extends Component {
     }
 
     render() {
+
+        const xIcon = (<Icon name="ios-close" size={30} color="gray" />);
+
         return (
-            <View style={{flex: 1, alignItems: 'center', backgroundColor: 'white',}}>
-                <Image style={{backgroundColor: 'transparent', height: 35, width: 35, top: 20}} source={butterfly}/>
-                <View style={[styles.formContainer, {paddingTop: 20}]}>
-                    <Hoshi
-                        ref="email"
-                        style={{width: 50}}
-                        inputStyle={[styles.textInput, {color: '#00BCD4', fontSize: 16}]}
-                        labelStyle={{color: '#00BCD4'}}
-                        label={'Email Address'}
-                        borderColor={'#00BCD4'}
-                        onChangeText={(text) => this.setState({username: text})}
-                        onSubmitEditing={(event) => {  this.refs.password.refs.input.focus(); }}
-                        autoCapitalize={'none'}
-                        autoCorrect={false}/>
-                    <Hoshi
-                        ref='password'
-                        label={'Password'}
-                        labelStyle={{color: '#00BCD4'}}
-                        inputStyle={[styles.textInput, {color: '#00BCD4', fontSize: 16}]}
-                        style={{width: 50, paddingTop: 20}}
-                        borderColor={'#00BCD4'}
-                        autoCapitalize={'none'}
-                        autoCorrect={false}
-                        secureTextEntry={true}
-                        onChangeText={(text) => this.setState({password: text})}/>
+            <View style={{flex: 1}}>
+                <View style={{alignItems: 'center', backgroundColor: 'white'}}>
+                    <Image style={{backgroundColor: 'transparent', height: 35, width: 35, top: 20}} source={butterfly}/>
+                    <View style={[styles.formContainer, {paddingTop: 20}]}>
+                        <Hoshi
+                            ref="email"
+                            style={{width: 50}}
+                            inputStyle={[styles.textInput, {color: '#44688E', fontSize: 16}]}
+                            labelStyle={{color: '#00BCD4'}}
+                            label={'Email Address'}
+                            borderColor={'#00BCD4'}
+                            onChangeText={(text) => this.setState({username: text})}
+                            onSubmitEditing={(event) => {  this.refs.password.refs.input.focus(); }}
+                            autoCapitalize={'none'}
+                            autoCorrect={false}/>
+                        <Hoshi
+                            ref='password'
+                            label={'Password'}
+                            labelStyle={{color: '#00BCD4'}}
+                            inputStyle={[styles.textInput, {color: '#44688E', fontSize: 16}]}
+                            style={{width: 50, paddingTop: 20}}
+                            borderColor={'#00BCD4'}
+                            autoCapitalize={'none'}
+                            autoCorrect={false}
+                            secureTextEntry={true}
+                            onChangeText={(text) => this.setState({password: text})}/>
+                    </View>
+                    <ActivityIndicator
+                        animating={this.state.animating}
+                        style={{height: 60}}
+                        size="large" />
                 </View>
-                <Button
-                    style={styles.SubmitLabel}
-                    containerStyle={styles.button}
-                    onPress={this.onPressLogin.bind(this)}>
-                    Log In
-                </Button>
-                <Button
-                    style={[styles.bottomLabel, {color: "#00BCD4", paddingTop: 20}]}
-                    containerStyle={{}}
-                    onPress={this.onPressPasswordReset.bind(this)}>
-                    Need Help?
-                </Button>
-                <ActivityIndicator
-                    animating={this.state.animating}
-                    style={{height: 60}}
-                    size="large" />
+                <View style={{flex: 1}}></View>
+                <KeyboardAvoidingView style={{flex: 1, justifyContent: 'flex-end'}} behavior={'padding'}>
+                    <View style={styles.signInBox}>
+                        <Button
+                            style={{paddingLeft: 5, fontWeight: '300', fontSize: 13, color: "#00BCD4"}}
+                            containerStyle={[styles.signInBoxButton, {backgroundColor: 'transparent'}]}
+                            onPress={this.onPressPasswordReset.bind(this)}>
+                            Need Help?
+                        </Button>
+                        <View style={{flex: 1}}></View>
+                        <Button
+                            style={styles.SubmitLabel}
+                            containerStyle={styles.signInBoxButton}
+                            onPress={this.onPressLogin.bind(this)}>
+                            Log In
+                        </Button>
+                    </View>
+                </KeyboardAvoidingView>
                 <CloseModalButton action={this.onExitScene.bind(this)} icon={xIcon}/>
             </View>
         );

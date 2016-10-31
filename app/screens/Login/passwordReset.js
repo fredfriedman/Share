@@ -5,11 +5,13 @@ import Button from 'react-native-button'
 import Dimensions from 'Dimensions';
 import { Hoshi } from 'react-native-textinput-effects';
 import dismissKeyboard from 'dismissKeyboard'
+import Icon from 'react-native-vector-icons/Ionicons';
 
 let Login    = require('./Login').default
 var firebase = require('../../config/firebase')
-let {xIcon, butterfly} = require('../../config/images')
-let CloseModalButton   = require('../../components/TopLeftAction').default
+let { butterfly} = require('../../config/images')
+var styles = require('./styles')
+let CloseModalButton  = require('../../components/TopLeftAction').default
 
 export default class signup extends Component {
 
@@ -64,6 +66,9 @@ export default class signup extends Component {
     }
 
     render() {
+
+        const xIcon = (<Icon name="ios-close" size={dimensions.iconSize} color="gray" />);
+
         return (
             <View style={styles.container}>
                 <Image style={{backgroundColor: 'transparent', height: 35, width: 35, top: 20}} source={butterfly}/>
@@ -90,57 +95,4 @@ export default class signup extends Component {
             </View>
         );
     }
-}
-
-var styles = {
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        backgroundColor: 'white'
-    },
-    submitLabel: {
-        flex: 1,
-        width: 230,
-        textAlign: 'center',
-        alignSelf: 'center',
-        fontSize: 15,
-        fontWeight: '300',
-        color: '#ffffff',
-        paddingTop: 5
-    },
-    submitButton: {
-        borderRadius: 2.5,
-        borderColor: 'transparent',
-        borderWidth: 0.5,
-        alignSelf: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#00BCD4',
-        height: 30,
-        width: Dimensions.get('window').width - 20,
-        marginTop: 10,
-    },
-    passwordResetTextInput: {
-        width: Dimensions.get('window').width - 30,
-        height: 35,
-        alignSelf: 'center',
-        backgroundColor: 'transparent',
-        fontFamily: 'Helvetica',
-        fontWeight: '100',
-        fontSize: 11,
-        color: 'black'
-    },
-    bottomLabel: {
-        width: 400,
-        flex: 1,
-        alignSelf: 'center',
-        textAlign: 'center',
-        fontSize: 11,
-        fontWeight: '300',
-        color: '#ffffff',
-        marginBottom: 20,
-    },
-    transparent_button: {
-        marginTop: 10,
-        padding: 15
-    },
 }

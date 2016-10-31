@@ -3,8 +3,8 @@
 import React, { Component } from 'react';
 import { TouchableHighlight, ListView, StyleSheet, Text, View, Image } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
-
-var { disclosureIcon } = require('../config/images')
+import Icon from 'react-native-vector-icons/Ionicons';
+var styles = require('../config/styles')
 
 export default class TableViewGroup extends Component {
 
@@ -55,6 +55,8 @@ export default class TableViewGroup extends Component {
     }
 
     renderHeader() {
+        const disclosureIcon = (<Icon name="ios-arrow-forward" style={{marginRight: 10}} size={20} color="#212121" />);
+
         if (this.props.headerIsEnabled || this.props.headerStyle) {
             return (
                 <TouchableHighlight
@@ -64,7 +66,7 @@ export default class TableViewGroup extends Component {
                     <View style={{flexDirection: 'row'}}>
                         <Text style={this.props.textStyle}> {this.props.title} </Text>
                         <View style={{flex: 1}} />
-                        <Image style={{height: 10, width: 10, marginTop: 5, marginRight: 10}} source={disclosureIcon}/>
+                        { disclosureIcon }
                     </View>
                 </TouchableHighlight>
             )

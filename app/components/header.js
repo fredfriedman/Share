@@ -2,67 +2,73 @@ import React, { Component } from 'react';
 import { Image, Text, TouchableHighlight, StyleSheet, View } from 'react-native';
 import Dimensions from 'Dimensions';
 
-export default class header extends Component {
+export default class Header extends Component {
 
-    renderTopLeftAction() {
-        if (this.props.leftAction == null) {
+    renderButton(action, icon, style) {
+        if ( action == null) {
             return null
         }
         return (
             <TouchableHighlight
-                onPress={this.props.leftAction}
-                style={{position: 'absolute', width: 20, height: 20, top: 27, left: 15, backgroundColor: 'transparent'}}
+                onPress={action}
+                style={style}
                 underlayColor={'transparent'}>
-                <Image style={{height: 20, width: 20}} source={this.props.leftIcon}/>
+                {icon}
             </TouchableHighlight>
         )
     }
 
-    renderTopRightAction() {
-        if (this.props.rightAction == null) {
+    getTitle(title) {
+        if (title == null) {
             return null
         }
         return (
-            <TouchableHighlight
-                onPress={this.props.rightAction}
-                style={{position: 'absolute', width: 20, height: 20, top: 27, right: 15, backgroundColor: 'transparent'}}
-                underlayColor={'transparent'}>
-                <Image style={{height: 20, width: 20}} source={this.props.rightIcon}/>
-            </TouchableHighlight>
+            <Text style={[styles.header_text, this.props.textStyle]}>{this.props.text}</Text>
         )
     }
 
     render(){
         return (
-            <View
-                style={this.props.headerStyle || styles.header}>
-                <View style={styles.header_item}>
-                    <Text style={styles.header_text}>{this.props.text}</Text>
+            <View style={styles.navBarContainer}>
+                <View style={[styles.header, this.props.headerStyle]}>
+                    {this.getTitle(this.props.text)}
+                    {this.renderButton(this.props.leftAction, this.props.leftIcon, { marginLeft: 8, paddingTop: 10 })}
+                    {this.renderButton(this.props.rightAction, this.props.rightIcon, { marginRight: 8, paddingTop: 10 })}
                 </View>
-                {this.renderTopLeftAction()}
-                {this.renderTopRightAction()}
             </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
-  header: {
-    alignItems: 'center',
-    height: 60,
-    backgroundColor: '#00BCD4',
-    borderColor: '#AAAAAA',
-    borderBottomWidth: 0.5,
-  },
-  header_item: {
-    paddingLeft: 10,
-    paddingRight: 10
-  },
-  header_text: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginTop: 25,
-  }
+    navBarContainer: {
+        backgroundColor: 'white',
+    },
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        height: 60,
+        backgroundColor: '#00BCD4',
+        borderColor: '#AAAAAA',
+        borderBottomWidth: 0.5,
+    },
+    header_item: {
+        paddingLeft: 10,
+        paddingRight: 10
+    },
+    header_text: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        justifyContent: 'center',
+        alignItems: 'center',
+        color: '#FFFFFF',
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginTop: 25,
+    }
 });
