@@ -32,8 +32,8 @@ export default class Header extends Component {
             <View style={styles.navBarContainer}>
                 <View style={[styles.header, this.props.headerStyle]}>
                     {this.getTitle(this.props.text)}
-                    {this.renderButton(this.props.leftAction, this.props.leftIcon, { marginLeft: 8 })}
-                    {this.renderButton(this.props.rightAction, this.props.RightIcon, { marginRight: 8 })}
+                    {this.renderButton(this.props.leftAction, this.props.leftIcon, { marginLeft: 8, paddingTop: 10 })}
+                    {this.renderButton(this.props.rightAction, this.props.rightIcon, { marginRight: 8, paddingTop: 10 })}
                 </View>
             </View>
         );
@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
     },
     header: {
         flexDirection: 'row',
+        justifyContent: 'space-between',
         alignItems: 'center',
         height: 60,
         backgroundColor: '#00BCD4',

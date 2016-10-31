@@ -145,12 +145,12 @@ export default class Overview extends Component {
     render() {
 
         return (
-            <View style={{flexDirection: 'column', flex: 1 }}>
+            <View style={{flexDirection: 'column', flex: 1, backgroundColor: '#f8f8f8' }}>
                 <Header
                     text={"Overview"}
                     headerStyle={styles.header}
                     textStyle={styles.header_text}/>
-                <ScrollView style={{marginTop: 5, backgroundColor: '#f8f8f8'}} contentContainerStyle={{paddingTop: 10, paddingBottom: 10}}>
+                <ScrollView style={{marginTop: 5, backgroundColor: '#f8f8f8'}} contentContainerStyle={{backgroundColor: '#f8f8f8', paddingTop: 10, paddingBottom: 10}}>
                     <TableViewGroup
                         title={"Critical"}
                         headerIsEnabled={true}
@@ -206,7 +206,7 @@ var styles = StyleSheet.create({
         fontFamily: (Platform.OS === 'ios') ? 'Helvetica Neue' : "Noto",
         color: '#333333',
         fontSize: 18,
-        fontWeight: '400', 
+        fontWeight: '400',
     },
     tableView: {
         backgroundColor: '#FFFFFF',

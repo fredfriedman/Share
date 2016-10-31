@@ -1,7 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { AppRegistry, ViewPagerAndroid, View, Text, Image } from 'react-native';
+import { AppRegistry, ViewPagerAndroid, View, StyleSheet, Text, Image } from 'react-native';
 import TabNavigator from 'react-native-tab-navigator';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -79,10 +79,12 @@ var styles = {
         height: 10
     },
     tabBar: {
-        backgroundColor: '#F7F7F7',
+        backgroundColor: '#E9E9E9',
     },
     tabBarShadow: {
-        backgroundColor: '#F7F7F7',
+        backgroundColor: '#f7f7f7',
+        borderWidth: StyleSheet.hairlineWidth,
+        borderColor: '#bdbdbd'
     },
     tabBarTitle: {
         fontFamily: 'Helvetica',
