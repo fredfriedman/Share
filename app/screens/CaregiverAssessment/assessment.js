@@ -18,24 +18,25 @@ var Carousel = require('react-native-carousel');
 var Question = require('../../components/genericQuestion').default
 
 
+
+
 export default class Assessment extends Component {
 
     constructor() {
         super();
         this.state = { 
             symptoms: ["Pain", "Tiredness", "Nausea", "Depression", "Anxiety", "Drowsiness", "Appetite", "Shortness of Breath"], 
-            size: { width, height }
+            size: { width, height },
+            assessmentObject: new Date()
         };
+        console.log("Date is: " + this.state.assessmentObject);
     }
 
     onBack() {
         this.props.navigator.pop()
     }
 
-    _onLayoutDidChange = (e) => {
-        const layout = e.nativeEvent.layout;
-        this.setState({ size: { width: layout.width, height: layout.height } });
-    }
+    
 
     render() {
 
