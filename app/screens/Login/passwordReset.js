@@ -1,19 +1,19 @@
 'use strict';
 import React, { Component } from 'react';
-import { Alert, Image, Text, StyleSheet, View } from 'react-native';
+import { Alert, Image, KeyboardAvoidingView, Text, StyleSheet, View } from 'react-native';
 import Button from 'react-native-button'
 import Dimensions from 'Dimensions';
 import { Hoshi } from 'react-native-textinput-effects';
 import dismissKeyboard from 'dismissKeyboard'
 import Icon from 'react-native-vector-icons/Ionicons';
 
-let Login    = require('./Login').default
-var firebase = require('../../config/firebase')
-let { butterfly} = require('../../config/images')
-var styles = require('./styles')
-let CloseModalButton  = require('../../components/TopLeftAction').default
+import Login from './Login'
+import Firebase from '../../config/firebase'
+import { butterfly } from '../../config/images'
+import styles from './styles'
+import CloseModalButton from '../../components/TopLeftAction'
 
-export default class signup extends Component {
+export default class Signup extends Component {
 
     constructor(props){
         super(props);
@@ -33,7 +33,7 @@ export default class signup extends Component {
 
         let self = this
 
-        firebase.auth().sendPasswordResetEmail(this.state.email)
+        Firebase.auth().sendPasswordResetEmail(this.state.email)
             .then(function(success) {
                 self.onExitScene
 
@@ -67,31 +67,36 @@ export default class signup extends Component {
 
     render() {
 
-        const xIcon = (<Icon name="ios-close" size={30} color="gray" />);
+        const closeIcon = (<Icon name="ios-close" size={30} color="#1e1e1e" />);
 
         return (
-            <View style={[styles.container,{backgroundColor: 'white'}]}>
-                <Image style={{backgroundColor: 'transparent', height: 35, width: 35, top: 20}} source={butterfly}/>
-                <View style={{width: Dimensions.get('window').width - 20, paddingTop: 40}}>
+            <View style={[styles.container, {alignItems: 'center', backgroundColor: 'white'}]}>
+                <Image style={styles.centeredIcon} source={butterfly}/>
+                <View style={styles.formContainerHoshi}>
                     <Hoshi
                         ref="email"
-                        style={{width: Dimensions.get('window').width - 20 }}
-                        value={this.state.email}
-                        inputStyle={styles.passwordResetTextInput}
-                        labelStyle={{color: '#00BCD4'}}
                         label={'Email Address'}
+                        value={this.state.email}
+                        style={styles.row}
+                        labelStyle={{color: '#00BCD4'}}
+                        inputStyle={styles.passwordResetTextInput}
                         borderColor={'#00BCD4'}
                         autoCapitalize={'none'}
                         autoCorrect={false}
                         onChangeText={(text) => this.setState({email: text})}/>
                 </View>
-                <Button
-                    style={[styles.submitLabel,{color: 'white', fontWeight: '400'}]}
-                    containerStyle={styles.submitButton}
-                    onPress={this.onInitiateReset.bind(this)}>
-                    Reset Password
-                </Button>
-                <CloseModalButton action={this.onExitScene.bind(this)} icon={xIcon}/>
+                <View style={{flex: 1}}/>
+                <KeyboardAvoidingView style={{flex: 1, justifyContent: 'flex-end'}} behavior={'padding'}>
+                    <View style={[styles.signInBox, {alignItems: 'center', justifyContent: 'flex-end'}]}>
+                        <Button
+                            style={[styles.submitLabel, {fontSize: 11}]}
+                            containerStyle={styles.signInBoxButton}
+                            onPress={this.onInitiateReset.bind(this)}>
+                            Reset Password
+                        </Button>
+                    </View>
+                </KeyboardAvoidingView>
+                <CloseModalButton action={this.onExitScene.bind(this)} icon={closeIcon}/>
             </View>
         );
     }

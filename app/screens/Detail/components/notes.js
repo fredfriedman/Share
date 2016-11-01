@@ -7,7 +7,6 @@ import {
     StyleSheet,
     View
 } from 'react-native';
-import Dimensions from 'Dimensions';
 
 import { personIcon } from '../../../config/images'
 import NotesInput from './notes-input'
@@ -35,6 +34,13 @@ export default class NotesPage extends Component {
             <View style={this.props.containerStyle}>
                 <Text style={this.props.labelStyle}> Notes </Text>
                 <ListView
+                    ref={ref => this.listView = ref}
+                    onLayout={event => {
+                        this.listViewHeight = event.nativeEvent.layout.height
+                    }}
+                    onContentSizeChange={() => {
+                        this.listView.scrollTo({y: this.listView.getMetrics().contentLength - this.listViewHeight})
+                    }}
                     dataSource={this.props.notes}
                     renderRow={(note) => <Note note={note} poster={personIcon}/>}
                     renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import {Image, Navigator, Text, TextInput, View } from 'react-native';
+import { Image, Navigator, Text, TextInput, View } from 'react-native';
 import Button from 'react-native-button'
 import Dimensions from 'Dimensions';
 
-let styles   = require('./styles')
-let SignUp   = require('./signup').default
-let Login   = require('./Login').default
-let {backIcon, xIcon, butterfly} = require('../../config/images')
-let CloseModalButton = require('../../components/TopLeftAction').default
+import styles from './styles'
+import SignUp from './signup'
+import Login from './Login'
+import { butterfly } from '../../config/images'
+import CloseModalButton from '../../components/TopLeftAction'
 
 export default class Home extends Component {
     constructor(props) {
@@ -34,33 +34,22 @@ export default class Home extends Component {
 
     render() {
         return (
-            <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-between', backgroundColor: "#00BCD4"}}>
-                <Image style={{marginLeft: 30, height: 50, width: 50, marginTop: 30}} source={butterfly}/>
+            <View style={[styles.container, {justifyContent: 'space-between'}]}>
+                <Image style={styles.topLeftLogo} source={butterfly}/>
                 <View>
-                    <Text style={{marginLeft: 50, color: 'white', fontSize: 28, fontWeight: 'bold'}}> Welcome to {"\n"} Share</Text>
-                    <Text style={{marginLeft: 50, color: 'white', fontSize: 16, fontWeight: '500'}}> Simplifying Hospice Care </Text>
+                    <Text style={styles.textHomeScreen}> Welcome to {"\n"} Share</Text>
+                    <Text style={[styles.textHomeScreen, {fontSize: 18, fontWeight: '500'}]}> Simplifying Hospice Care </Text>
                 </View>
                 <View style={{marginBottom: 100}}>
                     <Button
                         style={{color: '#00BCD4'}}
-                        containerStyle={{borderRadius: 5,
-                            borderColor: 'transparent',
-                            borderWidth: 0.5,
-                            alignSelf: 'center',
-                            justifyContent: 'center',
-                            backgroundColor: '#f7f7f7',
-                            height: 45,
-                            width: Dimensions.get('window').width - 100,
-                            marginTop: 10
-                        }}
-                        styleDisabled={{color: 'red'}}
+                        containerStyle={[styles.button, styles.homeButton, styles.secondaryColor]}
                         onPress={this.onPressSignUp.bind(this)}>
                         Sign Up
                     </Button>
                     <Button
                         style={{color: 'white'}}
-                        containerStyle={{paddingTop: 15, height: 45}}
-                        styleDisabled={{color: 'red'}}
+                        containerStyle={[styles.button, {paddingTop: 15}]}
                         onPress={this.onPressLogin.bind(this)}>
                         Log In
                     </Button>
