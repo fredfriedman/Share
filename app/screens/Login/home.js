@@ -42,13 +42,13 @@ export default class Home extends Component {
                 </View>
                 <View style={{marginBottom: 100}}>
                     <Button
-                        style={{color: '#00BCD4'}}
-                        containerStyle={[styles.button, styles.homeButton, styles.secondaryColor]}
+                        style={[styles.mainText, {fontWeight: 'bold', fontSize: 18}]}
+                        containerStyle={[styles.button, styles.secondaryColor]}
                         onPress={this.onPressSignUp.bind(this)}>
                         Sign Up
                     </Button>
                     <Button
-                        style={{color: 'white'}}
+                        style={[styles.secondaryText, {fontWeight: 'bold', fontSize: 18}]}
                         containerStyle={[styles.button, {paddingTop: 15}]}
                         onPress={this.onPressLogin.bind(this)}>
                         Log In

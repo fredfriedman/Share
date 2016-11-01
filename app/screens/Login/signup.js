@@ -132,7 +132,7 @@ export default class signup extends Component {
                         iconName={'user'}
                         iconColor={IconColor}
                         style={styles.row}
-                        labelStyle={styles.mainTextColor}
+                        labelStyle={styles.mainText}
                         value={this.state.caregiverName}
                         autoCapitalize={'none'}
                         autoCorrect={false}
@@ -145,7 +145,7 @@ export default class signup extends Component {
                         iconName={'envelope'}
                         iconColor={IconColor}
                         style={styles.row}
-                        labelStyle={styles.mainTextColor}
+                        labelStyle={styles.mainText}
                         value={this.state.caregiverEmail}
                         autoCapitalize={'none'}
                         autoCorrect={false}
@@ -158,7 +158,7 @@ export default class signup extends Component {
                         iconName={'lock'}
                         iconColor={IconColor}
                         style={styles.row}
-                        labelStyle={styles.mainTextColor}
+                        labelStyle={styles.mainText}
                         value={this.state.caregiverPassword}
                         autoCapitalize={'none'}
                         autoCorrect={false}
@@ -172,7 +172,7 @@ export default class signup extends Component {
                         iconName={'user'}
                         iconColor={IconColor}
                         style={styles.row}
-                        labelStyle={styles.mainTextColor}
+                        labelStyle={styles.mainText}
                         value={this.state.caregiverPatient}
                         autoCapitalize={'none'}
                         autoCorrect={false}
@@ -193,7 +193,7 @@ export default class signup extends Component {
                     iconName={'user'}
                     iconColor={IconColor}
                     style={[styles.row , {borderTopLeftRadius: 5, borderTopRightRadius: 5}]}
-                    labelStyle={styles.mainTextColor}
+                    labelStyle={styles.mainText}
                     value={this.state.nurseName}
                     autoCapitalize={'none'}
                     autoCorrect={false}
@@ -206,7 +206,7 @@ export default class signup extends Component {
                     iconName={'h-square'}
                     iconColor={IconColor}
                     style={styles.row}
-                    labelStyle={styles.mainTextColor}
+                    labelStyle={styles.mainText}
                     value={this.state.nurseHospital}
                     autoCapitalize={'none'}
                     autoCorrect={false}
@@ -219,7 +219,7 @@ export default class signup extends Component {
                     iconName={'envelope'}
                     iconColor={IconColor}
                     style={styles.row}
-                    labelStyle={styles.mainTextColor}
+                    labelStyle={styles.mainText}
                     value={this.state.nurseEmail}
                     autoCapitalize={'none'}
                     autoCorrect={false}
@@ -232,7 +232,7 @@ export default class signup extends Component {
                     iconName={'lock'}
                     iconColor={IconColor}
                     style={[styles.row, {borderBottomLeftRadius: 5, borderBottomRightRadius: 5}]}
-                    labelStyle={styles.mainTextColor}
+                    labelStyle={styles.mainText}
                     value={this.state.nursePassword}
                     autoCapitalize={'none'}
                     autoCorrect={false}
@@ -243,11 +243,11 @@ export default class signup extends Component {
         );
     }
 
-    renderUserOption(isCaregiver) {
+    renderFormTypeButton(isCaregiver) {
         return (
             <View style={isCaregiver ? styles.userTypeContainer : [styles. userTypeContainer, {backgroundColor: "#00838F"}]}>
                 <Button
-                    style={isCaregiver ? [styles.secondaryTextColor, {fontSize: 11}] : [styles.mainTextColor, {fontSize: 11}]}
+                    style={isCaregiver ? [styles.secondaryText, {fontSize: 12, fontWeight: '500'}] : [styles.mainText, {fontSize: 12, fontWeight: '500'}]}
                     containerStyle={isCaregiver ? [styles.userTypeButton, styles.mainColor]: [styles.userTypeButton, styles.secondaryColor]}
                     onPress={() => this.setState({isCaregiver: !this.state.isCaregiver})}>
                     {!isCaregiver ? "Are you a caregiver?" : "Are you a nurse?"}
@@ -260,7 +260,7 @@ export default class signup extends Component {
         return (
             <View>
                 <Button
-                    style={isCaregiver ? styles.submitLabel : [styles.submitLabel, styles.mainTextColor]}
+                    style={isCaregiver ? [styles.secondaryText, {fontWeight: 'bold', fontSize: 18}] : [styles.mainText, {fontWeight: 'bold', fontSize: 18}]}
                     containerStyle={isCaregiver ? [styles.button, styles.mainColor] : [styles.button, styles.secondaryColor]}
                     onPress={this.onPressSignUp.bind(this)}>
                     Submit
@@ -270,7 +270,7 @@ export default class signup extends Component {
                     style={{height: 40}}
                     size="large"/>
                 <Button
-                    style={isCaregiver ? [styles.accountLabel, styles.centered, styles.mainTextColor] : [styles.accountLabel, styles.centered, styles.secondaryTextColor] }
+                    style={isCaregiver ? [styles.accountLabel, styles.centered, styles.mainText] : [styles.accountLabel, styles.centered, styles.secondaryText] }
                     containerStyle={{alignSelf: 'center', width: 130}}
                     onPress={this.onExitScene.bind(this)}>
                     Have an Account?
@@ -289,7 +289,7 @@ export default class signup extends Component {
                 { isCaregiver ? this.renderCaregiverForm() : this.renderNurseForm() }
                 { this.renderSubmitButton(isCaregiver) }
                 <View style={{flex: 1}}></View>
-                { this.renderUserOption(isCaregiver) }
+                { this.renderFormTypeButton(isCaregiver) }
                 <CloseModalButton action={this.onExitScene.bind(this)} icon={closeIcon}/>
             </View>
         )

@@ -1,12 +1,12 @@
-import { Platform, StyleSheet} from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import Dimensions from 'Dimensions';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
-var styles = require('../../config/styles')
-
-module.exports = StyleSheet.create({
+module.exports = EStyleSheet.create({
     accountLabel: {
         fontSize: 14,
-        fontWeight: '300',
+        fontWeight: '$fonts.weight',
+        fontFamily: '$fonts.family',
         paddingTop: 15,
     },
     body: {
@@ -44,7 +44,7 @@ module.exports = StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: "#00BCD4"
+        backgroundColor: '$colors.main'
     },
     formContainer: {
         marginTop: 5,
@@ -57,33 +57,25 @@ module.exports = StyleSheet.create({
         paddingTop: 20,
         width: Dimensions.get('window').width - 30,
     },
-    homeButton: {
-        marginTop: 10,
-    },
     icon: {
         height: (Platform.OS === 'ios') ? 30 : 25,
 		width: (Platform.OS === 'ios') ? 30 : 25,
-    },
-    KeyboardAvoidingViewContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'transparent',
-        paddingHorizontal: 20,
-        paddingTop: 20,
     },
     line: {
         marginTop: 5,
         flex: 0,
         height: StyleSheet.hairlineWidth,
-        backgroundColor: '#8E8E8E',
+        backgroundColor: '$colors.mediumGray',
         width: Dimensions.get('window').width - 20,
     },
     mainColor: {
-        backgroundColor: '#00BCD4',
+        backgroundColor: '$colors.main',
     },
-    mainTextColor: {
-        color: '#00BCD4',
+    mainText: {
+        color: '$colors.mainText',
+        fontSize: '$fonts.size',
+        fontWeight: '$fonts.weight',
+        fontFamily: '$fonts.family',
     },
     navBar: {
         backgroundColor: 'transparent',
@@ -94,75 +86,63 @@ module.exports = StyleSheet.create({
         height: 35,
         alignSelf: 'center',
         backgroundColor: 'transparent',
-        fontFamily: 'Helvetica',
-        fontWeight: '100',
+        fontFamily: '$fonts.family',
+        fontWeight: '$fonts.weight',
         fontSize: 16,
         color: '#44688E'
-    },
-    placeholderLabel: {
-        fontSize: 12,
-        fontWeight: '200',
-        color: '#ffffff'
     },
     row: {
         width: Dimensions.get('window').width - 20
     },
     secondaryColor: {
-        backgroundColor: '#f7f7f7',
+        backgroundColor: '$colors.secondary',
     },
-    secondaryTextColor: {
-        color: '#f7f7f7',
+    secondaryText: {
+        color: '$colors.secondaryText',
+        fontSize: '$fonts.size',
+        fontWeight: '$fonts.weight',
+        fontFamily: '$fonts.family',
     },
     signInBox: {
-        //flex: 1,
-        alignItems: 'flex-start',
         flexDirection: 'row',
         height: 45,
         width: Dimensions.get('window').width,
+        alignItems: 'center',
+        backgroundColor: '$colors.secondary',
+        paddingHorizontal: 5,
         borderTopWidth: 1,
-        paddingVertical: 4,
-        borderTopColor: '#bdbdbd',
-        backgroundColor: '#f7f7f7',
+        borderTopColor: '$colors.mediumGray',
     },
     signInBoxButton: {
-        justifyContent: 'center',
-        marginRight: 5,
+        height: 27.5,
         width: 85,
-        backgroundColor: "#00BCD4",
+        justifyContent: 'center',
+        backgroundColor: "$colors.main",
+        marginRight: 5,
         borderRadius: 8,
-        height: 27.5
     },
     submitButton: {
-        borderRadius: 2.5,
-        borderColor: 'transparent',
-        borderWidth: 0.5,
-        alignSelf: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#00BCD4',
         height: 30,
         width: Dimensions.get('window').width - 20,
-        marginTop: 10,
-    },
-    submitLabel: {
-        textAlign: 'center',
+        borderWidth: 0.5,
+        borderRadius: 2.5,
+        borderColor: 'transparent',
         alignSelf: 'center',
-        fontSize: 15,
-        fontWeight: '300',
-        color: '#ffffff',
+        justifyContent: 'center',
+        backgroundColor: "$colors.main",
+        marginTop: 10,
+        fontWeight: '$fonts.weight',
+        fontFamily: '$fonts.family',
     },
     textInput: {
         width: Dimensions.get('window').width - 30,
         height: 35,
         color: '#44688E',
         fontSize: 16,
-        fontWeight: '100',
-        fontFamily: 'Helvetica',
+        fontWeight: '$fonts.weight',
+        fontFamily: '$fonts.family',
         alignSelf: 'center',
         backgroundColor: 'transparent',
-
-    },
-    text: {
-
     },
     textHomeScreen: {
         marginLeft: 50,
@@ -175,14 +155,6 @@ module.exports = StyleSheet.create({
         width: 50,
         marginTop: 30,
         marginLeft: 30
-    },
-    transparent_button: {
-        marginTop: 10,
-        padding: 15
-    },
-    transparent_button_text: {
-        color: '#0485A9',
-        fontSize: 16
     },
     userTypeContainer: {
         height: 40,

@@ -1,35 +1,45 @@
 import React, { Component } from 'react';
-import { AppRegistry, AsyncStorage, Model, Navigator, StyleSheet, View, Text } from 'react-native';
+import { AsyncStorage, Navigator} from 'react-native';
 
-var Login   = require('./app/screens/Login/home').default
-// var Login   = require('./app/screens/CaregiverSettings/caregiversettings').default
-var firebase = require('./app/config/firebase')
+import Home from './app/screens/Login/home'
+import TabBar from './app/screens/Home/TabBar'
+import Firebase from './app/config/firebase'
+import EStyleSheet from 'react-native-extended-stylesheet';
+import Theme from './app/config/theme'
+
+EStyleSheet.build(Theme);
 
 export default class Main extends Component {
 
     constructor(props){
         super(props);
+
         this.state = {
-            component: Login,
+            component: Home,
         };
+
+        this.handleAlreadySignIn()
     }
 
-    componentWillMount(){
+    handleAlreadySignIn() {
 
-        AsyncStorage.getItem('user_data')
-            .then( function(user_data_json) {
-                let user_data = JSON.parse(user_data_json);
-                let component = {component: Login};
+        var self = this
 
-                firebase.signInWithCustomToken(user_data.token)
-                    .then( function(success) {
-                        this.setState({component: TabBar});
+        Firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                AsyncStorage.getItem('user_data')
+                    .then((usr) => {
+
+                        var component = usr["type"] == "caregiver" ? CaregiverHome : TabBar
+
+                        self.refs.navigator.resetTo({ component: component, passProps: {user: JSON.parse(usr)} })
+
                     }, function(error) {
-                        console.log(error)
-                    });
-            }, function(error) {
-                console.log(error)
-            })
+                        console.log("Error: No stored user data")
+                    })
+
+            }
+        });
     }
 
     render(){
@@ -38,10 +48,7 @@ export default class Main extends Component {
                 ref="navigator"
                 initialRoute={{component: this.state.component}}
                 configureScene={(route) => {
-                    if (route.sceneConfig) {
-                        return route.sceneConfig;
-                    }
-                    return Navigator.SceneConfigs.FloatFromRight;
+                    return route.sceneConfig ? route.sceneConfig : Navigator.SceneConfigs.FloatFromRight
                 }}
                 renderScene={(route, navigator) => {
                     if(route.component){
@@ -57,5 +64,3 @@ export default class Main extends Component {
         );
     }
 }
-
-AppRegistry.registerComponent('Hospice', () => Main);

@@ -69,14 +69,14 @@ export default class Login extends Component {
                 user = usr
 
                 return Firebase.database().ref().child("Caregivers/" + user.uid).once('value').then(function(snapshot) {
-                    return self.signInHandler(snapshot, CaregiverHome)
+                    return self.signInHandler(user, snapshot, CaregiverHome)
                 })
 
             }).then(function(isCaregiver) {
                 if (!isCaregiver) {
                      return Firebase.database().ref().child("Nurses/" + user.uid).once('value')
                         .then(function(snapshot) {
-                            self.signInHandler(snapshot, TabBar)
+                            self.signInHandler(user, snapshot, TabBar)
                         }, function(error) {
                             throw {code: error.code}
                         })
@@ -107,7 +107,7 @@ export default class Login extends Component {
             })
     }
 
-    signInHandler(snapshot, component): Boolean {
+    signInHandler(user, snapshot, component): Boolean {
         if (snapshot.val() !== null) {
 
             this.setState({animating: false})
@@ -116,6 +116,7 @@ export default class Login extends Component {
 
             var usr = snapshot.val()
             usr["id"] = snapshot.key
+            usr["type"] = component == TabBar ? "nurse" : "caregiver"
 
             AsyncStorage.setItem('user_data', JSON.stringify(usr));
 
@@ -140,7 +141,7 @@ export default class Login extends Component {
                         ref="email"
                         label={'Email Address'}
                         style={styles.row}
-                        labelStyle={styles.mainTextColor}
+                        labelStyle={styles.mainText}
                         inputStyle={styles.textInput}
                         borderColor={MainColor}
                         onChangeText={(text) => this.setState({username: text})}
@@ -150,7 +151,7 @@ export default class Login extends Component {
                     <Hoshi
                         ref='password'
                         label={'Password'}
-                        labelStyle={styles.mainTextColor}
+                        labelStyle={styles.mainText}
                         style={[styles.row, {paddingTop: 20}]}
                         inputStyle={styles.textInput}
                         borderColor={MainColor}
@@ -165,16 +166,16 @@ export default class Login extends Component {
                     size="large" />
                 <View style={{flex: 1}}/>
                 <KeyboardAvoidingView style={{flex: 1, justifyContent: 'flex-end'}} behavior={'padding'}>
-                    <View style={[styles.signInBox, {alignItems: 'center'}]}>
+                    <View style={styles.signInBox}>
                         <Button
-                            style={{paddingLeft: 5, fontWeight: '300', fontSize: 13, color: "#00BCD4"}}
+                            style={[styles.mainText, {paddingLeft: 5, fontWeight: '300'}]}
                             containerStyle={[styles.signInBoxButton, {backgroundColor: 'transparent'}]}
                             onPress={this.onPressPasswordReset.bind(this)}>
                             Need Help?
                         </Button>
                         <View style={{flex: 1}}></View>
                         <Button
-                            style={styles.submitLabel}
+                            style={styles.secondaryText}
                             containerStyle={styles.signInBoxButton}
                             onPress={this.onPressLogin.bind(this)}>
                             Log In

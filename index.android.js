@@ -5,7 +5,7 @@
  */
 
 import { AppRegistry } from 'react-native';
- 
-var Main = require('./main').default
- 
+
+import Main from './main'
+
 AppRegistry.registerComponent('Hospice', () => Main);

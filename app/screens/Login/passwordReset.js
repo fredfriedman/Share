@@ -78,7 +78,7 @@ export default class Signup extends Component {
                         label={'Email Address'}
                         value={this.state.email}
                         style={styles.row}
-                        labelStyle={{color: '#00BCD4'}}
+                        labelStyle={styles.mainText}
                         inputStyle={styles.passwordResetTextInput}
                         borderColor={'#00BCD4'}
                         autoCapitalize={'none'}
@@ -87,10 +87,10 @@ export default class Signup extends Component {
                 </View>
                 <View style={{flex: 1}}/>
                 <KeyboardAvoidingView style={{flex: 1, justifyContent: 'flex-end'}} behavior={'padding'}>
-                    <View style={[styles.signInBox, {alignItems: 'center', justifyContent: 'flex-end'}]}>
+                    <View style={[styles.signInBox, {justifyContent: 'flex-end'}]}>
                         <Button
-                            style={[styles.submitLabel, {fontSize: 11}]}
-                            containerStyle={styles.signInBoxButton}
+                            style={styles.secondaryText}
+                            containerStyle={[styles.signInBoxButton, {width: 120}]}
                             onPress={this.onInitiateReset.bind(this)}>
                             Reset Password
                         </Button>

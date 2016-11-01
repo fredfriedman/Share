@@ -2,26 +2,26 @@
 
 import React, { Component } from 'react';
 import {
-        Image,
         ListView,
-        Modal,
-        Platform,
         ScrollView,
-        StyleSheet,
-        Text,
-        TouchableHighlight,
-        View, } from 'react-native';
-import Button from 'react-native-button'
-import Icon from 'react-native-vector-icons/FontAwesome';
+        View,
+    } from 'react-native';
 
-var TableViewGroup = require('../../components/TableViewGroup').default
-var PatientTableViewCell = require('../../components/patientTableViewCell').default
-var PatientDetailView = require('../Detail/detail').default
-var PatientsView = require('../Home/patients_view').default
-var ModalView = require('./modalCallView').default
-var Header = require('../../components/header').default
-var firebase = require('../../config/firebase')
-var dStyles = require('../../config/styles')
+// Utility
+import Firebase from '../../../config/firebase'
+import Icon from 'react-native-vector-icons/FontAwesome';
+import EStyleSheet from 'react-native-extended-stylesheet';
+
+// Pages
+import PatientsView from './patients_view'
+import PatientDetailView from '../../Detail/detail'
+
+// Components
+import Button from 'react-native-button'
+import Header from '../../../components/header'
+import ModalView from './modalCallView'
+import TableViewGroup from '../../../components/TableViewGroup'
+import PatientTableViewCell from '../../../components/patientTableViewCell'
 
 export default class Overview extends Component {
 
@@ -44,7 +44,7 @@ export default class Overview extends Component {
     }
 
     getRef() {
-        return firebase.database().ref();
+        return Firebase.database().ref();
     }
 
     listenForItems(patientsRef) {
@@ -145,12 +145,12 @@ export default class Overview extends Component {
     render() {
 
         return (
-            <View style={{flexDirection: 'column', flex: 1, backgroundColor: '#f8f8f8' }}>
+            <View style={styles.container}>
                 <Header
                     text={"Overview"}
                     headerStyle={styles.header}
                     textStyle={styles.header_text}/>
-                <ScrollView style={{marginTop: 5, backgroundColor: '#f8f8f8'}} contentContainerStyle={{backgroundColor: '#f8f8f8', paddingTop: 10, paddingBottom: 10}}>
+                <ScrollView contentContainerStyle={styles.scrollViewContainer}>
                     <TableViewGroup
                         title={"Critical"}
                         headerIsEnabled={true}
@@ -158,7 +158,7 @@ export default class Overview extends Component {
                         onPressArchive={this.onPressArchive.bind(this)}
                         style={styles.tableView}
                         textStyle={styles.tableViewText}
-                        headerStyle={[styles.headerStyle, {backgroundColor: "#EF9A9A"}]}
+                        headerStyle={{backgroundColor: "#EF9A9A"}}
                         dataSource={this.state.dataSource}
                         renderRow={this.renderRow.bind(this)}/>
                     <TableViewGroup
@@ -168,7 +168,7 @@ export default class Overview extends Component {
                         onPressArchive={this.onPressArchive.bind(this)}
                         style={[styles.tableView, {marginTop: 20}]}
                         textStyle={styles.tableViewText}
-                        headerStyle={[styles.headerStyle, {backgroundColor: "#A5D6A7"}]}
+                        headerStyle={{backgroundColor: "#A5D6A7"}}
                         dataSource={this.state.dataSource}
                         renderRow={this.renderRow.bind(this)}/>
                 </ScrollView>
@@ -182,7 +182,7 @@ export default class Overview extends Component {
 
     renderRow(patient: Object, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) {
 
-        const phoneIcon = (<Icon name="phone-square" size={30} color="#1e1e1e" />);
+        const phoneIcon = (<Icon name="phone-square" size={30} color="#262626" />);
 
         return (
             <PatientTableViewCell
@@ -197,16 +197,25 @@ export default class Overview extends Component {
     }
 }
 
-var styles = StyleSheet.create({
+const styles = EStyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#f8f8f8'
+    },
     header: {
         height: 60,
-        backgroundColor: '#ECEFF1',
+        backgroundColor: '$colors.lightGray',
     },
     header_text: {
-        fontFamily: (Platform.OS === 'ios') ? 'Helvetica Neue' : "Noto",
-        color: '#333333',
+        color: '$colors.darkGray',
         fontSize: 18,
-        fontWeight: '400',
+        fontWeight: '$fonts.weight',
+        fontFamily: "$fonts.family",
+    },
+    scrollViewContainer: {
+        backgroundColor: 'transparent',
+        paddingTop: 10,
+        paddingBottom: 10
     },
     tableView: {
         backgroundColor: '#FFFFFF',
@@ -222,9 +231,10 @@ var styles = StyleSheet.create({
         marginRight: 10
     },
     tableViewText: {
+        marginTop: 2,
         marginLeft: 5,
+        color: '$colors.darkGray',
         fontWeight: 'bold',
-        color: '#1B1B1B',
-        marginTop: 2
+        fontFamily: '$fonts.family',
     },
 });

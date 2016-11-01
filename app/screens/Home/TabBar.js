@@ -1,19 +1,20 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { AppRegistry, ViewPagerAndroid, View, StyleSheet, Text, Image } from 'react-native';
+import {
+    Image,
+    StyleSheet,
+    Text,
+    View
+} from 'react-native';
 import TabNavigator from 'react-native-tab-navigator';
+import EStyleSheet from 'react-native-extended-stylesheet';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-var dStyles = require('../../config/styles')
-
-// Page in Tab Bar
-var Profile = require('./profile').default
-var Overview = require('./overview').default
-var Patients = require('./patients_view').default
-var Settings = require('../Settings/settings').default
-
-
+// Pages in Tab Bar
+import Profile from './components/profile'
+import Overview from './components/overview'
+import Patients from './components/patients_view'
 
 export default class TabBar extends Component {
 
@@ -29,12 +30,15 @@ export default class TabBar extends Component {
     }
 
     render() {
-        const home = (<Icon name="home" size={30} color="gray" />);
-        const cal = (<Icon name="calendar" size={30} color="gray" />);
-        const over = (<Icon name="modx" size={30} color="gray" />);
-        const homeS = (<Icon name="home" size={30} color="#00BCD4" />);
-        const calS = (<Icon name="calendar" size={30} color="#00BCD4" />);
-        const overS = (<Icon name="modx" size={30} color="#00BCD4" />);
+        const selectedColor = "#0097A7"
+        const unselectedColor = "#8E8E8E"
+        const size = 30
+        const home = (<Icon name="home" size={size} color={unselectedColor} />);
+        const cal = (<Icon name="calendar" size={size} color={unselectedColor} />);
+        const over = (<Icon name="modx" size={size} color={unselectedColor} />);
+        const homeS = (<Icon name="home" size={size} color={selectedColor} />);
+        const calS = (<Icon name="calendar" size={size} color={selectedColor} />);
+        const overS = (<Icon name="modx" size={size} color={selectedColor} />);
 
         return (
         <TabNavigator tabBarShadowStyle={styles.tabBarShadow} tabBarStyle={styles.tabBar}>
@@ -73,26 +77,22 @@ export default class TabBar extends Component {
     }
 }
 
-var styles = {
-
-    view: {
-        height: 10
-    },
+const styles = EStyleSheet.create({
     tabBar: {
-        backgroundColor: '#E9E9E9',
+        backgroundColor: '$colors.navBar',
     },
     tabBarShadow: {
-        backgroundColor: '#f7f7f7',
-        borderWidth: StyleSheet.hairlineWidth,
-        borderColor: '#bdbdbd'
+        backgroundColor: '$colors.secondary',
+        borderWidth: '$dimensions.hairlineWidth',
+        borderColor: '$colors.mediumGray',
     },
     tabBarTitle: {
-        fontFamily: 'Helvetica',
-        fontWeight: '100',
         fontSize: 10,
-        color: '#90A4AE'
+        color: '$colors.mediumGray',
+        fontFamily: '$fonts.family',
+        fontWeight: '$fonts.weight',
     },
     tabBarSelectedTitle: {
-        color: '#0097A7'
+        color: '$colors.status'
     }
-}
+});
