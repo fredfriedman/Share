@@ -19,9 +19,10 @@ import styles from './styles'
 import Firebase from '../../config/firebase'
 import { butterfly } from '../../config/images'
 
+import TabBar from '../Home/TabBar'
 import PasswordReset from './passwordReset'
 import CaregiverHome from '../CaregiverHome/overview'
-import TabBar from '../Home/TabBar'
+
 
 
 
@@ -58,50 +59,33 @@ export default class Login extends Component {
 
         var self = this;
 
+        var user;
+
         this.setState({animating: true})
 
         Firebase.auth().signInWithEmailAndPassword(this.state.username, this.state.password)
-            .then(function(user) {
+            .then(function(usr) {
 
-                AsyncStorage.setItem('user_data', JSON.stringify(user));
+                user = usr
 
-                Firebase.database().ref().child("Caregivers/" + user.uid).once('value')
-                    .then(function(snapshot) {
-                        if (snapshot.val() !== null) {
+                return Firebase.database().ref().child("Caregivers/" + user.uid).once('value').then(function(snapshot) {
+                    return self.signInHandler(snapshot, CaregiverHome)
+                })
 
-                            self.setState({animating: false})
-
-                            dismissKeyboard()
-
-                            var usr = snapshot.val()
-                            usr["id"] = snapshot.key
-
-                            self.props.navigator.resetTo({ component: CaregiverHome, passProps: {user: usr} })
-                        } else {
-                            Firebase.database().ref().child("Nurses/" + user.uid).once('value')
-                                .then(function(snapshot) {
-                                    if (snapshot.val() !== null) {
-                                        self.setState({animating: false})
-
-                                        dismissKeyboard()
-
-                                        var usr = snapshot.val()
-                                        usr["id"] = snapshot.key
-
-                                        self.props.navigator.resetTo({ component: TabBar, passProps: {user: usr} })
-                                    }
-                                }, function(error) {
-                                    console.log(error)
-                                })
-                        }
-                    }, function(error) {
-                        console.log(error)
-                    })
+            }).then(function(isCaregiver) {
+                if (!isCaregiver) {
+                     return Firebase.database().ref().child("Nurses/" + user.uid).once('value')
+                        .then(function(snapshot) {
+                            self.signInHandler(snapshot, TabBar)
+                        }, function(error) {
+                            throw {code: error.code}
+                        })
+                }
 
             }, function(error) {
 
-                var alertTitle = "Oops something went wrong"
-                var alertMessage = "Please try again."
+                var alertTitle;
+                var alertMessage;
 
                 switch (error.code) {
                     case "auth/invalid-email":
@@ -121,6 +105,27 @@ export default class Login extends Component {
 
                 self.setState({animating: false})
             })
+    }
+
+    signInHandler(snapshot, component): Boolean {
+        if (snapshot.val() !== null) {
+
+            this.setState({animating: false})
+
+            dismissKeyboard()
+
+            var usr = snapshot.val()
+            usr["id"] = snapshot.key
+
+            AsyncStorage.setItem('user_data', JSON.stringify(usr));
+
+            this.props.navigator.resetTo({ component: component, passProps: {user: usr} })
+
+            return true
+        } else {
+
+            return false
+        }
     }
 
     render() {
