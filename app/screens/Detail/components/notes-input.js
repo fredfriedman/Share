@@ -10,12 +10,12 @@ import {
         TouchableHighlight,
         View
     } from 'react-native';
-import dismissKeyboard from 'dismissKeyboard'
-import Icon from 'react-native-vector-icons/Ionicons';
 
-var Header = require('../../components/header').default
-var { butterfly } = require('../../config/images')
-var firebase = require('../../config/firebase')
+import Icon from 'react-native-vector-icons/Ionicons'
+import Header from '../../../components/header'
+import Firebase from '../../../config/firebase'
+import { butterfly } from '../../../config/images'
+import dismissKeyboard from 'dismissKeyboard'
 
 export default class noteInput extends Component {
 
@@ -24,13 +24,12 @@ export default class noteInput extends Component {
 
         this.state = {
             text: "",
-            isSubmitActive: false,
             notesRef: this.getRef().child('Patients').child(this.props.patient.pID).child('Notes')
         }
     }
 
     getRef() {
-        return firebase.database().ref();
+        return Firebase.database().ref();
     }
 
     onSubmit() {
@@ -51,37 +50,39 @@ export default class noteInput extends Component {
     }
 
     onChangeText(text) {
-        text == "" ?  this.setState({isSubmitActive: false}) : this.setState({isSubmitActive: true})
         this.setState({text: text})
     }
 
-    render(){
-        const backIcon = ( <Icon name="ios-close" ios="ios-close" md="md-close" style={{marginTop: -10}} size={30} color="#1e1e1e" />);
+    render() {
+
+        const iconColor="#1e1e1e"
+        const placeholderTextColor = '#607D8B'
+        const closeIcon = ( <Icon name="ios-close" ios="ios-close" md="md-close" size={30} color={iconColor} />);
 
         return (
-            <View stye={{alignItems: 'center', backgroundColor: "white"}}>
+            <View stye={styles.container}>
                 <Header
                     leftAction={() => console.log()}
-                    leftIcon={<Image style={{height:30, width: 30}} source={butterfly}/>}
+                    leftIcon={<Image style={styles.icon} source={butterfly}/>}
                     rightAction={this.exit.bind(this)}
-                    rightIcon={backIcon}
-                    headerStyle={{height: 60, backgroundColor: 'white' }}/>
+                    rightIcon={closeIcon}
+                    headerStyle={styles.header}/>
                 <TextInput
-                    maxLength={160}
+                    maxLength={140}
                     multiline={true}
                     placeholder={"What's Happening"}
-                    placeholderTextColor={'#607D8B'}
-                    style={{fontSize: 16, height: 200, color: '#607D8B', marginLeft: 30, marginRight: 30}}
+                    placeholderTextColor={placeholderTextColor}
+                    style={[styles.text, styles.textInput]}
                     onChangeText={(text) => this.onChangeText(text)}
                     value={this.state.text}/>
-                <View style={{height: 60, borderWidth: 1, borderColor: "#f3f3f3" ,flexDirection: "row", justifyContent: "flex-end"}}>
-                    <Text style={{fontSize: 14, color: "#607D8B", marginTop: 20, paddingRight: 10}}>{160 - this.state.text.length}</Text>
+                <View style={styles.submissionView}>
+                    <Text style={[styles.text, styles.textLengthLabel]}>{140 - this.state.text.length}</Text>
                     <TouchableHighlight
-                        disabled={false}
+                        disabled={this.state.text.length == 0}
                         underlayColor={'#00BCD4'}
                         onPress={this.onSubmit.bind(this)}
-                        style={this.state.isSubmitActive ? styles.activePost : styles.inActivePost}>
-                        <View><Text style={this.state.isSubmitActive ? styles.activeText : styles.inActiveText}> Post </Text></View>
+                        style={this.state.text.length == 0 ? styles.inactiveButton : styles.activeButton}>
+                        <View><Text style={this.state.text.length == 0 ? styles.inactiveButtonText : styles.activeButtonText}> Post </Text></View>
                     </TouchableHighlight>
                 </View>
             </View>
@@ -90,7 +91,7 @@ export default class noteInput extends Component {
 }
 
 var styles = StyleSheet.create({
-    activePost: {
+    activeButton: {
         borderRadius: 5,
         backgroundColor: "#00BCD4",
         width: 80,
@@ -100,7 +101,24 @@ var styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    inActivePost: {
+    activeButtonText: {
+        color: "white"
+    },
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        backgroundColor: "white"
+    },
+    header: {
+        height: 60,
+        borderColor: 'white',
+        backgroundColor: 'white'
+    },
+    icon: {
+        height:30,
+        width: 30
+    },
+    inactiveButton: {
         borderWidth: 1,
         borderColor: "#f3f3f3",
         borderRadius: 5,
@@ -112,10 +130,28 @@ var styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    activeText: {
-        color: "white"
-    },
-    inActiveText: {
+    inactiveButtonText: {
         color: "#607D8B"
+    },
+    submissionView: {
+        height: 60,
+        borderWidth: 1,
+        borderColor: "#f3f3f3" ,
+        flexDirection: "row",
+        justifyContent: "flex-end"
+    },
+    text: {
+        fontSize: 14,
+        color: "#607D8B",
+    },
+    textLengthLabel: {
+        marginTop: 20,
+        paddingRight: 10
+    },
+    textInput: {
+        fontSize: 16,
+        height: 200,
+        marginLeft: 30,
+        marginRight: 30
     },
 })

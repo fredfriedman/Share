@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {
     ListView,
-    Image,
     Navigator,
     Text,
     TouchableHighlight,
@@ -10,10 +9,9 @@ import {
 } from 'react-native';
 import Dimensions from 'Dimensions';
 
-var { personIcon } = require('../../config/images')
-var firebase = require('../../config/firebase')
-var NotesInput = require('./notesInput').default
-var Note = require('../../components/note').default
+import { personIcon } from '../../../config/images'
+import NotesInput from './notes-input'
+import Note from './note'
 
 export default class NotesPage extends Component {
 
@@ -34,7 +32,8 @@ export default class NotesPage extends Component {
 
     render(){
         return (
-            <View style={styles.scrollView}>
+            <View style={this.props.containerStyle}>
+                <Text style={this.props.labelStyle}> Notes </Text>
                 <ListView
                     dataSource={this.props.notes}
                     renderRow={(note) => <Note note={note} poster={personIcon}/>}
@@ -56,18 +55,6 @@ export default class NotesPage extends Component {
 }
 
 var styles = StyleSheet.create({
-    scrollView: {
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height - Dimensions.get('window').height/2.5,
-        backgroundColor:'transparent',
-        flex: 1
-    },
-    footer: {
-        paddingVertical: 20,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "flex-end"
-    },
     button: {
         borderWidth: 1,
         borderRadius: 5,
@@ -77,12 +64,18 @@ var styles = StyleSheet.create({
         alignItems: 'center',
         marginRight: 30
     },
-    text: {
-        color: '#1e1e1e'
+    footer: {
+        paddingVertical: 20,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "flex-end"
     },
     separator: {
         flex: 1,
         height: StyleSheet.hairlineWidth,
         backgroundColor: '#8E8E8E',
+    },
+    text: {
+        color: '#1e1e1e'
     },
 })

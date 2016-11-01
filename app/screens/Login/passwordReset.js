@@ -16,12 +16,12 @@ let CloseModalButton  = require('../../components/TopLeftAction').default
 export default class signup extends Component {
 
     constructor(props){
-    super(props);
+        super(props);
 
-    this.state = {
-        loaded: true,
-        email: '',
-        password: ''
+        this.state = {
+            loaded: true,
+            email: '',
+            password: ''
         };
     }
 
@@ -67,10 +67,10 @@ export default class signup extends Component {
 
     render() {
 
-        const xIcon = (<Icon name="ios-close" size={dimensions.iconSize} color="gray" />);
+        const xIcon = (<Icon name="ios-close" size={30} color="gray" />);
 
         return (
-            <View style={styles.container}>
+            <View style={[styles.container,{backgroundColor: 'white'}]}>
                 <Image style={{backgroundColor: 'transparent', height: 35, width: 35, top: 20}} source={butterfly}/>
                 <View style={{width: Dimensions.get('window').width - 20, paddingTop: 40}}>
                     <Hoshi
@@ -86,7 +86,7 @@ export default class signup extends Component {
                         onChangeText={(text) => this.setState({email: text})}/>
                 </View>
                 <Button
-                    style={styles.submitLabel}
+                    style={[styles.submitLabel,{color: 'white', fontWeight: '400'}]}
                     containerStyle={styles.submitButton}
                     onPress={this.onInitiateReset.bind(this)}>
                     Reset Password

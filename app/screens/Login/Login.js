@@ -159,7 +159,7 @@ export default class Login extends Component {
                         style={{height: 60}}
                         size="large" />
                 </View>
-                <View style={{flex: 1}}></View>
+                <View style={{flex: 1}}/>
                 <KeyboardAvoidingView style={{flex: 1, justifyContent: 'flex-end'}} behavior={'padding'}>
                     <View style={styles.signInBox}>
                         <Button
