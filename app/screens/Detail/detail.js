@@ -1,20 +1,26 @@
 import React, { Component } from 'react';
 import {
         ListView,
-        Navigator,
         ScrollView,
         StyleSheet,
         Text,
-        View, } from 'react-native';
+        View, } from 'react-native'
+// Assets
 import Icon from 'react-native-vector-icons/Ionicons';
-import Dimensions from 'Dimensions';
-import PageControl from 'react-native-page-control'
-import Firebase from '../../config/firebase'
+
+// Components
 import Header from '../../components/header'
+import PageControl from 'react-native-page-control'
+
+// SubPages
 import NotesPage from './components/notes'
 import GraphsPage from './components/graphs'
 import HistoryPage from './components/history'
-import dStyles from '../../config/styles'
+
+// Utiilities
+import Firebase from '../../config/firebase'
+import EStyleSheet from 'react-native-extended-stylesheet';
+import Dimensions from 'Dimensions'
 
 export default class PatientDetailView  extends Component {
 
@@ -178,14 +184,13 @@ export default class PatientDetailView  extends Component {
     }
 }
 
-var styles = StyleSheet.create({
+const styles = EStyleSheet.create({
     bottomBox: {
         flex: 1,
-        backgroundColor: '#ECEFF1',
+        backgroundColor: '$colors.lightGray',
     },
     header: {
-        height: 60,
-        backgroundColor: '#ECEFF1',
+        backgroundColor: '$colors.lightGray',
     },
     indicator: {
         width: 5,
@@ -195,7 +200,7 @@ var styles = StyleSheet.create({
     },
     label: {
         alignSelf: 'center',
-        color: '#262626'
+        color: '$colors.darkGray',
     },
     pageControl: {
         position:'absolute',
@@ -208,21 +213,21 @@ var styles = StyleSheet.create({
     },
     scrollView: {
         flex: 1,
-        width: Dimensions.get('window').width,
+        width: '$dimensions.screenWidth',
         backgroundColor: 'transparent',
     },
     text: {
-        color: '#262626',
+        color: '$colors.darkGray',
         fontSize: 16,
         fontWeight: 'bold',
-        fontFamily: 'Helvetica Neue',
+        fontFamily: '$fonts.family',
     },
     topBox: {
         flex: .8,
         paddingLeft: 30,
-        backgroundColor: '#262626',
+        backgroundColor: '$colors.darkGray',
         justifyContent: 'space-between',
-        borderBottomColor: '#00838F',
+        borderBottomColor: '$colors.status',
         borderBottomWidth: 4
     }
 });

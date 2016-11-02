@@ -8,6 +8,7 @@ import {
 import { Col, Row, Grid } from "react-native-easy-grid";
 import Chart from 'react-native-chart';
 import Header from '../../../components/header'
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 export default class Graphs extends Component {
 
@@ -120,7 +121,7 @@ export default class Graphs extends Component {
     }
 }
 
-var styles = StyleSheet.create({
+const styles = EStyleSheet.create({
     chart: {
         width: 250,
         height: 65,
@@ -134,17 +135,17 @@ var styles = StyleSheet.create({
         flex: 1
     },
     textMain: {
-        color: '#262626',
+        color: '$colors.darkGray',
         fontSize: 36,
-        fontWeight: '400',
-        fontFamily: 'Helvetica Neue',
+        fontWeight: '$fonts.weight',
+        fontFamily: '$fonts.family',
         marginLeft: -5,
     },
     textSubtitle: {
-        color: '#9E9E9E',
-        fontSize: 14,
-        fontWeight: '400',
-        fontFamily: 'Helvetica Neue',
+        color: '$colors.mediumGray',
+        fontSize: '$fonts.size',
+        fontWeight: '$fonts.weight',
+        fontFamily: '$fonts.family',
         paddingTop: 1
     },
     row: {

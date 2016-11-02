@@ -4,10 +4,10 @@ import {
     Navigator,
     Text,
     TouchableHighlight,
-    StyleSheet,
     View
 } from 'react-native';
 
+import EStyleSheet from 'react-native-extended-stylesheet';
 import { personIcon } from '../../../config/images'
 import NotesInput from './notes-input'
 import Note from './note'
@@ -60,14 +60,14 @@ export default class NotesPage extends Component {
     }
 }
 
-var styles = StyleSheet.create({
+const styles = EStyleSheet.create({
     button: {
-        borderWidth: 1,
-        borderRadius: 5,
-        borderColor: '#1e1e1e',
         width: 100,
         justifyContent: 'center',
         alignItems: 'center',
+        borderWidth: 1,
+        borderRadius: 5,
+        borderColor: '$colors.darkGray',
         marginRight: 30
     },
     footer: {
@@ -78,10 +78,10 @@ var styles = StyleSheet.create({
     },
     separator: {
         flex: 1,
-        height: StyleSheet.hairlineWidth,
-        backgroundColor: '#8E8E8E',
+        height: '$dimensions.hairlineWidth',
+        backgroundColor: '$colors.mediumGray',
     },
     text: {
-        color: '#1e1e1e'
+        color: '$colors.darkGray',
     },
 })

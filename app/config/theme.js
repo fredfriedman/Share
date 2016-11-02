@@ -1,4 +1,5 @@
 import { Platform, StyleSheet} from 'react-native';
+import Dimensions from 'Dimensions'
 
 export default {
 
@@ -24,9 +25,11 @@ export default {
 
     dimensions: {
         iconSize: (Platform.OS === 'ios') ? 30 : 25,
-        navBarHeight: (Platform.OS === 'ios') ? 49 : 49,
+        navBarHeight: (Platform.OS === 'ios') ? 60 : 60,
         rowHeight: (Platform.OS === 'ios') ? 49 : 49,
-        hairlineWidth: StyleSheet.hairlineWidth
+        hairlineWidth: StyleSheet.hairlineWidth,
+        screenHeight: Dimensions.get('window').width,
+        screenWidth: Dimensions.get('window').width,
     },
 
     fonts: {

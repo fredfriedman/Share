@@ -2,20 +2,23 @@
 import React, { Component } from 'react';
 import {
         Image,
-        KeyboardAvoidingView,
-        Navigator,
-        StyleSheet,
         Text,
         TextInput,
         TouchableHighlight,
         View
     } from 'react-native';
 
+// Assets
 import Icon from 'react-native-vector-icons/Ionicons'
-import Header from '../../../components/header'
-import Firebase from '../../../config/firebase'
 import { butterfly } from '../../../config/images'
+
+// Components
+import Header from '../../../components/header'
+
+// Utiilities
+import Firebase from '../../../config/firebase'
 import dismissKeyboard from 'dismissKeyboard'
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 export default class noteInput extends Component {
 
@@ -62,10 +65,9 @@ export default class noteInput extends Component {
         return (
             <View stye={styles.container}>
                 <Header
-                    leftAction={() => console.log()}
-                    leftIcon={<Image style={styles.icon} source={butterfly}/>}
-                    rightAction={this.exit.bind(this)}
-                    rightIcon={closeIcon}
+                    leftAction={this.exit.bind(this)}
+                    leftIcon={closeIcon}
+                    centerIcon={<Image style={styles.icon} source={butterfly}/>}
                     headerStyle={styles.header}/>
                 <TextInput
                     maxLength={140}
@@ -82,7 +84,7 @@ export default class noteInput extends Component {
                         underlayColor={'#00BCD4'}
                         onPress={this.onSubmit.bind(this)}
                         style={this.state.text.length == 0 ? styles.inactiveButton : styles.activeButton}>
-                        <View><Text style={this.state.text.length == 0 ? styles.inactiveButtonText : styles.activeButtonText}> Post </Text></View>
+                        <Text style={this.state.text.length == 0 ? styles.inactiveButtonText : styles.activeButtonText}> Post </Text>
                     </TouchableHighlight>
                 </View>
             </View>
@@ -90,16 +92,18 @@ export default class noteInput extends Component {
     }
 }
 
-var styles = StyleSheet.create({
+const styles = EStyleSheet.create({
     activeButton: {
-        borderRadius: 5,
-        backgroundColor: "#00BCD4",
         width: 80,
         height: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: "$colors.main",
+        borderRadius: 5,
+        borderColor: "$colors.lightGray",
         marginTop: 15,
         marginRight: 30,
-        justifyContent: 'center',
-        alignItems: 'center'
+
     },
     activeButtonText: {
         color: "white"
@@ -110,39 +114,38 @@ var styles = StyleSheet.create({
         backgroundColor: "white"
     },
     header: {
-        height: 60,
         borderColor: 'white',
         backgroundColor: 'white'
     },
     icon: {
-        height:30,
-        width: 30
+        height: '$dimensions.iconSize',
+        width:  '$dimensions.iconSize'
     },
     inactiveButton: {
-        borderWidth: 1,
-        borderColor: "#f3f3f3",
-        borderRadius: 5,
-        backgroundColor: "white",
         width: 80,
         height: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: "$colors.lightGray",
+        borderWidth: 1,
+        borderRadius: 5,
+        backgroundColor: "white",
         marginTop: 15,
         marginRight: 30,
-        justifyContent: 'center',
-        alignItems: 'center'
     },
     inactiveButtonText: {
-        color: "#607D8B"
+        color: "$colors.status",
     },
     submissionView: {
+        flexDirection: "row",
+        justifyContent: "flex-end",
         height: 60,
         borderWidth: 1,
-        borderColor: "#f3f3f3" ,
-        flexDirection: "row",
-        justifyContent: "flex-end"
+        borderColor: "$colors.lightGray" ,
     },
     text: {
-        fontSize: 14,
-        color: "#607D8B",
+        fontSize: "$fonts.size",
+        color: "$colors.status",
     },
     textLengthLabel: {
         marginTop: 20,
