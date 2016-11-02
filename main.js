@@ -3,6 +3,7 @@ import { AsyncStorage, Navigator} from 'react-native';
 
 import Home from './app/screens/Login/home'
 import TabBar from './app/screens/Home/TabBar'
+import CaregiverHome from './app/screens/CaregiverHome/overview'
 import Firebase from './app/config/firebase'
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Theme from './app/config/theme'
@@ -30,9 +31,11 @@ export default class Main extends Component {
                 AsyncStorage.getItem('user_data')
                     .then((usr) => {
 
-                        var component = usr["type"] == "caregiver" ? CaregiverHome : TabBar
+                        var user_data = JSON.parse(usr)
 
-                        self.refs.navigator.resetTo({ component: component, passProps: {user: JSON.parse(usr)} })
+                        var component = user_data["type"] == "caregiver" ? CaregiverHome : TabBar
+
+                        self.refs.navigator.resetTo({ component: component, passProps: {user: user_data} })
 
                     }, function(error) {
                         console.log("Error: No stored user data")

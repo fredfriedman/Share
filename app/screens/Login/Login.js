@@ -69,14 +69,14 @@ export default class Login extends Component {
                 user = usr
 
                 return Firebase.database().ref().child("Caregivers/" + user.uid).once('value').then(function(snapshot) {
-                    return self.signInHandler(user, snapshot, CaregiverHome)
+                    return self.signInHandler(user, snapshot, "caregiver")
                 })
 
             }).then(function(isCaregiver) {
                 if (!isCaregiver) {
                      return Firebase.database().ref().child("Nurses/" + user.uid).once('value')
                         .then(function(snapshot) {
-                            self.signInHandler(user, snapshot, TabBar)
+                            self.signInHandler(user, snapshot, "nurse")
                         }, function(error) {
                             throw {code: error.code}
                         })
@@ -107,7 +107,7 @@ export default class Login extends Component {
             })
     }
 
-    signInHandler(user, snapshot, component): Boolean {
+    signInHandler(user, snapshot, type): Boolean {
         if (snapshot.val() !== null) {
 
             this.setState({animating: false})
@@ -116,9 +116,11 @@ export default class Login extends Component {
 
             var usr = snapshot.val()
             usr["id"] = snapshot.key
-            usr["type"] = component == TabBar ? "nurse" : "caregiver"
+            usr["type"] = type
 
             AsyncStorage.setItem('user_data', JSON.stringify(usr));
+
+            var component = type == "caregiver" ? CaregiverHome : TabBar
 
             this.props.navigator.resetTo({ component: component, passProps: {user: usr} })
 
