@@ -12,7 +12,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons'
 import Button from 'react-native-button'
 import { Hoshi } from 'react-native-textinput-effects'
-import CloseModalButton from '../../components/TopLeftAction'
+import Header from '../../components/header'
 
 import dismissKeyboard from 'dismissKeyboard'
 import styles from './styles'
@@ -133,11 +133,15 @@ export default class Login extends Component {
 
     render() {
         const MainColor = '#00BCD4'
-        const closeIcon = (<Icon name="ios-close" size={30} color="#1e1e1e" />);
+        const closeIcon = ( <Icon name="ios-close" ios="ios-close" md="md-close" size={30} color={'#1e1e1e'} />);
 
         return (
             <View style={[styles.container, {alignItems: 'center', backgroundColor: 'white'}]}>
-                <Image style={styles.centeredIcon} source={butterfly}/>
+                <Header
+                    leftAction={this.onExitScene.bind(this)}
+                    leftIcon={closeIcon}
+                    centerIcon={<Image style={styles.icon} source={butterfly}/>}
+                    headerStyle={styles.header}/>
                 <View style={styles.formContainerHoshi}>
                     <Hoshi
                         ref="email"
@@ -184,7 +188,7 @@ export default class Login extends Component {
                         </Button>
                     </View>
                 </KeyboardAvoidingView>
-                <CloseModalButton action={this.onExitScene.bind(this)} icon={closeIcon}/>
+
             </View>
         );
     }

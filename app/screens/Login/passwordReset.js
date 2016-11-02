@@ -1,17 +1,29 @@
 'use strict';
 import React, { Component } from 'react';
-import { Alert, Image, KeyboardAvoidingView, Text, StyleSheet, View } from 'react-native';
+import {
+    Alert,
+    Image,
+    KeyboardAvoidingView,
+    Text,
+    View
+    } from 'react-native';
+
+// Assets
+import Icon from 'react-native-vector-icons/Ionicons';
+import styles from './styles'
+import { butterfly } from '../../config/images'
+
+// Componenets
 import Button from 'react-native-button'
-import Dimensions from 'Dimensions';
+import Header from '../../components/header'
 import { Hoshi } from 'react-native-textinput-effects';
 import dismissKeyboard from 'dismissKeyboard'
-import Icon from 'react-native-vector-icons/Ionicons';
 
+// Screens
 import Login from './Login'
+
+// Utilities
 import Firebase from '../../config/firebase'
-import { butterfly } from '../../config/images'
-import styles from './styles'
-import CloseModalButton from '../../components/TopLeftAction'
 
 export default class Signup extends Component {
 
@@ -31,32 +43,38 @@ export default class Signup extends Component {
 
     onInitiateReset(){
 
-        let self = this
+        if ( this.state.email == "" ) {
+            Alert.alert( "Oops", "Please Enter An Email Address", [{text: 'OK', onPress: () => console.log('OK Pressed!')}])
 
-        Firebase.auth().sendPasswordResetEmail(this.state.email)
-            .then(function(success) {
-                self.onExitScene
+        } else {
 
-            }, function(error) {
+            let self = this
 
-                var alertTitle = "Oops something went wrong"
-                var alertMessage = "Please try again."
+            Firebase.auth().sendPasswordResetEmail(this.state.email)
+                .then(function(success) {
+                    self.onExitScene
 
-                switch(error.code){
-                    case "auth/invalid-email" :
-                        alertTitle = "Incorrect Email"
-                        alertMessage = "It looks like you may have misspelled your email.\n Please try again."
-                        break;
-                    case "auth/user-not-found":
-                        alertTitle = "Incorrect Password"
-                        alertMessage = "The password you entered is incorrect.\n Please try again."
-                        break;
-                    default:
-                        alertTitle = "Oops something went wrong"
-                        alertMessage = "Please try again."
-                }
-                Alert.alert( alertTitle, alertMessage, [{text: 'OK', onPress: () => console.log('OK Pressed!')}])
-            })
+                }, function(error) {
+
+                    var alertTitle;
+                    var alertMessage;
+
+                    switch(error.code){
+                        case "auth/invalid-email" :
+                            alertTitle = "Incorrect Email"
+                            alertMessage = "It looks like you may have misspelled your email.\n Please try again."
+                            break;
+                        case "auth/user-not-found":
+                            alertTitle = "Incorrect Password"
+                            alertMessage = "The password you entered is incorrect.\n Please try again."
+                            break;
+                        default:
+                            alertTitle = "Oops, something went wrong"
+                            alertMessage = "Please try again."
+                    }
+                    Alert.alert( alertTitle, alertMessage, [{text: 'OK', onPress: () => console.log('OK Pressed!')}])
+                })
+        }
     }
 
     onExitScene() {
@@ -71,7 +89,11 @@ export default class Signup extends Component {
 
         return (
             <View style={[styles.container, {alignItems: 'center', backgroundColor: 'white'}]}>
-                <Image style={styles.centeredIcon} source={butterfly}/>
+                <Header
+                    leftAction={this.onExitScene.bind(this)}
+                    leftIcon={closeIcon}
+                    centerIcon={<Image style={styles.icon} source={butterfly}/>}
+                    headerStyle={styles.header}/>
                 <View style={styles.formContainerHoshi}>
                     <Hoshi
                         ref="email"
@@ -96,7 +118,6 @@ export default class Signup extends Component {
                         </Button>
                     </View>
                 </KeyboardAvoidingView>
-                <CloseModalButton action={this.onExitScene.bind(this)} icon={closeIcon}/>
             </View>
         );
     }

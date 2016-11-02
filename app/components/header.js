@@ -20,7 +20,7 @@ export default class Header extends Component {
 
     renderCenterItem() {
         if (this.props.text != null) {
-            return ( <Text style={[styles.header_center, this.props.textStyle]}>{this.props.text}</Text> )
+            return ( <Text style={[styles.header_center, styles.header_text, this.props.textStyle]}>{this.props.text}</Text> )
         } else if (this.props.centerIcon != null) {
             return ( <View style={[styles.header_center, {marginTop: 15}]}>{ this.props.centerIcon }</View>)
         } else {
@@ -66,10 +66,12 @@ const styles = EStyleSheet.create({
         bottom: 0,
         justifyContent: 'center',
         alignItems: 'center',
+        marginTop: 25,
+    },
+    header_text: {
         color: '$colors.darkGray',
         fontSize: 16,
         fontWeight: 'bold',
         textAlign: 'center',
-        marginTop: 25,
-    }
+    },
 });

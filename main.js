@@ -31,11 +31,16 @@ export default class Main extends Component {
                 AsyncStorage.getItem('user_data')
                     .then((usr) => {
 
-                        var user_data = JSON.parse(usr)
+                        try {
+                            var user_data = JSON.parse(usr)
 
-                        var component = user_data["type"] == "caregiver" ? CaregiverHome : TabBar
+                            var component = user_data["type"] == "caregiver" ? CaregiverHome : TabBar
 
-                        self.refs.navigator.resetTo({ component: component, passProps: {user: user_data} })
+                            self.refs.navigator.resetTo({ component: component, passProps: {user: user_data} })
+
+                        } catch(e) {
+                            throw e
+                        }
 
                     }, function(error) {
                         console.log("Error: No stored user data")

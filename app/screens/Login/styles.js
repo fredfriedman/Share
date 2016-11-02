@@ -54,12 +54,16 @@ module.exports = EStyleSheet.create({
         width: Dimensions.get('window').width,
     },
     formContainerHoshi: {
-        paddingTop: 20,
         width: Dimensions.get('window').width - 30,
     },
+    header: {
+        borderColor: 'white',
+        backgroundColor: 'white',
+        width: '$dimensions.screenWidth'
+    },
     icon: {
-        height: (Platform.OS === 'ios') ? 30 : 25,
-		width: (Platform.OS === 'ios') ? 30 : 25,
+        height: '$dimensions.iconSize',
+        width:  '$dimensions.iconSize'
     },
     line: {
         marginTop: 5,
@@ -158,7 +162,7 @@ module.exports = EStyleSheet.create({
     },
     userTypeContainer: {
         height: 40,
-        width: 400,
+        width: '$dimensions.screenWidth',
         alignItems: 'center',
         backgroundColor: "#4DD0E1"
     },

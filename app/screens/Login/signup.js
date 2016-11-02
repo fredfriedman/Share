@@ -6,25 +6,28 @@ import {
     Image,
     Navigator,
     Modal,
-    StyleSheet,
-    ScrollView,
     Text,
     View
 } from 'react-native';
 
-import Button from 'react-native-button'
-import Dimensions from 'Dimensions';
-import { Fumi } from 'react-native-textinput-effects';
+// Assets
 import { butterfly } from '../../config/images'
-import dismissKeyboard from 'dismissKeyboard'
-import CloseModalButton from '../../components/TopLeftAction'
-
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-
-import Login from './Login'
 import styles from './styles'
+
+// Components
+import Button from 'react-native-button'
+import Header from '../../components/header'
+import { Fumi } from 'react-native-textinput-effects';
+
+// Utilities
 import Firebase from '../../config/firebase'
+import Dimensions from 'Dimensions';
+import dismissKeyboard from 'dismissKeyboard'
+
+// Screens
+import Login from './Login'
 
 
 export default class signup extends Component {
@@ -119,6 +122,89 @@ export default class signup extends Component {
         this.setState({
             currentPage: Math.floor((offsetX - pageWidth / 2) / pageWidth) + 1
         });
+    }
+
+    render() {
+
+        return (
+            <View style={{flex: 1, alignItems: 'center'}}>
+                { this.renderPage(true) }
+                <Modal
+                    animationType={"slide"}
+                    transparent={false}
+                    visible={!this.state.isCaregiver}
+                    onRequestClose={() => {alert("Modal has been closed.")}}>
+                    { this.renderPage(false) }
+                </Modal>
+            </View>
+        )
+    }
+
+    renderPage(isCaregiver: Boolean) {
+
+        return (
+            <View style={!isCaregiver? [styles.container, {justifyContent: 'space-between'}] : [styles.container, {backgroundColor: "white",justifyContent: 'space-between'}]}>
+                <View>
+                    { this.renderHeader(isCaregiver)}
+                    { this.renderForm(isCaregiver) }
+                    { this.renderSubmitButton(isCaregiver) }
+                </View>
+                { this.renderFormTypeButton(isCaregiver) }
+            </View>
+        )
+    }
+
+    renderHeader(isCaregiver: Boolean) {
+
+        const closeIcon = (<Ionicons name="ios-close" size={30} color="#1e1e1e" />);
+
+        return (
+            <Header
+                leftAction={this.onExitScene.bind(this)}
+                leftIcon={closeIcon}
+                centerIcon={<Image style={styles.icon} source={butterfly}/>}
+                headerStyle={isCaregiver ? styles.header : [styles.header, styles.mainColor, {borderColor: 'transparent'}]}/>
+        )
+    }
+
+    renderForm(isCaregiver: Boolean) {
+        return isCaregiver ? this.renderCaregiverForm() : this.renderNurseForm()
+    }
+
+    renderSubmitButton(isCaregiver: Boolean) {
+        return (
+            <View>
+                <Button
+                    style={isCaregiver ? [styles.secondaryText, {fontWeight: 'bold', fontSize: 18}] : [styles.mainText, {fontWeight: 'bold', fontSize: 18}]}
+                    containerStyle={isCaregiver ? [styles.button, styles.mainColor] : [styles.button, styles.secondaryColor]}
+                    onPress={this.onPressSignUp.bind(this)}>
+                    Submit
+                </Button>
+                <ActivityIndicator
+                    animating={this.state.animating}
+                    style={{height: 40}}
+                    size="large"/>
+                <Button
+                    style={isCaregiver ? [styles.accountLabel, styles.centered, styles.mainText] : [styles.accountLabel, styles.centered, styles.secondaryText] }
+                    containerStyle={{alignSelf: 'center', width: 130}}
+                    onPress={this.onExitScene.bind(this)}>
+                    Have an Account?
+                </Button>
+            </View>
+        )
+    }
+
+    renderFormTypeButton(isCaregiver: Boolean) {
+        return (
+            <View style={isCaregiver ? styles.userTypeContainer : [styles. userTypeContainer, {backgroundColor: "#00838F"}]}>
+                <Button
+                    style={isCaregiver ? [styles.secondaryText, {fontSize: 12, fontWeight: '500'}] : [styles.mainText, {fontSize: 12, fontWeight: '500'}]}
+                    containerStyle={isCaregiver ? [styles.userTypeButton, styles.mainColor]: [styles.userTypeButton, styles.secondaryColor]}
+                    onPress={() => this.setState({isCaregiver: !this.state.isCaregiver})}>
+                    {!isCaregiver ? "Are you a caregiver?" : "Are you a nurse?"}
+                </Button>
+            </View>
+        )
     }
 
     renderCaregiverForm() {
@@ -241,73 +327,5 @@ export default class signup extends Component {
                     onSubmitEditing={(event) => { }}/>
             </View>
         );
-    }
-
-    renderFormTypeButton(isCaregiver) {
-        return (
-            <View style={isCaregiver ? styles.userTypeContainer : [styles. userTypeContainer, {backgroundColor: "#00838F"}]}>
-                <Button
-                    style={isCaregiver ? [styles.secondaryText, {fontSize: 12, fontWeight: '500'}] : [styles.mainText, {fontSize: 12, fontWeight: '500'}]}
-                    containerStyle={isCaregiver ? [styles.userTypeButton, styles.mainColor]: [styles.userTypeButton, styles.secondaryColor]}
-                    onPress={() => this.setState({isCaregiver: !this.state.isCaregiver})}>
-                    {!isCaregiver ? "Are you a caregiver?" : "Are you a nurse?"}
-                </Button>
-            </View>
-        )
-    }
-
-    renderSubmitButton(isCaregiver) {
-        return (
-            <View>
-                <Button
-                    style={isCaregiver ? [styles.secondaryText, {fontWeight: 'bold', fontSize: 18}] : [styles.mainText, {fontWeight: 'bold', fontSize: 18}]}
-                    containerStyle={isCaregiver ? [styles.button, styles.mainColor] : [styles.button, styles.secondaryColor]}
-                    onPress={this.onPressSignUp.bind(this)}>
-                    Submit
-                </Button>
-                <ActivityIndicator
-                    animating={this.state.animating}
-                    style={{height: 40}}
-                    size="large"/>
-                <Button
-                    style={isCaregiver ? [styles.accountLabel, styles.centered, styles.mainText] : [styles.accountLabel, styles.centered, styles.secondaryText] }
-                    containerStyle={{alignSelf: 'center', width: 130}}
-                    onPress={this.onExitScene.bind(this)}>
-                    Have an Account?
-                </Button>
-            </View>
-        )
-    }
-
-    renderPage(isCaregiver) {
-
-        const closeIcon = (<Ionicons name="ios-close" size={30} color="#1e1e1e" />);
-
-        return (
-            <View style={!isCaregiver? [styles.container, {justifyContent: 'space-between'}] : [styles.container, {backgroundColor: "white",justifyContent: 'space-between'}]}>
-                <Image style={styles.centeredIcon} source={butterfly}/>
-                { isCaregiver ? this.renderCaregiverForm() : this.renderNurseForm() }
-                { this.renderSubmitButton(isCaregiver) }
-                <View style={{flex: 1}}></View>
-                { this.renderFormTypeButton(isCaregiver) }
-                <CloseModalButton action={this.onExitScene.bind(this)} icon={closeIcon}/>
-            </View>
-        )
-    }
-
-    render() {
-        const closeIcon = (<Ionicons name="ios-close" size={30} color="#1e1e1e" />);
-        return (
-            <View style={{flex: 1, alignItems: 'center'}}>
-                { this.renderPage(true) }
-                <Modal
-                    animationType={"slide"}
-                    transparent={false}
-                    visible={!this.state.isCaregiver}
-                    onRequestClose={() => {alert("Modal has been closed.")}}>
-                    { this.renderPage(false) }
-                </Modal>
-            </View>
-        )
     }
 }
