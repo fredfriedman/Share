@@ -1,10 +1,10 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { TouchableHighlight, ListView, StyleSheet, Text, View, Image } from 'react-native';
+import { TouchableHighlight, ListView, Text, View } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import Icon from 'react-native-vector-icons/Ionicons';
-var styles = require('../config/styles')
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 export default class TableViewGroup extends Component {
 
@@ -38,17 +38,12 @@ export default class TableViewGroup extends Component {
 
     renderHiddenRow(data, secId, rowId) {
         return (
-            <View style={{
-                flexDirection: 'row',
-                flex: 1,
-                justifyContent: 'flex-end',
-                backgroundColor: '#FFC107',
-                height: 44}}>
+            <View style={styles.hiddenRow}>
                 <TouchableHighlight
-                    style={{height: 44, width: 60, backgroundColor: '#FFF8E1', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}
+                    style={styles.underlayButton}
                     onPress={() => { this.props.onPressArchive(this.state.name, data, secId, rowId) }}
-                    underlayColor={'#FFC107'}>
-                    <Text style={{color: '#0097A7', fontFamily: 'Helvetica', fontWeight: '500'}}>Archive</Text>
+                    underlayColor={'#0097A7'}>
+                    <Text style={styles.text}>Archive</Text>
                 </TouchableHighlight>
             </View>
             )
@@ -75,3 +70,28 @@ export default class TableViewGroup extends Component {
         }
     }
 }
+
+const styles = EStyleSheet.create({
+    hiddenRow: {
+        flexDirection: 'row',
+        flex: 1,
+        justifyContent: 'flex-end',
+        backgroundColor: '$colors.main',
+        height: '$dimensions.rowHeight'
+    },
+    underlayButton: {
+        height: '$dimensions.rowHeight',
+        width: 60,
+        backgroundColor: '$colors.lightGray',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    text: {
+        color: '$colors.status',
+        fontSize: '$fonts.size',
+        fontWeight: '$fonts.weight',
+        fontFamily: '$fonts.family',
+
+    }
+});

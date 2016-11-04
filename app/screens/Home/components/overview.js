@@ -53,18 +53,19 @@ export default class Overview extends Component {
 
         this.myPatientsRef.on('child_added', (snap) => {
 
-            var items = [];
+            var items = {};
 
             self.patientsRef.child(snap.key).on('value', (snap) => {
-
                 if (snap.val().active) {
-                    items.push({
+                    items[snap.key] = {
                         pID: snap.key,
                         name: snap.val().name,
-                    });
+                    }
+                } else {
+                    if ( (snap.key in items) ) { delete items[snap.key]}
                 }
                 self.setState({
-                    dataSource: self.state.dataSource.cloneWithRows(items)
+                    dataSource: self.state.dataSource.cloneWithRows(Object.values(items))
                 });
             });
         });
@@ -139,7 +140,7 @@ export default class Overview extends Component {
         Archives the selected patient; removing it from the table view
     */
     onPressArchive(title, data, secdId, rowId) {
-        this.patientsRef.child(data.pid + "/active").set(false);
+        this.patientsRef.child(data.pID + "/active").set(false);
     }
 
     render() {

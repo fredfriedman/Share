@@ -1,6 +1,10 @@
-import Firebase from 'firebase';
 import React, { Component } from 'react';
-import { Image, View, StyleSheet, TouchableHighlight, Text } from 'react-native';
+import {
+    Text,
+    TouchableHighlight,
+    View
+    } from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 export default class PatientTableViewCell extends Component {
     constructor(props) {
@@ -11,15 +15,16 @@ export default class PatientTableViewCell extends Component {
 
         return (
             <TouchableHighlight style={styles.row} onPress={() => { this.props.onPress() }} underlayColor={'#F8F8F8'}>
-                <View style={{flexDirection:'row'}}>
+                <View style={{flexDirection:'row', alignItems: 'center'}}>
                     <View style={[styles.statusBar, { backgroundColor: this.props.status}]}/>
                     <View style={styles.stack}>
                         <Text style={styles.text}>{this.props.mainText}</Text>
+                        <Text style={styles.caregiverText}> Primary Caregiver: Marge Simpson </Text>
                     </View>
                     <View style={{flex: 1}}/>
                     <TouchableHighlight
                         onPress={() => { this.props.onPressIcon() }}
-                        style={styles.actionIcon}
+                        style={styles.callIcon}
                         underlayColor={'transparent'}>
                         {this.props.actionIcon}
                     </TouchableHighlight>
@@ -30,49 +35,30 @@ export default class PatientTableViewCell extends Component {
     }
 }
 
-var styles = StyleSheet.create({
+const styles = EStyleSheet.create({
     stack: {
         flexDirection: 'column',
+        alignItems: 'flex-start'
     },
     statusBar: {
         backgroundColor: 'red',
         width: 6,
-        height: 44,
+        height: '$dimensions.rowHeight',
     },
     row: {
-        height: 44,
+        height: '$dimensions.rowHeight',
         backgroundColor: '#F6F6F6',
     },
-    thumb: {
-        marginTop: 10,
-        width: 20,
-        height: 25,
-        marginLeft: 5,
-        marginRight: 10,
-        borderRadius: 10,
-    },
     text: {
-        flex: 0,
-        paddingTop: 10,
-        paddingLeft: 2.5,
-        fontSize: 14,
-        fontWeight: '100',
+        fontSize: '$fonts.size',
+        fontWeight: '$fonts.weight',
+        fontFamily: '$fonts.family'
     },
     caregiverText: {
-        flex: 0,
-        paddingLeft: 1,
-        width: 90,
-        fontSize: 10,
-        fontWeight: '100',
+        fontSize: 11,
+        fontWeight: '300',
+        fontFamily: '$fonts.family'
     },
-    icon: {
-        //position: 'absolute',
-        width: 25,
-        height: 25,
-        marginTop: 5,
-        marginRight: 10,
-    },
-    actionIcon: {
-        marginTop: 7,
+    callIcon: {
     }
 });
