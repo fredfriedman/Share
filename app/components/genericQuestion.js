@@ -7,6 +7,7 @@ import { ListView,
         Dimensions,
         View, } from 'react-native';
 import Button from 'react-native-button'
+import ToggleButton from './toggleButton'
 
 
 const { width, height } = Dimensions.get('window');
@@ -19,7 +20,8 @@ export default class Question extends Component {
 	constructor(props) {
         super(props);
         this.state = { 
-            sliderVal: 0
+            sliderVal: 0,
+            medicationChange: 0
         };
     }
 
@@ -73,24 +75,18 @@ export default class Question extends Component {
 	                <Text style={{ padding: 10, textAlign: 'center', fontWeight: 'bold', color: '#00ACC1' }}>
 	                    Have there been any changes in medication use for this symptom?
 	                </Text>
-	                <Button
-	                    containerStyle={{margin:5, overflow:'hidden', borderRadius:4, backgroundColor: '#00ACC1', justifyContent: 'center'}}
-	                    style={{color: '#FFFFFF'}}
-	                    styleDisabled={{color: 'red'}}>
+	                <ToggleButton
+	                    style={{borderColor: '#0097A7', backgroundColor: '#00ACC1'}} textStyle={{color: 'white'}}>
 	                    More
-	                </Button>
-	                <Button
-	                    containerStyle={{margin:5, overflow:'hidden', borderRadius:4, backgroundColor: '#80DEEA', justifyContent: 'center'}}
-	                    style={{color: '#FFFFFF'}}
-	                    styleDisabled={{color: 'red'}}>
+	                </ToggleButton>
+	                <ToggleButton
+	                    style={{borderColor: '#0097A7', backgroundColor: '#00ACC1'}} textStyle={{color: 'white'}}>
 	                    None
-	                </Button>
-	                <Button
-	                    containerStyle={{margin:5, overflow:'hidden', borderRadius:4, backgroundColor: '#00ACC1', justifyContent: 'center'}}
-	                    style={{color: '#FFFFFF'}}
-	                    styleDisabled={{color: 'red'}}>
+	                </ToggleButton>
+	                <ToggleButton
+	                    style={{borderColor: '#0097A7', backgroundColor: '#00ACC1'}} textStyle={{color: 'white'}}>
 	                    Less
-	                </Button>
+	                </ToggleButton>
 	            </View>
 	    	);
 	    }

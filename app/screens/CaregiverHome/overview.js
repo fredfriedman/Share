@@ -40,6 +40,19 @@ export default class Overview extends Component {
     	}
     }
 
+    handlePressIn(newStyle) {
+        this.setState({style: newStyle});
+    }
+
+    pressedStyle() {
+
+        return {
+            borderColor: '#4DD0E1',
+            backgroundColor: '#80DEEA',
+            flex: 1
+        }
+    }
+
     render() {
         return (
         <View style={{ backgroundColor: '#E9E9E9', flex: 1, flexDirection: 'column', justifyContent: 'center' }}>
@@ -54,8 +67,9 @@ export default class Overview extends Component {
             	<Row>
             		<Col style={styles.container}>
             			<Button
+                            pressed={false}
                             style={styles.buttonStyle1} textStyle={styles.textStyle}
-					        onPress={this.handlePress.bind(this)}>
+                            onPress={() => this.handlePress()}>
 					        Complete Daily Assessment
 				    	</Button>
 				    </Col>
