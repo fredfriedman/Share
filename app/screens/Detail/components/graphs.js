@@ -19,7 +19,7 @@ export default class Graphs extends Component {
         super();
 
         this.state = {
-            selected: "4",
+            selected: "Pain",
         }
     }
 
@@ -33,13 +33,13 @@ export default class Graphs extends Component {
                 style={styles.picker}
                 selectedValue={this.state.selected}
                 onValueChange={this.onValueChange.bind(this)}>
-                <Item label="Appetite" value="0" />
-                <Item label="Depression" value="1" />
-                <Item label="Drowsiness" value="2" />
-                <Item label="Nausea" value="3" />
-                <Item label="Pain" value="4" />
-                <Item label="Shortness of Breath" value="5" />
-                <Item label="Tiredness" value="6" />
+                <Item label="Appetite" value="Appetite" />
+                <Item label="Depression" value="Depression" />
+                <Item label="Drowsiness" value="Drowsiness" />
+                <Item label="Nausea" value="Nausea" />
+                <Item label="Pain" value="Pain" />
+                <Item label="Shortness of Breath" value="Shortness of Breath" />
+                <Item label="Tiredness" value="Tiredness" />
             </Picker>
             )
     }
@@ -56,20 +56,20 @@ export default class Graphs extends Component {
                     <Row style={styles.row} size={1}>
                         <Col style={styles.column}>
                             <View>
-                                <Text style={styles.textMain}> 8 </Text>
-                                <Text style={styles.textSubtitle}> Avg Score </Text>
+                                <Text style={styles.textMain}>{this.props.data[this.state.selected]["avg"] / 5}</Text>
+                                <Text style={styles.textSubtitle}>Avg Score</Text>
                             </View>
                         </Col>
                         <Col style={styles.column}>
                             <View>
-                                <Text style={styles.textMain}> 10 </Text>
-                                <Text style={styles.textSubtitle}> High Score </Text>
+                                <Text style={styles.textMain}>{this.props.data[this.state.selected]["max"]}</Text>
+                                <Text style={styles.textSubtitle}>High Score</Text>
                             </View>
                         </Col>
                         <Col style={styles.column}>
                             <View>
-                                <Text style={styles.textMain}> 5 </Text>
-                                <Text style={styles.textSubtitle}> Low Score </Text>
+                                <Text style={styles.textMain}>{this.props.data[this.state.selected]["min"]}</Text>
+                                <Text style={styles.textSubtitle}>Low Score</Text>
                             </View>
                         </Col>
                     </Row>
@@ -77,7 +77,7 @@ export default class Graphs extends Component {
                         <Col style={[styles.column, {backgroundColor: 'transparent'}]} size={2}>
                             <Chart
                                 type="line"
-                                data={this.props.data[parseInt(this.state.selected)].length == 0 ? [[]] : this.props.data[parseInt(this.state.selected)]}
+                                data={this.props.data[this.state.selected]["points"].length == 0 ? [[]] : this.props.data[this.state.selected]["points"]}
                                 style={styles.chart}
                                 color={mainColor}
                                 fillColor={fillColor}
@@ -128,7 +128,6 @@ const styles = EStyleSheet.create({
         fontSize: 36,
         fontWeight: '$fonts.weight',
         fontFamily: '$fonts.family',
-        marginLeft: -5,
     },
     textSubtitle: {
         color: '$colors.mediumGray',

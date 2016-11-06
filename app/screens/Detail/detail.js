@@ -32,11 +32,18 @@ export default class PatientDetailView  extends Component {
         this.patientRef = this.getRef().child('Patients/' + props.patient.pID)
 
         this.state = {
-            data: [[], [], [], [], [], [], []],
+            data: { "Appetite": {max: 0, min: 0, avg: 0, points: []},
+                    "Depression": {max: 0, min: 0, avg: 0, points: []},
+                    "Drowsiness": {max: 0, min: 0, avg: 0, points: []},
+                    "Nausea": {max: 0, min: 0, avg: 0, points: []},
+                    "Pain": {max: 0, min: 0, avg: 0, points: []},
+                    "Shortness of Breath": {max: 0, min: 0, avg: 0, points: []},
+                    "Tiredness": {max: 0, min: 0, avg: 0, points: []}},
             trendHistory: new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2, }),
             history: new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2, }),
             notes: new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2, }),
-            currentPage: 0//'summary'
+            lastPost: null,
+            currentPage: 0
         };
     }
 
@@ -75,24 +82,42 @@ export default class PatientDetailView  extends Component {
     }
 
     buildPoints(assessments) {
-        var app = []
-        var dep = []
-        var dro = []
-        var nau = []
-        var pai = []
-        var sob = []
-        var tir = []
+        var graphData = { "Appetite": {max: null, min: null, avg: null, points: []},
+                    "Depression": {max: null, min: null, avg: null, points: []},
+                    "Drowsiness": {max: null, min: null, avg: null, points: []},
+                    "Nausea": {max: null, min: null, avg: null, points: []},
+                    "Pain": {max: null, min: null, avg: null, points: []},
+                    "Shortness of Breath": {max: null, min: null, avg: null, points: []},
+                    "Tiredness": {max: null, min: null, avg: null, points: []}}
 
         for (var i = 0; i < assessments.length; i++) {
-            app.push([i, assessments[i].results.Appetite.level])
-            dep.push([i, assessments[i].results.Depression.level])
-            dro.push([i, assessments[i].results.Drowsiness.level])
-            nau.push([i, assessments[i].results.Nausea.level])
-            pai.push([i, assessments[i].results.Pain.level])
-            sob.push([i, assessments[i].results.ShortnessOfBreath.level])
-            tir.push([i, assessments[i].results.ShortnessOfBreath.level])
+            this.updateLatestDate(assessments[i].timestamp)
+            this.updateData(graphData, i, assessments[i].results.Appetite.level, "Appetite")
+            this.updateData(graphData, i, assessments[i].results.Depression.level, "Depression")
+            this.updateData(graphData, i, assessments[i].results.Drowsiness.level, "Drowsiness")
+            this.updateData(graphData, i, assessments[i].results.Nausea.level, "Nausea")
+            this.updateData(graphData, i, assessments[i].results.Pain.level, "Pain")
+            this.updateData(graphData, i, assessments[i].results.ShortnessOfBreath.level, "Shortness of Breath")
+            this.updateData(graphData, i, assessments[i].results.Tiredness.level, "Tiredness")
         }
-        return [app, dep, dro, nau, pai, sob, tir]
+
+        return graphData
+    }
+
+    updateLatestDate(datetime) {
+        var date = new Date(datetime)
+        if(this.state.lastPost == null) {
+            this.setState({lastPost: date})
+        }
+        if(date > this.state.lastPost) {
+            this.setState({lastPost: date})
+        }
+    }
+    updateData(gData, i, level, type) {
+        if (gData[type]["max"] == null || gData[type]["max"] > level) {gData[type]["max"]= level}
+        if (gData[type]["min"] == null || gData[type]["min"] < level) {gData[type]["min"] = level}
+        gData[type]["avg"] == null ? gData[type]["avg"] = level : gData[type]["avg"] += level
+        gData[type]["points"].push([i, level])
     }
 
     setHistory(hist) {
@@ -137,6 +162,11 @@ export default class PatientDetailView  extends Component {
         }
     }
 
+    parseDate(date) {
+        var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Nov", "Dec"]
+        return months[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear()
+    }
+
     renderTopBox() {
         const clockIcon = (<Icon name="ios-time-outline" ios="ios-time-outline" md="md-time" size={20} color="#00ACC1" />);
         const alertIcon = (<Icon name="ios-warning-outline" ios="ios-warning-outline" md="md-warning-outline" size={20} color="red"/>);
@@ -154,7 +184,7 @@ export default class PatientDetailView  extends Component {
                 </View>
                 <View style={[styles.row, {marginTop: 25}]}>
                     { clockIcon }
-                    <Text style={[styles.text, {paddingLeft: 5, color: 'white', fontSize: 13, fontWeight: '200'}]}> Last Entry | Jan 16, 2016  </Text>
+                    <Text style={[styles.text, {paddingLeft: 5, color: 'white', fontSize: 13, fontWeight: '200'}]}> Last Entry | {this.state.lastPost == null ? "None" : this.parseDate(this.state.lastPost)} </Text>
                 </View>
             </View>
         )
