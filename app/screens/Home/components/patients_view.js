@@ -40,6 +40,7 @@ export default class PatientsView extends Component {
 
     componentDidMount() {
         this.listenForItems(this.patientsRef);
+        console.log(props)
     }
 
     getRef() {

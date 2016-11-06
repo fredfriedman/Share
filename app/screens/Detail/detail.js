@@ -32,8 +32,7 @@ export default class PatientDetailView  extends Component {
         this.patientRef = this.getRef().child('Patients/' + props.patient.pID)
 
         this.state = {
-            data: [],
-            graphType: "Pain",
+            data: [[], [], [], [], [], [], []],
             trendHistory: new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2, }),
             history: new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2, }),
             notes: new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2, }),
@@ -48,16 +47,6 @@ export default class PatientDetailView  extends Component {
 
     getRef() {
         return Firebase.database().ref();
-    }
-
-    createGraphs(history) {
-        var painScores = []
-        history.forEach((entry) => {
-            var ent = entry.results["Pain"]
-            ent["timestamp"] = entry.timestamp
-            painScores.push(ent)
-        })
-        this.setState({ data: painScores })
     }
 
     //////////////
@@ -85,9 +74,30 @@ export default class PatientDetailView  extends Component {
         this.setState({ notes: this.state.notes.cloneWithRows(notes) });
     }
 
+    buildPoints(assessments) {
+        var app = []
+        var dep = []
+        var dro = []
+        var nau = []
+        var pai = []
+        var sob = []
+        var tir = []
+
+        for (var i = 0; i < assessments.length; i++) {
+            app.push([i, assessments[i].results.Appetite.level])
+            dep.push([i, assessments[i].results.Depression.level])
+            dro.push([i, assessments[i].results.Drowsiness.level])
+            nau.push([i, assessments[i].results.Nausea.level])
+            pai.push([i, assessments[i].results.Pain.level])
+            sob.push([i, assessments[i].results.ShortnessOfBreath.level])
+            tir.push([i, assessments[i].results.ShortnessOfBreath.level])
+        }
+        return [app, dep, dro, nau, pai, sob, tir]
+    }
+
     setHistory(hist) {
         this.setState({ history: this.state.history.cloneWithRows(hist) });
-        this.createGraphs(hist)
+        this.setState({ data: this.buildPoints(hist.slice(0, 5)) })
     }
 
     listenForItems(ref, callback, parser) {
@@ -117,29 +127,40 @@ export default class PatientDetailView  extends Component {
         this.setState({ currentPage: index });
     }
 
+    statusToColor(status) {
+        if(status > 70) {
+            return {backgroundColor: '#8B0000'}
+        } else if (status > 40) {
+            return {backgroundColor: '#FFC107'}
+        } else {
+            return {backgroundColor: '#228B22'}
+        }
+    }
+
     renderTopBox() {
         const clockIcon = (<Icon name="ios-time-outline" ios="ios-time-outline" md="md-time" size={20} color="#00ACC1" />);
-
+        const alertIcon = (<Icon name="ios-warning-outline" ios="ios-warning-outline" md="md-warning-outline" size={20} color="red"/>);
+        const pulseIcon = (<Icon name="ios-pulse" ios="ios-pulse" md="md-pulse" size={30} color="orange"/>);
         return (
             <View style={styles.topBox}>
                 <Text style={[styles.text,{paddingLeft: 5, color: 'white', fontSize: 13, fontWeight: '200'}]}>  </Text>
                 <View>
                     <View style={[styles.row, {alignItems: 'center'}]}>
-                        <View style={styles.indicator}/>
-                        <Text style={[styles.text,{color: 'white', fontSize: 52, fontWeight: '200'}]}> 67 </Text>
+                        <View style={[styles.indicator, this.statusToColor(this.props.patient.status)]}/>
+                        <Text style={[styles.text, {color: 'white', fontSize: 60, fontWeight: '200'}]}> {this.props.patient.status} </Text>
+                        { alertIcon }
                     </View>
-                    <Text style={[styles.text,{color: '#00838F', fontSize: 20, fontWeight: '400'}]}> Current Status </Text>
+                    <Text style={[styles.text, {color: '#00838F', fontSize: 20, fontWeight: '400'}]}> Current Status </Text>
                 </View>
                 <View style={[styles.row, {marginTop: 25}]}>
                     { clockIcon }
-                    <Text style={[styles.text,{paddingLeft: 5, color: 'white', fontSize: 13, fontWeight: '200'}]}> Last Entry | Jan 16, 2016  </Text>
+                    <Text style={[styles.text, {paddingLeft: 5, color: 'white', fontSize: 13, fontWeight: '200'}]}> Last Entry | Jan 16, 2016  </Text>
                 </View>
             </View>
         )
     }
 
     renderBottomBox() {
-        const data = [[0, 1], [1, 3], [3, 7], [4, 9], [5, 10] ];
 
         return (
             <View style={styles.bottomBox}>
@@ -152,7 +173,7 @@ export default class PatientDetailView  extends Component {
                     bounces={false}
                     onScroll={this.onScroll.bind(this)}
                     scrollEventThrottle={16}>
-                    <GraphsPage containerStyle={styles.scrollView} data={data} type={this.state.graphType}/>
+                    <GraphsPage containerStyle={styles.scrollView} data={this.state.data}/>
                     <HistoryPage containerStyle={styles.scrollView} labelStyle={styles.label}/>
                     <NotesPage containerStyle={styles.scrollView} navigator={this.props.navigator} notes={this.state.notes} user={this.props.user} patient={this.props.patient} labelStyle={styles.label}/>
                 </ScrollView>
@@ -194,9 +215,8 @@ const styles = EStyleSheet.create({
     },
     indicator: {
         width: 5,
-        height: 40,
+        height: 50,
         borderRadius: 5,
-        backgroundColor: 'orange',
     },
     label: {
         alignSelf: 'center',
@@ -228,6 +248,6 @@ const styles = EStyleSheet.create({
         backgroundColor: '$colors.darkGray',
         justifyContent: 'space-between',
         borderBottomColor: '$colors.status',
-        borderBottomWidth: 4
+        borderBottomWidth: 5
     }
 });

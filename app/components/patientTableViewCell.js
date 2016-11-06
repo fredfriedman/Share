@@ -11,15 +11,25 @@ export default class PatientTableViewCell extends Component {
         super(props);
     }
 
+    statusToColor(status) {
+        if(status > 70) {
+            return '#8B0000'
+        } else if (status > 40) {
+            return '#FFC107'
+        } else {
+            return '#228B22'
+        }
+    }
+
     render() {
 
         return (
             <TouchableHighlight style={styles.row} onPress={() => { this.props.onPress() }} underlayColor={'#F8F8F8'}>
                 <View style={{flexDirection:'row', alignItems: 'center'}}>
-                    <View style={[styles.statusBar, { backgroundColor: this.props.status}]}/>
+                    <View style={[styles.statusBar, { backgroundColor: this.statusToColor(this.props.status)}]}/>
                     <View style={styles.stack}>
                         <Text style={styles.text}>{this.props.mainText}</Text>
-                        <Text style={styles.caregiverText}> Primary Caregiver: Marge Simpson </Text>
+                        <Text style={styles.caregiverText}>Primary Caregiver: Marge Simpson </Text>
                     </View>
                     <View style={{flex: 1}}/>
                     <TouchableHighlight
@@ -38,7 +48,8 @@ export default class PatientTableViewCell extends Component {
 const styles = EStyleSheet.create({
     stack: {
         flexDirection: 'column',
-        alignItems: 'flex-start'
+        alignItems: 'flex-start',
+        paddingLeft: 2.5,
     },
     statusBar: {
         backgroundColor: 'red',
@@ -47,7 +58,7 @@ const styles = EStyleSheet.create({
     },
     row: {
         height: '$dimensions.rowHeight',
-        backgroundColor: '#F6F6F6',
+        backgroundColor: 'white',
     },
     text: {
         fontSize: '$fonts.size',

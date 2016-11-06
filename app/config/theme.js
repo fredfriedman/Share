@@ -17,9 +17,9 @@ export default {
         mediumGray: '#8E8E8E',
         darkGray: '#262626',
 
-        critical: 'red',
-        static: 'yellow',
-        improving: 'green',
+        critical: '#8B0000',
+        static: '#FFC107',
+        improving: '#228B22',
 
     },
 

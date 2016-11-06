@@ -56,10 +56,12 @@ export default class Overview extends Component {
             var items = {};
 
             self.patientsRef.child(snap.key).on('value', (snap) => {
+
                 if (snap.val().active) {
                     items[snap.key] = {
                         pID: snap.key,
                         name: snap.val().name,
+                        status: snap.val().status
                     }
                 } else {
                     if ( (snap.key in items) ) { delete items[snap.key]}
@@ -159,7 +161,7 @@ export default class Overview extends Component {
                         onPressArchive={this.onPressArchive.bind(this)}
                         style={styles.tableView}
                         textStyle={styles.tableViewText}
-                        headerStyle={{backgroundColor: "#EF9A9A"}}
+                        headerStyle={styles.criticalHeader}
                         dataSource={this.state.dataSource}
                         renderRow={this.renderRow.bind(this)}/>
                     <TableViewGroup
@@ -169,7 +171,7 @@ export default class Overview extends Component {
                         onPressArchive={this.onPressArchive.bind(this)}
                         style={[styles.tableView, {marginTop: 20}]}
                         textStyle={styles.tableViewText}
-                        headerStyle={{backgroundColor: "#A5D6A7"}}
+                        headerStyle={styles.recentHeader}
                         dataSource={this.state.dataSource}
                         renderRow={this.renderRow.bind(this)}/>
                 </ScrollView>
@@ -201,7 +203,7 @@ export default class Overview extends Component {
 const styles = EStyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f8f8f8'
+        backgroundColor: 'white'
     },
     header: {
         height: 60,
@@ -212,6 +214,12 @@ const styles = EStyleSheet.create({
         fontSize: 18,
         fontWeight: '$fonts.weight',
         fontFamily: "$fonts.family",
+    },
+    criticalHeader: {
+        backgroundColor: '#EF9A9A'
+    },
+    recentHeader: {
+        backgroundColor: "$colors.main"
     },
     scrollViewContainer: {
         backgroundColor: 'transparent',
