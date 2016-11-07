@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import {View, StyleSheet,Text, Image, Alert} from 'react-native';
-import firebaseHelper from './firebaseHelper';
 import SettingsList from 'react-native-settings-list';
+
+let login   = require('../Login/home').default
+var firebaseHelper = require( './firebaseHelper').default;
 
 var styles = StyleSheet.create({
   imageStyle:{
@@ -17,7 +19,16 @@ export default class caregiversettings extends Component {
   super();
   this.onValueChange = this.onValueChange.bind(this);
   this.state = {switchValue: false};
+  // firebaseHelper.isValidPatientId(1);
+  fb = new firebaseHelper();
+  fb.isValidPatientId(1);
+  fb.getCaregiverPromise('sD2AEvyjW9S2xuOY1yWPf7XkqUU2').then(function(caregiver){
+    console.log(caregiver + "***************************************************");
+    setState({patientId: caregiver});
+  });
   }
+
+
   render() {
     var bgColor = '#DCE3F4';
     return (
@@ -35,7 +46,7 @@ export default class caregiversettings extends Component {
             />
             <SettingsList.Item
               title='Patient Info'
-              titleInfo={'Patient: ' + 1 }
+              titleInfo={this.state.patientId}
               titleInfoStyle={styles.titleInfoStyle}
               onPress={() => Alert.alert('Route to change PatientID')}
             />
@@ -55,6 +66,11 @@ export default class caregiversettings extends Component {
               title='Display'
               onPress={() => Alert.alert('Route To Display Page')}
             />
+            <SettingsList.Header headerStyle={{marginTop:15}}/>
+            <SettingsList.Item
+              title='Logout'
+              onPress={() => this.onLogout()}
+            />
           </SettingsList>
         </View>
       </View>
@@ -62,5 +78,11 @@ export default class caregiversettings extends Component {
   }
   onValueChange(value){
     this.setState({switchValue: value});
+  }
+
+  onLogout(){
+    this.props.navigator.push({
+      component:login
+    })
   }
 }

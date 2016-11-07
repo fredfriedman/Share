@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { AppRegistry, AsyncStorage, Model, Navigator, StyleSheet, View, Text } from 'react-native';
 
 var Login   = require('./app/screens/Login/home').default
-// var Login   = require('./app/screens/CaregiverSettings/caregiversettings').default
-var firebase = require('./app/config/firebase')
+// var Login   = require('./app/screens/CaregiverHome/overview').default
+// var firebase = require('./app/config/firebase')
 
 export default class Main extends Component {
 

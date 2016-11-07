@@ -10,7 +10,14 @@ const firebaseConfig = {
  };
 export default class firebaseHelper {
   constructor(){
+  }
 
+//fetch caregiver firebase caregiver data as promise. Do as you wish
+  getCaregiverPromise(caregiverId) {
+      return firebase.database().ref('Caregivers/'+ caregiverId).once('value').then(function(snapshot) {
+        console.log('****************************************'+snapshot.child('Patient').val());
+        return snapshot.child('patient').val();
+    });
   }
 
   /**
@@ -21,16 +28,16 @@ export default class firebaseHelper {
   */
   updatepatientId(caregiverId, patientId){
 
-    firebase.database().ref('Caregivers/'+ caregiverId).once('value', function(snapshot) {
-        var exists = ( snapshot.val() !== null );
-        if(exists){
-          var patientIdRef = firebase.database().ref('Caregivers/'+ caregiverId);
-          patientIdRef.update({'Patient': patientId});
-        }
-        else {
-          alert('fail');
-        }
-    });
+      firebase.database().ref('Caregivers/'+ caregiverId).once('value', function(snapshot) {
+          var exists = ( snapshot.val() !== null );
+          if(exists){
+            var patientIdRef = firebase.database().ref('Caregivers/'+ caregiverId);
+            patientIdRef.update({'Patient': patientId});
+          }
+          else {
+            alert('fail');
+          }
+        });
   }
 
 
@@ -40,7 +47,7 @@ export default class firebaseHelper {
   @param int: patientId
   @return alert: if patientId is not valid patient id
   */
-  isValidPatientId(patientId){
+isValidPatientId(patientId){
     firebase.database().ref('Patients/'+patientId).once('value', function(snapshot) {
         if( snapshot.val() === null ) {
             /* does not exist */
@@ -55,7 +62,7 @@ export default class firebaseHelper {
   @param int: caregiverId
   @return alert: if isn't valid patient id
   */
-  isValidCaregiverId(caregiverId){
+isValidCaregiverId(caregiverId){
     firebase.database().ref('Caregivers/'+ caregiverId).once('value', function(snapshot) {
         if( snapshot.val() === null ) {
             /* does not exist */
