@@ -13,7 +13,7 @@ export default class PatientTableViewCell extends Component {
 
     statusToColor(status) {
         if(status > 70) {
-            return '#8B0000'
+            return '#e50000'
         } else if (status > 40) {
             return '#FFC107'
         } else {

@@ -31,13 +31,16 @@ export default class TableViewGroup extends Component {
                     scrollEnabled={this.props.scrollEnabled ? this.props.scrollEnabled : false }
                     renderHiddenRow={ (data, secId, rowId) => this.renderHiddenRow(data, secId, rowId)}
                     rightOpenValue={-75}
-                    disableRightSwipe={true}/>
+                    disableRightSwipe={this.props.disableRightSwipe || true}
+                    disableLeftSwipe={this.props.disableLeftSwipe || false}/>
             </View>
         )
     }
 
     renderHiddenRow(data, secId, rowId) {
-        return (
+        return ( this.props.disableHiddenRow != null && this.props.disableHiddenRow ?
+            null
+            :
             <View style={styles.hiddenRow}>
                 <TouchableHighlight
                     style={styles.underlayButton}
@@ -46,24 +49,28 @@ export default class TableViewGroup extends Component {
                     <Text style={styles.text}>Archive</Text>
                 </TouchableHighlight>
             </View>
-            )
+        )
     }
 
     renderHeader() {
         const disclosureIcon = (<Icon name="ios-arrow-forward" style={{marginRight: 10}} size={20} color="#212121" />);
 
         if (this.props.headerIsEnabled || this.props.headerStyle) {
-            return (
-                <TouchableHighlight
-                    style={this.props.headerStyle}
-                    onPress={this.props.onPress}
-                    underlayColor={'#B0BEC5'}>
-                    <View style={{flexDirection: 'row'}}>
+            return ( this.props.disableHeaderButton != null && this.props.disableHeaderButton ?
+                    <View style={[this.props.headerStyle, {flexDirection: 'row'}]}>
                         <Text style={this.props.textStyle}> {this.props.title} </Text>
-                        <View style={{flex: 1}} />
-                        { disclosureIcon }
                     </View>
-                </TouchableHighlight>
+                    :
+                    <TouchableHighlight
+                        style={this.props.headerStyle}
+                        onPress={this.props.onPress}
+                        underlayColor={'#B0BEC5'}>
+                        <View style={{flexDirection: 'row'}}>
+                            <Text style={this.props.textStyle}> {this.props.title} </Text>
+                            <View style={{flex: 1}} />
+                            { disclosureIcon }
+                        </View>
+                    </TouchableHighlight>
             )
         } else {
             return ( null )

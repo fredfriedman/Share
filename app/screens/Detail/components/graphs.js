@@ -44,11 +44,36 @@ export default class Graphs extends Component {
             )
     }
 
-    render(){
+    renderChart() {
 
-        const mainColor = '#FFC107'
-        const fillColor = 'rgba(255, 193, 7, 0.3)'
+        const mainColor = '#00BCD4'
+        const fillColor = 'rgba(0, 151, 167, 0.3)'
         const pfllColor ='#ECEFF1'
+
+        return ( this.props.data[this.state.selected]["points"].length < 2 ?
+
+            <View style={styles.noChartBox}>
+                <Text style={styles.noChartText}>Need More Data</Text>
+            </View>
+        :
+            <Chart
+                type="line"
+                data={this.props.data[this.state.selected]["points"]}
+                style={styles.chart}
+                color={mainColor}
+                fillColor={fillColor}
+                lineWidth={2}
+                dataPointRadius={0}
+                dataPointColor={mainColor}
+                dataPointFillColor={pfllColor}
+                showGrid={false}
+                showAxis={false}
+                axisColor={'#8E8E8E'}
+                axisLabelColor={'#8E8E8E'}
+                showDataPoint={true}/> )
+
+    }
+    render(){
 
         return (
             <View style={this.props.containerStyle}>
@@ -56,7 +81,7 @@ export default class Graphs extends Component {
                     <Row style={styles.row} size={1}>
                         <Col style={styles.column}>
                             <View>
-                                <Text style={styles.textMain}>{this.props.data[this.state.selected]["avg"] / 5}</Text>
+                                <Text style={styles.textMain}>{Math.round(10*this.props.data[this.state.selected]["avg"] / this.props.data[this.state.selected].points.length)/10}</Text>
                                 <Text style={styles.textSubtitle}>Avg Score</Text>
                             </View>
                         </Col>
@@ -75,21 +100,7 @@ export default class Graphs extends Component {
                     </Row>
                     <Row style={styles.row} size={5}>
                         <Col style={[styles.column, {backgroundColor: 'transparent'}]} size={2}>
-                            <Chart
-                                type="line"
-                                data={this.props.data[this.state.selected]["points"].length == 0 ? [[]] : this.props.data[this.state.selected]["points"]}
-                                style={styles.chart}
-                                color={mainColor}
-                                fillColor={fillColor}
-                                lineWidth={2}
-                                dataPointRadius={5}
-                                dataPointColor={mainColor}
-                                dataPointFillColor={pfllColor}
-                                showGrid={false}
-                                showAxis={false}
-                                axisColor={'#8E8E8E'}
-                                axisLabelColor={'#8E8E8E'}
-                                showDataPoint={true}/>
+                            { this.renderChart() }
                         </Col>
                         <Col style={styles.column}>
                             { this.renderPicker() }
@@ -112,6 +123,29 @@ const styles = EStyleSheet.create({
     },
     grid: {
         flex: 1
+    },
+    noChartBox: {
+        alignSelf: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 5,
+        height: 40,
+        width: 150,
+        backgroundColor: 'rgba(28, 28, 28, 0.5)',
+        shadowColor: "#262626",
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        shadowOffset: {
+            height: 1,
+            width: 0
+        },
+        elevation: 20
+    },
+    noChartText: {
+        color: 'white',
+        fontSize: '$fonts.size',
+        fontWeight: '$fonts.weight',
+        fontFamily: '$fonts.family',
     },
     picker: {
         width: 125,

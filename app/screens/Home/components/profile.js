@@ -22,6 +22,11 @@ export default class Profile extends Component {
 
     constructor(props) {
         super(props);
+
+        this.state = {
+            dataSource: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2, }),
+        }
+
         console.log(props)
     }
 
@@ -37,8 +42,15 @@ export default class Profile extends Component {
                 <View style={styles.profilePictureContainer}>
                     <Image style={styles.profilePicture} source={personIcon}/>
                 </View>
-                <Text style={[styles.text, {paddingTop: 20}]}>{this.props.user.Profile.name} </Text>
+                <Text style={[styles.text, {paddingTop: 20}]}>{this.props.user.Profile.name}</Text>
                 <Text style={[styles.text, {fontSize: 12, paddingTop: 10}]}>{this.props.user.Profile.phone}</Text>
+            </View>
+            <View style={styles.box}>
+                <ListView
+                    style={styles.listViewContainer}
+                    dataSource={this.state.dataSource.cloneWithRows([1,2,3])}
+                    renderRow={(data) => <View style={styles.cell}/>}
+                    renderSeparator={() => <View style={styles.separator}/>}/>
             </View>
         </View>
         );
@@ -49,6 +61,22 @@ const styles = EStyleSheet.create({
     bottomBox: {
         flex: 1,
         backgroundColor: '$colors.lightGray',
+    },
+    box: {
+        marginTop: 25,
+        shadowColor: "$colors.darkGray",
+        shadowOpacity: 0.8,
+        shadowRadius: 4,
+        shadowOffset: {
+            height: 2,
+            width: 0
+        },
+        elevation: 20,
+    },
+    cell: {
+        height: '$dimensions.rowHeight',
+        width: '$dimensions.screenWidth',
+        backgroundColor: 'white',
     },
     container: {
         flex: 1,
@@ -66,6 +94,9 @@ const styles = EStyleSheet.create({
     label: {
         alignSelf: 'center',
         color: '$colors.darkGray',
+    },
+    listViewContainer: {
+
     },
     pageControl: {
         position:'absolute',
@@ -98,6 +129,11 @@ const styles = EStyleSheet.create({
         flex: 1,
         width: '$dimensions.screenWidth',
         backgroundColor: 'transparent',
+    },
+    separator: {
+        flex: 1,
+        height: '$dimensions.hairlineWidth',
+        backgroundColor: '#8E8E8E'
     },
     text: {
         color: '$colors.lightGray',
