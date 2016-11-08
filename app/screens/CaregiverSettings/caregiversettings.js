@@ -93,8 +93,5 @@ export default class caregiversettings extends Component {
 
   	onLogout(){
   		this.props.navigator.resetTo({component: login});
-		// this.props.navigator.push({
-	 //  	component:login
-		// });
   	}
 }
