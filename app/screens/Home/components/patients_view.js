@@ -50,9 +50,9 @@ export default class PatientsView extends Component {
 
         var self = this
 
-        this.myPatientsRef.on('child_added', (snap) => {
+        var items = [];
 
-            var items = [];
+        this.myPatientsRef.on('child_added', (snap) => {
 
             self.patientsRef.child(snap.key).on('value', (snap) => {
 
@@ -60,6 +60,7 @@ export default class PatientsView extends Component {
                     items.push({
                         pID: snap.key,
                         name: snap.val().name,
+                        status: snap.val().status
                     });
                 }
                 self.setState({ dataSource: self.state.dataSource.cloneWithRows(items) });
@@ -108,11 +109,9 @@ export default class PatientsView extends Component {
 
     render() {
 
-        const backIcon = (<Icon name="ios-arrow-back" ios="ios-arrow-back" md="md-arrow-back" size={30} color="white" />);
-
         return (
             <View style={styles.container} noSpacer={false} noScroll={false}>
-                <Header leftAction={this.onBack.bind(this)} leftIcon={backIcon} text={"Patients"}/>
+                { this.renderHeader()}
                 <TableViewGroup
                     title={"Patients"}
                     style={styles.tableViewContainer}
@@ -128,6 +127,23 @@ export default class PatientsView extends Component {
                     closeModal={this.setModalVisible.bind(this, null, false)}/>
             </View>
         );
+    }
+
+    renderHeader() {
+
+        const backIcon = (<Icon name="ios-arrow-back" ios="ios-arrow-back" md="md-arrow-back" size={30} color="white" />);
+
+        if (this.props.backEnabled ) {
+            return (    <Header
+                            textStyle={{color: 'white'}}
+                            leftAction={this.onBack.bind(this)}
+                            leftIcon={backIcon} text={"Patients"}/> )
+        } else {
+            return (
+                        <Header
+                            textStyle={{color: 'white'}}
+                            text={"Patients"}/> )
+        }
     }
 
     renderRow(patient: Object, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) {

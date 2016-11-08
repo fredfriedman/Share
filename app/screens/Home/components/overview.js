@@ -33,6 +33,8 @@ export default class Overview extends Component {
 
         this.state = {
             dataSource: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2, }),
+            criticalPatients: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2, }),
+            recentChanges: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2, }),
 
             modalVisible: false,
             modalVisiblePatient: null
@@ -47,25 +49,39 @@ export default class Overview extends Component {
         return Firebase.database().ref();
     }
 
+
     listenForItems(patientsRef) {
 
         var self = this
 
+        var items = [];
+
+        var critical = []
+
+        var recentChanges = []
+
         this.myPatientsRef.on('child_added', (snap) => {
 
-            var items = {};
-
             self.patientsRef.child(snap.key).on('value', (snap) => {
+
                 if (snap.val().active) {
-                    items[snap.key] = {
+                    var item = {
                         pID: snap.key,
                         name: snap.val().name,
+                        status: snap.val().status
                     }
+
+                    items.push(item)
+
+                    if ( critical.length < 3 && snap.val().status > 75){ critical.push(item); }
+                    else if ( critical.length > 0 && critical[0].status < snap.val().status) { critical.shift(); critical.push(item); }
+
                 } else {
                     if ( (snap.key in items) ) { delete items[snap.key]}
                 }
                 self.setState({
-                    dataSource: self.state.dataSource.cloneWithRows(Object.values(items))
+                    dataSource: self.state.dataSource.cloneWithRows(items),
+                    criticalPatients : self.state.dataSource.cloneWithRows(critical)
                 });
             });
         });
@@ -108,6 +124,7 @@ export default class Overview extends Component {
             component: PatientsView,
             passProps: {
                 user: this.props.user,
+                backEnabled: true
             }
         })
     }
@@ -159,8 +176,8 @@ export default class Overview extends Component {
                         onPressArchive={this.onPressArchive.bind(this)}
                         style={styles.tableView}
                         textStyle={styles.tableViewText}
-                        headerStyle={{backgroundColor: "#EF9A9A"}}
-                        dataSource={this.state.dataSource}
+                        headerStyle={styles.criticalHeader}
+                        dataSource={this.state.criticalPatients}
                         renderRow={this.renderRow.bind(this)}/>
                     <TableViewGroup
                         title={"Recent Update"}
@@ -169,7 +186,7 @@ export default class Overview extends Component {
                         onPressArchive={this.onPressArchive.bind(this)}
                         style={[styles.tableView, {marginTop: 20}]}
                         textStyle={styles.tableViewText}
-                        headerStyle={{backgroundColor: "#A5D6A7"}}
+                        headerStyle={styles.recentHeader}
                         dataSource={this.state.dataSource}
                         renderRow={this.renderRow.bind(this)}/>
                 </ScrollView>
@@ -201,7 +218,7 @@ export default class Overview extends Component {
 const styles = EStyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f8f8f8'
+        backgroundColor: 'white'
     },
     header: {
         height: 60,
@@ -212,6 +229,12 @@ const styles = EStyleSheet.create({
         fontSize: 18,
         fontWeight: '$fonts.weight',
         fontFamily: "$fonts.family",
+    },
+    criticalHeader: {
+        backgroundColor: '#EF9A9A'
+    },
+    recentHeader: {
+        backgroundColor: "$colors.main"
     },
     scrollViewContainer: {
         backgroundColor: 'transparent',

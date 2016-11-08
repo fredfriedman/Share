@@ -1,6 +1,7 @@
 'use strict';
 import React, { Component } from 'react';
 import {
+        Picker,
         StyleSheet,
         Text,
         View
@@ -10,109 +11,99 @@ import Chart from 'react-native-chart';
 import Header from '../../../components/header'
 import EStyleSheet from 'react-native-extended-stylesheet';
 
+const Item = Picker.Item;
+
 export default class Graphs extends Component {
 
     constructor() {
         super();
 
         this.state = {
-            data: [],
+            selected: "Pain",
         }
     }
-    componentWillMount() {
-        this.setState({data: this.createPoints(this.props.assessments || [], this.props.type)})
-    }
-    createPoints(assessments, type) {
-        var data = []
-        switch(type) {
-            case  "Appetite":
-                for (var i = 0; i < assessments.length; i++) {
-                    data += [i, assessments[i].Results.Appetite]
-                }
-                break
-            case "Depression":
-                for (var i = 0; i < assessments.length; i++) {
-                    data += [i, assessments[i].Results.Depression]
-                }
-                break
-            case "Drowsiness":
-                for (var i = 0; i < assessments.length; i++) {
-                    data += [i, assessments[i].Results.Drowsiness]
-                }
-                break
-            case "Nausea":
-                for (var i = 0; i < assessments.length; i++) {
-                    data += [i, assessments[i].Results.Nausea]
-                }
-                break
-            case "Pain":
-                for (var i = 0; i < assessments.length; i++) {
-                    data += [i, assessments[i].Results.Pain]
-                }
-                break
-            case "Shortness of breath":
-                for (var i = 0; i < assessments.length; i++) {
-                    data += [i, assessments[i].Results.ShortnessOfBreath]
-                }
-                break
-            case "Tiredness":
-                for (var i = 0; i < assessments.length; i++) {
-                    data += [i, assessments[i].Results.Tiredness]
-                }
-                break
-        }
-        return data
+
+    onValueChange(value: String){
+        this.setState({selected: value})
     }
 
-    render(){
+    renderPicker() {
+        return (
+            <Picker
+                style={styles.picker}
+                selectedValue={this.state.selected}
+                onValueChange={this.onValueChange.bind(this)}>
+                <Item label="Appetite" value="Appetite" />
+                <Item label="Depression" value="Depression" />
+                <Item label="Drowsiness" value="Drowsiness" />
+                <Item label="Nausea" value="Nausea" />
+                <Item label="Pain" value="Pain" />
+                <Item label="Shortness of Breath" value="Shortness of Breath" />
+                <Item label="Tiredness" value="Tiredness" />
+            </Picker>
+            )
+    }
 
-        const mainColor = '#FFC107'
-        const fillColor = 'rgba(255, 193, 7, 0.3)'
+    renderChart() {
+
+        const mainColor = '#00BCD4'
+        const fillColor = 'rgba(0, 151, 167, 0.3)'
         const pfllColor ='#ECEFF1'
+
+        return ( this.props.data[this.state.selected]["points"].length < 2 ?
+
+            <View style={styles.noChartBox}>
+                <Text style={styles.noChartText}>Need More Data</Text>
+            </View>
+        :
+            <Chart
+                type="line"
+                data={this.props.data[this.state.selected]["points"]}
+                style={styles.chart}
+                color={mainColor}
+                fillColor={fillColor}
+                lineWidth={2}
+                dataPointRadius={0}
+                dataPointColor={mainColor}
+                dataPointFillColor={pfllColor}
+                showGrid={false}
+                showAxis={false}
+                axisColor={'#8E8E8E'}
+                axisLabelColor={'#8E8E8E'}
+                showDataPoint={true}/> )
+
+    }
+    render(){
 
         return (
             <View style={this.props.containerStyle}>
                 <Grid style={styles.grid}>
-                    <Row style={styles.row}>
+                    <Row style={styles.row} size={1}>
                         <Col style={styles.column}>
                             <View>
-                                <Text style={styles.textMain}> 8 </Text>
-                                <Text style={styles.textSubtitle}> Avg Score </Text>
+                                <Text style={styles.textMain}>{Math.round(10*this.props.data[this.state.selected]["avg"] / this.props.data[this.state.selected].points.length)/10}</Text>
+                                <Text style={styles.textSubtitle}>Avg Score</Text>
                             </View>
                         </Col>
                         <Col style={styles.column}>
                             <View>
-                                <Text style={styles.textMain}> 10 </Text>
-                                <Text style={styles.textSubtitle}> High Score </Text>
+                                <Text style={styles.textMain}>{this.props.data[this.state.selected]["max"]}</Text>
+                                <Text style={styles.textSubtitle}>High Score</Text>
                             </View>
                         </Col>
                         <Col style={styles.column}>
                             <View>
-                                <Text style={styles.textMain}> 5 </Text>
-                                <Text style={styles.textSubtitle}> Low Score </Text>
+                                <Text style={styles.textMain}>{this.props.data[this.state.selected]["min"]}</Text>
+                                <Text style={styles.textSubtitle}>Low Score</Text>
                             </View>
                         </Col>
                     </Row>
-                    <Row style={styles.row}>
-                        <Col style={styles.column} size={2}>
-                            <Text style={styles.textMain}> 8 </Text>
-                            <Text style={styles.textSubtitle}> Avg Score </Text>
-                        </Col>
+                    <Row style={styles.row} size={5}>
                         <Col style={[styles.column, {backgroundColor: 'transparent'}]} size={2}>
-                            <Chart
-                                type="line"
-                                data={this.props.data}
-                                style={styles.chart}
-                                color={mainColor}
-                                fillColor={fillColor}
-                                lineWidth={2}
-                                dataPointRadius={5}
-                                dataPointColor={mainColor}
-                                dataPointFillColor={pfllColor}
-                                showGrid={false}
-                                showAxis={false}
-                                showDataPoint={true}/>
-                            <Text style={styles.textSubtitle}> {this.props.type} Trend </Text>
+                            { this.renderChart() }
+                        </Col>
+                        <Col style={styles.column}>
+                            { this.renderPicker() }
                         </Col>
                     </Row>
                 </Grid>
@@ -123,23 +114,54 @@ export default class Graphs extends Component {
 
 const styles = EStyleSheet.create({
     chart: {
-        width: 250,
+        width: 200,
         height: 65,
-        marginTop: -20,
+        marginTop: 20,
     },
     column: {
         justifyContent: 'center',
     },
     grid: {
-        paddingLeft: 20,
         flex: 1
+    },
+    noChartBox: {
+        alignSelf: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 5,
+        height: 40,
+        width: 150,
+        backgroundColor: 'rgba(28, 28, 28, 0.5)',
+        shadowColor: "#262626",
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        shadowOffset: {
+            height: 1,
+            width: 0
+        },
+        elevation: 20
+    },
+    noChartText: {
+        color: 'white',
+        fontSize: '$fonts.size',
+        fontWeight: '$fonts.weight',
+        fontFamily: '$fonts.family',
+    },
+    picker: {
+        width: 125,
+    },
+    row: {
+        paddingLeft: 15
+    },
+    separator: {
+        borderBottomColor: '$colors.main',
+        borderBottomWidth: '$dimensions.hairlineWidth'
     },
     textMain: {
         color: '$colors.darkGray',
         fontSize: 36,
         fontWeight: '$fonts.weight',
         fontFamily: '$fonts.family',
-        marginLeft: -5,
     },
     textSubtitle: {
         color: '$colors.mediumGray',
@@ -148,7 +170,4 @@ const styles = EStyleSheet.create({
         fontFamily: '$fonts.family',
         paddingTop: 1
     },
-    row: {
-        flex: 1
-    }
 })

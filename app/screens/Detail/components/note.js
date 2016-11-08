@@ -66,15 +66,16 @@ const styles = EStyleSheet.create({
     stack: {
         flexDirection: 'column',
         paddingLeft: 10,
+        flexWrap: 'wrap'
     },
     text: {
-        fontSize: 10,
+        fontSize: 12,
         fontWeight: '200',
         fontFamily: '$fonts.family',
         color: '$colors.darkGray'
     },
     title: {
-        fontSize: 13,
+        fontSize: 14,
         fontWeight: '500',
         fontFamily: '$fonts.family',
         color: '$colors.darkGray'
