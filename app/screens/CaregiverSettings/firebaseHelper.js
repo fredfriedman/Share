@@ -7,16 +7,16 @@ const firebaseConfig = {
     apiKey: "AIzaSyAGduZMnMEfsoknetJyYk7kJayWSgOAVbE",
     authDomain: "https://reactcs408.firebaseio.com/",
     databaseURL: "https://reactcs408.firebaseio.com/",
- };
+};
 export default class firebaseHelper {
-  constructor(){
-  }
+    constructor(){
+        
+    }
 
 //fetch caregiver firebase caregiver data as promise. Do as you wish
   getCaregiverPromise(caregiverId) {
       return firebase.database().ref('Caregivers/'+ caregiverId).once('value').then(function(snapshot) {
-        console.log('****************************************'+snapshot.child('Patient').val());
-        return snapshot.child('patient').val();
+        return snapshot.child('Patient').val();
     });
   }
 
