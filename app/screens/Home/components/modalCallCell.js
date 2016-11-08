@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { Image, View, StyleSheet, TouchableHighlight, Text } from 'react-native';
+import {
+    Text,
+    TouchableHighlight,
+
+    View
+    } from 'react-native';
+
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 export default class ModalCallCell extends Component {
     constructor(props) {
@@ -16,7 +23,7 @@ export default class ModalCallCell extends Component {
                 </View>
                 <View style={{flex: 1}}/>
                 <TouchableHighlight
-                    style={{paddingTop: 6, alignItems: 'center', width: 70, backgroundColor: 'gray', borderLeftWidth: 1}}
+                    style={styles.callButton}
                     onPress={() => { this.props.onPress() }}
                     underlayColor={'#F8F8F8'}>
                     <Text style={styles.callText}> Call </Text>
@@ -27,7 +34,19 @@ export default class ModalCallCell extends Component {
     }
 }
 
-var styles = StyleSheet.create({
+const styles = EStyleSheet.create({
+    callButton: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 70,
+        backgroundColor: 'gray',
+        borderLeftWidth: 1
+    },
+    callText: {
+        fontSize: '$fonts.size',
+        fontWeight: 'bold',
+        fontFamily: '$fonts.family',
+    },
     row: {
         height: 50,
         backgroundColor: 'transparent',
@@ -37,30 +56,15 @@ var styles = StyleSheet.create({
         paddingTop: 10,
         flexDirection: 'column',
     },
-    text: {
-        fontSize: 14,
-        fontWeight: '100',
-    },
     subText: {
         paddingTop: 2,
-        paddingLeft: 2.5,
         fontSize: 11,
-        fontWeight: '100',
+        fontWeight: '$fonts.weight',
+        fontFamily: '$fonts.family',
     },
-    callText: {
-        paddingTop: 10,
-        paddingLeft: 2.5,
-        fontSize: 14,
-        fontWeight: 'bold',
+    text: {
+        fontSize: '$fonts.size',
+        fontWeight: '$fonts.weight',
+        fontFamily: '$fonts.family',
     },
-    icon: {
-        //position: 'absolute',
-        width: 25,
-        height: 25,
-        marginTop: 5,
-        marginRight: 10,
-    },
-    actionIcon: {
-        marginTop: 7,
-    }
 });

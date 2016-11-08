@@ -2,14 +2,21 @@ import React, { Component } from 'react';
 import {
         ListView,
         Modal,
-        StyleSheet,
         Text,
-        View, } from 'react-native';
+        View,
+    } from 'react-native';
+
+// Assets
 import Icon from 'react-native-vector-icons/Ionicons';
-import Button from 'react-native-button'
+
+// Utility
 import Communications from 'react-native-communications';
-var firebase = require('../../config/firebase')
-var ModalCallCell = require('../../components/modalCallCell').default
+import EStyleSheet from 'react-native-extended-stylesheet';
+import Firebase from '../../../config/firebase'
+
+// Components
+import Button from 'react-native-button'
+import ModalCallCell from './modalCallCell'
 
 export default class ModalCallView  extends Component {
 
@@ -25,7 +32,7 @@ export default class ModalCallView  extends Component {
     }
 
     getRef() {
-        return firebase.database().ref();
+        return Firebase.database().ref();
     }
 
     getPatientCaregivers() {
@@ -90,7 +97,7 @@ export default class ModalCallView  extends Component {
     }
 }
 
-var styles = StyleSheet.create({
+const styles = EStyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
@@ -101,7 +108,8 @@ var styles = StyleSheet.create({
         alignSelf: 'center',
         paddingBottom: 5,
         fontSize: 18,
-        fontWeight: '500'
+        fontWeight: '500',
+        fontFamily: '$fonts.family'
     },
     innerContainer: {
         borderRadius: 10,
@@ -113,7 +121,7 @@ var styles = StyleSheet.create({
     },
     separator: {
         flex: 1,
-        height: StyleSheet.hairlineWidth,
+        height: '$dimensions.hairlineWidth',
         backgroundColor: '#8E8E8E'
     }
 })

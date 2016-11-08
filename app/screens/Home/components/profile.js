@@ -1,15 +1,16 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { ListView,
-        TouchableHighlight,
-        StyleSheet,
-        RecyclerViewBackedScrollView,
-        Text,
+import {
         Image,
-        View, } from 'react-native';
+        ListView,
+        StyleSheet,
+        Text,
+        TouchableHighlight,
+        View,
+    } from 'react-native';
 
-var Header = require('../../components/header').default
+import Header from '../../../components/header'
 
 export default class Profile extends Component {
 

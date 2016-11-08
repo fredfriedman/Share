@@ -1,27 +1,39 @@
 'use strict';
 import React, { Component } from 'react';
-import { Alert, Image, Text, StyleSheet, View } from 'react-native';
+import {
+    Alert,
+    Image,
+    KeyboardAvoidingView,
+    Text,
+    View
+    } from 'react-native';
+
+// Assets
+import Icon from 'react-native-vector-icons/Ionicons';
+import styles from './styles'
+import { butterfly } from '../../config/images'
+
+// Componenets
 import Button from 'react-native-button'
-import Dimensions from 'Dimensions';
+import Header from '../../components/header'
 import { Hoshi } from 'react-native-textinput-effects';
 import dismissKeyboard from 'dismissKeyboard'
-import Icon from 'react-native-vector-icons/Ionicons';
 
-let Login    = require('./Login').default
-var firebase = require('../../config/firebase')
-let { butterfly} = require('../../config/images')
-var styles = require('./styles')
-let CloseModalButton  = require('../../components/TopLeftAction').default
+// Screens
+import Login from './Login'
 
-export default class signup extends Component {
+// Utilities
+import Firebase from '../../config/firebase'
+
+export default class Signup extends Component {
 
     constructor(props){
-    super(props);
+        super(props);
 
-    this.state = {
-        loaded: true,
-        email: '',
-        password: ''
+        this.state = {
+            loaded: true,
+            email: '',
+            password: ''
         };
     }
 
@@ -31,32 +43,38 @@ export default class signup extends Component {
 
     onInitiateReset(){
 
-        let self = this
+        if ( this.state.email == "" ) {
+            Alert.alert( "Oops", "Please Enter An Email Address", [{text: 'OK', onPress: () => console.log('OK Pressed!')}])
 
-        firebase.auth().sendPasswordResetEmail(this.state.email)
-            .then(function(success) {
-                self.onExitScene
+        } else {
 
-            }, function(error) {
+            let self = this
 
-                var alertTitle = "Oops something went wrong"
-                var alertMessage = "Please try again."
+            Firebase.auth().sendPasswordResetEmail(this.state.email)
+                .then(function(success) {
+                    self.onExitScene
 
-                switch(error.code){
-                    case "auth/invalid-email" :
-                        alertTitle = "Incorrect Email"
-                        alertMessage = "It looks like you may have misspelled your email.\n Please try again."
-                        break;
-                    case "auth/user-not-found":
-                        alertTitle = "Incorrect Password"
-                        alertMessage = "The password you entered is incorrect.\n Please try again."
-                        break;
-                    default:
-                        alertTitle = "Oops something went wrong"
-                        alertMessage = "Please try again."
-                }
-                Alert.alert( alertTitle, alertMessage, [{text: 'OK', onPress: () => console.log('OK Pressed!')}])
-            })
+                }, function(error) {
+
+                    var alertTitle;
+                    var alertMessage;
+
+                    switch(error.code){
+                        case "auth/invalid-email" :
+                            alertTitle = "Incorrect Email"
+                            alertMessage = "It looks like you may have misspelled your email.\n Please try again."
+                            break;
+                        case "auth/user-not-found":
+                            alertTitle = "Incorrect Password"
+                            alertMessage = "The password you entered is incorrect.\n Please try again."
+                            break;
+                        default:
+                            alertTitle = "Oops, something went wrong"
+                            alertMessage = "Please try again."
+                    }
+                    Alert.alert( alertTitle, alertMessage, [{text: 'OK', onPress: () => console.log('OK Pressed!')}])
+                })
+        }
     }
 
     onExitScene() {
@@ -67,31 +85,39 @@ export default class signup extends Component {
 
     render() {
 
-        const xIcon = (<Icon name="ios-close" size={dimensions.iconSize} color="gray" />);
+        const closeIcon = (<Icon name="ios-close" size={30} color="#1e1e1e" />);
 
         return (
-            <View style={styles.container}>
-                <Image style={{backgroundColor: 'transparent', height: 35, width: 35, top: 20}} source={butterfly}/>
-                <View style={{width: Dimensions.get('window').width - 20, paddingTop: 40}}>
+            <View style={[styles.container, {alignItems: 'center', backgroundColor: 'white'}]}>
+                <Header
+                    leftAction={this.onExitScene.bind(this)}
+                    leftIcon={closeIcon}
+                    centerIcon={<Image style={styles.icon} source={butterfly}/>}
+                    headerStyle={styles.header}/>
+                <View style={styles.formContainerHoshi}>
                     <Hoshi
                         ref="email"
-                        style={{width: Dimensions.get('window').width - 20 }}
-                        value={this.state.email}
-                        inputStyle={styles.passwordResetTextInput}
-                        labelStyle={{color: '#00BCD4'}}
                         label={'Email Address'}
+                        value={this.state.email}
+                        style={styles.row}
+                        labelStyle={styles.mainText}
+                        inputStyle={styles.passwordResetTextInput}
                         borderColor={'#00BCD4'}
                         autoCapitalize={'none'}
                         autoCorrect={false}
                         onChangeText={(text) => this.setState({email: text})}/>
                 </View>
-                <Button
-                    style={styles.submitLabel}
-                    containerStyle={styles.submitButton}
-                    onPress={this.onInitiateReset.bind(this)}>
-                    Reset Password
-                </Button>
-                <CloseModalButton action={this.onExitScene.bind(this)} icon={xIcon}/>
+                <View style={{flex: 1}}/>
+                <KeyboardAvoidingView style={{flex: 1, justifyContent: 'flex-end'}} behavior={'padding'}>
+                    <View style={[styles.signInBox, {justifyContent: 'flex-end'}]}>
+                        <Button
+                            style={styles.secondaryText}
+                            containerStyle={[styles.signInBoxButton, {width: 120}]}
+                            onPress={this.onInitiateReset.bind(this)}>
+                            Reset Password
+                        </Button>
+                    </View>
+                </KeyboardAvoidingView>
             </View>
         );
     }

@@ -1,19 +1,16 @@
 import React, { Component } from 'react';
 import {
     ListView,
-    Image,
     Navigator,
     Text,
     TouchableHighlight,
-    StyleSheet,
     View
 } from 'react-native';
-import Dimensions from 'Dimensions';
 
-var { personIcon } = require('../../config/images')
-var firebase = require('../../config/firebase')
-var NotesInput = require('./notesInput').default
-var Note = require('../../components/note').default
+import EStyleSheet from 'react-native-extended-stylesheet';
+import { personIcon } from '../../../config/images'
+import NotesInput from './notes-input'
+import Note from './note'
 
 export default class NotesPage extends Component {
 
@@ -34,8 +31,16 @@ export default class NotesPage extends Component {
 
     render(){
         return (
-            <View style={styles.scrollView}>
+            <View style={this.props.containerStyle}>
+                <Text style={this.props.labelStyle}> Notes </Text>
                 <ListView
+                    ref={ref => this.listView = ref}
+                    onLayout={event => {
+                        this.listViewHeight = event.nativeEvent.layout.height
+                    }}
+                    onContentSizeChange={() => {
+                        this.listView.scrollTo({y: this.listView.getMetrics().contentLength - this.listViewHeight})
+                    }}
                     dataSource={this.props.notes}
                     renderRow={(note) => <Note note={note} poster={personIcon}/>}
                     renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
@@ -55,12 +60,15 @@ export default class NotesPage extends Component {
     }
 }
 
-var styles = StyleSheet.create({
-    scrollView: {
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height - Dimensions.get('window').height/2.5,
-        backgroundColor:'transparent',
-        flex: 1
+const styles = EStyleSheet.create({
+    button: {
+        width: 100,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderRadius: 5,
+        borderColor: '$colors.darkGray',
+        marginRight: 30
     },
     footer: {
         paddingVertical: 20,
@@ -68,21 +76,12 @@ var styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "flex-end"
     },
-    button: {
-        borderWidth: 1,
-        borderRadius: 5,
-        borderColor: '#1e1e1e',
-        width: 100,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: 30
-    },
-    text: {
-        color: '#1e1e1e'
-    },
     separator: {
         flex: 1,
-        height: StyleSheet.hairlineWidth,
-        backgroundColor: '#8E8E8E',
+        height: '$dimensions.hairlineWidth',
+        backgroundColor: '$colors.mediumGray',
+    },
+    text: {
+        color: '$colors.darkGray',
     },
 })

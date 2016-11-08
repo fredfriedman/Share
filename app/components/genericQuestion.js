@@ -18,7 +18,7 @@ export default class Question extends Component {
 
 	constructor(props) {
         super(props);
-        this.state = { 
+        this.state = {
             sliderVal: 0
         };
     }
@@ -26,7 +26,7 @@ export default class Question extends Component {
     render() {
     	if (this.props.symptom == null) {
     		return(
-    			<View>
+    			<View style={{width: width}}>
 	                <Text style={{ padding: 10, textAlign: 'center', fontWeight: 'bold', color: '#00ACC1' }}>
 	                    Regarding your duties as a caregiver, on a scale of 0 to 10, how much distress have you been experiencing over the past week?
 	                </Text>
@@ -38,7 +38,7 @@ export default class Question extends Component {
 	                    thumbStyle={customStyles2.thumb}
 	                    onValueChange={(value) => this.setState({sliderVal: value})}
 	                    maximumValue={10}
-	                    step={1} 
+	                    step={1}
 	                    minimumTrackTintColor='#00BCD4'
 	                    maximumTrackTintColor='#b7b7b7'
 	                />
@@ -49,9 +49,9 @@ export default class Question extends Component {
     		);
     	} else {
 	    	return(
-	    		<View>
+	    		<View style={{width: width}}>
 	    			<Text style={{ padding: 10, textAlign: 'center', fontWeight: 'bold', color: '#00ACC1' }}>
-	                    Please indicate the severity of your {this.props.symptom} on a scale of 0 - 10 with 0 being 
+	                    Please indicate the severity of your {this.props.symptom} on a scale of 0 - 10 with 0 being
 	                    "No {this.props.symptom}" and 10 being "Worst {this.props.symptom} possible".
 	                </Text>
 
@@ -62,7 +62,7 @@ export default class Question extends Component {
 	                    thumbStyle={customStyles2.thumb}
 	                    onValueChange={(value) => this.setState({sliderVal: value})}
 	                    maximumValue={10}
-	                    step={1} 
+	                    step={1}
 	                    minimumTrackTintColor='#00BCD4'
 	                    maximumTrackTintColor='#b7b7b7'
 	                />

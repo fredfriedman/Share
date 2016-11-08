@@ -1,7 +1,6 @@
-import Firebase from 'firebase';
 import React, { Component } from 'react';
-import { Image, View, StyleSheet, TouchableHighlight, Text } from 'react-native';
-import Dimensions from 'Dimensions'
+import { Image, Text, View } from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 export default class Note extends Component {
 
@@ -39,9 +38,9 @@ export default class Note extends Component {
 
     render() {
         return (
-            <View style={{flexDirection: 'row', paddingVertical: 10}}>
-                <Image style={styles.posterPicture} source={this.props.poster}/>
-                <View style={{paddingLeft: 10, flexDirection: 'column'}}>
+            <View style={styles.row}>
+                <Image style={styles.userPicture} source={this.props.poster}/>
+                <View style={styles.stack}>
                     <Text style={styles.title}>{this.props.note.poster}</Text>
                     <Text style={styles.text}>{this.props.note.text}</Text>
                 </View>
@@ -52,35 +51,39 @@ export default class Note extends Component {
     }
 }
 
-var styles = StyleSheet.create({
-    posterPicture: {
-        marginLeft: 5,
-        height: 40,
-        width: 40,
-        borderRadius: 20,
-        backgroundColor: 'transparent'
-    },
-    row: {
-        height: 100,
-        backgroundColor: 'transparent',
-        borderColor: '#1e1e1e',
-        borderWidth: 1,
-        width: Dimensions.get('window').width
-    },
+const styles = EStyleSheet.create({
     date: {
         marginRight: 10,
         fontSize: 13,
         fontWeight: 'bold',
+        fontFamily: '$fonts.family',
         color: '#1e1e1e'
     },
-    title: {
-        fontSize: 13,
-        fontWeight: '500',
-        color: '#1e1e1e'
+    row: {
+        flexDirection: 'row',
+        paddingVertical: 10
+    },
+    stack: {
+        flexDirection: 'column',
+        paddingLeft: 10,
     },
     text: {
         fontSize: 10,
         fontWeight: '200',
-        color: '#1e1e1e'
+        fontFamily: '$fonts.family',
+        color: '$colors.darkGray'
     },
+    title: {
+        fontSize: 13,
+        fontWeight: '500',
+        fontFamily: '$fonts.family',
+        color: '$colors.darkGray'
+    },
+    userPicture: {
+        height: 40,
+        width: 40,
+        marginLeft: 5,
+        borderRadius: 20,
+        backgroundColor: 'transparent'
+    }
 });

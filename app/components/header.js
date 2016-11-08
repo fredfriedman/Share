@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Image, Text, TouchableHighlight, StyleSheet, View } from 'react-native';
-import Dimensions from 'Dimensions';
+import { Text, TouchableHighlight, View } from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 export default class Header extends Component {
 
     renderButton(action, icon, style) {
         if ( action == null) {
-            return null
+            return <View/>
         }
         return (
             <TouchableHighlight
@@ -18,29 +18,30 @@ export default class Header extends Component {
         )
     }
 
-    getTitle(title) {
-        if (title == null) {
-            return null
+    renderCenterItem() {
+        if (this.props.text != null) {
+            return ( <Text style={[styles.header_center, styles.header_text, this.props.textStyle]}>{this.props.text}</Text> )
+        } else if (this.props.centerIcon != null) {
+            return ( <View style={[styles.header_center, {marginTop: 15}]}>{ this.props.centerIcon }</View>)
+        } else {
+            return <View/>
         }
-        return (
-            <Text style={[styles.header_text, this.props.textStyle]}>{this.props.text}</Text>
-        )
     }
 
     render(){
         return (
             <View style={styles.navBarContainer}>
                 <View style={[styles.header, this.props.headerStyle]}>
-                    {this.getTitle(this.props.text)}
-                    {this.renderButton(this.props.leftAction, this.props.leftIcon, { marginLeft: 8, paddingTop: 10 })}
-                    {this.renderButton(this.props.rightAction, this.props.rightIcon, { marginRight: 8, paddingTop: 10 })}
+                    {this.renderCenterItem()}
+                    {this.renderButton(this.props.leftAction, this.props.leftIcon, { marginLeft: 15, paddingTop: 15 })}
+                    {this.renderButton(this.props.rightAction, this.props.rightIcon, { marginRight: 15, paddingTop: 15 })}
                 </View>
             </View>
         );
     }
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
     navBarContainer: {
         backgroundColor: 'white',
     },
@@ -48,16 +49,16 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        height: 60,
-        backgroundColor: '#00BCD4',
-        borderColor: '#AAAAAA',
+        height: '$dimensions.navBarHeight',
+        backgroundColor: '$colors.main',
+        borderColor: '$colors.mediumGray',
         borderBottomWidth: 0.5,
     },
     header_item: {
         paddingLeft: 10,
         paddingRight: 10
     },
-    header_text: {
+    header_center: {
         position: 'absolute',
         left: 0,
         right: 0,
@@ -65,10 +66,12 @@ const styles = StyleSheet.create({
         bottom: 0,
         justifyContent: 'center',
         alignItems: 'center',
-        color: '#FFFFFF',
+        marginTop: 25,
+    },
+    header_text: {
+        color: '$colors.darkGray',
         fontSize: 16,
         fontWeight: 'bold',
         textAlign: 'center',
-        marginTop: 25,
-    }
+    },
 });

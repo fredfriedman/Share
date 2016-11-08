@@ -1,24 +1,27 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { ListView,
-        TouchableHighlight,
-        StyleSheet,
-        RecyclerViewBackedScrollView,
-        Text,
-        Image,
-        View, } from 'react-native';
+import {
+        ListView,
+        View,
+    } from 'react-native';
+
+// Assets
 import FAIcon from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-var firebase = require('../../config/firebase')
-var Header = require('../../components/header').default
-var TableViewGroup = require('../../components/TableViewGroup').default
-var ModalView = require('./modalCallView').default
-var PatientDetailView = require('../Detail/detail').default
-var PatientTableViewCell = require('../../components/patientTableViewCell').default
+// Components
+import  Header from '../../../components/header'
+import  ModalView from './modalCallView'
+import  TableViewGroup from '../../../components/TableViewGroup'
+import  PatientTableViewCell from '../../../components/patientTableViewCell'
 
-var styles = require('../../config/styles')
+// Pages
+import  PatientDetailView from '../../Detail/detail'
+
+// Tools
+import  Firebase from '../../../config/firebase'
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 export default class PatientsView extends Component {
 
@@ -40,7 +43,7 @@ export default class PatientsView extends Component {
     }
 
     getRef() {
-        return firebase.database().ref();
+        return Firebase.database().ref();
     }
 
     listenForItems(patientsRef) {
@@ -105,18 +108,17 @@ export default class PatientsView extends Component {
 
     render() {
 
-        const backIcon = (<Icon name="ios-arrow-back" ios="ios-arrow-back" md="md-arrow-back" style={{marginTop: -5}} size={30} color="white" />);
+        const backIcon = (<Icon name="ios-arrow-back" ios="ios-arrow-back" md="md-arrow-back" size={30} color="white" />);
 
         return (
-            <View style={{flexDirection: 'column', flex: 1 }} noSpacer={false} noScroll={false}>
+            <View style={styles.container} noSpacer={false} noScroll={false}>
                 <Header leftAction={this.onBack.bind(this)} leftIcon={backIcon} text={"Patients"}/>
                 <TableViewGroup
                     title={"Patients"}
-                    style={{backgroundColor: '#f8f8f8', flex: 1}}
+                    style={styles.tableViewContainer}
                     onPress={this.onPressAction.bind(this)}
                     onPressArchive={this.onPressArchive.bind(this)}
                     scrollEnabled={true}
-                    textStyle={{marginTop: 25, color: '#FFFFFF', fontSize: 18, textAlign: 'center'}}
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow.bind(this)}
                     renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}/>
@@ -130,7 +132,7 @@ export default class PatientsView extends Component {
 
     renderRow(patient: Object, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) {
 
-        const phoneIcon = (<FAIcon name="phone" size={30} color="#212121" />);
+        const phoneIcon = (<FAIcon name="phone" size={30} color="#262626" />);
 
         return (
             <PatientTableViewCell
@@ -145,43 +147,53 @@ export default class PatientsView extends Component {
     }
 }
 
-var styles = StyleSheet.create({
+const styles = EStyleSheet.create({
+    container: {
+        flex: 1
+    },
+    row: {
+        flexDirection: 'row',
+        height: 44,
+        backgroundColor: '$colors.secondary',
+    },
     separator: {
         flex: 1,
-        height: StyleSheet.hairlineWidth,
-        backgroundColor: '#8E8E8E',
+        height: '$dimensions.hairlineWidth',
+        backgroundColor: '$colors.mediumGray',
     },
     stack: {
         flexDirection: 'column'
     },
     statusBar: {
-        backgroundColor: 'red',
         width: 6,
         height: 43,
         marginTop: 0.5,
-    },
-    row: {
-        flexDirection: 'row',
-        height: 44,
-        backgroundColor: '#F6F6F6',
-    },
-    thumb: {
-        marginTop: 2,
-        width: 40,
-        height: 40,
-        marginLeft: 1,
-        marginRight: 10,
-    },
-    text: {
-        flex: 0,
-        marginTop: 10,
-        fontSize: 14,
-        fontWeight: '100',
     },
     subTitle: {
         flex: 0,
         paddingTop: 5,
         fontSize: 10,
-        fontWeight: '100',
+        fontWeight: '$fonts.weight',
+        fontFamily: '$fonts.family',
+    },
+    tableViewContainer: {
+        flex: 1,
+        backgroundColor: '#f8f8f8',
+    },
+    text: {
+        flex: 0,
+        color: '#FFFFFF',
+        fontSize: 18,
+        fontWeight: '$fonts.weight',
+        fontFamily: '$fonts.family',
+        textAlign: 'center',
+        marginTop: 25,
+    },
+    thumb: {
+        width: 40,
+        height: 40,
+        marginTop: 2,
+        marginLeft: 1,
+        marginRight: 10,
     },
 });
