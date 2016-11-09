@@ -25,25 +25,26 @@ export default class PatientTrend extends Component {
    * @params data{Array} indicatior{String}
    * @return {low, high, lowDate, highDate, avg, sum, count}
    */
-    calculateLog (data, indicator) {
+    calculateLog (data) {
+        console.log(data)
         const count = data.length
-        let high = data[0][indicator]
-        let low = data[0][indicator]
-        let highDate = data[0]['date']
-        let lowDate = data[0]['date']
-
+        let high = 10
+        let low = 0
+        let highDate = new Date(data[0].timestamp*1000)
+        let lowDate = new Date(data[0].timestamp*1000)
+        console.log(high,low,highDate,lowDate)
         let sum = 0
 
         let value
         data.forEach((d, index) => {
-            value = d[indicator]
+            value = d.level
             sum += value
             if (value < low) {
                 low = value
-                lowDate = data[index]['date']
+                lowDate = new Date(data[index].timestamp*1000)
             } else if (value > high) {
                 high = value
-                highDate = data[index]['date']
+                highDate = new Date(data[index].timestamp*1000)
             }
         })
         return {
@@ -69,7 +70,7 @@ export default class PatientTrend extends Component {
                     low={low}
                     color={color}
                     unitHeight={unitHeight}
-                    date={this.props.data[index].date}
+                    date={new Date(this.props.data[index].timestamp*1000)}
                     barItemTop={barItemTop}
                     barInterval={barInterval} />
                 )
@@ -78,14 +79,15 @@ export default class PatientTrend extends Component {
 
     render () {
         const {data, color} = this.props
+        if (data.length == 0) {
+            return (<View/>)
+        }
         const {unitHeight} = this
-        const footData = this.calculateLog(data, 'painScore')
-
+        const footData = this.calculateLog(data)
         const scrollHeight = footData.high * unitHeight + Math.abs(footData.low) * unitHeight + barItemTop
 
         return (
             <View style={styles.container}>
-                <Text style={styles.title}> Pain Score </Text>
                 <ScrollView
                     horizontal
                     showsHorizontalScrollIndicator={false}
@@ -93,25 +95,10 @@ export default class PatientTrend extends Component {
                     alwaysBounceVertical={false}
                     directionalLockEnabled
                     style={[styles.scrollView, {height: scrollHeight}]}>
-                    {this.renderBars(data.map(d => d.painScore), footData.high, footData.low, color)}
+                    {this.renderBars(data.map(d => d.level), footData.high, footData.low, color)}
                 </ScrollView>
                 <View style={styles.summary}>
-                    <View style={styles.sumLeft}>
-                        <Text style={styles.sumAvg}>{(footData.avg).toFixed(2)}</Text>
-                        <Text style={styles.sumAvgLabel}>avg</Text>
-                    </View>
-                    <View style={styles.sumRight}>
-                        <View style={styles.sumPolarItem}>
-                            <Text style={styles.sumPolarLabel}>Highest:</Text>
-                            <Text style={styles.sumPolarNumber}>{footData.high}</Text>
-                            <Text style={styles.sumPolarLabel}>{'on ' + footData.highDate.substring(0, 16)}</Text>
-                        </View>
-                        <View style={styles.sumPolarItem}>
-                            <Text style={styles.sumPolarLabel}>Lowest:</Text>
-                            <Text style={styles.sumPolarNumber}>{footData.low}</Text>
-                            <Text style={styles.sumPolarLabel}>{'on ' + footData.lowDate.substring(0, 16)}</Text>
-                        </View>
-                    </View>
+                    <Text style={styles.title}> Pain Trend </Text>
                 </View>
             </View>
         )
@@ -125,7 +112,7 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
   },
   title: {
-    color: '#ffffff',
+    color: 'black',
     fontSize: 13,
     fontWeight: '600'
   },
@@ -148,12 +135,12 @@ const styles = StyleSheet.create({
     position: 'relative'
   },
   sumAvg: {
-    color: '#ffffff',
+    color: 'black',
     fontSize: 25,
     fontWeight: '200'
   },
   sumAvgLabel: {
-    color: '#ffffff',
+    color: 'black',
     marginLeft: 2,
     position: 'relative',
     top: -3
@@ -169,12 +156,12 @@ const styles = StyleSheet.create({
     marginTop: 2
   },
   sumPolarLabel: {
-    color: '#ffffff',
+    color: 'black',
     fontSize: 11,
     marginLeft: 3
   },
   sumPolarNumber: {
-    color: '#ffffff',
+    color: 'black',
     fontSize: 15,
     marginLeft: 3,
     position: 'relative',
