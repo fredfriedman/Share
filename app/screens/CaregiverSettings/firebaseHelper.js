@@ -20,23 +20,49 @@ export default class firebaseHelper {
         });
     }
 
+    getCaregiverProfilePromise(caregiverId){
+        return firebase.database().ref('Caregivers/'+ caregiverId).once('value').then(function(snapshot) {
+            return snapshot.child('Profile').val();
+        });
+    }
+
+
+
+    updateCaregiverName(caregiverId){
+        firebase.database().ref('Caregivers/'+ caregiverId).once('value', function(snapshot) {
+            var exists = ( snapshot.val() !== null );
+            if(exists && isValid){
+                var patientIdRef = firebase.database().ref('Caregivers/'+ caregiverId);
+                patientIdRef.update({'Patient': patientId});
+                console.log("***************************************YAYYYYY");
+            }
+            else {
+                alert('invalid patientId');
+            }
+        });
+    }
+
+
     /**
     @access public
     @param int: caregiver id
     @param int: patient id
     @return void; function sets patientId of caregiver taking care of patient
     */
-    updatepatientId(caregiverId, patientId){
+    updatePatientId(caregiverId, patientId, isValidPatientIdPromise){
+        isValidPatientIdPromise.then(function(isValid){
+            firebase.database().ref('Caregivers/'+ caregiverId).once('value', function(snapshot) {
+                var exists = ( snapshot.val() !== null );
+                if(exists && isValid){
+                    var patientIdRef = firebase.database().ref('Caregivers/'+ caregiverId);
+                    patientIdRef.update({'Patient': patientId});
+                    console.log("***************************************YAYYYYY");
+                }
+                else {
+                    alert('invalid patientId');
+                }
+            });
 
-        firebase.database().ref('Caregivers/'+ caregiverId).once('value', function(snapshot) {
-            var exists = ( snapshot.val() !== null );
-            if(exists){
-                var patientIdRef = firebase.database().ref('Caregivers/'+ caregiverId);
-                patientIdRef.update({'Patient': patientId});
-            }
-            else {
-                alert('fail');
-            }
         });
     }
 
@@ -48,12 +74,14 @@ export default class firebaseHelper {
     @return alert: if patientId is not valid patient id
     */
     isValidPatientId(patientId){
-        firebase.database().ref('Patients/'+patientId).once('value', function(snapshot) {
+        return firebase.database().ref('Patients/'+patientId).once('value', function(snapshot) {
             if( snapshot.val() === null ) {
                 /* does not exist */
-                alert("Patient ID not found");
-                throw new Error();
+                // alert("Patient ID not found");
+                // throw new Error();
+                return false;
             }
+            return true;
         });
     }
 

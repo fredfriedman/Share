@@ -5,6 +5,8 @@ import SettingsList from 'react-native-settings-list';
 import login from '../Login/home';
 import firebaseHelper from './firebaseHelper';
 import header from '../../components/header';
+import changepatientdetail from './ChangePatientDetail';
+import caregiverprofile from './CaregiverProfileInformation';
 
 var styles = StyleSheet.create({
 	imageStyle:{
@@ -19,7 +21,8 @@ export default class caregiversettings extends Component {
 	constructor(){
 		super();
 		this.onValueChange = this.onValueChange.bind(this);
-		this.state = {switchValue: false};
+		this.state = {switchValue: false,
+		};
 
 		//set states from firebase
 		var self = this;
@@ -39,6 +42,9 @@ export default class caregiversettings extends Component {
 		return (
 
 		 	<View style={{backgroundColor:'#EFEFF4',flex:1}}>
+		 		<View style={{borderBottomWidth:1, backgroundColor:'#00BCD4',borderColor:'#c8c7cc'}}>
+           			<Text style={{alignSelf:'center',marginTop:30,marginBottom:20,fontWeight:'bold',fontSize:16, color: 'white'}}>Caregiver Settings</Text>
+         		</View>
 				<View style={{backgroundColor:'#EFEFF4',flex:1}}>
 					<SettingsList borderColor='#c8c7cc' defaultItemSize={50}>
 						<SettingsList.Header headerStyle={{marginTop:15}}/>
@@ -51,7 +57,7 @@ export default class caregiversettings extends Component {
 						  	title='Patient Info'
 						  	titleInfo={'Patient ID: '+this.state.patientId}
 						  	titleInfoStyle={styles.titleInfoStyle}
-						  	onPress={() => Alert.alert('Route to change PatientID')}
+						  	onPress={() => this.changePatientId()}
 						/>
 						<SettingsList.Item
 						  	hasSwitch={true}
@@ -82,7 +88,14 @@ export default class caregiversettings extends Component {
 
 	onViewProfileInformation(){
 		this.props.navigator.push({
-			component:login,
+			component:caregiverprofile,
+			sceneConfig: Navigator.SceneConfigs.FloatFromBottom
+		});
+	}
+
+	changePatientId(){
+		this.props.navigator.push({
+			component:changepatientdetail,
 			sceneConfig: Navigator.SceneConfigs.FloatFromBottom
 		});
 	}
