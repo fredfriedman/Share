@@ -6,7 +6,7 @@ import { ListView,
         Image,
         Dimensions,
         View, } from 'react-native';
-import Button from 'react-native-button'
+import ToggleButton from './toggleButton'
 
 
 const { width, height } = Dimensions.get('window');
@@ -18,13 +18,14 @@ export default class Question extends Component {
 
 	constructor(props) {
         super(props);
-        this.state = {
-            sliderVal: 0
+        this.state = { 
+            value: this.props.value,
+            medicationChange: this.props.medicationChange
         };
     }
 
     render() {
-    	if (this.props.symptom == null) {
+    	if (this.props.questionType == "Caregiver") {
     		return(
     			<View style={{width: width}}>
 	                <Text style={{ padding: 10, textAlign: 'center', fontWeight: 'bold', color: '#00ACC1' }}>
@@ -33,17 +34,17 @@ export default class Question extends Component {
 
 	                <Slider
 	                    style={{ justifyContent: 'center' }}
-	                    value={this.state.sliderVal}
+	                    value={this.state.value}
 	                    trackStyle={customStyles2.track}
 	                    thumbStyle={customStyles2.thumb}
-	                    onValueChange={(value) => this.setState({sliderVal: value})}
+	                    //onSlidingComplete={(value) => this.setState({value: value})}
 	                    maximumValue={10}
 	                    step={1}
 	                    minimumTrackTintColor='#00BCD4'
 	                    maximumTrackTintColor='#b7b7b7'
 	                />
 	                <Text style={{ fontSize: 45, textAlign: 'center', color: '#00ACC1', paddingBottom: 15 }}>
-	                    {this.state.sliderVal}
+	                    {this.state.value}
 	                </Text>
 	            </View>
     		);
@@ -51,46 +52,44 @@ export default class Question extends Component {
 	    	return(
 	    		<View style={{width: width}}>
 	    			<Text style={{ padding: 10, textAlign: 'center', fontWeight: 'bold', color: '#00ACC1' }}>
-	                    Please indicate the severity of your {this.props.symptom} on a scale of 0 - 10 with 0 being
-	                    "No {this.props.symptom}" and 10 being "Worst {this.props.symptom} possible".
+	                    Please indicate the severity of your {this.props.questionType} on a scale of 0 - 10 with 0 being 
+	                    "No {this.props.questionType}" and 10 being "Worst {this.props.questionType} possible".
 	                </Text>
 
 	                <Slider
 	                    style={{ justifyContent: 'center' }}
-	                    value={this.state.sliderVal}
+	                    value={this.state.value}
 	                    trackStyle={customStyles2.track}
 	                    thumbStyle={customStyles2.thumb}
-	                    onValueChange={(value) => this.setState({sliderVal: value})}
+	                    onValueChange={(value) => this.setState({value: value})}
+	                    onSlidingComplete={() => {this.props.onSlideComplete(this.props.questionType, this.state.value)}}
 	                    maximumValue={10}
 	                    step={1}
 	                    minimumTrackTintColor='#00BCD4'
 	                    maximumTrackTintColor='#b7b7b7'
 	                />
 	                <Text style={{ fontSize: 45, textAlign: 'center', color: '#00ACC1', paddingBottom: 15 }}>
-	                    {this.state.sliderVal}
+	                    {this.state.value}
 	                </Text>
 
 	                <Text style={{ padding: 10, textAlign: 'center', fontWeight: 'bold', color: '#00ACC1' }}>
 	                    Have there been any changes in medication use for this symptom?
 	                </Text>
-	                <Button
-	                    containerStyle={{margin:5, overflow:'hidden', borderRadius:4, backgroundColor: '#00ACC1', justifyContent: 'center'}}
-	                    style={{color: '#FFFFFF'}}
-	                    styleDisabled={{color: 'red'}}>
+	                <ToggleButton
+	                    style={{borderColor: '#0097A7', backgroundColor: '#00ACC1'}} textStyle={{color: 'white'}}
+	                    onPress={() => {this.props.onMedicationChange(this.props.questionType, 'more')}}>
 	                    More
-	                </Button>
-	                <Button
-	                    containerStyle={{margin:5, overflow:'hidden', borderRadius:4, backgroundColor: '#80DEEA', justifyContent: 'center'}}
-	                    style={{color: '#FFFFFF'}}
-	                    styleDisabled={{color: 'red'}}>
+	                </ToggleButton>
+	                <ToggleButton
+	                    style={{borderColor: '#0097A7', backgroundColor: '#00ACC1'}} textStyle={{color: 'white'}}
+	                    onPress={() => {this.props.onMedicationChange(this.props.questionType, 'none')}}>	                
 	                    None
-	                </Button>
-	                <Button
-	                    containerStyle={{margin:5, overflow:'hidden', borderRadius:4, backgroundColor: '#00ACC1', justifyContent: 'center'}}
-	                    style={{color: '#FFFFFF'}}
-	                    styleDisabled={{color: 'red'}}>
+	                </ToggleButton>
+	                <ToggleButton
+	                    style={{borderColor: '#0097A7', backgroundColor: '#00ACC1'}} textStyle={{color: 'white'}}
+	                    onPress={() => {this.props.onMedicationChange(this.props.questionType, 'less')}}>
 	                    Less
-	                </Button>
+	                </ToggleButton>
 	            </View>
 	    	);
 	    }
