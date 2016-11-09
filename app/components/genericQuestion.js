@@ -18,14 +18,9 @@ export default class Question extends Component {
 
 	constructor(props) {
         super(props);
-<<<<<<< HEAD
         this.state = { 
             value: this.props.value,
             medicationChange: this.props.medicationChange
-=======
-        this.state = {
-            sliderVal: 0
->>>>>>> 9a17da08945e78f3de72574026247d1213d8cd4f
         };
     }
 
