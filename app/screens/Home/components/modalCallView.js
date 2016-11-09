@@ -64,7 +64,7 @@ export default class ModalCallView  extends Component {
     renderCallRow(caregiver: Object, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) {
         return (
             <ModalCallCell
-                onPress={()=>this.onCallCaregiver(caregiver.phone)}
+                onPress={this.onCallCaregiver.bind(this, caregiver.profile.phone)}
                 caregiver={caregiver.profile}/>
         )
     }

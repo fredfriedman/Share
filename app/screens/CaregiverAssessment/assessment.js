@@ -26,8 +26,9 @@ export default class Assessment extends Component {
 
     constructor() {
         super();
-        this.state = { 
-            questionTypes: ["Pain", "Tiredness", "Nausea", "Depression", "Anxiety", "Drowsiness", "Appetite", "Shortness of Breath", "Caregiver"], 
+        this.state = {
+            scrollViewEnabled: true,
+            questionTypes: ["Pain", "Tiredness", "Nausea", "Depression", "Anxiety", "Drowsiness", "Appetite", "Shortness of Breath", "Caregiver"],
             size: { width, height },
             assessmentObject: {
                 date: this.formatDate(new Date()),
@@ -35,7 +36,7 @@ export default class Assessment extends Component {
                     Pain: {
                         value: 0,
                         medicationChange: 'none'
-                    }, 
+                    },
                     Tiredness: {
                         value: 1,
                         medicationChange: 'none'
@@ -43,7 +44,7 @@ export default class Assessment extends Component {
                     Nausea: {
                         value: 2,
                         medicationChange: 'none'
-                    }, 
+                    },
                     Depression: {
                         value: 3,
                         medicationChange: 'none'
@@ -118,7 +119,7 @@ export default class Assessment extends Component {
 
     onMedicationChange = (questionType, medicationChange) => {
         var newAssessmentObject = _.clone(this.state.assessmentObject);
-        var sanitizedQuestionType = this.removeSpacesAndCapitalize(questionType);        
+        var sanitizedQuestionType = this.removeSpacesAndCapitalize(questionType);
         newAssessmentObject.questions[sanitizedQuestionType].medicationChange = medicationChange;
         this.setState({assessmentObject: newAssessmentObject});
 
@@ -149,7 +150,7 @@ export default class Assessment extends Component {
         this.props.navigator.pop()
     }
 
-    
+
     render() {
 
         var assessmentQuestions = this.generateQuestions();
@@ -163,7 +164,7 @@ export default class Assessment extends Component {
                     underlayColor={'#f8f8f8'}>
                     <Image source={backIcon}/>
                 </TouchableHighlight>
-                <Carousel 
+                <Carousel
                     width={this.state.size.width}
                     loop={false}
                     animate={false}
@@ -178,4 +179,3 @@ export default class Assessment extends Component {
         );
     }
 }
-

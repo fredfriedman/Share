@@ -3,7 +3,6 @@
 import React, { Component } from 'react';
 import {
     Image,
-    StyleSheet,
     Text,
     View
 } from 'react-native';
@@ -15,6 +14,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Profile from './components/profile'
 import Overview from './components/overview'
 import Patients from './components/patients_view'
+import Settings from '../NurseSettings/NurseSettings'
 
 export default class TabBar extends Component {
 
@@ -34,11 +34,13 @@ export default class TabBar extends Component {
         const unselectedColor = "#8E8E8E"
         const size = 30
         const home = (<Icon name="home" size={size} color={unselectedColor} />);
+        const gear = (<Icon name="cog" size={size} color={unselectedColor} />);
         const cal = (<Icon name="calendar" size={size} color={unselectedColor} />);
         const over = (<Icon name="modx" size={size} color={unselectedColor} />);
         const homeS = (<Icon name="home" size={size} color={selectedColor} />);
         const calS = (<Icon name="calendar" size={size} color={selectedColor} />);
         const overS = (<Icon name="modx" size={size} color={selectedColor} />);
+        const gearS = (<Icon name="cog" size={size} color={selectedColor} />);
 
         return (
         <TabNavigator tabBarShadowStyle={styles.tabBarShadow} tabBarStyle={styles.tabBar}>
@@ -71,6 +73,16 @@ export default class TabBar extends Component {
                 renderSelectedIcon={() => calS}
                 onPress={() => this.setTab('Calendar')}>
                 <Patients navigator={this.props.navigator} user={this.props.user}/>
+            </TabNavigator.Item>
+            <TabNavigator.Item
+                selected={this.state.selectedTab === 'Settings'}
+                title="Settings"
+                titleStyle={styles.tabBarTitle}
+                selectedTitleStyle={styles.tabBarSelectedTitle}
+                renderIcon={() => gear}
+                renderSelectedIcon={() => gearS}
+                onPress={() => this.setTab('Settings')}>
+                <Settings navigator={this.props.navigator} user={this.props.user}/>
             </TabNavigator.Item>
         </TabNavigator>
         );

@@ -38,11 +38,13 @@ const styles = EStyleSheet.create({
     callButton: {
         alignItems: 'center',
         justifyContent: 'center',
-        width: 70,
-        backgroundColor: 'gray',
-        borderLeftWidth: 1
+        width: 80,
+        height: 30,
+        backgroundColor: '$colors.mediumGray',
+        borderRadius: 10,
     },
     callText: {
+        color: '$colors.lightGray',
         fontSize: '$fonts.size',
         fontWeight: 'bold',
         fontFamily: '$fonts.family',
@@ -50,7 +52,8 @@ const styles = EStyleSheet.create({
     row: {
         height: 50,
         backgroundColor: 'transparent',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     stack: {
         paddingTop: 10,

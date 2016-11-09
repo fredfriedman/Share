@@ -1,13 +1,9 @@
 /* @flow */
 //@author michael; temporary helper class. I suspect that we will need this class as a backend autoCapitalize
 
-var firebase = require('../../config/firebase');
+import firebase from '../../config/firebase'
+import { AsyncStorage } from 'react-native';
 
-const firebaseConfig = {
-    apiKey: "AIzaSyAGduZMnMEfsoknetJyYk7kJayWSgOAVbE",
-    authDomain: "https://reactcs408.firebaseio.com/",
-    databaseURL: "https://reactcs408.firebaseio.com/",
-};
 export default class firebaseHelper {
     constructor(){
 
@@ -97,5 +93,21 @@ export default class firebaseHelper {
                 alert("Caregiver ID not found");
             }
         });
+    }
+
+    /**
+    @access public
+    @return alert: if isn't valid patient id
+    */
+    signOut() {
+        return firebase.auth().signOut()
+            .then(function() {
+                return AsyncStorage.removeItem("user_data")
+            })
+            .then(function() {
+                return true
+            }, function(error) {
+                return false
+            });
     }
 }

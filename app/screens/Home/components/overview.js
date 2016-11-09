@@ -49,7 +49,6 @@ export default class Overview extends Component {
         return Firebase.database().ref();
     }
 
-
     listenForItems(patientsRef) {
 
         var self = this
@@ -65,6 +64,7 @@ export default class Overview extends Component {
             self.patientsRef.child(snap.key).on('value', (snap) => {
 
                 if (snap.val().active) {
+
                     var item = {
                         pID: snap.key,
                         name: snap.val().name,

@@ -20,7 +20,7 @@ import  PatientTableViewCell from '../../../components/patientTableViewCell'
 import  PatientDetailView from '../../Detail/detail'
 
 // Tools
-import  Firebase from '../../../config/firebase'
+import Firebase from '../../../config/firebase'
 import EStyleSheet from 'react-native-extended-stylesheet';
 
 export default class PatientsView extends Component {
@@ -173,9 +173,10 @@ const styles = EStyleSheet.create({
         backgroundColor: '$colors.secondary',
     },
     separator: {
+        marginLeft: 20,
         flex: 1,
         height: '$dimensions.hairlineWidth',
-        backgroundColor: '$colors.mediumGray',
+        backgroundColor: '$colors.lightGray',
     },
     stack: {
         flexDirection: 'column'

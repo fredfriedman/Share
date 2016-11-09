@@ -98,7 +98,7 @@ export default class Overview extends Component {
             		<Col style={styles.container}>
             			<Button
                             style={styles.buttonStyle1} textStyle={styles.textStyle}
-					        onPress={() => this._handlePress('settings')}>
+					        onPress={() => this.handlePress('settings')}>
 					        Settings
 				    	</Button>
 				    </Col>
@@ -121,7 +121,6 @@ const styles = StyleSheet.create({
     color: 'white',
     flex: 1,
     textAlign: 'center',
-    fontFamily: 'Roboto',
     fontWeight: 'bold'
   },
   textStyle6: {
