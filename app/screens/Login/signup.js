@@ -1,45 +1,79 @@
 'use strict';
 import React, { Component } from 'react';
-import { ActivityIndicator, Alert, Image, Navigator, Text, View } from 'react-native';
+import {
+    ActivityIndicator,
+    Alert,
+    Image,
+    Navigator,
+    Modal,
+    Text,
+    View
+} from 'react-native';
+
+// Assets
+import { butterfly } from '../../config/images'
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import styles from './styles'
+
+// Components
 import Button from 'react-native-button'
-import { Hoshi } from 'react-native-textinput-effects';
+import Header from '../../components/header'
+import { Fumi } from 'react-native-textinput-effects';
+
+// Utilities
+import Firebase from '../../config/firebase'
+import Dimensions from 'Dimensions';
 import dismissKeyboard from 'dismissKeyboard'
 
-let styles   = require('./styles')
-let Login    = require('./Login').default
-var firebase = require('../../config/firebase')
-let {xIcon, butterfly} = require('../../config/images')
-let CloseModalButton   = require('../../components/TopLeftAction').default
-let UserType = {caregiver : "caregiver", nurse: "nurse"};
+// Screens
+import Login from './Login'
+
 
 export default class signup extends Component {
 
     constructor(props){
-    super(props);
+        super(props);
 
-    this.state = {
-        name: "temp",
-        email: '',
-        password: '',
-        hospiceProgram: '',
-        animating: false,
-        isCaregiver: true
+        this.state = {
+            caregiverName: "",
+            caregiverEmail: '',
+            caregiverPassword: '',
+            caregiverRelation: '',
+            caregiverPhone: '',
+            caregiverPatient: '',
+
+            nurseName: "",
+            nurseEmail: '',
+            nursePassword: '',
+            nursePhone: '',
+            nurseHospital: '',
+            nursePicture: '',
+
+            animating: false,
+            isCaregiver: true,
+            currentPage: 0
         };
     }
 
-    onPressSignUp(){
+    onPressSignUp() {
 
         var self = this
 
+        var email =  self.state.isCaregiver ? this.state.caregiverEmail : this.state.nurseEmail
+        var pass  =  self.state.isCaregiver ? this.state.caregiverPassword : this.state.nursePassword
+
         this.setState({animating: true})
 
-        firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+        Firebase.auth().createUserWithEmailAndPassword(email, pass)
             .then(function(user) {
 
-                firebase.database().ref().child("users/" + user.uid).set({
-                    email: self.state.email,
-                    isCaregiver: isCaregiver,
-                });
+                var ref = self.state.isCaregiver ? "Caregivers/" + user.uid : "Nurses/" + user.uid
+
+                var data = self.state.isCaregiver ? {patient: self.state.caregiverPatient, Profile: {name: self.state.caregiverName, phone: self.state.caregiverPhone, relation: self.state.caregiverRelation}} :
+                                                    {Profile: {name: self.state.nurseName, phone: self.state.nursePhone, relation: self.state.nursePicture}}
+
+                Firebase.database().ref().child(ref).set(data);
 
                 self.setState({animating: false})
 
@@ -76,139 +110,222 @@ export default class signup extends Component {
         });
     }
 
-    componentDidMount() {
-        this.refs.email.refs.input.focus()
-    }
-
     onExitScene() {
         dismissKeyboard()
 
         this.props.navigator.pop()
     }
 
-    onSwitchSignIn() {
-        this.setState({isCaregiver: !this.state.isCaregiver})
+    onScroll(event){
+        var offsetX = event.nativeEvent.contentOffset.x
+        var pageWidth = Dimensions.get('window').width - 10
+        this.setState({
+            currentPage: Math.floor((offsetX - pageWidth / 2) / pageWidth) + 1
+        });
     }
 
-    renderCaregiverForm() {
+    render() {
 
         return (
-            <View style={[styles.formContainer, {paddingTop: 20}]}>
-                <Hoshi
-                    ref="email"
-                    style={{width: 50}}
-                    inputStyle={[styles.textInput, {color: '#00BCD4', fontSize: 16}]}
-                    labelStyle={{color: '#00BCD4'}}
-                    label={'Email Address'}
-                    borderColor={'#00BCD4'}
-                    onChangeText={(text) => this.setState({email: text})}
-                    onSubmitEditing={(event) => {  this.refs.password.refs.input.focus(); }}
-                    autoCapitalize={'none'}
-                    value={this.state.email}
-                    autoCorrect={false}/>
-                <Hoshi
-                    ref='password'
-                    label={'Password'}
-                    labelStyle={{color: '#00BCD4'}}
-                    inputStyle={[styles.textInput, {color: '#00BCD4', fontSize: 16}]}
-                    style={{width: 50, paddingTop: 20}}
-                    borderColor={'#00BCD4'}
-                    autoCapitalize={'none'}
-                    autoCorrect={false}
-                    secureTextEntry={true}
-                    value={this.state.password}
-                    onChangeText={(text) => this.setState({password: text})}/>
+            <View style={{flex: 1, alignItems: 'center'}}>
+                { this.renderPage(true) }
+                <Modal
+                    animationType={"slide"}
+                    transparent={false}
+                    visible={!this.state.isCaregiver}
+                    onRequestClose={() => {alert("Modal has been closed.")}}>
+                    { this.renderPage(false) }
+                </Modal>
             </View>
-        );
-    }
-
-    renderNurseForm() {
-
-        return (
-            <View style={[styles.formContainer, {paddingTop: 20}]}>
-                <Hoshi
-                    ref="hospital"
-                    style={{width: 50}}
-                    inputStyle={[styles.textInput, {color: '#00BCD4', fontSize: 16}]}
-                    labelStyle={{color: '#00BCD4'}}
-                    label={'Hospital/Hospice Program'}
-                    borderColor={'#00BCD4'}
-                    onChangeText={(text) => this.setState({hospiceProgram: text})}
-                    onSubmitEditing={(event) => {  this.refs.email.refs.input.focus(); }}
-                    autoCapitalize={'none'}
-                    value={this.state.email}
-                    autoCorrect={false}/>
-                <Hoshi
-                    ref="email"
-                    style={{width: 50}}
-                    inputStyle={[styles.textInput, {color: '#00BCD4', fontSize: 16}]}
-                    labelStyle={{color: '#00BCD4'}}
-                    label={'Email Address'}
-                    borderColor={'#00BCD4'}
-                    onChangeText={(text) => this.setState({email: text})}
-                    onSubmitEditing={(event) => {  this.refs.password.refs.input.focus(); }}
-                    autoCapitalize={'none'}
-                    value={this.state.email}
-                    autoCorrect={false}/>
-                <Hoshi
-                    ref='password'
-                    label={'Password'}
-                    labelStyle={{color: '#00BCD4'}}
-                    inputStyle={[styles.textInput, {color: '#00BCD4', fontSize: 16}]}
-                    style={{width: 50, paddingTop: 20}}
-                    borderColor={'#00BCD4'}
-                    autoCapitalize={'none'}
-                    autoCorrect={false}
-                    secureTextEntry={true}
-                    value={this.state.password}
-                    onChangeText={(text) => this.setState({password: text})}/>
-            </View>
-        );
-    }
-
-    renderUserOption() {
-        var value = "Are you a nurse?"
-
-        if (!this.state.isCaregiver) {
-            value = "Are you a caregiver?"
-        }
-        return (
-            <Button
-                style={[styles.bottomLabel, {color: "#00BCD4"}]}
-                containerStyle={{}}
-                onPress={this.onSwitchSignIn.bind(this)}>
-                {value}
-            </Button>
         )
     }
-    render() {
+
+    renderPage(isCaregiver: Boolean) {
+
         return (
-            <View style={{ flex: 1, alignItems: 'center', backgroundColor: 'white'}}>
-                <Image style={{backgroundColor: 'transparent', height: 35, width: 35, top: 20}} source={butterfly}/>
-                { this.state.isCaregiver ? this.renderCaregiverForm() : this.renderNurseForm() }
+            <View style={!isCaregiver? [styles.container, {justifyContent: 'space-between'}] : [styles.container, {backgroundColor: "white",justifyContent: 'space-between'}]}>
+                <View>
+                    { this.renderHeader(isCaregiver)}
+                    { this.renderForm(isCaregiver) }
+                    { this.renderSubmitButton(isCaregiver) }
+                </View>
+                { this.renderFormTypeButton(isCaregiver) }
+            </View>
+        )
+    }
+
+    renderHeader(isCaregiver: Boolean) {
+
+        const closeIcon = (<Ionicons name="ios-close" size={30} color="#1e1e1e" />);
+
+        return (
+            <Header
+                leftAction={this.onExitScene.bind(this)}
+                leftIcon={closeIcon}
+                centerIcon={<Image style={styles.icon} source={butterfly}/>}
+                headerStyle={isCaregiver ? styles.header : [styles.header, styles.mainColor, {borderColor: 'transparent'}]}/>
+        )
+    }
+
+    renderForm(isCaregiver: Boolean) {
+        return isCaregiver ? this.renderCaregiverForm() : this.renderNurseForm()
+    }
+
+    renderSubmitButton(isCaregiver: Boolean) {
+        return (
+            <View>
                 <Button
-                    style={styles.SubmitLabel}
-                    containerStyle={styles.button}
-                    styleDisabled={{color: 'red'}}
+                    style={isCaregiver ? [styles.secondaryText, {fontWeight: 'bold', fontSize: 18}] : [styles.mainText, {fontWeight: 'bold', fontSize: 18}]}
+                    containerStyle={isCaregiver ? [styles.button, styles.mainColor] : [styles.button, styles.secondaryColor]}
                     onPress={this.onPressSignUp.bind(this)}>
-                    Sign up
+                    Submit
                 </Button>
                 <ActivityIndicator
                     animating={this.state.animating}
                     style={{height: 40}}
                     size="large"/>
-                <View style={{paddingTop: 20}}>
-                    { this.renderUserOption() }
-                    <Button
-                        style={[styles.bottomLabel, {color: "#00BCD4"}]}
-                        containerStyle={{}}
-                        onPress={this.onExitScene.bind(this)}>
-                        Have an Account?
-                    </Button>
-                </View>
-                <CloseModalButton action={this.onExitScene.bind(this)} icon={xIcon}/>
+                <Button
+                    style={isCaregiver ? [styles.accountLabel, styles.centered, styles.mainText] : [styles.accountLabel, styles.centered, styles.secondaryText] }
+                    containerStyle={{alignSelf: 'center', width: 130}}
+                    onPress={this.onExitScene.bind(this)}>
+                    Have an Account?
+                </Button>
             </View>
         )
+    }
 
+    renderFormTypeButton(isCaregiver: Boolean) {
+        return (
+            <View style={isCaregiver ? styles.userTypeContainer : [styles. userTypeContainer, {backgroundColor: "#00838F"}]}>
+                <Button
+                    style={isCaregiver ? [styles.secondaryText, {fontSize: 12, fontWeight: '500'}] : [styles.mainText, {fontSize: 12, fontWeight: '500'}]}
+                    containerStyle={isCaregiver ? [styles.userTypeButton, styles.mainColor]: [styles.userTypeButton, styles.secondaryColor]}
+                    onPress={() => this.setState({isCaregiver: !this.state.isCaregiver})}>
+                    {!isCaregiver ? "Are you a caregiver?" : "Are you a nurse?"}
+                </Button>
+            </View>
+        )
+    }
+
+    renderCaregiverForm() {
+        const IconColor = '#00BCD4'
+        return (
+                <View style={styles.formContainer}>
+                    <Fumi
+                        ref="caregiverName"
+                        label={'Name'}
+                        iconClass={FontAwesomeIcon}
+                        iconName={'user'}
+                        iconColor={IconColor}
+                        style={styles.row}
+                        labelStyle={styles.mainText}
+                        value={this.state.caregiverName}
+                        autoCapitalize={'none'}
+                        autoCorrect={false}
+                        onChangeText={(text) => this.setState({caregiverName: text})}
+                        onSubmitEditing={(event) => {  this.refs.caregiverEmail.refs.input.focus(); }}/>
+                    <Fumi
+                        ref="caregiverEmail"
+                        label={'Email'}
+                        iconClass={FontAwesomeIcon}
+                        iconName={'envelope'}
+                        iconColor={IconColor}
+                        style={styles.row}
+                        labelStyle={styles.mainText}
+                        value={this.state.caregiverEmail}
+                        autoCapitalize={'none'}
+                        autoCorrect={false}
+                        onChangeText={(text) => this.setState({caregiverEmail: text})}
+                        onSubmitEditing={(event) => {  this.refs.caregiverPassword.refs.input.focus(); }}/>
+                    <Fumi
+                        ref='caregiverPassword'
+                        label={'Password'}
+                        iconClass={FontAwesomeIcon}
+                        iconName={'lock'}
+                        iconColor={IconColor}
+                        style={styles.row}
+                        labelStyle={styles.mainText}
+                        value={this.state.caregiverPassword}
+                        autoCapitalize={'none'}
+                        autoCorrect={false}
+                        secureTextEntry={true}
+                        onSubmitEditing={(event) => {  this.refs.caregiverPatient.refs.input.focus(); }}
+                        onChangeText={(text) => this.setState({caregiverPassword: text})}/>
+                    <Fumi
+                        ref='caregiverPatient'
+                        label={'Who are you taking care of?'}
+                        iconClass={FontAwesomeIcon}
+                        iconName={'user'}
+                        iconColor={IconColor}
+                        style={styles.row}
+                        labelStyle={styles.mainText}
+                        value={this.state.caregiverPatient}
+                        autoCapitalize={'none'}
+                        autoCorrect={false}
+                        secureTextEntry={true}
+                        onChangeText={(text) => this.setState({caregiverPatient: text})}/>
+                </View>
+        );
+    }
+
+    renderNurseForm() {
+        const IconColor = '#00BCD4'
+        return (
+            <View style={styles.formContainer}>
+                <Fumi
+                    ref='nurseName'
+                    label={'Name'}
+                    iconClass={FontAwesomeIcon}
+                    iconName={'user'}
+                    iconColor={IconColor}
+                    style={[styles.row , {borderTopLeftRadius: 5, borderTopRightRadius: 5}]}
+                    labelStyle={styles.mainText}
+                    value={this.state.nurseName}
+                    autoCapitalize={'none'}
+                    autoCorrect={false}
+                    onChangeText={(text) => this.setState({nurseName: text})}
+                    onSubmitEditing={(event) => {  this.refs.nurseHospital.refs.input.focus(); }}/>
+                <Fumi
+                    ref='nurseHospital'
+                    label={'Hospital/Hospice Program'}
+                    iconClass={FontAwesomeIcon}
+                    iconName={'h-square'}
+                    iconColor={IconColor}
+                    style={styles.row}
+                    labelStyle={styles.mainText}
+                    value={this.state.nurseHospital}
+                    autoCapitalize={'none'}
+                    autoCorrect={false}
+                    onChangeText={(text) => this.setState({nurseHospital: text})}
+                    onSubmitEditing={(event) => {  this.refs.nurseEmail.refs.input.focus(); }}/>
+                <Fumi
+                    ref='nurseEmail'
+                    label={'Email Address'}
+                    iconClass={FontAwesomeIcon}
+                    iconName={'envelope'}
+                    iconColor={IconColor}
+                    style={styles.row}
+                    labelStyle={styles.mainText}
+                    value={this.state.nurseEmail}
+                    autoCapitalize={'none'}
+                    autoCorrect={false}
+                    onChangeText={(text) => this.setState({nurseEmail: text})}
+                    onSubmitEditing={(event) => {  this.refs.nursePassword.refs.input.focus(); }}/>
+                <Fumi
+                    ref='nursePassword'
+                    label={'Password'}
+                    iconClass={FontAwesomeIcon}
+                    iconName={'lock'}
+                    iconColor={IconColor}
+                    style={[styles.row, {borderBottomLeftRadius: 5, borderBottomRightRadius: 5}]}
+                    labelStyle={styles.mainText}
+                    value={this.state.nursePassword}
+                    autoCapitalize={'none'}
+                    autoCorrect={false}
+                    secureTextEntry={true}
+                    onChangeText={(text) => this.setState({nursePassword: text})}
+                    onSubmitEditing={(event) => { }}/>
+            </View>
+        );
     }
 }

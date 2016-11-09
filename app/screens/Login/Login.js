@@ -1,18 +1,28 @@
-import Firebase from 'firebase';
 import React, { Component } from 'react';
-import { ActivityIndicator, Alert, AsyncStorage, Image, Navigator, Text, View } from 'react-native';
+import {
+    ActivityIndicator,
+    Alert,
+    AsyncStorage,
+    Image,
+    KeyboardAvoidingView,
+    Navigator,
+    Text,
+    View } from 'react-native';
+
+import Icon from 'react-native-vector-icons/Ionicons'
 import Button from 'react-native-button'
-import { Hoshi } from 'react-native-textinput-effects';
+import { Hoshi } from 'react-native-textinput-effects'
+import Header from '../../components/header'
+
 import dismissKeyboard from 'dismissKeyboard'
+import styles from './styles'
+import Firebase from '../../config/firebase'
+import { butterfly } from '../../config/images'
 
-let styles   = require('./styles')
-var firebase = require('../../config/firebase')
-let {xIcon, butterfly} = require('../../config/images')
+import TabBar from '../Home/TabBar'
+import PasswordReset from './passwordReset'
+import CaregiverHome from '../CaregiverHome/overview'
 
-let PasswordReset = require('./passwordReset').default
-let CaregiverHome = require('../CaregiverHome/overview').default
-let TabBar  = require('../Home/TabBar').default
-let CloseModalButton   = require('../../components/TopLeftAction').default
 
 
 
@@ -49,32 +59,33 @@ export default class Login extends Component {
 
         var self = this;
 
+        var user;
+
         this.setState({animating: true})
 
-        firebase.auth().signInWithEmailAndPassword(this.state.username, this.state.password)
-            .then(function(user) {
+        Firebase.auth().signInWithEmailAndPassword(this.state.username, this.state.password)
+            .then(function(usr) {
 
-                AsyncStorage.setItem('user_data', JSON.stringify(user));
+                user = usr
 
-                firebase.database().ref().child("users/" + user.uid).once('value')
-                    .then(function(snapshot) {
+                return Firebase.database().ref().child("Caregivers/" + user.uid).once('value').then(function(snapshot) {
+                    return self.signInHandler(user, snapshot, "caregiver")
+                })
 
-                        let component = snapshot.val().type === "caregiver" ? CaregiverHome : TabBar
-
-                        self.setState({animating: false})
-
-                        dismissKeyboard()
-
-                        self.props.navigator.resetTo({ component: component, passProps: {user: snapshot.val()} })
-
-                    }, function(error) {
-                        console.log(error)
-                    })
+            }).then(function(isCaregiver) {
+                if (!isCaregiver) {
+                     return Firebase.database().ref().child("Nurses/" + user.uid).once('value')
+                        .then(function(snapshot) {
+                            self.signInHandler(user, snapshot, "nurse")
+                        }, function(error) {
+                            throw {code: error.code}
+                        })
+                }
 
             }, function(error) {
 
-                var alertTitle = "Oops something went wrong"
-                var alertMessage = "Please try again."
+                var alertTitle;
+                var alertMessage;
 
                 switch (error.code) {
                     case "auth/invalid-email":
@@ -96,18 +107,49 @@ export default class Login extends Component {
             })
     }
 
+    signInHandler(user, snapshot, type): Boolean {
+        if (snapshot.val() !== null) {
+
+            this.setState({animating: false})
+
+            dismissKeyboard()
+
+            var usr = snapshot.val()
+            usr["id"] = snapshot.key
+            usr["type"] = type
+
+            AsyncStorage.setItem('user_data', JSON.stringify(usr));
+
+            var component = type == "caregiver" ? CaregiverHome : TabBar
+
+            this.props.navigator.resetTo({ component: component, passProps: {user: usr} })
+
+            return true
+        } else {
+
+            return false
+        }
+    }
+
     render() {
+        const MainColor = '#00BCD4'
+        const closeIcon = ( <Icon name="ios-close" ios="ios-close" md="md-close" size={30} color={'#1e1e1e'} />);
+
         return (
-            <View style={{flex: 1, alignItems: 'center', backgroundColor: 'white',}}>
-                <Image style={{backgroundColor: 'transparent', height: 35, width: 35, top: 20}} source={butterfly}/>
-                <View style={[styles.formContainer, {paddingTop: 20}]}>
+            <View style={[styles.container, {alignItems: 'center', backgroundColor: 'white'}]}>
+                <Header
+                    leftAction={this.onExitScene.bind(this)}
+                    leftIcon={closeIcon}
+                    centerIcon={<Image style={styles.icon} source={butterfly}/>}
+                    headerStyle={styles.header}/>
+                <View style={styles.formContainerHoshi}>
                     <Hoshi
                         ref="email"
-                        style={{width: 50}}
-                        inputStyle={[styles.textInput, {color: '#00BCD4', fontSize: 16}]}
-                        labelStyle={{color: '#00BCD4'}}
                         label={'Email Address'}
-                        borderColor={'#00BCD4'}
+                        style={styles.row}
+                        labelStyle={styles.mainText}
+                        inputStyle={styles.textInput}
+                        borderColor={MainColor}
                         onChangeText={(text) => this.setState({username: text})}
                         onSubmitEditing={(event) => {  this.refs.password.refs.input.focus(); }}
                         autoCapitalize={'none'}
@@ -115,32 +157,38 @@ export default class Login extends Component {
                     <Hoshi
                         ref='password'
                         label={'Password'}
-                        labelStyle={{color: '#00BCD4'}}
-                        inputStyle={[styles.textInput, {color: '#00BCD4', fontSize: 16}]}
-                        style={{width: 50, paddingTop: 20}}
-                        borderColor={'#00BCD4'}
+                        labelStyle={styles.mainText}
+                        style={[styles.row, {paddingTop: 20}]}
+                        inputStyle={styles.textInput}
+                        borderColor={MainColor}
                         autoCapitalize={'none'}
                         autoCorrect={false}
                         secureTextEntry={true}
                         onChangeText={(text) => this.setState({password: text})}/>
                 </View>
-                <Button
-                    style={styles.SubmitLabel}
-                    containerStyle={styles.button}
-                    onPress={this.onPressLogin.bind(this)}>
-                    Log In
-                </Button>
-                <Button
-                    style={[styles.bottomLabel, {color: "#00BCD4", paddingTop: 20}]}
-                    containerStyle={{}}
-                    onPress={this.onPressPasswordReset.bind(this)}>
-                    Need Help?
-                </Button>
                 <ActivityIndicator
                     animating={this.state.animating}
                     style={{height: 60}}
                     size="large" />
-                <CloseModalButton action={this.onExitScene.bind(this)} icon={xIcon}/>
+                <View style={{flex: 1}}/>
+                <KeyboardAvoidingView style={{flex: 1, justifyContent: 'flex-end'}} behavior={'padding'}>
+                    <View style={styles.signInBox}>
+                        <Button
+                            style={[styles.mainText, {paddingLeft: 5, fontWeight: '300'}]}
+                            containerStyle={[styles.signInBoxButton, {backgroundColor: 'transparent'}]}
+                            onPress={this.onPressPasswordReset.bind(this)}>
+                            Need Help?
+                        </Button>
+                        <View style={{flex: 1}}></View>
+                        <Button
+                            style={styles.secondaryText}
+                            containerStyle={styles.signInBoxButton}
+                            onPress={this.onPressLogin.bind(this)}>
+                            Log In
+                        </Button>
+                    </View>
+                </KeyboardAvoidingView>
+
             </View>
         );
     }

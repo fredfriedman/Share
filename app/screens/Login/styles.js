@@ -1,104 +1,178 @@
-import { StyleSheet} from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 import Dimensions from 'Dimensions';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
-module.exports = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        backgroundColor: '#00BCD4',
-    },
-    navBar: {
-        backgroundColor: 'transparent',
-        height: 100,
+module.exports = EStyleSheet.create({
+    accountLabel: {
+        fontSize: 14,
+        fontWeight: '$fonts.weight',
+        fontFamily: '$fonts.family',
+        paddingTop: 15,
     },
     body: {
         flex: 9,
         alignItems: 'center',
         backgroundColor: 'transparent',
     },
-    backgroundImage: {
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height,
+    bottomLabel: {
+        width: 400,
+        alignSelf: 'center',
+        textAlign: 'center',
+        fontSize: 14,
+        fontWeight: '300',
+        color: '#ffffff',
+        marginBottom: 20,
     },
-    KeyboardAvoidingViewContainer: {
-        flex: 1,
+    button: {
+        width: Dimensions.get('window').width - 100,
+        height: 45,
+        borderRadius: 5,
+        alignSelf: 'center',
         justifyContent: 'center',
+    },
+    centered: {
         alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+    },
+    centeredIcon: {
+        alignSelf: 'center',
         backgroundColor: 'transparent',
-        paddingHorizontal: 20,
-        paddingTop: 20,
+        height: 35,
+        width: 35,
+        top: 20
+    },
+    container: {
+        flex: 1,
+        backgroundColor: '$colors.main'
     },
     formContainer: {
-        width: Dimensions.get('window').width - 20,
+        marginTop: 5,
+        paddingTop: 20,
+        paddingBottom: 20,
+        alignItems: 'center',
+        width: Dimensions.get('window').width,
+    },
+    formContainerHoshi: {
+        width: Dimensions.get('window').width - 30,
+    },
+    header: {
+        borderColor: 'white',
+        backgroundColor: 'white',
+        width: '$dimensions.screenWidth'
+    },
+    icon: {
+        height: '$dimensions.iconSize',
+        width:  '$dimensions.iconSize'
     },
     line: {
         marginTop: 5,
         flex: 0,
         height: StyleSheet.hairlineWidth,
-        backgroundColor: '#8E8E8E',
+        backgroundColor: '$colors.mediumGray',
         width: Dimensions.get('window').width - 20,
     },
-    textInput: {
+    mainColor: {
+        backgroundColor: '$colors.main',
+    },
+    mainText: {
+        color: '$colors.mainText',
+        fontSize: '$fonts.size',
+        fontWeight: '$fonts.weight',
+        fontFamily: '$fonts.family',
+    },
+    navBar: {
+        backgroundColor: 'transparent',
+        height: 100,
+    },
+    passwordResetTextInput: {
         width: Dimensions.get('window').width - 30,
         height: 35,
         alignSelf: 'center',
         backgroundColor: 'transparent',
-        fontFamily: 'Helvetica',
-        fontWeight: '100',
-        fontSize: 11,
-        color: 'black'
+        fontFamily: '$fonts.family',
+        fontWeight: '$fonts.weight',
+        fontSize: 16,
+        color: '#44688E'
     },
-    button: {
-        borderRadius: 2.5,
-        borderColor: 'transparent',
-        borderWidth: 0.5,
-        alignSelf: 'center',
+    row: {
+        width: Dimensions.get('window').width - 20
+    },
+    secondaryColor: {
+        backgroundColor: '$colors.secondary',
+    },
+    secondaryText: {
+        color: '$colors.secondaryText',
+        fontSize: '$fonts.size',
+        fontWeight: '$fonts.weight',
+        fontFamily: '$fonts.family',
+    },
+    signInBox: {
+        flexDirection: 'row',
+        height: 45,
+        width: Dimensions.get('window').width,
+        alignItems: 'center',
+        backgroundColor: '$colors.secondary',
+        paddingHorizontal: 5,
+        borderTopWidth: 1,
+        borderTopColor: '$colors.mediumGray',
+    },
+    signInBoxButton: {
+        height: 27.5,
+        width: 85,
         justifyContent: 'center',
-        backgroundColor: '#00BCD4',
+        backgroundColor: "$colors.main",
+        marginRight: 5,
+        borderRadius: 8,
+    },
+    submitButton: {
         height: 30,
         width: Dimensions.get('window').width - 20,
-        marginTop: 10,
-    },
-    SubmitLabel: {
-        flex: 1,
-        width: 230,
-        textAlign: 'center',
+        borderWidth: 0.5,
+        borderRadius: 2.5,
+        borderColor: 'transparent',
         alignSelf: 'center',
-        fontSize: 15,
-        fontWeight: '300',
-        color: '#ffffff',
-        paddingTop: 5
-    },
-    placeholderLabel: {
-        fontSize: 12,
-        fontWeight: '200',
-        color: '#ffffff'
-    },
-    bottomLabel: {
-        width: 400,
-        flex: 1,
-        alignSelf: 'center',
-        textAlign: 'center',
-        fontSize: 11,
-        fontWeight: '300',
-        color: '#ffffff',
-        marginBottom: 20,
-    },
-    transparent_button: {
+        justifyContent: 'center',
+        backgroundColor: "$colors.main",
         marginTop: 10,
-        padding: 15
+        fontWeight: '$fonts.weight',
+        fontFamily: '$fonts.family',
     },
-    transparent_button_text: {
-        color: '#0485A9',
-        fontSize: 16
+    textInput: {
+        width: Dimensions.get('window').width - 30,
+        height: 35,
+        color: '#44688E',
+        fontSize: 16,
+        fontWeight: '$fonts.weight',
+        fontFamily: '$fonts.family',
+        alignSelf: 'center',
+        backgroundColor: 'transparent',
     },
-    primary_button: {
-        margin: 10,
-        padding: 15,
-        backgroundColor: '#529ecc'
+    textHomeScreen: {
+        marginLeft: 50,
+        fontSize: 28,
+        color: 'white',
+        fontWeight: 'bold'
     },
-    primary_button_text: {
-        color: '#FFF',
-        fontSize: 18
+    topLeftLogo: {
+        height: 50,
+        width: 50,
+        marginTop: 30,
+        marginLeft: 30
+    },
+    userTypeContainer: {
+        height: 40,
+        width: '$dimensions.screenWidth',
+        alignItems: 'center',
+        backgroundColor: "#4DD0E1"
+    },
+    userTypeButton: {
+        marginTop: -17.5,
+        width: 150,
+        height: 35,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 15,
+        backgroundColor: '#00BCD4',
     },
 });

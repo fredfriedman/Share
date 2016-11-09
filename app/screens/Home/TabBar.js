@@ -1,18 +1,20 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { AppRegistry, ViewPagerAndroid, View, Text, Image } from 'react-native';
+import {
+    Image,
+    StyleSheet,
+    Text,
+    View
+} from 'react-native';
 import TabNavigator from 'react-native-tab-navigator';
+import EStyleSheet from 'react-native-extended-stylesheet';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-var { whiteGradient, homeIcon, writeIcon, calIcon, settingsIcon, overviewIcon } = require('../../config/images')
-
-// Page in Tab Bar
-var Profile = require('./profile').default
-var Overview = require('./overview').default
-var Patients = require('./patients_view').default
-var Settings = require('../Settings/settings').default
-
-
+// Pages in Tab Bar
+import Profile from './components/profile'
+import Overview from './components/overview'
+import Patients from './components/patients_view'
 
 export default class TabBar extends Component {
 
@@ -28,15 +30,25 @@ export default class TabBar extends Component {
     }
 
     render() {
-      return (
+        const selectedColor = "#0097A7"
+        const unselectedColor = "#8E8E8E"
+        const size = 30
+        const home = (<Icon name="home" size={size} color={unselectedColor} />);
+        const cal = (<Icon name="calendar" size={size} color={unselectedColor} />);
+        const over = (<Icon name="modx" size={size} color={unselectedColor} />);
+        const homeS = (<Icon name="home" size={size} color={selectedColor} />);
+        const calS = (<Icon name="calendar" size={size} color={selectedColor} />);
+        const overS = (<Icon name="modx" size={size} color={selectedColor} />);
+
+        return (
         <TabNavigator tabBarShadowStyle={styles.tabBarShadow} tabBarStyle={styles.tabBar}>
             <TabNavigator.Item
                 selected={this.state.selectedTab === 'Profile'}
                 title="Profile"
                 titleStyle={styles.tabBarTitle}
                 selectedTitleStyle={styles.tabBarSelectedTitle}
-                renderIcon={() => <Image style={styles.icon} source={homeIcon} />}
-                renderSelectedIcon={() => <Image style={styles.icon} source={homeIcon} />}
+                renderIcon={() => home}
+                renderSelectedIcon={() => homeS}
                 onPress={() => this.setTab('Profile')}>
                 <Profile navigator={this.props.navigator} user={this.props.user}/>
             </TabNavigator.Item>
@@ -45,8 +57,8 @@ export default class TabBar extends Component {
                 title="Overview"
                 titleStyle={styles.tabBarTitle}
                 selectedTitleStyle={styles.tabBarSelectedTitle}
-                renderIcon={() => <Image style={styles.icon} source={overviewIcon} />}
-                renderSelectedIcon={() => <Image style={styles.icon} source={overviewIcon} />}
+                renderIcon={() => over}
+                renderSelectedIcon={() => overS}
                 onPress={() => this.setTab('Overview')}>
                 <Overview navigator={this.props.navigator} user={this.props.user}/>
             </TabNavigator.Item>
@@ -55,47 +67,32 @@ export default class TabBar extends Component {
                 title="Calendar"
                 titleStyle={styles.tabBarTitle}
                 selectedTitleStyle={styles.tabBarSelectedTitle}
-                renderIcon={() => <Image style={styles.icon} source={calIcon} />}
-                renderSelectedIcon={() => <Image style={styles.icon} source={calIcon} />}
+                renderIcon={() => cal}
+                renderSelectedIcon={() => calS}
                 onPress={() => this.setTab('Calendar')}>
                 <Patients navigator={this.props.navigator} user={this.props.user}/>
             </TabNavigator.Item>
         </TabNavigator>
-      );
+        );
     }
 }
 
-var styles = {
-    view: {
-        height: 10
-    },
+const styles = EStyleSheet.create({
     tabBar: {
-        backgroundColor: '#ECEFF1',
-        height: 40
+        backgroundColor: '$colors.navBar',
     },
     tabBarShadow: {
-        backgroundColor: '#ECEFF1',
-        shadowColor: "#05054F",
-        shadowOpacity: 0.5,
-        shadowRadius: 3,
-        shadowOffset: {
-            height: 1,
-            width: 0
-        },
-        elevation: 20,
+        backgroundColor: '$colors.secondary',
+        borderWidth: '$dimensions.hairlineWidth',
+        borderColor: '$colors.mediumGray',
     },
     tabBarTitle: {
-        fontFamily: 'Helvetica',
-        fontWeight: '100',
         fontSize: 10,
-        color: '#90A4AE'
-    },
-    icon: {
-        marginBottom: -3,
-        height: 24,
-        width: 24
+        color: '$colors.mediumGray',
+        fontFamily: '$fonts.family',
+        fontWeight: '$fonts.weight',
     },
     tabBarSelectedTitle: {
-        color: '#0097A7'
+        color: '$colors.status'
     }
-}
+});

@@ -1,78 +1,75 @@
-import Firebase from 'firebase';
 import React, { Component } from 'react';
-import { Image, View, StyleSheet, TouchableHighlight, Text } from 'react-native';
+import {
+    Text,
+    TouchableHighlight,
+    View
+    } from 'react-native';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 export default class PatientTableViewCell extends Component {
     constructor(props) {
         super(props);
     }
 
+    statusToColor(status) {
+        if(status > 70) {
+            return '#e50000'
+        } else if (status > 40) {
+            return '#FFC107'
+        } else {
+            return '#228B22'
+        }
+    }
+
     render() {
 
         return (
             <TouchableHighlight style={styles.row} onPress={() => { this.props.onPress() }} underlayColor={'#F8F8F8'}>
-                <View style={{flexDirection:'row'}}>
-                    <View style={[styles.statusBar, { backgroundColor: this.props.status}]}/>
-                    <Image style={styles.thumb} source={this.props.image} />
+                <View style={{flexDirection:'row', alignItems: 'center'}}>
+                    <View style={[styles.statusBar, { backgroundColor: this.statusToColor(this.props.status)}]}/>
                     <View style={styles.stack}>
                         <Text style={styles.text}>{this.props.mainText}</Text>
-                        <Text style={styles.subTitle}>{this.props.subTitleText}</Text>
+                        <Text style={styles.caregiverText}>Primary Caregiver: Marge Simpson </Text>
                     </View>
                     <View style={{flex: 1}}/>
                     <TouchableHighlight
                         onPress={() => { this.props.onPressIcon() }}
-                        style={styles.actionIcon}
+                        style={styles.callIcon}
                         underlayColor={'transparent'}>
-                        <Image style={styles.icon} source={this.props.actionIcon} />
+                        {this.props.actionIcon}
                     </TouchableHighlight>
+                    <View style={{width: 10}}/>
                 </View>
             </TouchableHighlight>
         )
     }
 }
 
-var styles = StyleSheet.create({
+const styles = EStyleSheet.create({
     stack: {
         flexDirection: 'column',
+        alignItems: 'flex-start',
+        paddingLeft: 2.5,
     },
     statusBar: {
         backgroundColor: 'red',
         width: 6,
-        height: 44,
+        height: '$dimensions.rowHeight',
     },
     row: {
-        height: 44,
-        backgroundColor: '#F6F6F6',
-    },
-    thumb: {
-        marginTop: 10,
-        width: 20,
-        height: 25,
-        marginLeft: 3,
-        marginRight: 10,
-        borderRadius: 10,
+        height: '$dimensions.rowHeight',
+        backgroundColor: 'white',
     },
     text: {
-        flex: 0,
-        marginTop: 7,
-        fontSize: 14,
-        fontWeight: '100',
+        fontSize: '$fonts.size',
+        fontWeight: '$fonts.weight',
+        fontFamily: '$fonts.family'
     },
-    subTitle: {
-        flex: 0,
-        paddingTop: 5,
-        fontSize: 10,
-        fontWeight: '100',
+    caregiverText: {
+        fontSize: 11,
+        fontWeight: '300',
+        fontFamily: '$fonts.family'
     },
-    icon: {
-        position: 'absolute',
-        width: 25,
-        height: 25,
-        marginTop: 2,
-        marginRight: 10,
-    },
-    actionIcon: {
-        marginTop: 7,
-        marginRight: 30
+    callIcon: {
     }
 });
