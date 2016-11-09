@@ -6,7 +6,8 @@ import { ListView,
         Image,
         Dimensions,
         View, } from 'react-native';
-import Button from 'react-native-button'
+import Button from 'react-native-button';
+import store from 'react-native-simple-store';
 
 
 const { width, height } = Dimensions.get('window');
@@ -29,7 +30,7 @@ export default class Assessment extends Component {
             questionTypes: ["Pain", "Tiredness", "Nausea", "Depression", "Anxiety", "Drowsiness", "Appetite", "Shortness of Breath", "Caregiver"], 
             size: { width, height },
             assessmentObject: {
-                date: new Date(),
+                date: this.formatDate(new Date()),
                 questions: {
                     Pain: {
                         value: 0,
@@ -72,6 +73,36 @@ export default class Assessment extends Component {
         console.log("Object is: " + JSON.stringify(this.state.assessmentObject));
     }
 
+    saveAssessmentObject() {
+        var serializedAssessment = JSON.stringify(this.state.assessmentObject);
+        return store.save(this.state.assessmentObject.date.toString(), serializedAssessment)
+            .then(json => console.log('Save success!'))
+            .catch(error => console.log('Save error!'));
+    }
+
+    retrieveAssessmentObject(key) {
+        return store.get(key)
+            .then(req => JSON.parse(req))
+            .then(json => console.log(json))
+            .catch(error => console.log('Retrieval error!'));
+    }
+
+    formatDate(date) {
+        var monthNames = [
+          "January", "February", "March",
+          "April", "May", "June", "July",
+          "August", "September", "October",
+          "November", "December"
+        ];
+
+        var beforeDate = date;
+        var day = date.getDate();
+        var monthIndex = date.getMonth();
+        var year = date.getFullYear();
+
+        return (day + ' ' + monthNames[monthIndex] + ' ' + year);
+    }
+
     removeSpacesAndCapitalize(questionType) {
         return questionType.replace(/\b\w/g, l => l.toUpperCase()).replace(/\s+/g, '');
     }
@@ -81,7 +112,8 @@ export default class Assessment extends Component {
         var sanitizedQuestionType = this.removeSpacesAndCapitalize(questionType);
         newAssessmentObject.questions[sanitizedQuestionType].value = value;
         this.setState({assessmentObject: newAssessmentObject});
-        console.log("Object is: " + JSON.stringify(this.state.assessmentObject));
+
+        this.saveAssessmentObject();
     }
 
     onMedicationChange = (questionType, medicationChange) => {
@@ -89,6 +121,8 @@ export default class Assessment extends Component {
         var sanitizedQuestionType = this.removeSpacesAndCapitalize(questionType);        
         newAssessmentObject.questions[sanitizedQuestionType].medicationChange = medicationChange;
         this.setState({assessmentObject: newAssessmentObject});
+
+        this.saveAssessmentObject();
     }
 
     generateQuestions() {
