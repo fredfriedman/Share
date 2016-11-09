@@ -15,6 +15,7 @@ var { backIcon, whiteGradient } = require('../../config/images')
 var Header = require('../../components/header').default
 var Slider = require('react-native-slider');
 var Carousel = require('react-native-carousel');
+var _ = require('lodash');
 var Question = require('../../components/genericQuestion').default
 
 
@@ -25,11 +26,89 @@ export default class Assessment extends Component {
     constructor() {
         super();
         this.state = { 
-            symptoms: ["Pain", "Tiredness", "Nausea", "Depression", "Anxiety", "Drowsiness", "Appetite", "Shortness of Breath"], 
+            questionTypes: ["Pain", "Tiredness", "Nausea", "Depression", "Anxiety", "Drowsiness", "Appetite", "Shortness of Breath", "Caregiver"], 
             size: { width, height },
-            assessmentObject: new Date()
+            assessmentObject: {
+                date: new Date(),
+                questions: {
+                    Pain: {
+                        value: 0,
+                        medicationChange: 'none'
+                    }, 
+                    Tiredness: {
+                        value: 1,
+                        medicationChange: 'none'
+                    },
+                    Nausea: {
+                        value: 2,
+                        medicationChange: 'none'
+                    }, 
+                    Depression: {
+                        value: 3,
+                        medicationChange: 'none'
+                    },
+                    Anxiety: {
+                        value: 4,
+                        medicationChange: 'none'
+                    },
+                    Drowsiness: {
+                        value: 5,
+                        medicationChange: 'none'
+                    },
+                    Appetite: {
+                        value: 6,
+                        medicationChange: 'none'
+                    },
+                    ShortnessOfBreath: {
+                        value: 7,
+                        medicationChange: 'none'
+                    },
+                    Caregiver: {
+                        value: 8
+                    }
+                }
+            }
         };
-        console.log("Date is: " + this.state.assessmentObject);
+        console.log("Object is: " + JSON.stringify(this.state.assessmentObject));
+    }
+
+    removeSpacesAndCapitalize(questionType) {
+        return questionType.replace(/\b\w/g, l => l.toUpperCase()).replace(/\s+/g, '');
+    }
+
+    onSlideComplete = (questionType, value) => {
+        var newAssessmentObject = _.clone(this.state.assessmentObject);
+        var sanitizedQuestionType = this.removeSpacesAndCapitalize(questionType);
+        newAssessmentObject.questions[sanitizedQuestionType].value = value;
+        this.setState({assessmentObject: newAssessmentObject});
+        console.log("Object is: " + JSON.stringify(this.state.assessmentObject));
+    }
+
+    onMedicationChange = (questionType, medicationChange) => {
+        var newAssessmentObject = _.clone(this.state.assessmentObject);
+        var sanitizedQuestionType = this.removeSpacesAndCapitalize(questionType);        
+        newAssessmentObject.questions[sanitizedQuestionType].medicationChange = medicationChange;
+        this.setState({assessmentObject: newAssessmentObject});
+    }
+
+    generateQuestions() {
+        var assessmentQuestions = [];
+        for (var i = 0; i < this.state.questionTypes.length; i++) {
+            var currentQuestionType = this.state.questionTypes[i];
+            var sanitizedQuestionType = this.removeSpacesAndCapitalize(currentQuestionType);
+            var questionValue = this.state.assessmentObject.questions[sanitizedQuestionType].value;
+            var questionMedicationChange = this.state.assessmentObject.questions[sanitizedQuestionType].medicationChange;
+            assessmentQuestions.push(
+                <Question
+                    questionType={currentQuestionType}
+                    value={questionValue}
+                    medicationChange={questionMedicationChange}
+                    onSlideComplete={this.onSlideComplete}
+                    onMedicationChange={this.onMedicationChange}
+                />
+            );
+        }
+        return assessmentQuestions;
     }
 
     onBack() {
@@ -37,20 +116,9 @@ export default class Assessment extends Component {
     }
 
     
-
     render() {
 
-        var assessmentQuestions = [];
-        for (var i = 0; i < this.state.symptoms.length; i++) {
-            assessmentQuestions.push(
-                <Question
-                    symptom={this.state.symptoms[i]}
-                />
-            );
-        }
-        assessmentQuestions.push(
-            <Question/>
-        );
+        var assessmentQuestions = this.generateQuestions();
 
         return (
             <View style={{ backgroundColor: '#FFFFFF', flex: 1, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'stretch' }}>
