@@ -68,15 +68,8 @@ export default class caregiversettings extends Component {
 						/>
 						<SettingsList.Header headerStyle={{marginTop:15}}/>
 						<SettingsList.Item
-						  	title='General'
-						  	onPress={() => Alert.alert('Route To General Page')}
-						/>
-						<SettingsList.Item
-						  	title='Display'
-						  	onPress={() => Alert.alert('Route To Display Page')}
-						/>
-						<SettingsList.Header headerStyle={{marginTop:15}}/>
-						<SettingsList.Item
+							backgroundColor = 'red'
+							titleStyle = {{color: 'white'}}
 						  	title='Logout'
 						  	onPress={() => this.onLogout()}
 						/>

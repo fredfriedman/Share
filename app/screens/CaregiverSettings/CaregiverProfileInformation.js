@@ -35,7 +35,7 @@ export default class caregiverprofile extends Component{
 		return(
 			<View>
 				<View style={{borderBottomWidth:1, backgroundColor:'#00BCD4',borderColor:'#c8c7cc'}}>
-           			<Text style={{alignSelf:'center',marginTop:30,marginBottom:20,fontWeight:'bold',fontSize:16, color: 'white'}}>Caregiver Settings</Text>
+           			<Text style={{alignSelf:'center',marginTop:30,marginBottom:20,fontWeight:'bold',fontSize:16, color: 'white'}}>Profile</Text>
          		</View>
          		<View style={{backgroundColor:'#EFEFF4',flex:1}}>
 					<SettingsList borderColor='#c8c7cc' defaultItemSize={50}>
