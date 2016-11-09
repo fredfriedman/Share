@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import { AsyncStorage, Navigator} from 'react-native';
 
+
+// var Login   = require('./app/screens/Login/home').default
+// var Login   = require('./app/screens/CaregiverHome/overview').default
+// var firebase = require('./app/config/firebase')
+
 import Home from './app/screens/Login/home'
 import TabBar from './app/screens/Home/TabBar'
 import CaregiverHome from './app/screens/CaregiverHome/overview'

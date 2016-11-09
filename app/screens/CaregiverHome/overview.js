@@ -12,7 +12,7 @@ var Header = require('../../components/header').default
 var {assignmentIcon} = require('../../config/images')
 let CaregiverAssessment = require('../CaregiverAssessment/assessment').default
 let CaregiverHistory = require('../CaregiverHistory/historyTest').default
-
+let CaregiverSettings = require('../CaregiverSettings/caregiversettings').default
 
 export default class Overview extends Component {
 
@@ -33,6 +33,12 @@ export default class Overview extends Component {
     				component: CaregiverAssessment
     			})
     			break;
+
+        case "settings":
+          this.props.navigator.push({
+            component: CaregiverSettings
+          })
+          break;
     		default:
     			this.props.navigator.push({
     				component: CaregiverAssessment
@@ -92,7 +98,7 @@ export default class Overview extends Component {
             		<Col style={styles.container}>
             			<Button
                             style={styles.buttonStyle1} textStyle={styles.textStyle}
-					        onPress={() => this._handlePress()}>
+					        onPress={() => this._handlePress('settings')}>
 					        Settings
 				    	</Button>
 				    </Col>
