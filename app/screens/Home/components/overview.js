@@ -61,7 +61,7 @@ export default class Overview extends Component {
 
         this.myPatientsRef.on('child_added', (snap) => {
 
-            self.patientsRef.child(snap.key).on('value', (snap) => {
+            self.patientsRef.child(snap.key).once('value', (snap) => {
 
                 if (snap.val().active) {
 

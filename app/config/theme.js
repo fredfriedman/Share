@@ -26,7 +26,7 @@ export default {
     dimensions: {
         iconSize: (Platform.OS === 'ios') ? 30 : 25,
         navBarHeight: (Platform.OS === 'ios') ? 60 : 60,
-        rowHeight: (Platform.OS === 'ios') ? 49 : 49,
+        rowHeight: (Platform.OS === 'ios') ? 55 : 55,
         hairlineWidth: StyleSheet.hairlineWidth,
         screenHeight: Dimensions.get('window').width,
         screenWidth: Dimensions.get('window').width,

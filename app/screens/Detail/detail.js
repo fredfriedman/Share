@@ -82,13 +82,13 @@ export default class PatientDetailView  extends Component {
     }
 
     buildPoints(assessments) {
-        var graphData = { "Appetite": {max: null, min: null, avg: null, points: []},
-                    "Depression": {max: null, min: null, avg: null, points: []},
-                    "Drowsiness": {max: null, min: null, avg: null, points: []},
-                    "Nausea": {max: null, min: null, avg: null, points: []},
-                    "Pain": {max: null, min: null, avg: null, points: []},
-                    "Shortness of Breath": {max: null, min: null, avg: null, points: []},
-                    "Tiredness": {max: null, min: null, avg: null, points: []}}
+        var graphData = {   "Appetite": {max: null, min: null, avg: null, points: []},
+                            "Depression": {max: null, min: null, avg: null, points: []},
+                            "Drowsiness": {max: null, min: null, avg: null, points: []},
+                            "Nausea": {max: null, min: null, avg: null, points: []},
+                            "Pain": {max: null, min: null, avg: null, points: []},
+                            "Shortness of Breath": {max: null, min: null, avg: null, points: []},
+                            "Tiredness": {max: null, min: null, avg: null, points: []}}
 
         for (var i = 0; i < assessments.length; i++) {
             this.updateLatestDate(assessments[i].timestamp)
@@ -171,7 +171,8 @@ export default class PatientDetailView  extends Component {
     }
 
     parseDate(date) {
-        var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Nov", "Dec"]
+        console.log(date)
+        var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
         return months[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear()
     }
 

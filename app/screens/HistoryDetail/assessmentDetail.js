@@ -173,11 +173,6 @@ const styles = EStyleSheet.create({
         paddingLeft: 10,
         flexWrap: 'wrap'
     },
-    separator: {
-        flex: 1,
-        height: '$dimensions.hairlineWidth',
-        backgroundColor: '$colors.mediumGray',
-    },
     status: {
         backgroundColor: 'red',
         height: 10,
