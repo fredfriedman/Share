@@ -16,8 +16,8 @@ let CaregiverSettings = require('../CaregiverSettings/caregiversettings').defaul
 
 export default class Overview extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
     }
 
     handlePress(component) {
@@ -28,20 +28,23 @@ export default class Overview extends Component {
                     component: CaregiverHistory
                 })
                 break;
+
     		case "assessment":
     			this.props.navigator.push({
     				component: CaregiverAssessment
     			})
     			break;
 
-        case "settings":
-          this.props.navigator.push({
-            component: CaregiverSettings
-          })
-          break;
+            case "settings":
+              this.props.navigator.push({
+                component: CaregiverSettings
+              })
+              break;
+
     		default:
     			this.props.navigator.push({
-    				component: CaregiverAssessment
+    				component: CaregiverAssessment,
+                    passProps: {user: this.props.user}
     			})
     	}
     }

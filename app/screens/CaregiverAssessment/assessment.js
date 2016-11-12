@@ -8,6 +8,7 @@ import { ListView,
         View, } from 'react-native';
 import Button from 'react-native-button';
 import store from 'react-native-simple-store';
+import firebase from '../../config/firebase'
 
 
 const { width, height } = Dimensions.get('window');
@@ -24,12 +25,14 @@ var Question = require('../../components/genericQuestion').default
 
 export default class Assessment extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             scrollViewEnabled: true,
+            user: this.props.user,
             questionTypes: ["Pain", "Tiredness", "Nausea", "Depression", "Anxiety", "Drowsiness", "Appetite", "Shortness of Breath", "Caregiver"],
             size: { width, height },
+            databaseKey: null,
             assessmentObject: {
                 date: this.formatDate(new Date()),
                 questions: {
@@ -72,6 +75,7 @@ export default class Assessment extends Component {
             }
         };
         console.log("Object is: " + JSON.stringify(this.state.assessmentObject));
+        console.log("User is: " + JSON.stringify(this.state.user));
     }
 
     saveAssessmentObject() {
@@ -86,6 +90,20 @@ export default class Assessment extends Component {
             .then(req => JSON.parse(req))
             .then(json => console.log(json))
             .catch(error => console.log('Retrieval error!'));
+    }
+
+    generateDatabaseKey() {
+        if (!this.state.databaseKey)
+            this.state.databaseKey = firebase.database().ref().child('Patients').child(this.state.user.Patient).child('Assessments').push().key;
+        return this.state.databaseKey;
+    }
+
+    saveAssessmentToFirebase() {
+        var databaseKey = this.generateDatabaseKey();
+        var updates = {};
+        updates['Patients/' + this.state.user.Patient + '/Assessments/' + databaseKey] = this.state.assessmentObject;
+
+        return firebase.database().ref().update(updates);
     }
 
     formatDate(date) {
@@ -115,6 +133,7 @@ export default class Assessment extends Component {
         this.setState({assessmentObject: newAssessmentObject});
 
         this.saveAssessmentObject();
+        this.saveAssessmentToFirebase();
     }
 
     onMedicationChange = (questionType, medicationChange) => {
