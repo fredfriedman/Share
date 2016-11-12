@@ -35,7 +35,8 @@ export default class Assessment extends Component {
             databaseKey: null,
             assessmentObject: {
                 date: this.formatDate(new Date()),
-                questions: {
+                caregiver: this.props.user.id,
+                results: {
                     Pain: {
                         value: 0,
                         medicationChange: 'none'
@@ -129,7 +130,7 @@ export default class Assessment extends Component {
     onSlideComplete = (questionType, value) => {
         var newAssessmentObject = _.clone(this.state.assessmentObject);
         var sanitizedQuestionType = this.removeSpacesAndCapitalize(questionType);
-        newAssessmentObject.questions[sanitizedQuestionType].value = value;
+        newAssessmentObject.results[sanitizedQuestionType].value = value;
         this.setState({assessmentObject: newAssessmentObject});
 
         this.saveAssessmentObject();
@@ -139,7 +140,7 @@ export default class Assessment extends Component {
     onMedicationChange = (questionType, medicationChange) => {
         var newAssessmentObject = _.clone(this.state.assessmentObject);
         var sanitizedQuestionType = this.removeSpacesAndCapitalize(questionType);
-        newAssessmentObject.questions[sanitizedQuestionType].medicationChange = medicationChange;
+        newAssessmentObject.results[sanitizedQuestionType].medicationChange = medicationChange;
         this.setState({assessmentObject: newAssessmentObject});
 
         this.saveAssessmentObject();
@@ -150,8 +151,8 @@ export default class Assessment extends Component {
         for (var i = 0; i < this.state.questionTypes.length; i++) {
             var currentQuestionType = this.state.questionTypes[i];
             var sanitizedQuestionType = this.removeSpacesAndCapitalize(currentQuestionType);
-            var questionValue = this.state.assessmentObject.questions[sanitizedQuestionType].value;
-            var questionMedicationChange = this.state.assessmentObject.questions[sanitizedQuestionType].medicationChange;
+            var questionValue = this.state.assessmentObject.results[sanitizedQuestionType].value;
+            var questionMedicationChange = this.state.assessmentObject.results[sanitizedQuestionType].medicationChange;
             assessmentQuestions.push(
                 <Question
                     questionType={currentQuestionType}
