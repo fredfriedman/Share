@@ -6,16 +6,16 @@ export default {
     colors: {
         main: '#00BCD4',      // Teal
         status: '#0097A7',  // Darker Teal
-        secondary: '#f7f7f7', // Silver
+        secondary: '#E7E7E7', // Silver
         mainText: '#00BCD4',
         secondaryText: '#f7f7f7',
         button: 'green',
         header: 'red',
         navBar: '#E9E9E9',
         accent: '#FFC107',    //orange
-        lightGray: '#ECEFF1',
+        lightGray: '#E7E7E7',
         mediumGray: '#8E8E8E',
-        darkGray: '#262626',
+        darkGray: '#2E2E2E',
 
         critical: '#e50000',
         static: '#FFC107',

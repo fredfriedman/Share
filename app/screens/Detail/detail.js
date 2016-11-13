@@ -107,7 +107,6 @@ export default class PatientDetailView  extends Component {
     updateLatestDate(datetime) {
         var date = new Date(datetime)
         if(this.state.lastPost == null || date > this.state.lastPost) {
-            console.log(this.state.lastPost)
             this.setState({lastPost: date})
         }
     }
@@ -171,7 +170,6 @@ export default class PatientDetailView  extends Component {
     }
 
     parseDate(date) {
-        console.log(date)
         var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
         return months[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear()
     }
@@ -182,11 +180,11 @@ export default class PatientDetailView  extends Component {
 
     renderTopBox() {
         const clockIcon = (<Icon name="ios-time-outline" ios="ios-time-outline" md="md-time" size={20} color="#00ACC1" />);
-        const alertIcon = (<Icon name="ios-warning-outline" ios="ios-warning-outline" md="md-warning-outline" size={20} color="#e50000"/>);
+        const alertIcon = (<Icon name="ios-warning-outline" ios="ios-warning-outline" md="md-warning-outline" size={30} color="#e50000"/>);
         const pulseIcon = (<Icon name="ios-pulse" ios="ios-pulse" md="md-pulse" size={30} color="orange"/>);
         return (
             <View style={styles.topBox}>
-                <Text style={[styles.text,{paddingLeft: 5, color: 'white', fontSize: 13, fontWeight: '200'}]}>  </Text>
+                <Text style={[styles.text,{paddingLeft: 5, color: 'white', fontSize: 13, fontWeight: '200'}]}>{this.props.patient.phone}</Text>
                 <View>
                     <View style={[styles.row, {alignItems: 'center'}]}>
                         <View style={[styles.indicator, this.statusToColor(this.props.patient.status)]}/>
@@ -207,7 +205,6 @@ export default class PatientDetailView  extends Component {
 
         return (
             <View style={styles.bottomBox}>
-                <Text style={styles.patientPhone}> {this.props.patient.phone} </Text>
                 <ScrollView
                     ref="pageControl"
                     pagingEnabled={true}
@@ -254,6 +251,7 @@ const styles = EStyleSheet.create({
         backgroundColor: '$colors.lightGray',
     },
     header: {
+        height: 60,
         backgroundColor: '$colors.lightGray',
     },
     indicator: {
@@ -291,6 +289,6 @@ const styles = EStyleSheet.create({
         backgroundColor: '$colors.darkGray',
         justifyContent: 'space-between',
         borderBottomColor: '$colors.status',
-        borderBottomWidth: 5
+        borderBottomWidth: 7
     }
 });

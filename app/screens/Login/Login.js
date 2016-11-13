@@ -117,6 +117,8 @@ export default class Login extends Component {
             var usr = snapshot.val()
             usr["id"] = snapshot.key
             usr["type"] = type
+            usr["email"] = user.email
+            usr["photoURL"] = user.photoURL
 
             AsyncStorage.setItem('user_data', JSON.stringify(usr));
 

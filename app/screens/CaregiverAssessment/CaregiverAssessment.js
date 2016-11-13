@@ -23,7 +23,7 @@ export default class AssessmentSummary extends Component {
         this.state = {
             mostRecentAssessment: null
         }
-
+        console.log(props)
         this.historyRef = this.getRef().child('Patients/' + props.user.Patient + "/Assessments")
     }
 
@@ -39,7 +39,6 @@ export default class AssessmentSummary extends Component {
                 self.setState({mostRecentAssessment: snapshot.val()[key]})
 
             }
-
         });
     }
 

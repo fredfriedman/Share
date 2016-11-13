@@ -13,6 +13,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Profile from './components/profile'
 import Overview from './components/overview'
 import Patients from './components/patients_view'
+import Calendar from './components/calendar'
 import Settings from '../NurseSettings/NurseSettings'
 
 export default class TabBar extends Component {
@@ -72,7 +73,7 @@ export default class TabBar extends Component {
                 renderIcon={() => cal}
                 renderSelectedIcon={() => calS}
                 onPress={() => this.setTab('Calendar')}>
-                <Patients navigator={this.props.navigator} user={this.props.user}/>
+                <Calendar navigator={this.props.navigator} user={this.props.user}/>
             </TabNavigator.Item>
             <TabNavigator.Item
                 selected={this.state.selectedTab === 'Settings'}

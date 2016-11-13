@@ -9,13 +9,24 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class HistoryTableViewCell extends Component {
-    constructor(){
-        super()
+    constructor(props){
+        super(props)
+        console.log(props)
     }
 
     parseDate(date) {
         var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Nov", "Dec"]
         return months[date.getMonth()] + " " + date.getDate()
+    }
+
+    statusToColor(status) {
+        if(status > 70) {
+            return {backgroundColor: '#e50000'}
+        } else if (status > 40) {
+            return {backgroundColor: '#FFC107'}
+        } else {
+            return {backgroundColor: '#228B22'}
+        }
     }
 
     renderCompositeScore() {
@@ -26,8 +37,8 @@ export default class HistoryTableViewCell extends Component {
             }
         }
         return (
-            <View style={styles.stack}>
-                <Text>Composite</Text>
+            <View style={{marginLeft: 1, flexDirection: 'row', alignItems: 'center'}}>
+                <View style={[styles.statusBar, this.statusToColor(score)]}/>
                 <Text>{score}</Text>
             </View>
         )
@@ -37,7 +48,7 @@ export default class HistoryTableViewCell extends Component {
 
         const alertIcon = (<Icon name="ios-warning-outline" ios="ios-warning-outline" md="md-warning-outline" size={20} color="#e50000"/>);
 
-        return ( this.props.assessment.results.distress > 6 ?
+        return ( this.props.assessment && this.props.assessment.results.distress > 6 ?
             null
             :
             alertIcon
@@ -46,8 +57,8 @@ export default class HistoryTableViewCell extends Component {
 
     render() {
         return (
-            <TouchableHighlight style={styles.container} onPress={() => { this.props.onPress() }} underlayColor={'#F8F8F8'}>
-                <View style={styles.row}>
+            <TouchableHighlight style={styles.row} onPress={() => { this.props.onPress() }} underlayColor={'#F8F8F8'}>
+                <View style={{flexDirection:'row', alignItems: 'center', justifyContent: 'space-between'}}>
                     { this.renderCompositeScore() }
                     { this.renderDistressIndicator() }
                 </View>
@@ -57,23 +68,19 @@ export default class HistoryTableViewCell extends Component {
 }
 
 const styles = EStyleSheet.create({
-    container: {
-        height: '$dimensions.rowHeight',
-        backgroundColor: 'transparent',
-    },
     row: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between'
+        height: 30,
+        flex: 1,
+        backgroundColor: 'transparent',
     },
     stack: {
         flexDirection: 'column',
-        paddingLeft: 10,
+        paddingLeft: 20,
         flexWrap: 'wrap'
     },
     statusBar: {
-        backgroundColor: 'red',
-        width: 6,
-        height: '$dimensions.rowHeight',
+        width: 4,
+        height: 28,
+        borderRadius: 5,
     },
 });

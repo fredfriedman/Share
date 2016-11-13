@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import {
         ListView,
+        ScrollView,
         Text,
         View
     } from 'react-native';
@@ -51,32 +52,34 @@ export default class History extends Component {
 
         return (
             <View style={styles.container}>
-                <Header text={"Assessment"}
+                <Header
+                    text={""}
                     headerStyle={styles.header}
                     textStyle={styles.headerText}
                     leftAction={this.onBack.bind(this)} l
                     leftIcon={backIcon}/>
-                <View style={[styles.box, {height: 40, alignItems: 'center', justifyContent: 'center'}]}>
-                    <Text style={styles.dateText}>{this.parseDate(new Date(this.props.assessment.timestamp))}</Text>
-                </View>
-                <TableViewGroup
-                    headerIsEnabled={false}
-                    onPress={() => console.log()}
-                    onPressArchive={() => console.log()}
-                    style={[styles.box, {marginTop: 20}]}
-                    textStyle={[styles.text, styles.tableLabelText]}
-                    dataSource={this.state.dataSource}
-                    renderRow={this.renderRow.bind(this)}
-                    renderSeparator={() => <View style={styles.separator}/>}
-                    disableLeftSwipe={true}
-                    disableHeaderButton={true}
-                    disableHiddenRow={true} />
-                <View style={[styles.box, {height: 40, alignItems: 'center', justifyContent: 'center'}]}>
-                    <Text style={styles.text}>Caregiver Distress</Text>
-                    <Text style={styles.text}>{this.props.assessment.results.distress}</Text>
-
-                </View>
-
+                <ScrollView>
+                    <View style={[styles.box, {height: 40, alignItems: 'center', justifyContent: 'center'}]}>
+                        <Text style={styles.dateText}>{this.parseDate(new Date(this.props.assessment.timestamp))}</Text>
+                    </View>
+                    <TableViewGroup
+                        headerIsEnabled={false}
+                        onPress={() => console.log()}
+                        onPressArchive={() => console.log()}
+                        scrollEnabled={false}
+                        style={[styles.box, {marginTop: 20}]}
+                        textStyle={[styles.text, styles.tableLabelText]}
+                        dataSource={this.state.dataSource}
+                        renderRow={this.renderRow.bind(this)}
+                        renderSeparator={() => <View style={styles.separator}/>}
+                        disableLeftSwipe={true}
+                        disableHeaderButton={true}
+                        disableHiddenRow={true} />
+                    <View style={[styles.box, {height: 40, alignItems: 'center', justifyContent: 'center'}]}>
+                        <Text style={styles.text}>Caregiver Distress</Text>
+                        <Text style={styles.text}>{this.props.assessment.results.distress}</Text>
+                    </View>
+                </ScrollView>
             </View>
         );
     }
