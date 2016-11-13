@@ -1,25 +1,23 @@
 import React, { Component } from 'react';
 import { ListView,
+        TouchableOpacity,
         TouchableHighlight,
         StyleSheet,
         Text,
         Image,
         Dimensions,
         View, } from 'react-native';
-import Button from 'react-native-button';
+import Swiper from 'react-native-swiper';
 import store from 'react-native-simple-store';
+import _ from 'lodash';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+
 import firebase from '../../config/firebase'
-
-
-const { width, height } = Dimensions.get('window');
-
-var { backIcon, whiteGradient } = require('../../config/images')
-var Header = require('../../components/header').default
-var Slider = require('react-native-slider');
-var Carousel = require('react-native-carousel');
-var _ = require('lodash');
-var Question = require('../../components/genericQuestion').default
-
+import { backIcon } from '../../config/images';
+import Question from '../../components/genericQuestion';
+import Header from '../../components/header';
+import ToggleButton from '../../components/toggleButton';
 
 
 
@@ -31,11 +29,10 @@ export default class Assessment extends Component {
             scrollViewEnabled: true,
             user: this.props.user,
             questionTypes: ["Pain", "Tiredness", "Nausea", "Depression", "Anxiety", "Drowsiness", "Appetite", "Shortness of Breath", "Caregiver"],
-            size: { width, height },
             databaseKey: null,
             assessmentObject: {
                 date: this.formatDate(new Date()),
-                caregiver: this.props.user.id,
+                submittedBy: this.props.user.id,
                 results: {
                     Pain: {
                         value: 0,
@@ -176,26 +173,80 @@ export default class Assessment extends Component {
         var assessmentQuestions = this.generateQuestions();
 
         return (
-            <View style={{ backgroundColor: '#FFFFFF', flex: 1, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'stretch' }}>
-                <Header text={"Assessment"}/>
+            <View style={{ backgroundColor: '#FFFFFF' }}>
+                <Header text={"Assessment - " + this.state.assessmentObject.date}/>
                 <TouchableHighlight
                     onPress={()=>this.onBack()}
                     style={{position: 'absolute', width: 20, height: 20, top: 25, left: 15, backgroundColor: 'transparent'}}
                     underlayColor={'#f8f8f8'}>
                     <Image source={backIcon}/>
                 </TouchableHighlight>
-                <Carousel
-                    width={this.state.size.width}
+                <Swiper
+                    horizontal={true}
                     loop={false}
-                    animate={false}
-                    indicatorAtBottom={true}
-                    indicatorOffset={50}
-                    indicatorColor='#0097A7'
-                    inactiveIndicatorColor='#B2EBF2'
+                    showsButtons={true}
+                    scrollEnabled={false}
+                    buttonWrapperStyle={Styles.buttonWrapperStyle}
+                    nextButton={
+                        <View
+                            style={Styles.viewWrapperStyle}>
+
+                            <Text style={{color: '#FFFFFF', backgroundColor: 'transparent', fontSize: 20}}>
+                                Next
+                            </Text>
+                            <Icon 
+                                style={{marginLeft: 10}}
+                                name="angle-right"
+                                size={20}
+                                color='#FFFFFF'>
+                            </Icon>
+                            
+                        </View>
+                    }
+                    prevButton={
+                        <View
+                            style={Styles.viewWrapperStyle}>
+
+                            <Icon 
+                                style={{marginRight: 10}}
+                                name="angle-left"
+                                size={20}
+                                color='#FFFFFF'>
+                            </Icon>
+                            <Text style={{color: '#FFFFFF', backgroundColor: 'transparent', fontSize: 20}}>
+                                Previous
+                            </Text>
+
+                        </View>
+                    }
                 >
                     {assessmentQuestions}
-                </Carousel>
+                </Swiper>
             </View>
         );
     }
 }
+
+var Styles = StyleSheet.create({
+  buttonWrapperStyle: {
+    backgroundColor: 'transparent', 
+    flexDirection: 'row', 
+    position: 'absolute', 
+    paddingHorizontal: 30, 
+    paddingVertical: 0, 
+    top: 200, 
+    left: 0, 
+    flex: 1, 
+    justifyContent: 'space-between', 
+    alignItems: 'center'
+  },
+  viewWrapperStyle: {
+    borderRadius: 10, 
+    flexDirection: 'row', 
+    justifyContent: 'flex-start', 
+    alignItems: 'center', 
+    paddingHorizontal: 12, 
+    paddingVertical: 5,
+    backgroundColor: '#00ACC1'
+  }
+});
