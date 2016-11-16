@@ -16,6 +16,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 
 import firebase from '../../config/firebase'
 import Question from '../../components/genericQuestion';
+import SubmitPage from './submit';
 import Header from '../../components/header';
 import QuestionNavigationButton from '../../components/questionNavigationButton'
 import ToggleButton from '../../components/toggleButton';
@@ -28,6 +29,7 @@ export default class Assessment extends Component {
         super(props);
         this.state = {
             scrollViewEnabled: true,
+            swiperHeight: 0,
             user: this.props.user,
             questionTypes: ["Pain", "Tiredness", "Nausea", "Depression", "Anxiety", "Drowsiness", "Appetite", "Shortness of Breath", "Caregiver"],
             databaseKey: null,
@@ -153,6 +155,7 @@ export default class Assessment extends Component {
             var questionMedicationChange = this.state.assessmentObject.results[sanitizedQuestionType].medicationChange;
             assessmentQuestions.push(
                 <Question
+                    style={{flex: 1}}
                     questionType={currentQuestionType}
                     value={questionValue}
                     medicationChange={questionMedicationChange}
@@ -164,6 +167,15 @@ export default class Assessment extends Component {
         return assessmentQuestions;
     }
 
+    generateAssessmentPages() {
+        var assessmentPages = this.generateQuestions();
+        assessmentPages.push(
+            <SubmitPage
+                onSubmit='test'/>
+        );
+        return assessmentPages;
+    }
+
     onBack() {
         this.props.navigator.pop()
     }
@@ -172,26 +184,38 @@ export default class Assessment extends Component {
     render() {
 
         const backIcon = (<Icon name="angle-left" size={35} color="white" />);
-        var assessmentQuestions = this.generateQuestions();
+        var assessmentPages = this.generateAssessmentPages();
 
         return (
-            <View style={{ backgroundColor: '#FFFFFF' }}>
+            <View 
+                style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
                 <Header 
                     text={"Assessment - " + this.state.assessmentObject.date} 
                     textStyle={{color: 'white'}} 
                     leftAction={this.onBack.bind(this)} 
                     leftIcon={backIcon}/> 
-                <Swiper
-                    horizontal={true}
-                    loop={false}
-                    showsButtons={true}
-                    scrollEnabled={false}
-                    buttonWrapperStyle={Styles.buttonWrapperStyle}
-                    nextButton={<QuestionNavigationButton type='next'/>}
-                    prevButton={<QuestionNavigationButton type='previous'/>}
-                >
-                    {assessmentQuestions}
-                </Swiper>
+                <View
+                    style={{ flex: 1 }}
+                    onLayout={ (e) => {
+                    var {x, y, width, height} = e.nativeEvent.layout;
+                        this.setState({
+                            swiperHeight: height
+                        })
+                }}>
+                    <Swiper
+                        height={this.state.swiperHeight}
+                        horizontal={true}
+                        loop={false}
+                        showsButtons={true}
+                        scrollEnabled={false}
+                        buttonWrapperStyle={Styles.buttonWrapperStyle}
+                        nextButton={<QuestionNavigationButton type='next'/>}
+                        prevButton={<QuestionNavigationButton type='previous'/>}
+                    >
+                        {assessmentPages}
+                        
+                    </Swiper>
+                </View>
             </View>
         );
     }
@@ -201,13 +225,10 @@ var Styles = EStyleSheet.create({
   buttonWrapperStyle: {
     backgroundColor: 'transparent', 
     flexDirection: 'row', 
-    position: 'absolute', 
-    paddingHorizontal: 30, 
-    paddingVertical: 0, 
-    top: 200, 
-    left: 0, 
+    paddingHorizontal: 5, 
+    paddingBottom: 15, 
     flex: 1, 
     justifyContent: 'space-between', 
-    alignItems: 'center'
+    alignItems: 'flex-end'
   }
 });

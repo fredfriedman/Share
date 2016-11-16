@@ -41,7 +41,7 @@ export default {
         navBarHeight: (Platform.OS === 'ios') ? 60 : 60,
         rowHeight: (Platform.OS === 'ios') ? 49 : 49,
         hairlineWidth: StyleSheet.hairlineWidth,
-        screenHeight: Dimensions.get('window').width,
+        screenHeight: Dimensions.get('window').height,
         screenWidth: Dimensions.get('window').width,
     },
 

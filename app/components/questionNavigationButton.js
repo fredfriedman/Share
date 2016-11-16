@@ -42,7 +42,7 @@ export default class QuestionNavigationButton extends Component {
                         color='#FFFFFF'>
                     </Icon>
                     <Text style={{color: '#FFFFFF', backgroundColor: 'transparent', fontSize: 20}}>
-                        Previous
+                        Prev
                     </Text>
 
                 </View>
