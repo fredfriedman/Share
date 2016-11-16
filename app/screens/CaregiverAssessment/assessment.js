@@ -4,6 +4,7 @@ import { ListView,
         TouchableHighlight,
         StyleSheet,
         Text,
+        Alert,
         Image,
         Dimensions,
         View, } from 'react-native';
@@ -177,7 +178,14 @@ export default class Assessment extends Component {
     }
 
     onBack() {
-        this.props.navigator.pop()
+        Alert.alert(
+            'Confirm Quit',
+            "Are you sure you want to go back? Your assessment hasn't been submitted yet.",
+            [
+              {text: 'Cancel', onPress: () => console.log('Cancelled')},
+              {text: 'Quit', onPress: () => this.props.navigator.pop()}
+            ]
+        )
     }
 
 
