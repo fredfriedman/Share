@@ -20,6 +20,12 @@ export default {
         critical: '#e50000',
         static: '#FFC107',
         improving: '#228B22',
+
+        // Colors for the Caregiver overview buttons
+        buttonBackground1: '#00BCD4',
+        buttonBorder1: '#00ACC1',
+        buttonBackground2: '#4DD0E1',
+        buttonBorder2: '#26C6DA',
         
         // Colors for the assessment buttons
         answerUnselectedBackground: '#00BCD4',
