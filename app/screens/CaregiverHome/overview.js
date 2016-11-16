@@ -21,45 +21,10 @@ export default class Overview extends Component {
     }
 
     handlePress(component) {
-    	switch (component) {
-            //test history
-            case "history":
-                this.props.navigator.push({
-                    component: CaregiverHistory
-                })
-                break;
-
-    		case "assessment":
-    			this.props.navigator.push({
-    				component: CaregiverAssessment
-    			})
-    			break;
-
-            case "settings":
-              this.props.navigator.push({
-                component: CaregiverSettings
-              })
-              break;
-
-    		default:
-    			this.props.navigator.push({
-    				component: CaregiverAssessment,
-                    passProps: {user: this.props.user}
-    			})
-    	}
-    }
-
-    handlePressIn(newStyle) {
-        this.setState({style: newStyle});
-    }
-
-    pressedStyle() {
-
-        return {
-            borderColor: '#4DD0E1',
-            backgroundColor: '#80DEEA',
-            flex: 1
-        }
+        this.props.navigator.push({
+            component: component,
+            passProps: {user: this.props.user}
+        });
     }
 
     render() {
@@ -79,7 +44,7 @@ export default class Overview extends Component {
                             pressed={false}
                             style={styles.buttonStyle1} 
                             textStyle={styles.buttonTextStyle}
-                            onPress={() => this.handlePress()}>
+                            onPress={() => this.handlePress(CaregiverAssessment)}>
 					        Complete Daily Assessment
 				    	</Button>
 				    </Col>
@@ -87,7 +52,7 @@ export default class Overview extends Component {
             			<Button
                             style={styles.buttonStyle2} 
                             textStyle={styles.buttonTextStyle}
-					        onPress={() => this.handlePress()}>
+					        onPress={() => this.handlePress(null)}>
 					        Message Nurse
 				    	</Button>
 				    </Col>
@@ -97,7 +62,7 @@ export default class Overview extends Component {
             			<Button
 	            			style={styles.buttonStyle2} 
                             textStyle={styles.buttonTextStyle}
-					        onPress={() => this.handlePress('history')}>
+					        onPress={() => this.handlePress(CaregiverHistory)}>
 					        View Assessment History
 				    	</Button>
 				    </Col>
@@ -105,7 +70,7 @@ export default class Overview extends Component {
             			<Button
                             style={styles.buttonStyle1} 
                             textStyle={styles.buttonTextStyle}
-					        onPress={() => this.handlePress('settings')}>
+					        onPress={() => this.handlePress(CaregiverSettings)}>
 					        Settings
 				    	</Button>
 				    </Col>
