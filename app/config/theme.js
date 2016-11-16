@@ -48,6 +48,6 @@ export default {
     fonts: {
         size: 14,
         weight: '400',
-		family: (Platform.OS === 'ios') ? 'Helvetica Neue' : "Noto"
+		family: (Platform.OS === 'ios') ? 'Helvetica Neue' : "Roboto-Regular"
 	}
 }

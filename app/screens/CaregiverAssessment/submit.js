@@ -27,7 +27,7 @@ export default class Submit extends Component {
                         Congratulations!
                     </Text>
                 </View>
-                <View style={{height: height * 0.2, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                <View style={{height: height * 0.3, flexDirection: 'row', justifyContent: 'center', alignItems: 'flex-start'}}>
                     <Text style={Styles.submissionBody}>
                         You have completed the assessment! Please make sure your answers
                         are what you want them to be before submitting.
@@ -64,12 +64,15 @@ var Styles = EStyleSheet.create({
     flex: 1,
     fontSize: 50,
     fontWeight: 'bold',
+    fontFamily: '$fonts.family',
     padding: 10, 
     textAlign: 'center', 
     color: '$colors.main'
   },
   submissionBody: {
     flex: 1,
+    fontSize: 20,
+    fontFamily: '$fonts.family',
     padding: 10, 
     textAlign: 'center', 
     color: '$colors.main'
