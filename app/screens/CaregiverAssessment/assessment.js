@@ -211,6 +211,7 @@ export default class Assessment extends Component {
                         buttonWrapperStyle={Styles.buttonWrapperStyle}
                         nextButton={<QuestionNavigationButton type='next'/>}
                         prevButton={<QuestionNavigationButton type='previous'/>}
+                        activeDot={<View style={{backgroundColor: '#FF9800', width: 8, height: 8, borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3,}} />}
                     >
                         {assessmentPages}
                         

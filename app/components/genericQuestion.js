@@ -10,6 +10,8 @@ import ToggleButton from './toggleButton';
 import Slider from 'react-native-slider';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
+const height = Dimensions.get('window').height;
+const width = Dimensions.get('window').width;
 
 export default class Question extends Component {
 
@@ -25,81 +27,90 @@ export default class Question extends Component {
     	if (this.props.questionType == "Caregiver") {
     		return(
     			<View style={{flex: 1}}>
-	                <Text style={Styles.questionText}>
-	                    Regarding your duties as a caregiver, on a scale of 0 to 10, how much distress have you been experiencing over the past week?
-	                </Text>
+    				<View  style={{height: height * 0.4, padding: 10}}>
+		                <Text style={Styles.questionText}>
+		                    Regarding your duties as a caregiver, on a scale of 0 to 10, how much distress have you been experiencing over the past week?
+		                </Text>
 
-	                <Slider
-	                    style={{ justifyContent: 'center' }}
-	                    value={this.state.value}
-	                    trackStyle={Styles.sliderTrack}
-	                    thumbStyle={Styles.sliderThumb}
-	                    onValueChange={(value) => this.setState({value: value})}
-	                    onSlidingComplete={() => {this.props.onSlideComplete(this.props.questionType, this.state.value)}}
-	                    maximumValue={10}
-	                    step={1}
-	                    minimumTrackTintColor='#00BCD4'
-	                    maximumTrackTintColor='#b7b7b7'
-	                />
-	                <Text style={Styles.sliderText}>
-	                    {this.state.value}
-	                </Text>
+		                <Slider
+		                    style={{ justifyContent: 'center' }}
+		                    value={this.state.value}
+		                    trackStyle={Styles.sliderTrack}
+		                    thumbStyle={Styles.sliderThumb}
+		                    onValueChange={(value) => this.setState({value: value})}
+		                    onSlidingComplete={() => {this.props.onSlideComplete(this.props.questionType, this.state.value)}}
+		                    maximumValue={10}
+		                    step={1}
+		                    minimumTrackTintColor='#FF9800'
+		                    maximumTrackTintColor='#b7b7b7'
+		                />
+		                <Text style={Styles.sliderText}>
+		                    {this.state.value}
+		                </Text>
+	                </View>
 	            </View>
     		);
     	} else {
 	    	return(
 	    		<View style={{flex: 1}}>
-	    			<Text style={Styles.questionText}>
-	                    Please indicate the severity of your {this.props.questionType} on a scale of 0 - 10 with 0 being 
-	                    "No {this.props.questionType}" and 10 being "Worst {this.props.questionType} possible".
-	                </Text>
+	    			<View style={{height: height * 0.3, padding: 10}}>
+		    			<Text style={Styles.questionText}>
+		                    Please indicate the severity of your {this.props.questionType} on a scale of 0 - 10 with 0 being 
+		                    "No {this.props.questionType}" and 10 being "Worst {this.props.questionType} possible".
+		                </Text>
 
-	                <Slider
-	                    style={{ justifyContent: 'center' }}
-	                    value={this.state.value}
-	                    trackStyle={Styles.sliderTrack}
-	                    thumbStyle={Styles.sliderThumb}
-	                    onValueChange={(value) => this.setState({value: value})}
-	                    onSlidingComplete={() => {this.props.onSlideComplete(this.props.questionType, this.state.value)}}
-	                    maximumValue={10}
-	                    step={1}
-	                    minimumTrackTintColor='#00BCD4'
-	                    maximumTrackTintColor='#b7b7b7'
-	                />
-	                <Text style={Styles.sliderText}>
-	                    {this.state.value}
-	                </Text>
+		                <Slider
+		                    style={{ justifyContent: 'center' }}
+		                    value={this.state.value}
+		                    trackStyle={Styles.sliderTrack}
+		                    thumbStyle={Styles.sliderThumb}
+		                    onValueChange={(value) => this.setState({value: value})}
+		                    onSlidingComplete={() => {this.props.onSlideComplete(this.props.questionType, this.state.value)}}
+		                    maximumValue={10}
+		                    step={1}
+		                    minimumTrackTintColor='#FF9800'
+		                    maximumTrackTintColor='#b7b7b7'
+		                />
+		                <Text style={Styles.sliderText}>
+		                    {this.state.value}
+		                </Text>
+	                </View>
 
-	                <Text style={Styles.questionText}>
-	                    Have there been any changes in medication use for this symptom?
-	                </Text>
-	                <ToggleButton
-	                    style={this.state.medicationChange == 'more' ? Styles.selectedStyle : Styles.unselectedStyle} 
-	                    textStyle={{color: 'white'}}
-	                    onPress={() => {
-	                    	this.setState({ medicationChange: 'more' });
-	                    	this.props.onMedicationChange(this.props.questionType, 'more');
-	                    }}>
-	                    More
-	                </ToggleButton>
-	                <ToggleButton
-	                    style={this.state.medicationChange == 'none' ? Styles.selectedStyle : Styles.unselectedStyle} 
-	                    textStyle={{color: 'white'}}
-	                    onPress={() => {
-	                    	this.setState({ medicationChange: 'none' });
-	                    	this.props.onMedicationChange(this.props.questionType, 'none');
-	                    }}>
-	                    None
-	                </ToggleButton>
-	                <ToggleButton
-	                    style={this.state.medicationChange == 'less' ? Styles.selectedStyle : Styles.unselectedStyle} 
-	                    textStyle={{color: 'white'}}
-	                    onPress={() => {
-	                    	this.setState({ medicationChange: 'less' });
-	                    	this.props.onMedicationChange(this.props.questionType, 'less');
-	                    }}>
-	                    Less
-	                </ToggleButton>
+	                <View style={{height: height * 0.4, padding: 10, paddingTop: 20, alignItems: 'center'}}>
+		                <Text style={Styles.questionText}>
+		                    Have there been any changes in medication use for this symptom?
+		                </Text>
+
+		                <View style={{width: width * 0.5}}>
+			                <ToggleButton
+			                    style={this.state.medicationChange == 'more' ? Styles.selectedStyle : Styles.unselectedStyle} 
+			                    textStyle={Styles.buttonText}
+			                    onPress={() => {
+			                    	this.setState({ medicationChange: 'more' });
+			                    	this.props.onMedicationChange(this.props.questionType, 'more');
+			                    }}>
+			                    More
+			                </ToggleButton>
+			                <ToggleButton
+			                    style={this.state.medicationChange == 'none' ? Styles.selectedStyle : Styles.unselectedStyle} 
+			                    textStyle={Styles.buttonText}
+			                    onPress={() => {
+			                    	this.setState({ medicationChange: 'none' });
+			                    	this.props.onMedicationChange(this.props.questionType, 'none');
+			                    }}>
+			                    None
+			                </ToggleButton>
+			                <ToggleButton
+			                    style={this.state.medicationChange == 'less' ? Styles.selectedStyle : Styles.unselectedStyle} 
+			                    textStyle={Styles.buttonText}
+			                    onPress={() => {
+			                    	this.setState({ medicationChange: 'less' });
+			                    	this.props.onMedicationChange(this.props.questionType, 'less');
+			                    }}>
+			                    Less
+			                </ToggleButton>
+		                </View>
+	                </View>
 	            </View>
 	    	);
 	    }
@@ -107,10 +118,18 @@ export default class Question extends Component {
 }
 var Styles = EStyleSheet.create({
   questionText: {
-  	padding: 10, 
+  	fontFamily: '$fonts.family',
+  	paddingVertical: 15,
+  	fontSize: 15,
   	textAlign: 'center', 
-  	fontWeight: 'bold', 
+  	fontWeight: 'normal', 
   	color: '$colors.main'
+  },
+  buttonText: {
+  	fontFamily: '$fonts.family',
+  	fontSize: 15,
+  	color: 'white',
+  	fontWeight: 'normal'
   },
   sliderTrack: {
     height: 4,
@@ -121,13 +140,13 @@ var Styles = EStyleSheet.create({
     height: 30,
     borderRadius: 30 / 2,
     backgroundColor: 'white',
-    borderColor: '$colors.main',
+    borderColor: '$colors.answerSelectedBackground',
     borderWidth: 2,
   },
   sliderText: {
   	fontSize: 45, 
   	textAlign: 'center', 
-  	color: '$colors.main', 
+  	color: '$colors.answerSelectedBackground', 
   	paddingBottom: 15
   },
   selectedStyle: {
