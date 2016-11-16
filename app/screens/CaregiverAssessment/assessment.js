@@ -14,9 +14,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 import firebase from '../../config/firebase'
-import { backIcon } from '../../config/images';
 import Question from '../../components/genericQuestion';
 import Header from '../../components/header';
+import QuestionNavigationButton from '../../components/questionNavigationButton'
 import ToggleButton from '../../components/toggleButton';
 
 
@@ -174,51 +174,15 @@ export default class Assessment extends Component {
 
         return (
             <View style={{ backgroundColor: '#FFFFFF' }}>
-                <Header text={"Assessment - " + this.state.assessmentObject.date}/>
-                <TouchableHighlight
-                    onPress={()=>this.onBack()}
-                    style={{position: 'absolute', width: 20, height: 20, top: 25, left: 15, backgroundColor: 'transparent'}}
-                    underlayColor={'#f8f8f8'}>
-                    <Image source={backIcon}/>
-                </TouchableHighlight>
+                <Header text={"Assessment - " + this.state.assessmentObject.date}/> 
                 <Swiper
                     horizontal={true}
                     loop={false}
                     showsButtons={true}
                     scrollEnabled={false}
                     buttonWrapperStyle={Styles.buttonWrapperStyle}
-                    nextButton={
-                        <View
-                            style={Styles.viewWrapperStyle}>
-
-                            <Text style={{color: '#FFFFFF', backgroundColor: 'transparent', fontSize: 20}}>
-                                Next
-                            </Text>
-                            <Icon 
-                                style={{marginLeft: 10}}
-                                name="angle-right"
-                                size={20}
-                                color='#FFFFFF'>
-                            </Icon>
-                            
-                        </View>
-                    }
-                    prevButton={
-                        <View
-                            style={Styles.viewWrapperStyle}>
-
-                            <Icon 
-                                style={{marginRight: 10}}
-                                name="angle-left"
-                                size={20}
-                                color='#FFFFFF'>
-                            </Icon>
-                            <Text style={{color: '#FFFFFF', backgroundColor: 'transparent', fontSize: 20}}>
-                                Previous
-                            </Text>
-
-                        </View>
-                    }
+                    nextButton={<QuestionNavigationButton type='next'/>}
+                    prevButton={<QuestionNavigationButton type='previous'/>}
                 >
                     {assessmentQuestions}
                 </Swiper>
