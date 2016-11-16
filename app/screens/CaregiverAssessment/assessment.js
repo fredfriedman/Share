@@ -134,7 +134,6 @@ export default class Assessment extends Component {
         this.setState({assessmentObject: newAssessmentObject});
 
         this.saveAssessmentObject();
-        this.saveAssessmentToFirebase();
     }
 
     onMedicationChange = (questionType, medicationChange) => {
@@ -159,8 +158,8 @@ export default class Assessment extends Component {
                     questionType={currentQuestionType}
                     value={questionValue}
                     medicationChange={questionMedicationChange}
-                    onSlideComplete={this.onSlideComplete}
-                    onMedicationChange={this.onMedicationChange}
+                    onSlideComplete={this.onSlideComplete.bind(this)}
+                    onMedicationChange={this.onMedicationChange.bind(this)}
                 />
             );
         }
@@ -171,7 +170,8 @@ export default class Assessment extends Component {
         var assessmentPages = this.generateQuestions();
         assessmentPages.push(
             <SubmitPage
-                onSubmit='test'/>
+                saveAssessmentToFirebase={this.saveAssessmentToFirebase.bind(this)}
+            />
         );
         return assessmentPages;
     }

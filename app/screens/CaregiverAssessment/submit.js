@@ -35,7 +35,15 @@ export default class Submit extends Component {
                 </View>
                 <Button
                     style={Styles.submitButton}
-                    textStyle={{color: 'white'}}>
+                    textStyle={{color: 'white'}}
+                    onPress={() => Alert.alert(
+                        'Confirm Submission',
+                        'Are you sure you want to submit your answers?',
+                        [
+                          {text: 'Cancel', onPress: () => console.log('Cancelled')},
+                          {text: 'Submit', onPress: () => this.props.saveAssessmentToFirebase()}
+                        ]
+                    )}>
                     Submit Answers
                 </Button>
             </View>

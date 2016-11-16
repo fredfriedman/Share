@@ -34,6 +34,7 @@ export default class Question extends Component {
 	                    value={this.state.value}
 	                    trackStyle={Styles.sliderTrack}
 	                    thumbStyle={Styles.sliderThumb}
+	                    onValueChange={(value) => this.setState({value: value})}
 	                    onSlidingComplete={() => {this.props.onSlideComplete(this.props.questionType, this.state.value)}}
 	                    maximumValue={10}
 	                    step={1}
