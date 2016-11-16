@@ -15,6 +15,8 @@ import Theme from './app/config/theme'
 
 EStyleSheet.build(Theme);
 
+console.disableYellowBox = true
+
 export default class Main extends Component {
 
     constructor(props){

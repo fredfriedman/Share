@@ -21,6 +21,19 @@ export default {
         static: '#FFC107',
         improving: '#228B22',
 
+        // Colors for the Caregiver overview buttons
+        buttonBackground1: '#00BCD4',
+        buttonBorder1: '#00ACC1',
+        buttonBackground2: '#4DD0E1',
+        buttonBorder2: '#26C6DA',
+        
+        // Colors for the assessment buttons
+        answerUnselectedBackground: '#00BCD4',
+        answerUnselectedBorder: '#00ACC1',
+        answerSelectedBackground: '#FF9800',
+        answerSelectedBorder: '#FB8C00',
+
+
     },
 
     dimensions: {
@@ -28,13 +41,13 @@ export default {
         navBarHeight: (Platform.OS === 'ios') ? 60 : 60,
         rowHeight: (Platform.OS === 'ios') ? 49 : 49,
         hairlineWidth: StyleSheet.hairlineWidth,
-        screenHeight: Dimensions.get('window').width,
+        screenHeight: Dimensions.get('window').height,
         screenWidth: Dimensions.get('window').width,
     },
 
     fonts: {
         size: 14,
         weight: '400',
-		family: (Platform.OS === 'ios') ? 'Helvetica Neue' : "Noto"
+		family: (Platform.OS === 'ios') ? 'Helvetica Neue' : "Roboto-Regular"
 	}
 }

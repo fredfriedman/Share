@@ -26,10 +26,11 @@ export default class History extends Component {
 
 
     componentWillMount() {
-        var items = []
+        var items = [0]
         var self = this
         Object.keys(this.props.assessment.results).forEach(function(key) {
-            items.push([key, self.props.assessment.results[key]])
+            var k = key == "ShortnessOfBreath" ? "Shortness of Breath" : key
+            items.push([k, self.props.assessment.results[key]])
         });
         items.pop()
         this.setState({dataSource: this.state.dataSource.cloneWithRows(items)})
@@ -50,24 +51,23 @@ export default class History extends Component {
 
         return (
             <View style={styles.container}>
-                <Header text={""}
+                <Header text={"Assessment"}
                     headerStyle={styles.header}
-                    textStyle={styles.text}
+                    textStyle={styles.headerText}
                     leftAction={this.onBack.bind(this)} l
                     leftIcon={backIcon}/>
                 <View style={[styles.box, {height: 40, alignItems: 'center', justifyContent: 'center'}]}>
                     <Text style={styles.dateText}>{this.parseDate(new Date(this.props.assessment.timestamp))}</Text>
                 </View>
                 <TableViewGroup
-                    title={"Assessment Results"}
-                    headerIsEnabled={true}
+                    headerIsEnabled={false}
                     onPress={() => console.log()}
                     onPressArchive={() => console.log()}
                     style={[styles.box, {marginTop: 20}]}
                     textStyle={[styles.text, styles.tableLabelText]}
-                    headerStyle={styles.tableViewHeader}
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow.bind(this)}
+                    renderSeparator={() => <View style={styles.separator}/>}
                     disableLeftSwipe={true}
                     disableHeaderButton={true}
                     disableHiddenRow={true} />
@@ -82,22 +82,41 @@ export default class History extends Component {
     }
 
     renderRow(result: Object, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) {
+        if (rowID == 0) {
+            return (
+                <View style={[styles.row, {height: 20, backgroundColor: '#f7f7f7'}]}>
+                    <Grid style={{marginLeft: 20, marginRight: 10}}>
+                        <Col style={styles.col}>
+                            <Text style={[styles.text, styles.labelText]}>Symptom</Text>
+                        </Col>
+                        <Col style={styles.col}>
+                            <Text style={[styles.text,styles.labelText]}>Level</Text>
+                        </Col>
+                        <Col style={styles.col}>
+                            <Text style={[styles.text,styles.labelText]}>Changes</Text>
+                        </Col>
+                        <Col style={styles.col}>
+                            <Text style={[styles.text,styles.labelText]}>Status</Text>
+                        </Col>
+                    </Grid>
+                </View>
+            )
+        }
         return (
             <View style={styles.row}>
-                <Grid>
+                <Grid style={{marginLeft: 20, flex: 1, marginRight: 10}}>
                     <Col>
                         <Text style={[styles.text, styles.typeText]}>{result[0]}</Text>
                     </Col>
                     <Col>
-                        <Text style={[styles.text,styles.levelText]}>Level</Text>
                         <Text style={[styles.text,styles.levelText]}>{result[1].level}</Text>
                     </Col>
                     <Col>
-                        <Text style={[styles.text,styles.changesText]}>Changes</Text>
                         <Text style={[styles.text,styles.changesText]}>{result[1].changes}</Text>
                     </Col>
-                    <Col>
-                        {result[1].level > 7 ? <View style={[styles.status,{backgroundColor: 'red'}]}/> : <View style={[styles.status,{backgroundColor: 'green'}]}/>}
+                    <Col style={[styles.col, {justifyContent: 'center'}]}>
+                        <View style={result[1].level > 7 ? [styles.status, {backgroundColor: 'red'}] :
+                                                           [styles.status, {backgroundColor: 'green'}]}/>
                     </Col>
                 </Grid>
             </View>
@@ -130,6 +149,9 @@ const styles = EStyleSheet.create({
         backgroundColor: 'white',
         flex: 1
     },
+    col: {
+        alignItems: 'center'
+    },
     header: {
         backgroundColor: "$colors.main"
     },
@@ -151,11 +173,6 @@ const styles = EStyleSheet.create({
         paddingLeft: 10,
         flexWrap: 'wrap'
     },
-    separator: {
-        flex: 1,
-        height: '$dimensions.hairlineWidth',
-        backgroundColor: '$colors.mediumGray',
-    },
     status: {
         backgroundColor: 'red',
         height: 10,
@@ -176,6 +193,12 @@ const styles = EStyleSheet.create({
         color: '$colors.darkGray',
         paddingLeft: 2.5
     },
+    separator: {
+        flex: 1,
+        marginLeft: 20,
+        height: '$dimensions.hairlineWidth',
+        backgroundColor: '$colors.lightGray',
+    },
     levelText: {
         fontSize: 14,
         color: '$colors.darkGray',
@@ -189,5 +212,14 @@ const styles = EStyleSheet.create({
         fontSize: 32,
         fontWeight: "$fonts.weight",
         fontFamily: "$fonts.family",
+    },
+    headerText: {
+        color: '$colors.darkGray',
+        fontSize: 16,
+        fontWeight: 'bold',
+        fontFamily: '$fonts.family',
+    },
+    labelText: {
+        fontWeight: 'bold'
     },
 })

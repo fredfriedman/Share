@@ -18,6 +18,21 @@ export default class HistoryTableViewCell extends Component {
         return months[date.getMonth()] + " " + date.getDate()
     }
 
+    renderCompositeScore() {
+        var score = 0
+        for ( var key in  this.props.assessment.results) {
+            if ( key != "distress") {
+                score += this.props.assessment.results[key]["level"]
+            }
+        }
+        return (
+            <View style={styles.stack}>
+                <Text>Composite</Text>
+                <Text>{score}</Text>
+            </View>
+        )
+    }
+
     renderDistressIndicator() {
 
         const alertIcon = (<Icon name="ios-warning-outline" ios="ios-warning-outline" md="md-warning-outline" size={20} color="#e50000"/>);
@@ -29,16 +44,12 @@ export default class HistoryTableViewCell extends Component {
         )
     }
 
-    render(){
+    render() {
         return (
             <TouchableHighlight style={styles.container} onPress={() => { this.props.onPress() }} underlayColor={'#F8F8F8'}>
                 <View style={styles.row}>
-                    { this.renderDistressIndicator()}
-                    <View style={styles.stack}>
-                        <Text>Filler</Text>
-                        <Text>{this.props.assessment.filler}</Text>
-                    </View>
-                    <Text>{this.parseDate(new Date(this.props.assessment.timestamp))}</Text>
+                    { this.renderCompositeScore() }
+                    { this.renderDistressIndicator() }
                 </View>
             </TouchableHighlight>
         );

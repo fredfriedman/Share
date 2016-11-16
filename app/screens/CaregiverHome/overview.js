@@ -7,98 +7,70 @@ import { ListView,
         View, } from 'react-native';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import Button from 'apsl-react-native-button'
+import EStyleSheet from 'react-native-extended-stylesheet';
 
-var Header = require('../../components/header').default
-var {assignmentIcon} = require('../../config/images')
-let CaregiverAssessment = require('../CaregiverAssessment/assessment').default
-let CaregiverHistory = require('../CaregiverHistory/historyTest').default
-let CaregiverSettings = require('../CaregiverSettings/caregiversettings').default
+import Header from '../../components/header';
+import CaregiverAssessment from '../CaregiverAssessment/assessment';
+import CaregiverHistory from '../CaregiverHistory/historyTest';
+import CaregiverSettings from '../CaregiverSettings/caregiversettings';
 
 export default class Overview extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
     }
 
     handlePress(component) {
-    	switch (component) {
-            //test history
-            case "history":
-                this.props.navigator.push({
-                    component: CaregiverHistory
-                })
-                break;
-    		case "assessment":
-    			this.props.navigator.push({
-    				component: CaregiverAssessment
-    			})
-    			break;
-
-        case "settings":
-          this.props.navigator.push({
-            component: CaregiverSettings
-          })
-          break;
-    		default:
-    			this.props.navigator.push({
-    				component: CaregiverAssessment
-    			})
-    	}
-    }
-
-    handlePressIn(newStyle) {
-        this.setState({style: newStyle});
-    }
-
-    pressedStyle() {
-
-        return {
-            borderColor: '#4DD0E1',
-            backgroundColor: '#80DEEA',
-            flex: 1
-        }
+        this.props.navigator.push({
+            component: component,
+            passProps: {user: this.props.user}
+        });
     }
 
     render() {
         return (
-        <View style={{ backgroundColor: '#E9E9E9', flex: 1, flexDirection: 'column', justifyContent: 'center' }}>
-            <Header text={"Home"}/>
-            <Grid style={{flex: 1}}>
+        <View style={{ backgroundColor: 'white', flex: 1, flexDirection: 'column' }}>
+            <Header text={"Home"} textStyle={{color: 'white'}}/>
+            <Grid>
             	<Row style={styles.container}>
 	            		<Text
-	            			style={{fontSize: 20, fontWeight: 'bold', color: '#00ACC1', flex: 1, textAlign: 'center', justifyContent: 'center'}}>
+	            			style={styles.overviewTextStyle}>
 					        What would you like to do?
 					    </Text>
                 </Row>
-            	<Row>
-            		<Col style={styles.container}>
+            	<Row style={styles.container}>
+            		<Col>
             			<Button
                             pressed={false}
-                            style={styles.buttonStyle1} textStyle={styles.textStyle}
-                            onPress={() => this.handlePress()}>
+                            style={styles.buttonStyle1} 
+                            textStyle={styles.buttonTextStyle}
+                            onPress={() => this.handlePress(CaregiverAssessment)}>
 					        Complete Daily Assessment
 				    	</Button>
 				    </Col>
-            		<Col style={styles.container}>
+            		<Col>
             			<Button
-                            style={styles.buttonStyle2} textStyle={styles.textStyle}
-					        onPress={() => this.handlePress()}>
+                            style={styles.buttonStyle2} 
+                            textStyle={styles.buttonTextStyle}
+					        onPress={() => this.handlePress(null)}>
 					        Message Nurse
 				    	</Button>
 				    </Col>
             	</Row>
-            	<Row>
-            		<Col style={styles.container}>
+            	<Row style={styles.container}>
+            		<Col>
             			<Button
-	            			style={styles.buttonStyle2} textStyle={styles.textStyle}
-					        onPress={() => this.handlePress('history')}>
+	            			style={styles.buttonStyle2} 
+                            textStyle={styles.buttonTextStyle}
+					        onPress={() => this.handlePress(CaregiverHistory)}>
 					        View Assessment History
 				    	</Button>
 				    </Col>
-            		<Col style={styles.container}>
+            		<Col>
             			<Button
-                            style={styles.buttonStyle1} textStyle={styles.textStyle}
-					        onPress={() => this._handlePress('settings')}>
+                            style={styles.buttonStyle1} 
+                            textStyle={styles.buttonTextStyle}
+					        onPress={() => this.handlePress(CaregiverSettings)}>
 					        Settings
 				    	</Button>
 				    </Col>
@@ -109,82 +81,37 @@ export default class Overview extends Component {
     }
 }
 
-const styles = StyleSheet.create({
+var styles = EStyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: 5,
-    marginRight: 5,
+    marginHorizontal: 5
   },
-  textStyle: {
+  overviewTextStyle: {
+    fontSize: 20, 
+    fontWeight: 'bold', 
+    color: '$colors.main', 
+    textAlign: 'center'
+  },
+  buttonTextStyle: {
     color: 'white',
     flex: 1,
     textAlign: 'center',
-    fontFamily: 'Roboto',
     fontWeight: 'bold'
-  },
-  textStyle6: {
-    color: '#8e44ad',
-    fontFamily: 'Avenir',
-    fontWeight: 'bold'
-  },
-  buttonStylePressing: {
-    borderColor: 'red',
-    backgroundColor: 'red'
-  },
-  buttonStyle: {
-    borderColor: '#f39c12',
-    backgroundColor: '#f1c40f'
   },
   buttonStyle1: {
-    borderColor: '#0097A7',
-    backgroundColor: '#00ACC1',
-    flex: 1
+    backgroundColor: '$colors.buttonBackground1',
+    borderColor: '$colors.buttonBorder1',
+    flex: 1,
+    marginBottom: 10,
+    marginHorizontal: 5
   },
   buttonStyle2: {
-    borderColor: '#4DD0E1',
-    backgroundColor: '#80DEEA',
-    flex: 1
+    backgroundColor: '$colors.buttonBackground2',
+    borderColor: '$colors.buttonBorder2',
+    flex: 1,
+    marginBottom: 10,
+    marginHorizontal: 5
+
   },
-  buttonStyle3: {
-    borderColor: '#16a085',
-    backgroundColor: '#1abc9c'
-  },
-  buttonStyle4: {
-    borderColor: '#27ae60',
-    backgroundColor: '#2ecc71'
-  },
-  buttonStyle5: {
-    borderColor: '#2980b9',
-    backgroundColor: '#3498db'
-  },
-  buttonStyle6: {
-    borderColor: '#4DD0E1',
-    backgroundColor: '#80DEEA',
-    flex: 1
-  },
-  buttonStyle7: {
-    borderColor: '#8e44ad',
-    backgroundColor: 'white',
-    borderRadius: 0,
-    borderWidth: 3,
-  },
-  buttonStyle8: {
-    backgroundColor: 'white',
-    borderColor: '#333',
-    borderWidth: 2,
-    borderRadius: 22,
-  },
-  textStyle8: {
-    fontFamily: 'Avenir Next',
-    fontWeight: '500',
-    color: '#333',
-  },
-  customViewStyle: {
-    width: 120,
-    height: 40,
-    alignItems: 'center',
-    flexDirection: 'row',
-  }
-})
+});

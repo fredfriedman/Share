@@ -4,9 +4,10 @@ import SettingsList from 'react-native-settings-list';
 
 import login from '../Login/home';
 import firebaseHelper from './firebaseHelper';
-import header from '../../components/header';
+import Header from '../../components/header';
 import changepatientdetail from './ChangePatientDetail';
 import caregiverprofile from './CaregiverProfileInformation';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 var styles = StyleSheet.create({
 	imageStyle:{
@@ -26,8 +27,8 @@ export default class caregiversettings extends Component {
 
 		//set states from firebase
 		var self = this;
-		fb = new firebaseHelper();
-		fb.getCaregiverPromise('sD2AEvyjW9S2xuOY1yWPf7XkqUU2').then(function(caregiver){
+		this.fb = new firebaseHelper();
+		this.fb.getCaregiverPromise('sD2AEvyjW9S2xuOY1yWPf7XkqUU2').then(function(caregiver){
 			self.setState(
 				{patientId: caregiver}
 			);
@@ -38,13 +39,13 @@ export default class caregiversettings extends Component {
 
 
 	render() {
+		const backIcon = (<Icon name="ios-arrow-back" ios="ios-arrow-back" md="md-arrow-back" size={30} color="white" />);
 		var bgColor = '#DCE3F4';
+
 		return (
 
 		 	<View style={{backgroundColor:'#EFEFF4',flex:1}}>
-		 		<View style={{borderBottomWidth:1, backgroundColor:'#00BCD4',borderColor:'#c8c7cc'}}>
-           			<Text style={{alignSelf:'center',marginTop:30,marginBottom:20,fontWeight:'bold',fontSize:16, color: 'white'}}>Caregiver Settings</Text>
-         		</View>
+		 		<Header text={"Settings"} textStyle={{color: 'white'}} leftAction={this.onBack.bind(this)} leftIcon={backIcon}/>
 				<View style={{backgroundColor:'#EFEFF4',flex:1}}>
 					<SettingsList borderColor='#c8c7cc' defaultItemSize={50}>
 						<SettingsList.Header headerStyle={{marginTop:15}}/>
@@ -97,7 +98,20 @@ export default class caregiversettings extends Component {
 		this.setState({switchValue: value});
   	}
 
-  	onLogout(){
-  		this.props.navigator.resetTo({component: login});
+	onBack() {
+		this.props.navigator.pop()
+	}
+
+	onLogout(){
+
+		var self = this
+
+		this.fb.signOut().then(function(val) {
+			if(val) {
+				self.props.navigator.resetTo({component: login});
+			} else {
+				alert('A Problem Occurred');
+			}
+		})
   	}
 }

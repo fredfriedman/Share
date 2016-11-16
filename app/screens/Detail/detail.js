@@ -107,6 +107,7 @@ export default class PatientDetailView  extends Component {
     updateLatestDate(datetime) {
         var date = new Date(datetime)
         if(this.state.lastPost == null || date > this.state.lastPost) {
+            console.log(this.state.lastPost)
             this.setState({lastPost: date})
         }
     }
