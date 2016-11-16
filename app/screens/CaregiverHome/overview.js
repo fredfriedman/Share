@@ -8,6 +8,7 @@ import { ListView,
 import { Col, Row, Grid } from "react-native-easy-grid";
 import Button from 'apsl-react-native-button'
 import EStyleSheet from 'react-native-extended-stylesheet';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import Header from '../../components/header';
 import CaregiverAssessment from '../CaregiverAssessment/assessment';
@@ -43,17 +44,23 @@ export default class Overview extends Component {
             			<Button
                             pressed={false}
                             style={styles.buttonStyle1} 
-                            textStyle={styles.buttonTextStyle}
                             onPress={() => this.handlePress(CaregiverAssessment)}>
-					        Complete Daily Assessment
+                            <View
+                                style={styles.buttonChildrenContainer}>
+                                <Icon name="assignment-late" size={80} color="white" />
+                                <Text style={styles.buttonTextStyle}>Complete Assessment</Text>
+                            </View>
 				    	</Button>
 				    </Col>
             		<Col>
             			<Button
                             style={styles.buttonStyle2} 
-                            textStyle={styles.buttonTextStyle}
 					        onPress={() => this.handlePress(null)}>
-					        Message Nurse
+                            <View
+                                style={styles.buttonChildrenContainer}>
+                                <Icon name="message" size={80} color="white" />
+                                <Text style={styles.buttonTextStyle}>Message Nurse</Text>
+                            </View>
 				    	</Button>
 				    </Col>
             	</Row>
@@ -61,17 +68,23 @@ export default class Overview extends Component {
             		<Col>
             			<Button
 	            			style={styles.buttonStyle2} 
-                            textStyle={styles.buttonTextStyle}
 					        onPress={() => this.handlePress(CaregiverHistory)}>
-					        View Assessment History
+                            <View
+                                style={styles.buttonChildrenContainer}>
+                                <Icon name="history" size={80} color="white" />
+                                <Text style={styles.buttonTextStyle}>View History</Text>
+                            </View>
 				    	</Button>
 				    </Col>
             		<Col>
             			<Button
                             style={styles.buttonStyle1} 
-                            textStyle={styles.buttonTextStyle}
 					        onPress={() => this.handlePress(CaregiverSettings)}>
-					        Settings
+                            <View
+                                style={styles.buttonChildrenContainer}>
+                                <Icon name="settings" size={80} color="white" />
+                                <Text style={styles.buttonTextStyle}>Settings</Text>
+                            </View>
 				    	</Button>
 				    </Col>
             	</Row>
@@ -87,21 +100,29 @@ var styles = EStyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 5
   },
+  buttonChildrenContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   overviewTextStyle: {
-    fontSize: 20, 
-    fontWeight: 'bold', 
+    fontFamily: '$fonts.family',
+    fontSize: 25, 
     color: '$colors.main', 
     textAlign: 'center'
   },
   buttonTextStyle: {
     color: 'white',
-    flex: 1,
+    fontFamily: 'Roboto-Regular',
+    fontSize: 15,
+    margin: 5,
     textAlign: 'center',
     fontWeight: 'bold'
   },
   buttonStyle1: {
     backgroundColor: '$colors.buttonBackground1',
     borderColor: '$colors.buttonBorder1',
+    justifyContent: 'center',
     flex: 1,
     marginBottom: 10,
     marginHorizontal: 5

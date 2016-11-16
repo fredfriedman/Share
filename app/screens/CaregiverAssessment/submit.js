@@ -67,7 +67,7 @@ var Styles = EStyleSheet.create({
     fontFamily: '$fonts.family',
     padding: 10, 
     textAlign: 'center', 
-    color: '$colors.main'
+    color: '$colors.answerSelectedBackground'
   },
   submissionBody: {
     flex: 1,
@@ -78,8 +78,8 @@ var Styles = EStyleSheet.create({
     color: '$colors.main'
   },
   submitButton: {
-    backgroundColor: '$colors.answerUnselectedBackground',
-    borderColor: '$colors.answerUnselectedBorder',
+    backgroundColor: '$colors.answerSelectedBackground',
+    borderColor: '$colors.answerSelectedBorder',
     width: width * 0.5,
     alignSelf: 'center'
   }

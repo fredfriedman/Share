@@ -18,7 +18,7 @@ export default class QuestionNavigationButton extends Component {
 				<View
 		            style={Styles.viewWrapperStyle}>
 
-		            <Text style={{color: '#FFFFFF', backgroundColor: 'transparent', fontSize: 20}}>
+		            <Text style={Styles.buttonTextStyle}>
 		                Next
 		            </Text>
 		            <Icon 
@@ -41,7 +41,7 @@ export default class QuestionNavigationButton extends Component {
                         size={20}
                         color='#FFFFFF'>
                     </Icon>
-                    <Text style={{color: '#FFFFFF', backgroundColor: 'transparent', fontSize: 20}}>
+                    <Text style={Styles.buttonTextStyle}>
                         Prev
                     </Text>
 
@@ -61,5 +61,11 @@ var Styles = EStyleSheet.create({
     paddingHorizontal: 12, 
     paddingVertical: 5,
     backgroundColor: '$colors.main'
+  },
+  buttonTextStyle: {
+  	fontFamily: '$fonts.family',
+  	color: '#FFFFFF', 
+  	backgroundColor: 'transparent', 
+  	fontSize: 17.5
   }
 });
