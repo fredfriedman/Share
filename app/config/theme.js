@@ -20,6 +20,13 @@ export default {
         critical: '#e50000',
         static: '#FFC107',
         improving: '#228B22',
+        
+        // Colors for the assessment buttons
+        answerUnselectedBackground: '#00BCD4',
+        answerUnselectedBorder: '#00ACC1',
+        answerSelectedBackground: '#FF9800',
+        answerSelectedBorder: '#FB8C00',
+
 
     },
 

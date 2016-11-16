@@ -11,6 +11,7 @@ import Swiper from 'react-native-swiper';
 import store from 'react-native-simple-store';
 import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 
 import firebase from '../../config/firebase'
@@ -170,11 +171,16 @@ export default class Assessment extends Component {
 
     render() {
 
+        const backIcon = (<Icon name="angle-left" size={35} color="white" />);
         var assessmentQuestions = this.generateQuestions();
 
         return (
             <View style={{ backgroundColor: '#FFFFFF' }}>
-                <Header text={"Assessment - " + this.state.assessmentObject.date}/> 
+                <Header 
+                    text={"Assessment - " + this.state.assessmentObject.date} 
+                    textStyle={{color: 'white'}} 
+                    leftAction={this.onBack.bind(this)} 
+                    leftIcon={backIcon}/> 
                 <Swiper
                     horizontal={true}
                     loop={false}
@@ -191,7 +197,7 @@ export default class Assessment extends Component {
     }
 }
 
-var Styles = StyleSheet.create({
+var Styles = EStyleSheet.create({
   buttonWrapperStyle: {
     backgroundColor: 'transparent', 
     flexDirection: 'row', 
@@ -203,14 +209,5 @@ var Styles = StyleSheet.create({
     flex: 1, 
     justifyContent: 'space-between', 
     alignItems: 'center'
-  },
-  viewWrapperStyle: {
-    borderRadius: 10, 
-    flexDirection: 'row', 
-    justifyContent: 'flex-start', 
-    alignItems: 'center', 
-    paddingHorizontal: 12, 
-    paddingVertical: 5,
-    backgroundColor: '#00ACC1'
   }
 });

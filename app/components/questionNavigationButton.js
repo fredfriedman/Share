@@ -4,6 +4,7 @@ import { ListView,
         Text,
         View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 export default class QuestionNavigationButton extends Component {
 
@@ -51,7 +52,7 @@ export default class QuestionNavigationButton extends Component {
 
 }
 
-var Styles = StyleSheet.create({
+var Styles = EStyleSheet.create({
   viewWrapperStyle: {
     borderRadius: 10, 
     flexDirection: 'row', 
@@ -59,6 +60,6 @@ var Styles = StyleSheet.create({
     alignItems: 'center', 
     paddingHorizontal: 12, 
     paddingVertical: 5,
-    backgroundColor: '#00ACC1'
+    backgroundColor: '$colors.main'
   }
 });
