@@ -39,7 +39,7 @@ export default class PatientDetailView  extends Component {
                     "Pain": {max: 0, min: 0, avg: 0, points: []},
                     "Shortness of Breath": {max: 0, min: 0, avg: 0, points: []},
                     "Tiredness": {max: 0, min: 0, avg: 0, points: []}},
-            trendHistory: new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2, }),
+
             history: new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2, }),
             notes: new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2, }),
             lastPost: null,
@@ -97,7 +97,7 @@ export default class PatientDetailView  extends Component {
             this.updateData(graphData, i, assessments[i].results.Drowsiness.level, "Drowsiness")
             this.updateData(graphData, i, assessments[i].results.Nausea.level, "Nausea")
             this.updateData(graphData, i, assessments[i].results.Pain.level, "Pain")
-            this.updateData(graphData, i, assessments[i].results.ShortnessOfBreath.level, "Shortness of Breath")
+            this.updateData(graphData, i, assessments[i].results["Shortness Of Breath"].level, "Shortness of Breath")
             this.updateData(graphData, i, assessments[i].results.Tiredness.level, "Tiredness")
         }
 

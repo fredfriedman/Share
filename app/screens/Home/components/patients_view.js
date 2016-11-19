@@ -6,10 +6,6 @@ import {
         View,
     } from 'react-native';
 
-// Assets
-import FAIcon from 'react-native-vector-icons/FontAwesome';
-import Icon from 'react-native-vector-icons/Ionicons';
-
 // Components
 import  Header from '../../../components/header'
 import  ModalView from './modalCallView'
@@ -21,15 +17,17 @@ import  PatientDetailView from '../../Detail/detail'
 
 // Tools
 import Firebase from '../../../config/firebase'
-import EStyleSheet from 'react-native-extended-stylesheet';
+import EStyleSheet from 'react-native-extended-stylesheet'
+import FAIcon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class PatientsView extends Component {
 
     constructor(props) {
         super(props);
 
-        this.patientsRef = this.getRef().child('Patients/')
-        this.myPatientsRef = this.getRef().child('Nurses/' + props.user.id + "/Patients")
+        this.patientDataRef = this.getRef().child('Patients/')
+        this.userPatientRef = this.getRef().child('Nurses/' + props.user.id + "/")
 
         this.state = {
             dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
@@ -50,29 +48,47 @@ export default class PatientsView extends Component {
 
         var self = this
 
-        var items = [];
+        var patients = {};
 
-        this.myPatientsRef.on('child_added', (snap) => {
+        this.userPatientRef.child("Patients").on('child_added', (snap) => {
 
-            self.patientsRef.child(snap.key).on('value', (snap) => {
+            self.patientDataRef.child(snap.key).on('value', (snap) => {
 
                 if (snap.val().active) {
-                    items.push({
+
+                    var patient = {
                         pID: snap.key,
                         name: snap.val().name,
                         status: snap.val().status
-                    });
+                    };
+
+                    patients[snap.key] = patient
+
+                } else {
+                    delete patients[snap.key]
                 }
-                self.setState({ dataSource: self.state.dataSource.cloneWithRows(items) });
+
+                self.setState({ dataSource: self.state.dataSource.cloneWithRows(Object.values(patients).sort(this.compare)) });
             });
         });
     }
+
+    compare(a,b) {
+        if (a.status == b.status) {
+            return 0
+        }
+        return a.status < b.status ? 1 : -1
+    }
+
+    //////////////////
+    // UI Functions //
+    //////////////////
 
     setModalVisible(patient, visible) {
         this.setState({modalVisible: visible, modalVisiblePatient: patient});
     }
 
-    onPressAction(patient) {
+    onPressCallAction(patient) {
         this.setModalVisible(patient, true)
     }
 
@@ -86,36 +102,30 @@ export default class PatientsView extends Component {
           }
       })
     }
-    /**
-        Called when hidden archive button is selected
 
-        Parameters:
-            - patient: the selected patient
-
-        Archives the selected patient; removing it from the table view
-    */
     onPressArchive(title, data, secdId, rowId) {
-
-        this.patientsRef.child(data.pid + "/active").set(false);
-
-        var items = this.state.patients
-        items.splice(rowId, 1)
-        this.setState({patients: items})
+        this.patientDataRef.child(data.pID + "/active").set(false);
+        this.userPatientRef.child("Critical Patients").child(data.pID).remove()
     }
 
-    onBack() {
+    onPressBack() {
         this.props.navigator.pop()
     }
 
     render() {
+        const backIcon = <Icon name="ios-arrow-back" ios="ios-arrow-back" md="md-arrow-back" size={30} color="#262626" />
 
         return (
             <View style={styles.container} noSpacer={false} noScroll={false}>
-                { this.renderHeader()}
+                <Header
+                    headerStyle={styles.header}
+                    textStyle={styles.header_text}
+                    leftAction={this.onPressBack.bind(this)}
+                    leftIcon={backIcon} text={"Patients"}/>
                 <TableViewGroup
                     title={"Patients"}
                     style={styles.tableViewContainer}
-                    onPress={this.onPressAction.bind(this)}
+                    onPress={this.onPressCallAction.bind(this)}
                     onPressArchive={this.onPressArchive.bind(this)}
                     scrollEnabled={true}
                     dataSource={this.state.dataSource}
@@ -129,31 +139,13 @@ export default class PatientsView extends Component {
         );
     }
 
-    renderHeader() {
-
-        const backIcon = (<Icon name="ios-arrow-back" ios="ios-arrow-back" md="md-arrow-back" size={30} color="white" />);
-
-        if (this.props.backEnabled ) {
-            return (    <Header
-                            textStyle={{color: 'white'}}
-                            leftAction={this.onBack.bind(this)}
-                            leftIcon={backIcon} text={"Patients"}/> )
-        } else {
-            return (
-                        <Header
-                            textStyle={{color: 'white'}}
-                            text={"Patients"}/> )
-        }
-    }
-
     renderRow(patient: Object, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) {
-
-        const phoneIcon = (<FAIcon name="phone" size={30} color="#262626" />);
+        const phoneIcon = <FAIcon name="phone" size={30} color="#262626" />
 
         return (
             <PatientTableViewCell
                 onPress={()=>this.onPressPatient(patient)}
-                onPressIcon={this.onPressAction.bind(this, patient.pID)}
+                onPressIcon={this.onPressCallAction.bind(this, patient.pID)}
                 status={patient.status}
                 actionIcon={phoneIcon}
                 mainText={patient.name}
@@ -166,6 +158,16 @@ export default class PatientsView extends Component {
 const styles = EStyleSheet.create({
     container: {
         flex: 1
+    },
+    header: {
+        height: 60,
+        backgroundColor: '$colors.lightGray',
+    },
+    header_text: {
+        color: '$colors.darkGray',
+        fontSize: 18,
+        fontWeight: '$fonts.weight',
+        fontFamily: "$fonts.family",
     },
     row: {
         flexDirection: 'row',

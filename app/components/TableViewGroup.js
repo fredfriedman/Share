@@ -28,6 +28,7 @@ export default class TableViewGroup extends Component {
                 <SwipeListView
                     dataSource={this.props.dataSource}
                     renderRow={this.props.renderRow}
+                    renderFooter={this.props.renderFooter}
                     renderSeparator={this.props.renderSeparator || null}
                     scrollEnabled={this.props.scrollEnabled ? this.props.scrollEnabled : false }
                     renderHiddenRow={ (data, secId, rowId) => this.renderHiddenRow(data, secId, rowId)}
