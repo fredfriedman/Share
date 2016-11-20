@@ -69,11 +69,18 @@ export default class PatientDetailView  extends Component {
     }
 
     parseAssessments(snap) {
+        var agg = 0
+        for (var child in snap.val().Results) {
+            agg += parseInt(snap.val().Results[child].level)
+        }
         return {
             completed: snap.val().completed,
             timestamp: snap.val().timestamp,
-            filler: snap.val().filler,
+            submittedBy: snap.val().submittedBy,
             results: snap.val().Results,
+            distress: snap.val().distress,
+            comments: snap.val().comments,
+            agg: agg
         }
     }
 
@@ -189,7 +196,7 @@ export default class PatientDetailView  extends Component {
                     <View style={[styles.row, {alignItems: 'center'}]}>
                         <View style={[styles.indicator, this.statusToColor(this.props.patient.status)]}/>
                         <Text style={[styles.text, {color: 'white', fontSize: 60, fontWeight: '200'}]}> {this.props.patient.status} </Text>
-                        { alertIcon }
+                        { this.props.patient.caregiverDistress ? alertIcon : null}
                     </View>
                     <Text style={[styles.text, {color: '#00838F', fontSize: 20, fontWeight: '400'}]}> Current Status </Text>
                 </View>

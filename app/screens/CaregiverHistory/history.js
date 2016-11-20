@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
 import HistoryDetailPage from '../HistoryDetail/assessmentDetail'
+import HistoryRow from './HistoryRow'
 
 export default class History extends Component {
 
@@ -30,12 +31,18 @@ export default class History extends Component {
     }
 
     parseAssessments(snap) {
+        var agg = 0
+        for (var child in snap.val().Results) {
+            agg += parseInt(snap.val().Results[child].level)
+        }
         return {
             completed: snap.val().completed,
             timestamp: snap.val().timestamp,
             submittedBy: snap.val().submittedBy,
             results: snap.val().Results,
-            distress: snap.val().distress
+            distress: snap.val().distress,
+            comments: snap.val().comments,
+            agg: agg
         }
     }
 
@@ -55,11 +62,6 @@ export default class History extends Component {
         });
     }
 
-    parseDate(date) {
-        var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "November", "December"]
-        return months[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear()
-    }
-
     onPressHistoryCell(assessment) {
         this.props.navigator.push({
             component: HistoryDetailPage,
@@ -71,32 +73,6 @@ export default class History extends Component {
 
     onPressBack() {
         this.props.navigator.pop()
-    }
-
-    renderRow(data: Object, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) {
-        const checkmark = <Icon name="md-checkmark" size={30} color="#262626" />
-        const x = <Icon name="md-close" size={30} color="#262626" />
-        const disclosureIcon = (<Icon name="ios-arrow-forward" style={{marginRight: 10}} size={20} color="#212121" />);
-
-        return (
-            <TouchableHighlight
-                onPress={() => { this.onPressHistoryCell(data) }}
-                underlayColor={'#0097A7'}>
-                <View style={{alignItems: 'center', marginLeft: 10, flexDirection: "row", height: 60, justifyContent: 'space-between'}}>
-                    <View style={{flexDirection: "row"}}>
-                        {data.completed ? checkmark : x}
-                        <View style={{paddingLeft: 10, flexDirection: 'column'}}>
-                            <Text style={styles.text}>Score: {57}</Text>
-                            <Text style={styles.subText}>{this.parseDate(new Date(data.timestamp))}</Text>
-                        </View>
-                    </View>
-                    <View style={{flex: 1, paddingLeft: 10}}>
-                        <Text>Comments about ajsdfnkjs</Text>
-                    </View>
-                    { disclosureIcon }
-                </View>
-            </TouchableHighlight>
-        )
     }
 
     render(){
@@ -111,7 +87,7 @@ export default class History extends Component {
                     leftIcon={backIcon}/>
                 <ListView
                     dataSource={this.state.history}
-                    renderRow={this.renderRow.bind(this)}
+                    renderRow={(data) => <HistoryRow assessment={data} onPressHistoryCell={this.onPressHistoryCell.bind(this)}/>}
                     renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}/>
             </View>
         );

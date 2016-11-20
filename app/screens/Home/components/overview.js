@@ -71,7 +71,8 @@ export default class Overview extends Component {
                 var item = {
                     pID: snapshot.key,
                     name: snapshot.val().name,
-                    status: snapshot.val().status
+                    status: snapshot.val().status,
+                    caregiverDistress: snapshot.val()["caregiverDistress"]
                 }
 
                 patients[snapshot.key] = item

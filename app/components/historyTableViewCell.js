@@ -9,14 +9,14 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class HistoryTableViewCell extends Component {
+
     constructor(props){
         super(props)
-        console.log(props)
     }
 
     parseDate(date) {
-        var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Nov", "Dec"]
-        return months[date.getMonth()] + " " + date.getDate()
+        var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "November", "December"]
+        return months[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear()
     }
 
     statusToColor(status) {
@@ -30,37 +30,45 @@ export default class HistoryTableViewCell extends Component {
     }
 
     renderCompositeScore() {
-        var score = 0
-        for ( var key in  this.props.assessment.results) {
-            if ( key != "distress") {
-                score += this.props.assessment.results[key]["level"]
-            }
-        }
         return (
             <View style={{marginLeft: 1, flexDirection: 'row', alignItems: 'center'}}>
-                <View style={[styles.statusBar, this.statusToColor(score)]}/>
-                <Text>{score}</Text>
+                <View style={[styles.statusBar, this.statusToColor(this.props.assessment.agg)]}/>
+                <View style={styles.stack}>
+                    <View style={{flexDirection: 'row'}}>
+                        <Text style={[styles.text, {paddingRight: 10}]}>{this.props.assessment.agg}</Text>
+                        { this.renderDistressIndicator() }
+                    </View>
+                    <Text style={styles.subText}>{this.parseDate(new Date(this.props.assessment.timestamp))}</Text>
+                </View>
             </View>
         )
     }
 
     renderDistressIndicator() {
 
-        const alertIcon = (<Icon name="ios-warning-outline" ios="ios-warning-outline" md="md-warning-outline" size={20} color="#e50000"/>);
+        const alertIcon = (<Icon name="ios-warning-outline" ios="ios-warning-outline" md="md-warning-outline" size={15} color="#e50000"/>);
 
-        return ( this.props.assessment && this.props.assessment.results.distress > 6 ?
-            null
-            :
+        return ( this.props.assessment && parseInt(this.props.assessment.distress) > 6 ?
             alertIcon
+            :
+            null
         )
     }
 
     render() {
+        const disclosureIcon = (<Icon name="ios-arrow-forward" style={{marginRight: 10}} size={20} color="#212121" />);
+
         return (
-            <TouchableHighlight style={styles.row} onPress={() => { this.props.onPress() }} underlayColor={'#F8F8F8'}>
-                <View style={{flexDirection:'row', alignItems: 'center', justifyContent: 'space-between'}}>
+            <TouchableHighlight
+                style={styles.row}
+                onPress={() => { this.props.onPress() }}
+                underlayColor={'#F8F8F8'}>
+                <View style={styles.rowWrapper}>
                     { this.renderCompositeScore() }
-                    { this.renderDistressIndicator() }
+                    <View style={{flex: 1, paddingLeft: 10}}>
+                        <Text style={styles.text}>{this.props.assessment.comments}</Text>
+                    </View>
+                    { disclosureIcon }
                 </View>
             </TouchableHighlight>
         );
@@ -68,19 +76,49 @@ export default class HistoryTableViewCell extends Component {
 }
 
 const styles = EStyleSheet.create({
+    $rowHeight: 50,
+
+    commentsBox: {
+        flex: 1,
+        paddingLeft: 10
+    },
     row: {
-        height: 30,
+        height: '$rowHeight',
         flex: 1,
         backgroundColor: 'transparent',
     },
+    rowWrapper: {
+        flexDirection:'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
     stack: {
+        width: 125,
+        paddingLeft: 10,
         flexDirection: 'column',
-        paddingLeft: 20,
-        flexWrap: 'wrap'
+        justifyContent: 'space-between'
     },
     statusBar: {
         width: 4,
-        height: 28,
+        height: '-2 + $rowHeight',
         borderRadius: 5,
     },
+    text: {
+        color: '$colors.darkGray',
+        fontSize: '$fonts.size',
+        fontWeight: '$fonts.weight',
+        fontFamily: '$fonts.family',
+    },
+    separator: {
+        flex: 1,
+        height: '$dimensions.hairlineWidth',
+        marginLeft : 20,
+        backgroundColor: '#d7d7d7',
+    },
+    subText: {
+        color: '$colors.mediumGray',
+        fontSize: 12,
+        fontWeight: '$fonts.weight',
+        fontFamily: '$fonts.family',
+    }
 });
