@@ -30,12 +30,14 @@ export default class Overview extends Component {
         super(props);
 
         this.patientsRef = this.getRef().child('Patients/')
+        this.updatingPatientsRef = this.getRef().child('Nurses/' + props.user.id + "/RC Patients")
         this.criticalPatientsRef = this.getRef().child('Nurses/' + props.user.id + "/Critical Patients")
+        this.distressedPatientsRef = this.getRef().child('Nurses/' + props.user.id + "/Distressed Patients")
 
         this.state = {
-            dataSource: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2, }),
             criticalPatients: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2, }),
-            recentChanges: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2, }),
+            updatedPatients: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2, }),
+            distressedPatients: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2, }),
 
             modalVisible: false,
             modalVisiblePatient: null
@@ -43,24 +45,26 @@ export default class Overview extends Component {
     }
 
     componentDidMount() {
-        this.listenForItems(this.patientsRef);
+        this.listenForItems(this.criticalPatientsRef, this.setListState.bind(this, "criticalPatients", this.compare))
+        this.listenForItems(this.updatingPatientsRef, this.setListState.bind(this, "updatedPatients", this.compare))
+        this.listenForItems(this.distressedPatientsRef, this.setListState.bind(this, "distressedPatients", this.compareDistress))
     }
 
     getRef() {
         return Firebase.database().ref();
     }
 
-    listenForItems(patientsRef) {
+    setListState(type, comparison, patients) {
+        this.setState({ [type] : this.state[type].cloneWithRows(Object.values(patients).sort(comparison)) });
+    }
+
+    listenForItems(typePatientsRef, setState) {
 
         var self = this
 
-        var items = {}
+        var patients = {}
 
-        var critical = {}
-
-        var recentChanges = {}
-
-        this.criticalPatientsRef.on('child_added', (snap) => {
+        typePatientsRef.on('child_added', (snap) => {
 
             self.patientsRef.child(snap.key).on('value', (snapshot) => {
 
@@ -70,20 +74,17 @@ export default class Overview extends Component {
                     status: snapshot.val().status
                 }
 
-                critical[snapshot.key] = item
+                patients[snapshot.key] = item
 
-                self.setState({
-                    criticalPatients : self.state.dataSource.cloneWithRows(Object.values(critical).sort(this.compare).splice(0,3))
-                });
+                setState(patients)
             })
         })
 
-        this.criticalPatientsRef.on('child_removed', (snap) => {
-            delete critical[snap.key]
+        typePatientsRef.on('child_removed', (snap) => {
 
-            self.setState({
-                criticalPatients : self.state.dataSource.cloneWithRows(Object.values(critical))
-            });
+            delete patients[snap.key]
+
+            setState(patients)
         })
     }
 
@@ -92,6 +93,13 @@ export default class Overview extends Component {
             return 0
         }
         return a.status < b.status ? 1 : -1
+    }
+
+    compareDistress(a,b) {
+        if (a.distress == b.distress) {
+            return 0
+        }
+        return a.distress < b.distress ? 1 : -1
     }
 
     //////////////////////////
@@ -126,12 +134,13 @@ export default class Overview extends Component {
 
         Navigaters to patient detail page
     */
-    onPressHeader() {
+    onPressHeader(type) {
         this.props.navigator.push({
             component: PatientsView,
             passProps: {
                 user: this.props.user,
-                backEnabled: true
+                type: type,
+                backEnabled: true,
             }
         })
     }
@@ -166,6 +175,7 @@ export default class Overview extends Component {
     onPressArchive(title, data, secdId, rowId) {
         this.patientsRef.child(data.pID + "/active").set(false);
         this.criticalPatientsRef.child(data.pID).remove()
+        this.updatingPatientsRef.child(data.pID).remove()
     }
 
     render() {
@@ -180,35 +190,36 @@ export default class Overview extends Component {
                     <TableViewGroup
                         title={"Critical"}
                         headerIsEnabled={true}
-                        onPress={this.onPressHeader.bind(this)}
+                        onPress={this.onPressHeader.bind(this, "Critical Patients")}
                         onPressArchive={this.onPressArchive.bind(this)}
                         style={styles.tableView}
                         textStyle={styles.tableViewText}
                         headerStyle={styles.criticalHeader}
                         dataSource={this.state.criticalPatients}
-                        renderRow={this.renderRow.bind(this)}/>
-                    <TableViewGroup
-                        title={"Distressed Caregivers"}
-                        headerIsEnabled={true}
-                        onPress={this.onPressHeader.bind(this)}
-                        onPressArchive={this.onPressArchive.bind(this)}
-                        style={[styles.tableView, {marginTop: 20}]}
-                        textStyle={styles.tableViewText}
-                        headerStyle={styles.distressedHeader}
-                        dataSource={this.state.dataSource}
                         renderRow={this.renderRow.bind(this)}
-                        renderFooter={() => this.state.dataSource.getRowCount() == 0 ?  <DefaultEmptyTableViewCell text={"Yay! Your caregiver's are okay"}/> : null}/>
+                        renderFooter={() => this.state.criticalPatients.getRowCount() == 0 ?  <DefaultEmptyTableViewCell text={"No one is critical"}/> : null}/>
                     <TableViewGroup
                         title={"Recent Updates"}
                         headerIsEnabled={true}
-                        onPress={this.onPressHeader.bind(this)}
+                        onPress={this.onPressHeader.bind(this, "RC Patients")}
                         onPressArchive={this.onPressArchive.bind(this)}
                         style={[styles.tableView, {marginTop: 20}]}
                         textStyle={styles.tableViewText}
                         headerStyle={styles.recentHeader}
-                        dataSource={this.state.dataSource}
+                        dataSource={this.state.updatedPatients}
                         renderRow={this.renderRow.bind(this) }
-                        renderFooter={() => this.state.dataSource.getRowCount() == 0 ?  <DefaultEmptyTableViewCell text={"There are no updates"}/> : null}/>
+                        renderFooter={() => this.state.updatedPatients.getRowCount() == 0 ?  <DefaultEmptyTableViewCell text={"There are no updates"}/> : null}/>
+                    <TableViewGroup
+                        title={"Distressed Caregivers"}
+                        headerIsEnabled={true}
+                        onPress={this.onPressHeader.bind(this,"Distressed Patients")}
+                        onPressArchive={this.onPressArchive.bind(this)}
+                        style={[styles.tableView, {marginTop: 20}]}
+                        textStyle={styles.tableViewText}
+                        headerStyle={styles.distressedHeader}
+                        dataSource={this.state.distressedPatients}
+                        renderRow={this.renderRow.bind(this)}
+                        renderFooter={() => this.state.distressedPatients.getRowCount() == 0 ?  <DefaultEmptyTableViewCell text={"Yay! Your caregiver's are okay"}/> : null}/>
                 </ScrollView>
                 <ModalView
                     modalVisible={this.state.modalVisible}

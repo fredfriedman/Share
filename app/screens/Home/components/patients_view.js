@@ -26,8 +26,8 @@ export default class PatientsView extends Component {
     constructor(props) {
         super(props);
 
+        this.patientRef = this.getRef().child('Nurses/' + props.user.id + "/").child(props.type)
         this.patientDataRef = this.getRef().child('Patients/')
-        this.userPatientRef = this.getRef().child('Nurses/' + props.user.id + "/")
 
         this.state = {
             dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
@@ -37,20 +37,20 @@ export default class PatientsView extends Component {
     }
 
     componentDidMount() {
-        this.listenForItems(this.patientsRef);
+        this.listenForItems();
     }
 
     getRef() {
         return Firebase.database().ref();
     }
 
-    listenForItems(patientsRef) {
+    listenForItems() {
 
         var self = this
 
         var patients = {};
 
-        this.userPatientRef.child("Patients").on('child_added', (snap) => {
+        this.patientRef.on('child_added', (snap) => {
 
             self.patientDataRef.child(snap.key).on('value', (snap) => {
 
@@ -121,7 +121,8 @@ export default class PatientsView extends Component {
                     headerStyle={styles.header}
                     textStyle={styles.header_text}
                     leftAction={this.onPressBack.bind(this)}
-                    leftIcon={backIcon} text={"Patients"}/>
+                    leftIcon={backIcon}
+                    text={this.props.type}/>
                 <TableViewGroup
                     title={"Patients"}
                     style={styles.tableViewContainer}
