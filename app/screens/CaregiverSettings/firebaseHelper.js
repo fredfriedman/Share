@@ -9,6 +9,10 @@ export default class firebaseHelper {
 
     }
 
+    createNewPatient(){
+        
+    }
+
     //fetch caregiver firebase caregiver data as promise. Do as you wish
     getCaregiverPromise(caregiverId) {
         return firebase.database().ref('Caregivers/'+ caregiverId).once('value').then(function(snapshot) {

@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
 import { AsyncStorage, Navigator} from 'react-native';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import globalReducer from './app/Reducers/GlobalReducer';
+
+let store = createStore(globalReducer);
+
+//need Reducers for React-redux
 
 
 // var Login   = require('./app/screens/Login/home').default
@@ -59,23 +66,25 @@ export default class Main extends Component {
 
     render(){
         return (
-            <Navigator
-                ref="navigator"
-                initialRoute={{component: this.state.component}}
-                configureScene={(route) => {
-                    return route.sceneConfig ? route.sceneConfig : Navigator.SceneConfigs.FloatFromRight
-                }}
-                renderScene={(route, navigator) => {
-                    if(route.component){
-                        return React.createElement(route.component, { ...this.props, ...route.passProps, navigator });
-                    }
-                }}
-                onDidFocus={(route) => {
-                    if (route.reset) {
-                        this.refs.navigator.immediatelyResetRouteStack([{ component: route.component }])
-                    }
-                }}
-            />
+            <Provider store = {store}>
+                <Navigator
+                    ref="navigator"
+                    initialRoute={{component: this.state.component}}
+                    configureScene={(route) => {
+                        return route.sceneConfig ? route.sceneConfig : Navigator.SceneConfigs.FloatFromRight
+                    }}
+                    renderScene={(route, navigator) => {
+                        if(route.component){
+                            return React.createElement(route.component, { ...this.props, ...route.passProps, navigator });
+                        }
+                    }}
+                    onDidFocus={(route) => {
+                        if (route.reset) {
+                            this.refs.navigator.immediatelyResetRouteStack([{ component: route.component }])
+                        }
+                    }}
+                />
+            </Provider>
         );
     }
 }
