@@ -8,12 +8,12 @@ import {
 } from 'react-native';
 import TabNavigator from 'react-native-tab-navigator';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import Icon from 'react-native-vector-icons/FontAwesome';
-
+import Icon from 'react-native-vector-icons/Ionicons';
 // Pages in Tab Bar
 import Profile from './components/profile'
 import Overview from './components/overview'
 import Patients from './components/patients_view'
+import Calendar from './components/calendar'
 import Settings from '../NurseSettings/NurseSettings'
 
 export default class TabBar extends Component {
@@ -33,15 +33,16 @@ export default class TabBar extends Component {
         const selectedColor = "#0097A7"
         const unselectedColor = "#8E8E8E"
         const size = 30
-        const home = (<Icon name="home" size={size} color={unselectedColor} />);
-        const gear = (<Icon name="cog" size={size} color={unselectedColor} />);
-        const cal = (<Icon name="calendar" size={size} color={unselectedColor} />);
-        const over = (<Icon name="modx" size={size} color={unselectedColor} />);
-        const homeS = (<Icon name="home" size={size} color={selectedColor} />);
-        const calS = (<Icon name="calendar" size={size} color={selectedColor} />);
-        const overS = (<Icon name="modx" size={size} color={selectedColor} />);
-        const gearS = (<Icon name="cog" size={size} color={selectedColor} />);
 
+        const gear = (<Icon name="ios-settings-outline" size={size} color={unselectedColor} />);
+        const over = (<Icon name="md-aperture" size={size} color={unselectedColor} />);
+        const overS = (<Icon name="md-aperture" size={size} color={selectedColor} />);
+        const gearS = (<Icon name="ios-settings-outline" size={size} color={selectedColor} />);
+
+        const home = (<Icon name="ios-home-outline" size={size} color={unselectedColor} />);
+        const homeS = (<Icon name="ios-home-outline" size={size} color={selectedColor} />);
+        const cal = (<Icon name="ios-calendar-outline" size={size} color={unselectedColor} />);
+        const calS = (<Icon name="ios-calendar-outline" size={size} color={selectedColor} />);
         return (
         <TabNavigator tabBarShadowStyle={styles.tabBarShadow} tabBarStyle={styles.tabBar}>
             <TabNavigator.Item
@@ -72,7 +73,7 @@ export default class TabBar extends Component {
                 renderIcon={() => cal}
                 renderSelectedIcon={() => calS}
                 onPress={() => this.setTab('Calendar')}>
-                <Patients navigator={this.props.navigator} user={this.props.user}/>
+                <Calendar navigator={this.props.navigator} user={this.props.user}/>
             </TabNavigator.Item>
             <TabNavigator.Item
                 selected={this.state.selectedTab === 'Settings'}

@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import {
         ListView,
-        Navigator,
         Text,
         View
     } from 'react-native';
@@ -31,11 +30,21 @@ export default class History extends Component {
 
         return (
             <View style={this.props.containerStyle}>
-                <Text style={this.props.labelStyle}> Recent History </Text>
                 <ListView
                     ref={ref => this.listView = ref}
                     onLayout={event => { this.listViewHeight = event.nativeEvent.layout.height }}
                     dataSource={this.props.assessments}
+                    renderHeader={() => <View style={styles.listViewHeader}>
+                                            <Text style={styles.label}> Comp </Text>
+                                            <Text style={styles.label}> Pai </Text>
+                                            <Text style={styles.label}> Tir </Text>
+                                            <Text style={styles.label}> Nau </Text>
+                                            <Text style={styles.label}> Dep </Text>
+                                            <Text style={styles.label}> Anx </Text>
+                                            <Text style={styles.label}> Dro </Text>
+                                            <Text style={styles.label}> App </Text>
+                                            <Text style={styles.label}> SoB </Text>
+                                        </View>}
                     renderRow={(assessment) => <HistoryCell assessment={assessment} onPress={this.onClickHistoryCell.bind(this, assessment)}/>}
                     renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}/>
             </View>
@@ -49,6 +58,19 @@ const styles = EStyleSheet.create({
     separator: {
         flex: 1,
         height: '$dimensions.hairlineWidth',
+        backgroundColor: '#d7d7d7',
+    },
+    label: {
+        color: '$colors.darkGray',
+        fontSize: 10,
+        fontWeight: '$fonts.weight',
+        fontFamily: '$fonts.family'
+    },
+    listViewHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
         backgroundColor: '$colors.mediumGray',
+        height: 25
     },
 })
