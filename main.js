@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { AsyncStorage, Navigator} from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import globalReducer from './app/Reducers/GlobalReducer';
+import globalReducer from './app/reducers/GlobalReducer';
 
 let store = createStore(globalReducer);
 
