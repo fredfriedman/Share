@@ -1,13 +1,12 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { addPatient } from '../actions/Actions';
-import NurseSettings from '../screens/NurseSettings/NurseSettings'
+import {connect} from 'react-redux';
+import ManagePatientDetail from '../screens/NurseSettings/ManagePatientDetail';
 
 const mapStateToProps = (state, ownProps) => {
 	return {
+
 	}
 }
-
 const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
 
@@ -15,6 +14,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 }
 
 export default connect(
-	mapStateToProps,
+	mapStateToProps, 
 	mapDispatchToProps
-)(NurseSettings);
+	) (ManagePatientDetail);

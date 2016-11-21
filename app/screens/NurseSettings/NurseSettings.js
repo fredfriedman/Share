@@ -6,6 +6,8 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import login from '../Login/home';
 import firebaseHelper from '../CaregiverSettings/firebaseHelper';
 import Header from '../../components/header';
+import ManagePatientDetailContainer from '../../containers/ManagePatientDetailContainer';
+
 
 const styles = EStyleSheet.create({
 	container: {
@@ -37,8 +39,8 @@ export default class NurseSettings extends Component {
 
 	render() {
 		var bgColor = '#DCE3F4';
-		return (
 
+		return (
 		 	<View style={styles.container}>
 				<Header text={"Settings"} textStyle={{color: 'white'}}/>
 				<SettingsList borderColor='#c8c7cc' defaultItemSize={50}>
@@ -51,7 +53,7 @@ export default class NurseSettings extends Component {
 					<SettingsList.Item
 					  	title='Manage Patients'
 					  	titleInfoStyle={styles.titleInfoStyle}
-					  	onPress={() => alert('add and archive patients')}
+					  	onPress={() => this.onViewManagePatientDetail()}
 					/>
 					<SettingsList.Item
 					  	title='Manage Caregivers'
@@ -74,8 +76,14 @@ export default class NurseSettings extends Component {
 					/>
 				</SettingsList>
 		  	</View>
-
 		);
+	}
+
+	onViewManagePatientDetail(){
+		this.props.navigator.push({
+			component:ManagePatientDetailContainer,
+			sceneConfig: Navigator.SceneConfigs.FloatFromBottom
+		});
 	}
 
 	onLogout(){
