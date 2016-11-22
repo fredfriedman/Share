@@ -69,20 +69,21 @@ export default class Profile extends Component {
     }
 
     renderProfilePic() {
-         return ( this.props.user.Profile.picture ?
-                <View>
-                    <Image style={styles.profilePicture} source={{uri: this.props.user.Profile.picture, isStatic: true}}/>
-                    <View style={styles.overlay}>
-                            <Text style={styles.overlayText}>Edit</Text>
-                    </View>
+        const defaultImage = <Icon name="ios-contact" ios="ios-contact" md="ios-contact" size={180} color='#262626'/>
+
+        return ( this.props.user.Profile.picture ?
+            <View>
+                <Image style={styles.profilePicture} source={{uri: this.props.user.Profile.picture, isStatic: true}}/>
+                <View style={styles.overlay}>
+                    <Text style={styles.overlayText}>Edit</Text>
                 </View>
-             :
-                { defaultImage }
-             )
+            </View>
+         :
+            { defaultImage }
+        )
     }
 
     render() {
-        const defaultImage = <Icon name="ios-contact" ios="ios-contact" md="ios-contact" size={180} color='#262626'/>
         const messageIcon = (<Icon name="ios-create-outline" size={30} color="#f7f7f7" />);
         const emailIcon1 = (<Icon name="ios-mail-outline" size={30} color="#f7f7f7" />);
         const emailIcon = (<Icon name="ios-mail" ios="ios-mail" md="ios-mail" size={20} color="#00BCD4" />);
