@@ -71,14 +71,14 @@ export default class PatientDetailView  extends Component {
     parseAssessments(snap) {
         var agg = 0
         for (var child in snap.val().Results) {
-            agg += parseInt(snap.val().Results[child].level)
+            if ( child != "Caregiver" ) { agg += parseInt(snap.val().Results[child].level) }
         }
+        agg = Math.floor(agg/80*100)
         return {
             completed: snap.val().completed,
             timestamp: snap.val().timestamp,
             submittedBy: snap.val().submittedBy,
             results: snap.val().Results,
-            distress: snap.val().distress,
             comments: snap.val().comments,
             agg: agg
         }
@@ -167,12 +167,26 @@ export default class PatientDetailView  extends Component {
     //////////////////////////////
 
     statusToColor(status) {
-        if(status > 70) {
-            return {backgroundColor: '#e50000'}
+        if(status > 90) {
+            return '#B71C1C'
+        } else if (status > 80) {
+            return '#C62828'
+        } else if (status > 70) {
+            return '#D32F2F'
+        } else if (status > 60) {
+            return '#EF6C00'
+        } else if (status > 50) {
+            return '#FF9800'
         } else if (status > 40) {
-            return {backgroundColor: '#FFC107'}
+            return '#FFCA28'
+        } else if (status > 30) {
+            return '#FDD835'
+        } else if (status > 20) {
+            return '#7CB342'
+        } else if (status > 10) {
+            return '#4CAF50'
         } else {
-            return {backgroundColor: '#228B22'}
+            return '#388E3C'
         }
     }
 
@@ -194,7 +208,7 @@ export default class PatientDetailView  extends Component {
                 <Text style={[styles.text,{paddingLeft: 5, color: 'white', fontSize: 13, fontWeight: '200'}]}>{this.props.patient.phone}</Text>
                 <View>
                     <View style={[styles.row, {alignItems: 'center'}]}>
-                        <View style={[styles.indicator, this.statusToColor(this.props.patient.status)]}/>
+                        <View style={[styles.indicator, {backgroundColor: this.statusToColor(this.props.patient.status)}]}/>
                         <Text style={[styles.text, {color: 'white', fontSize: 60, fontWeight: '200'}]}> {this.props.patient.status} </Text>
                         { this.props.patient.caregiverDistress ? alertIcon : null}
                     </View>

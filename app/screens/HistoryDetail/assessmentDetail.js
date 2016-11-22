@@ -30,7 +30,6 @@ export default class History extends Component {
         var items = [0]
         var self = this
         Object.keys(this.props.assessment.results).forEach(function(key) {
-            var k = key == "ShortnessOfBreath" ? "Shortness of Breath" : key
             items.push([k, self.props.assessment.results[key]])
         });
         items.pop()

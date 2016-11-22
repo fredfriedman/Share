@@ -9,7 +9,6 @@ import {
 // Components
 import  Header from '../../../components/header'
 import  ModalView from './modalCallView'
-import  TableViewGroup from '../../../components/TableViewGroup'
 import  PatientTableViewCell from '../../../components/patientTableViewCell'
 
 // Pages
@@ -105,7 +104,7 @@ export default class PatientsView extends Component {
 
     onPressArchive(title, data, secdId, rowId) {
         this.patientDataRef.child(data.pID + "/active").set(false);
-        this.userPatientRef.child("Critical Patients").child(data.pID).remove()
+        this.userPatientRef.child(props.type).child(data.pID).remove()
     }
 
     onPressBack() {
@@ -123,7 +122,7 @@ export default class PatientsView extends Component {
                     leftAction={this.onPressBack.bind(this)}
                     leftIcon={backIcon}
                     text={this.props.type}/>
-                <TableViewGroup
+                <ListView
                     title={"Patients"}
                     style={styles.tableViewContainer}
                     onPress={this.onPressCallAction.bind(this)}

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, TouchableHighlight, View, ListView } from 'react-native';
 import Header from '../../components/header'
-import TableViewGroup from '../../components/TableViewGroup'
+
 // Utility
 import Firebase from '../../config/firebase'
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -35,6 +35,7 @@ export default class History extends Component {
         for (var child in snap.val().Results) {
             agg += parseInt(snap.val().Results[child].level)
         }
+        agg = Math.floor(agg/80*100)
         return {
             completed: snap.val().completed,
             timestamp: snap.val().timestamp,

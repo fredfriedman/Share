@@ -22,7 +22,6 @@ import Header from '../../../components/header'
 import ModalView from './modalCallView'
 import TableViewGroup from '../../../components/TableViewGroup'
 import PatientTableViewCell from '../../../components/patientTableViewCell'
-import DefaultEmptyTableViewCell from '../../../components/defaultEmptyTableViewCell'
 
 export default class Overview extends Component {
 
@@ -188,39 +187,9 @@ export default class Overview extends Component {
                     headerStyle={styles.header}
                     textStyle={styles.header_text}/>
                 <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-                    <TableViewGroup
-                        title={"Critical"}
-                        headerIsEnabled={true}
-                        onPress={this.onPressHeader.bind(this, "Critical Patients")}
-                        onPressArchive={this.onPressArchive.bind(this)}
-                        style={styles.tableView}
-                        textStyle={styles.tableViewText}
-                        headerStyle={styles.criticalHeader}
-                        dataSource={this.state.criticalPatients}
-                        renderRow={this.renderRow.bind(this)}
-                        renderFooter={() => this.state.criticalPatients.getRowCount() == 0 ?  <DefaultEmptyTableViewCell text={"No one is critical"}/> : null}/>
-                    <TableViewGroup
-                        title={"Recent Updates"}
-                        headerIsEnabled={true}
-                        onPress={this.onPressHeader.bind(this, "RC Patients")}
-                        onPressArchive={this.onPressArchive.bind(this)}
-                        style={[styles.tableView, {marginTop: 20}]}
-                        textStyle={styles.tableViewText}
-                        headerStyle={styles.recentHeader}
-                        dataSource={this.state.updatedPatients}
-                        renderRow={this.renderRow.bind(this) }
-                        renderFooter={() => this.state.updatedPatients.getRowCount() == 0 ?  <DefaultEmptyTableViewCell text={"There are no updates"}/> : null}/>
-                    <TableViewGroup
-                        title={"Distressed Caregivers"}
-                        headerIsEnabled={true}
-                        onPress={this.onPressHeader.bind(this,"Distressed Patients")}
-                        onPressArchive={this.onPressArchive.bind(this)}
-                        style={[styles.tableView, {marginTop: 20}]}
-                        textStyle={styles.tableViewText}
-                        headerStyle={styles.distressedHeader}
-                        dataSource={this.state.distressedPatients}
-                        renderRow={this.renderRow.bind(this)}
-                        renderFooter={() => this.state.distressedPatients.getRowCount() == 0 ?  <DefaultEmptyTableViewCell text={"Yay! Your caregiver's are okay"}/> : null}/>
+                    { this.renderTable("Critical Patients", "All Critical", "criticalPatients", "Critical Patients") }
+                    { this.renderTable("Status Updates", "All Updates", "updatedPatients", "RC Patients") }
+                    { this.renderTable("Distressed Caregivers", "All Distressed", "distressedPatients") }
                 </ScrollView>
                 <ModalView
                     modalVisible={this.state.modalVisible}
@@ -244,47 +213,62 @@ export default class Overview extends Component {
                 subTitleText={patient.phone}/>
         )
     }
+
+    renderFooter() {
+        return (
+            <TouchableHighlight
+                style={styles.headerStyle}
+                onPress={this.props.onPress}
+                underlayColor={'#B0BEC5'}>
+                <Text style={[styles.buttonText, {marginLeft: 10}]}>All {this.props.title}</Text>
+            </TouchableHighlight>
+        )
+    }
+
+    renderTable(title, footerTitle, datasource, fbLabel) {
+        return ( this.state[datasource].getRowCount() == 0 ?
+                null
+                :
+                <TableViewGroup
+                    title={title}
+                    footerTitle={footerTitle}
+                    onPress={this.onPressHeader.bind(this, fbLabel)}
+                    onPressArchive={this.onPressArchive.bind(this)}
+                    style={[styles.tableView, {marginTop: 15}]}
+                    dataSource={this.state[datasource]}
+                    renderRow={this.renderRow.bind(this)}/>
+            )
+    }
 }
 
 const styles = EStyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white'
+        backgroundColor: '$colors.lightGray',
     },
     header: {
         height: 60,
-        backgroundColor: '$colors.lightGray',
+        backgroundColor: '$colors.status',
     },
     header_text: {
-        color: '$colors.darkGray',
-        fontSize: 18,
-        fontWeight: '$fonts.weight',
+        color: '$colors.lightGray',
+        fontSize: 16,
+        fontWeight: '500',
         fontFamily: "$fonts.family",
-    },
-    criticalHeader: {
-        backgroundColor: '#EF9A9A'
-    },
-    distressedHeader: {
-        backgroundColor: "$colors.accent"
-    },
-    recentHeader: {
-        backgroundColor: "$colors.main"
     },
     scrollViewContainer: {
         backgroundColor: 'transparent',
-        paddingTop: 10,
-        paddingBottom: 10
     },
     tableView: {
         backgroundColor: '#FFFFFF',
         shadowColor: "#000000",
         shadowOpacity: 0.8,
-        shadowRadius: 2,
+        shadowRadius: 1,
         shadowOffset: {
-            height: 1,
+            height: 0.5,
             width: 0
         },
-        elevation: 20,
+        elevation: 10,
         marginLeft: 10,
         marginRight: 10
     },

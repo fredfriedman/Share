@@ -20,19 +20,33 @@ export default class HistoryTableViewCell extends Component {
     }
 
     statusToColor(status) {
-        if(status > 70) {
-            return {backgroundColor: '#e50000'}
+        if(status > 90) {
+            return '#B71C1C'
+        } else if (status > 80) {
+            return '#C62828'
+        } else if (status > 70) {
+            return '#D32F2F'
+        } else if (status > 60) {
+            return '#EF6C00'
+        } else if (status > 50) {
+            return '#FF9800'
         } else if (status > 40) {
-            return {backgroundColor: '#FFC107'}
+            return '#FFCA28'
+        } else if (status > 30) {
+            return '#FDD835'
+        } else if (status > 20) {
+            return '#7CB342'
+        } else if (status > 10) {
+            return '#4CAF50'
         } else {
-            return {backgroundColor: '#228B22'}
+            return '#388E3C'
         }
     }
 
     renderCompositeScore() {
         return (
             <View style={{marginLeft: 1, flexDirection: 'row', alignItems: 'center'}}>
-                <View style={[styles.statusBar, this.statusToColor(this.props.assessment.agg)]}/>
+                <View style={[styles.statusBar, {backgroundColor: this.statusToColor(this.props.assessment.agg)}]}/>
                 <View style={styles.stack}>
                     <View style={{flexDirection: 'row'}}>
                         <Text style={[styles.text, {paddingRight: 10}]}>{this.props.assessment.agg}</Text>
