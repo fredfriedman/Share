@@ -69,24 +69,28 @@ export default class Profile extends Component {
     }
 
     renderProfilePic() {
-         return ( this.props.user.Profile.picture ?
-                <View>
-                    <Image style={styles.profilePicture} source={{uri: this.props.user.Profile.picture, isStatic: true}}/>
-                    <View style={styles.overlay}>
-                            <Text style={styles.overlayText}>Edit</Text>
-                    </View>
+        const defaultImage = <Icon name="ios-contact" ios="ios-contact" md="ios-contact" size={150} color='#262626'/>
+
+        return ( this.props.user.Profile.picture ?
+            <View>
+                <Image style={styles.profilePicture} source={{uri: this.props.user.Profile.picture, isStatic: true}}/>
+                <View style={styles.overlay}>
+                    <Text style={styles.overlayText}>Edit</Text>
                 </View>
-             :
-                { defaultImage }
-             )
+            </View>
+         :
+            <View>{ defaultImage }</View>
+        )
     }
 
     render() {
-        const defaultImage = <Icon name="ios-contact" ios="ios-contact" md="ios-contact" size={180} color='#262626'/>
         const messageIcon = (<Icon name="ios-create-outline" size={30} color="#f7f7f7" />);
-        const emailIcon1 = (<Icon name="ios-mail-outline" size={30} color="#f7f7f7" />);
-        const emailIcon = (<Icon name="ios-mail" ios="ios-mail" md="ios-mail" size={20} color="#00BCD4" />);
-        const phoneIcon = (<Icon name="ios-call" ios="ios-call" md="ios-call" size={20} color="#00BCD4" />);
+        const emailIcon = (<Icon name="ios-mail-outline" size={30} color="#f7f7f7" />);
+        const phoneIcon = (<Icon name="ios-call" ios="ios-call" md="ios-call" size={30} color="#f7f7f7" />);
+        const mapIcon = (<Icon name="ios-map-outline" ios="ios-map-outline" md="ios-map-outline" size={30} color="#f7f7f7" />);
+
+        const emailIcon1 = (<Icon name="ios-mail-outline" size={20} color="#00BCD4" />);
+        const phoneIcon1 = (<Icon name="ios-call" ios="ios-call" md="ios-call" size={30} color="#00BCD4" />);
 
         return (
             <View style={styles.container}>
@@ -107,12 +111,12 @@ export default class Profile extends Component {
                 <View style={styles.strip}>
                     <Grid>
                         <Row>
-                            <Col style={{borderWidth: 0.5, borderColor: '#f7f7f7',  justifyContent: 'center', alignItems: 'center'}}>
+                            <Col style={{borderWidth: 0.5, borderColor: '#f7f7f7', justifyContent: 'center', alignItems: 'center'}}>
                                 <TouchableHighlight
                                     onPress={() => console.log()}
                                     style={styles.actionButton}
                                     underlayColor={'transparent'}>
-                                    { emailIcon1 }
+                                    { emailIcon }
                                 </TouchableHighlight>
                             </Col>
                             <Col style={{borderWidth: 0.5, borderColor: '#f7f7f7',  justifyContent: 'center', alignItems: 'center'}}>
@@ -128,7 +132,7 @@ export default class Profile extends Component {
                                     onPress={() => console.log()}
                                     style={styles.actionButton}
                                     underlayColor={'transparent'}>
-                                    { emailIcon1 }
+                                    { mapIcon }
                                 </TouchableHighlight>
                             </Col>
                             <Col style={{borderWidth: 0.5, borderColor: '#f7f7f7', justifyContent: 'center', alignItems: 'center'}}>
@@ -136,7 +140,7 @@ export default class Profile extends Component {
                                     onPress={() => console.log()}
                                     style={styles.actionButton}
                                     underlayColor={'transparent'}>
-                                    { emailIcon1 }
+                                    { phoneIcon }
                                 </TouchableHighlight>
                             </Col>
                         </Row>
@@ -145,11 +149,11 @@ export default class Profile extends Component {
                 <Grid style={styles.bottomBox}>
                     <Row style={styles.row}>
                         <Col style={styles.column}>
-                            { emailIcon }
+                            { emailIcon1 }
                             <Text style={[styles.text, {paddingLeft: 10}]}>{this.props.user.email}</Text>
                         </Col>
                         <Col style={styles.column}>
-                            { phoneIcon }
+                            { phoneIcon1 }
                             <Text style={[styles.text, {paddingLeft: 10,}]}>{this.props.user.Profile.phone}</Text>
                         </Col>
                     </Row>
@@ -192,12 +196,12 @@ const styles = EStyleSheet.create({
         backgroundColor: '$colors.lightGray',
     },
     header: {
-        backgroundColor: '$colors.lightGray',
+        backgroundColor: '$colors.status',
     },
     header_text: {
-        color: '$colors.darkGray',
-        fontSize: 18,
-        fontWeight: '$fonts.weight',
+        color: '$colors.lightGray',
+        fontSize: 16,
+        fontWeight: '500',
         fontFamily: "$fonts.family",
     },
     indicator: {

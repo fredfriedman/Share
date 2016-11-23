@@ -26,7 +26,7 @@ export default {
         buttonBorder1: '#00ACC1',
         buttonBackground2: '#4DD0E1',
         buttonBorder2: '#26C6DA',
-        
+
         // Colors for the assessment buttons
         answerUnselectedBackground: '#00BCD4',
         answerUnselectedBorder: '#00ACC1',
@@ -39,7 +39,7 @@ export default {
     dimensions: {
         iconSize: (Platform.OS === 'ios') ? 30 : 25,
         navBarHeight: (Platform.OS === 'ios') ? 60 : 60,
-        rowHeight: (Platform.OS === 'ios') ? 55 : 55,
+        rowHeight: (Platform.OS === 'ios') ? 50 : 50,
         hairlineWidth: StyleSheet.hairlineWidth,
         screenHeight: Dimensions.get('window').height,
         screenWidth: Dimensions.get('window').width,

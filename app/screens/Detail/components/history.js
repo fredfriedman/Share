@@ -35,15 +35,7 @@ export default class History extends Component {
                     onLayout={event => { this.listViewHeight = event.nativeEvent.layout.height }}
                     dataSource={this.props.assessments}
                     renderHeader={() => <View style={styles.listViewHeader}>
-                                            <Text style={styles.label}> Comp </Text>
-                                            <Text style={styles.label}> Pai </Text>
-                                            <Text style={styles.label}> Tir </Text>
-                                            <Text style={styles.label}> Nau </Text>
-                                            <Text style={styles.label}> Dep </Text>
-                                            <Text style={styles.label}> Anx </Text>
-                                            <Text style={styles.label}> Dro </Text>
-                                            <Text style={styles.label}> App </Text>
-                                            <Text style={styles.label}> SoB </Text>
+                                            <Text style={styles.label}> History </Text>
                                         </View>}
                     renderRow={(assessment) => <HistoryCell assessment={assessment} onPress={this.onClickHistoryCell.bind(this, assessment)}/>}
                     renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}/>
@@ -62,7 +54,7 @@ const styles = EStyleSheet.create({
     },
     label: {
         color: '$colors.darkGray',
-        fontSize: 10,
+        fontSize: 14,
         fontWeight: '$fonts.weight',
         fontFamily: '$fonts.family'
     },

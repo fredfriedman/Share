@@ -1,47 +1,117 @@
 import React, { Component } from 'react';
-import { Image, Text, TouchableHighlight, StyleSheet, View, ListView } from 'react-native';
-let Header = require('../../components/header').default
-let TableViewGroup = require('../../components/TableViewGroup').default
+import { Text, TouchableHighlight, View, ListView } from 'react-native';
+import Header from '../../components/header'
+
+// Utility
+import Firebase from '../../config/firebase'
+import Icon from 'react-native-vector-icons/Ionicons';
+import EStyleSheet from 'react-native-extended-stylesheet';
+
+import HistoryDetailPage from '../HistoryDetail/assessmentDetail'
+import HistoryRow from './HistoryRow'
 
 export default class History extends Component {
-    constructor(){
-        super()
 
-        this.dataSource = new ListView.DataSource({
-            rowHasChanged: (r1, r2) => r1 !== r2,
-            sectionHeaderHasChanged: (s1, s2) => s1 !== s2
-        });
+    constructor(props){
+        super(props)
+
+        this.historyRef = this.getRef().child('Patients/' + props.user.Patient + '/Assessments/')
 
         this.state = {
-            history: [{date:"1", description: "doesn't hurt that bad"},
-            {date:"2", description: "hurts bad"},
-            {date:"3", description: "RIP"},
-            {date:"4", description: "just a flesh wound"}]
+            history: new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
         }
     }
 
-    renderRow(data: Object, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) {
-        return (
-            <View style = {{flexDirection: "row"}}>
-                <Text>{data.date}</Text>
-                <Text>{data.description}</Text>
-            </View>
-        )
+    componentDidMount() {
+        this.listenForItems(this.historyRef, this.setHistory.bind(this), this.parseAssessments);
+    }
+
+    getRef() {
+        return Firebase.database().ref();
+    }
+
+    parseAssessments(snap) {
+        var agg = 0
+        for (var child in snap.val().Results) {
+            agg += parseInt(snap.val().Results[child].level)
+        }
+        agg = Math.floor(agg/80*100)
+        return {
+            completed: snap.val().completed,
+            timestamp: snap.val().timestamp,
+            submittedBy: snap.val().submittedBy,
+            results: snap.val().Results,
+            distress: snap.val().distress,
+            comments: snap.val().comments,
+            agg: agg
+        }
+    }
+
+    setHistory(hist) {
+        this.setState({ history: this.state.history.cloneWithRows(hist) });
+    }
+
+    listenForItems(ref, callback, parser) {
+
+        var items = [];
+
+        this.historyRef.on('value', (snap) => {
+
+            snap.forEach((child) => { items.push(parser(child)); });
+
+            callback(items)
+        });
+    }
+
+    onPressHistoryCell(assessment) {
+        this.props.navigator.push({
+            component: HistoryDetailPage,
+            passProps: {
+                assessment: assessment
+            }
+        })
+    }
+
+    onPressBack() {
+        this.props.navigator.pop()
     }
 
     render(){
+        const backIcon = (<Icon name="ios-arrow-back" ios="ios-arrow-back" md="md-arrow-back" size={30} color="#f7f7f7" />);
+
         return (
             <View>
-                <Header text={"History"}/>
-                <TableViewGroup
-                title={"History"}
-                headerIsEnabled={false}
-                dataSource={this.dataSource.cloneWithRows(this.state.history)}
-                renderRow={this.renderRow.bind(this)}/>
+                <Header
+                    text={"History"}
+                    textStyle={{color: 'white'}}
+                    leftAction={this.onPressBack.bind(this)}
+                    leftIcon={backIcon}/>
+                <ListView
+                    dataSource={this.state.history}
+                    renderRow={(data) => <HistoryRow assessment={data} onPressHistoryCell={this.onPressHistoryCell.bind(this)}/>}
+                    renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}/>
             </View>
         );
     }
 }
 
-const styles = StyleSheet.create({
+const styles = EStyleSheet.create({
+    text: {
+        color: '$colors.darkGray',
+        fontSize: '$fonts.size',
+        fontWeight: '$fonts.weight',
+        fontFamily: '$fonts.family',
+    },
+    separator: {
+        flex: 1,
+        height: '$dimensions.hairlineWidth',
+        marginLeft : 20,
+        backgroundColor: '#d7d7d7',
+    },
+    subText: {
+        color: '$colors.mediumGray',
+        fontSize: 11,
+        fontWeight: '$fonts.weight',
+        fontFamily: '$fonts.family',
+    }
 });

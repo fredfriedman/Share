@@ -109,7 +109,7 @@ export default class AssessmentSummary extends Component {
                     { this.renderView("Anxiety") }
                     { this.renderView("Drowsiness") }
                     { this.renderView("Appetite") }
-                    { this.renderView("ShortnessOfBreath") }
+                    { this.renderView("Shortness Of Breath") }
                     <View style={styles.box}>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between', marginLeft: 2.5, marginRight: 2.5,}}>
                             <View style={{flex: 1}}>

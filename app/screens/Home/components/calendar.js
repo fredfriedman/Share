@@ -64,13 +64,12 @@ const styles = EStyleSheet.create({
         backgroundColor: 'white',
     },
     header: {
-        height: 60,
-        backgroundColor: '$colors.lightGray',
+        backgroundColor: '$colors.status',
     },
     header_text: {
-        color: '$colors.darkGray',
-        fontSize: 18,
-        fontWeight: '$fonts.weight',
+        color: '$colors.lightGray',
+        fontSize: 16,
+        fontWeight: '500',
         fontFamily: "$fonts.family",
     },
     welcome: {
