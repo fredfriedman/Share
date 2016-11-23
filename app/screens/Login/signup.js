@@ -1,7 +1,6 @@
 'use strict';
 import React, { Component } from 'react';
 import {
-    ActivityIndicator,
     Alert,
     Image,
     Navigator,
@@ -20,6 +19,7 @@ import styles from './styles'
 import Button from 'react-native-button'
 import Header from '../../components/header'
 import { Fumi } from 'react-native-textinput-effects';
+import LoadingAnimationView from '../../components/loadingAnimationView'
 
 // Utilities
 import Firebase from '../../config/firebase'
@@ -184,10 +184,7 @@ export default class signup extends Component {
                     onPress={this.onPressSignUp.bind(this)}>
                     Submit
                 </Button>
-                <ActivityIndicator
-                    animating={this.state.animating}
-                    style={{height: 40}}
-                    size="large"/>
+                <LoadingAnimationView animating={this.state.animating} />
                 <Button
                     style={isCaregiver ? [styles.accountLabel, styles.centered, styles.mainText] : [styles.accountLabel, styles.centered, styles.secondaryText] }
                     containerStyle={{alignSelf: 'center', width: 130}}
@@ -276,8 +273,25 @@ export default class signup extends Component {
                         autoCapitalize={'none'}
                         autoCorrect={false}
                         secureTextEntry={true}
+                        onSubmitEditing={(event) => { this.refs.caregiverPhone.refs.input.focus(); }}
                         onChangeText={(text) => {
                             var updatedUser = Object.assign({}, this.state.caregiver, {patient: text});
+                            this.setState({caregiver: updatedUser})
+                        }}/>
+                    <Fumi
+                        ref='caregiverPhone'
+                        label={'# to reach you?'}
+                        iconClass={FontAwesomeIcon}
+                        iconName={'phone'}
+                        iconColor={IconColor}
+                        style={styles.row}
+                        labelStyle={styles.mainText}
+                        value={this.state.caregiver.phone}
+                        autoCapitalize={'none'}
+                        autoCorrect={false}
+                        secureTextEntry={true}
+                        onChangeText={(text) => {
+                            var updatedUser = Object.assign({}, this.state.caregiver, {phone: text});
                             this.setState({caregiver: updatedUser})
                         }}/>
                 </View>
@@ -312,14 +326,31 @@ export default class signup extends Component {
                     iconColor={IconColor}
                     style={styles.row}
                     labelStyle={styles.mainText}
-                    value={this.state.nurseHospital}
+                    value={this.state.nurse.hospital}
                     autoCapitalize={'none'}
                     autoCorrect={false}
                     onChangeText={(text) => {
                         var updatedUser = Object.assign({}, this.state.nurse, {hospital: text});
                         this.setState({nurse: updatedUser})
                     }}
-                    onSubmitEditing={(event) => {  this.refs.nurseEmail.refs.input.focus(); }}/>
+                    onSubmitEditing={(event) => {  this.refs.nursePhone.refs.input.focus(); }}/>
+                <Fumi
+                    ref='nursePhone'
+                    label={'# to reach you?'}
+                    iconClass={FontAwesomeIcon}
+                    iconName={'phone'}
+                    iconColor={IconColor}
+                    style={styles.row}
+                    labelStyle={styles.mainText}
+                    value={this.state.nurse.phone}
+                    autoCapitalize={'none'}
+                    autoCorrect={false}
+                    secureTextEntry={true}
+                    onSubmitEditing={(event) => { this.refs.nurseEmail.refs.input.focus(); }}
+                    onChangeText={(text) => {
+                        var updatedUser = Object.assign({}, this.state.nurse, {phone: text});
+                        this.setState({nurse: updatedUser})
+                    }}/>
                 <Fumi
                     ref='nurseEmail'
                     label={'Email Address'}
@@ -328,7 +359,7 @@ export default class signup extends Component {
                     iconColor={IconColor}
                     style={styles.row}
                     labelStyle={styles.mainText}
-                    value={this.state.nurseEmail}
+                    value={this.state.nurse.email}
                     autoCapitalize={'none'}
                     autoCorrect={false}
                     onChangeText={(text) => {
@@ -344,12 +375,12 @@ export default class signup extends Component {
                     iconColor={IconColor}
                     style={[styles.row, {borderBottomLeftRadius: 5, borderBottomRightRadius: 5}]}
                     labelStyle={styles.mainText}
-                    value={this.state.nursePassword}
+                    value={this.state.nurse.password}
                     autoCapitalize={'none'}
                     autoCorrect={false}
                     secureTextEntry={true}
                     onChangeText={(text) => {
-                        var updatedUser = Object.assign({}, this.state.nurse, {email: text});
+                        var updatedUser = Object.assign({}, this.state.nurse, {password: text});
                         this.setState({nurse: updatedUser})
                     }}
                     onSubmitEditing={(event) => { }}/>
