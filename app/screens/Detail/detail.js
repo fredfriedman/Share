@@ -30,6 +30,7 @@ export default class PatientDetailView  extends Component {
         this.historyRef = this.getRef().child('Patients/' + props.patient.pID + "/Assessments")
         this.notesRef = this.getRef().child('Patients/' + props.patient.pID + "/Notes/")
         this.patientRef = this.getRef().child('Patients/' + props.patient.pID)
+        this.nurseRef = this.getRef().child('Nurses/')
 
         this.state = {
             data: { "Appetite": {max: 0, min: 0, avg: 0, points: []},
@@ -52,20 +53,12 @@ export default class PatientDetailView  extends Component {
     //////////////
 
     componentDidMount() {
-        this.listenForItems(this.notesRef.orderByChild('timestamp'), this.setNotes.bind(this), this.parseNotes);
-        this.listenForItems(this.historyRef, this.setHistory.bind(this), this.parseAssessments);
+        this.listenForItems(this.notesRef.orderByChild('timestamp'),this.notesCallback.bind(this))
+        this.listenForItems(this.historyRef, this.historyCallback.bind(this));
     }
 
     getRef() {
         return Firebase.database().ref();
-    }
-
-    parseNotes(snap) {
-        return {
-            poster: snap.val().poster,
-            text: snap.val().text,
-            timestamp: snap.val().timestamp,
-        }
     }
 
     parseAssessments(snap) {
@@ -130,16 +123,39 @@ export default class PatientDetailView  extends Component {
         this.setState({ data: this.buildPoints(hist.slice(0, 5)) })
     }
 
-    listenForItems(ref, callback, parser) {
+    listenForItems(ref, callback) {
 
         ref.on('value', (snap) => {
 
             var items = [];
 
-            snap.forEach((child) => { items.push(parser(child)); });
+            snap.forEach(child => callback(items, child));
+        })
+    }
 
-            callback(items)
-        });
+    historyCallback(items, child) {
+        items.push(this.parseAssessments(child))
+
+        this.setState({ history: this.state.history.cloneWithRows(items) });
+        this.setState({ data: this.buildPoints(items.slice(0, 5)) })
+    }
+
+    notesCallback(notes, child) {
+        var self = this
+
+        this.nurseRef.child(child.val().pid + '/Profile/picture').once("value", nursePic => {
+
+            var note = {
+                picture: nursePic.val(),
+                poster: child.val().poster,
+                text: child.val().text,
+                timestamp: child.val().timestamp,
+            }
+
+            notes.push(note);
+
+            self.setState({ notes: self.state.notes.cloneWithRows(notes) });
+        })
     }
 
     /////////////////

@@ -1,6 +1,6 @@
 dependencies: \
-  /Users/aaronliberatore/Documents/Projects/Hospice/ios/Hospice/AppDelegate.m \
-  /Users/aaronliberatore/Documents/Projects/Hospice/ios/Hospice/AppDelegate.h \
+  /Users/aaronliberatore/Documents/Projects/Share/Hospice/ios/Hospice/AppDelegate.m \
+  /Users/aaronliberatore/Documents/Projects/Share/Hospice/ios/Hospice/AppDelegate.h \
   ../node_modules/react-native/React/Base/RCTBundleURLProvider.h \
   ../node_modules/react-native/React/Base/RCTRootView.h \
   ../node_modules/react-native/React/Base/RCTBridge.h \

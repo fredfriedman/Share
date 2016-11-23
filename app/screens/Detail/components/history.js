@@ -49,6 +49,7 @@ export default class History extends Component {
 const styles = EStyleSheet.create({
     separator: {
         flex: 1,
+        marginLeft: 15,
         height: '$dimensions.hairlineWidth',
         backgroundColor: '#d7d7d7',
     },
