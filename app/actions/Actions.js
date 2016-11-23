@@ -14,11 +14,13 @@ export const ASSIGN_CAREGIVER = 'ASSIGN_CAREGIVER';
 * action creators
 */
 
-export function addPatient(patientName){
-	return {type: ADD_PATIENT, patientName}
+export function addPatient(patientName, patientStatus){
+	console.log("HELLO");
+	return {type: ADD_PATIENT, patientName, patientStatus}
 }
 
 export function removePatient(patientId){
+	console.log("goodbye");
 	return {type: REMOVE_PATIENT, patientId}
 }
 

@@ -9,8 +9,16 @@ export default class firebaseHelper {
 
     }
 
-    createNewPatient(){
-        
+    createNewPatient(patientName, patientStatus){
+        let userId = firebase.auth().currentUser.uid;
+        firebase.database().ref('Patients/' + userId).set({
+        assessments:{},
+        caregivers:{},
+        notes:{},
+        active: true,
+        name: patientName,
+        status: patientStatus,
+      });
     }
 
     //fetch caregiver firebase caregiver data as promise. Do as you wish
