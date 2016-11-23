@@ -37,7 +37,6 @@ export default class PatientTableViewCell extends Component {
     }
 
     render() {
-
         return (
             <TouchableHighlight style={styles.row} onPress={() => { this.props.onPress() }} underlayColor={'#F8F8F8'}>
                 <View style={[styles.row, {justifyContent: 'space-between'}]}>

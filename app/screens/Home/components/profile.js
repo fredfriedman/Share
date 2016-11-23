@@ -12,6 +12,7 @@ import {
 import Header from '../../../components/header'
 import Firebase from '../../../config/firebase'
 import EStyleSheet from 'react-native-extended-stylesheet';
+import SharedStyle from '../styles'
 import { Col, Row, Grid } from "react-native-easy-grid";
 import Platform from 'react-native'
 import ImagePicker from 'react-native-image-picker'
@@ -93,11 +94,11 @@ export default class Profile extends Component {
         const phoneIcon1 = (<Icon name="ios-call" ios="ios-call" md="ios-call" size={30} color="#00BCD4" />);
 
         return (
-            <View style={styles.container}>
+            <View style={SharedStyle.container}>
                 <Header
                     text={"Profile"}
-                    headerStyle={styles.header}
-                    textStyle={styles.header_text}/>
+                    headerStyle={SharedStyle.header}
+                    textStyle={SharedStyle.header_text}/>
                 <View style={styles.topBox}>
                     <TouchableHighlight
                         onPress={this.editPhoto.bind(this)}
@@ -191,19 +192,6 @@ const styles = EStyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    container: {
-        flex: 1,
-        backgroundColor: '$colors.lightGray',
-    },
-    header: {
-        backgroundColor: '$colors.status',
-    },
-    header_text: {
-        color: '$colors.lightGray',
-        fontSize: 16,
-        fontWeight: '500',
-        fontFamily: "$fonts.family",
-    },
     indicator: {
         width: 5,
         height: 50,
@@ -261,7 +249,7 @@ const styles = EStyleSheet.create({
         height: 70
     },
     text: {
-        color: '$colors.main',
+        color: '$colors.status',
         fontSize: 14,
         fontWeight: '$fonts.weight',
         fontFamily: '$fonts.family',

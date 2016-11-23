@@ -17,6 +17,7 @@ import  PatientDetailView from '../../Detail/detail'
 // Tools
 import Firebase from '../../../config/firebase'
 import EStyleSheet from 'react-native-extended-stylesheet'
+import SharedStyle from '../styles'
 import FAIcon from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -26,6 +27,7 @@ export default class PatientsView extends Component {
         super(props);
 
         this.patientRef = this.getRef().child('Nurses/' + props.user.id + "/").child(props.type)
+        this.caregiversRef = this.getRef().child('Caregivers/')
         this.patientDataRef = this.getRef().child('Patients/')
 
         this.state = {
@@ -55,19 +57,25 @@ export default class PatientsView extends Component {
 
                 if (snap.val().active) {
 
-                    var patient = {
-                        pID: snap.key,
-                        name: snap.val().name,
-                        status: snap.val().status
-                    };
+                    self.caregiversRef.child(snap.val()["primary caregiver"] + "/Profile/name").once('value', snsht => {
 
-                    patients[snap.key] = patient
+                        var patient = {
+                            pID: snap.key,
+                            name: snap.val().name,
+                            status: snap.val().status,
+                            primaryCaregiver: snsht.val()
+                        };
+
+                        patients[snap.key] = patient
+
+                        self.setState({ dataSource: self.state.dataSource.cloneWithRows(Object.values(patients).sort(this.compare)) });
+                    })
 
                 } else {
                     delete patients[snap.key]
-                }
 
-                self.setState({ dataSource: self.state.dataSource.cloneWithRows(Object.values(patients).sort(this.compare)) });
+                    self.setState({ dataSource: self.state.dataSource.cloneWithRows(Object.values(patients).sort(this.compare)) });
+                }
             });
         });
     }
@@ -115,10 +123,10 @@ export default class PatientsView extends Component {
         const backIcon = <Icon name="ios-arrow-back" ios="ios-arrow-back" md="md-arrow-back" size={30} color="#262626" />
 
         return (
-            <View style={styles.container} noSpacer={false} noScroll={false}>
+            <View style={SharedStyle.container} noSpacer={false} noScroll={false}>
                 <Header
-                    headerStyle={styles.header}
-                    textStyle={styles.header_text}
+                    headerStyle={SharedStyle.header}
+                    textStyle={SharedStyle.header_text}
                     leftAction={this.onPressBack.bind(this)}
                     leftIcon={backIcon}
                     text={this.props.type}/>
@@ -149,26 +157,13 @@ export default class PatientsView extends Component {
                 status={patient.status}
                 actionIcon={phoneIcon}
                 mainText={patient.name}
-                subTitleText={patient.phone}
+                subText={patient.primaryCaregiver}
             />
         )
     }
 }
 
 const styles = EStyleSheet.create({
-    container: {
-        flex: 1
-    },
-    header: {
-        height: 60,
-        backgroundColor: '$colors.lightGray',
-    },
-    header_text: {
-        color: '$colors.darkGray',
-        fontSize: 18,
-        fontWeight: '$fonts.weight',
-        fontFamily: "$fonts.family",
-    },
     row: {
         flexDirection: 'row',
         height: 44,

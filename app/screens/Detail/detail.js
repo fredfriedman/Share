@@ -112,8 +112,8 @@ export default class PatientDetailView  extends Component {
     }
 
     updateData(gData, i, level, type) {
-        if (gData[type]["max"] == null || gData[type]["max"] > level) { gData[type]["max"] = level }
-        if (gData[type]["min"] == null || gData[type]["min"] < level) { gData[type]["min"] = level }
+        if (gData[type]["max"] == null || gData[type]["max"] < level) { gData[type]["max"] = level }
+        if (gData[type]["min"] == null || gData[type]["min"] > level) { gData[type]["min"] = level }
         gData[type]["avg"] == null ? gData[type]["avg"] = level : gData[type]["avg"] += level
         gData[type]["points"].push([i, level])
     }
@@ -221,18 +221,18 @@ export default class PatientDetailView  extends Component {
         const pulseIcon = (<Icon name="ios-pulse" ios="ios-pulse" md="md-pulse" size={30} color="orange"/>);
         return (
             <View style={styles.topBox}>
-                <Text style={[styles.text,{paddingLeft: 5, color: 'white', fontSize: 13, fontWeight: '200'}]}>{this.props.patient.phone}</Text>
+                <Text style={[styles.text,{paddingLeft: 5, fontSize: 13}]}>{this.props.patient.phone}</Text>
                 <View>
                     <View style={[styles.row, {alignItems: 'center'}]}>
                         <View style={[styles.indicator, {backgroundColor: this.statusToColor(this.props.patient.status)}]}/>
-                        <Text style={[styles.text, {color: 'white', fontSize: 60, fontWeight: '200'}]}> {this.props.patient.status} </Text>
+                        <Text style={[styles.text, {fontSize: 60}]}> {this.props.patient.status} </Text>
                         { this.props.patient.caregiverDistress ? alertIcon : null}
                     </View>
                     <Text style={[styles.text, {color: '#00838F', fontSize: 20, fontWeight: '400'}]}> Current Status </Text>
                 </View>
-                <View style={[styles.row, {marginTop: 25}]}>
+                <View style={styles.row}>
                     { clockIcon }
-                    <Text style={[styles.text, {paddingLeft: 5, color: 'white', fontSize: 13, fontWeight: '200'}]}> Last Entry | {this.state.lastPost == null ? "None" : this.parseDate(this.state.lastPost)} </Text>
+                    <Text style={[styles.text, {paddingLeft: 5, fontSize: 13}]}> Last Entry | {this.state.lastPost == null ? "None" : this.parseDate(this.state.lastPost)} </Text>
                 </View>
             </View>
         )
@@ -241,7 +241,7 @@ export default class PatientDetailView  extends Component {
     renderBottomBox() {
 
         return (
-            <View style={styles.bottomBox}>
+            <View style={styles.container_bottom}>
                 <ScrollView
                     ref="pageControl"
                     pagingEnabled={true}
@@ -265,7 +265,12 @@ export default class PatientDetailView  extends Component {
 
         return (
             <View style={{flexDirection: 'column', flex: 1}}>
-                <Header text={this.props.patient.name} headerStyle={styles.header} textStyle={styles.text} leftAction={this.onBack.bind(this)} leftIcon={backIcon}/>
+                <Header
+                    text={this.props.patient.name}
+                    headerStyle={styles.header}
+                    textStyle={styles.header_text}
+                    leftAction={this.onBack.bind(this)}
+                    leftIcon={backIcon}/>
                 { this.renderTopBox() }
                 { this.renderBottomBox() }
                 <PageControl style={styles.pageControl}
@@ -283,13 +288,23 @@ export default class PatientDetailView  extends Component {
 }
 
 const styles = EStyleSheet.create({
-    bottomBox: {
+    container: {
+        flex: 1,
+        backgroundColor: '$colors.lightGray',
+    },
+    container_bottom: {
         flex: 1,
         backgroundColor: '$colors.lightGray',
     },
     header: {
         height: 60,
         backgroundColor: '$colors.lightGray',
+    },
+    header_text: {
+        color: '$colors.darkGray',
+        fontSize: 16,
+        fontWeight: 'bold',
+        fontFamily: '$fonts.family',
     },
     indicator: {
         width: 5,
@@ -310,14 +325,13 @@ const styles = EStyleSheet.create({
         flexDirection: 'row'
     },
     scrollView: {
-        flex: 1,
         width: '$dimensions.screenWidth',
         backgroundColor: 'transparent',
     },
     text: {
-        color: '$colors.darkGray',
+        color: 'white',
         fontSize: 16,
-        fontWeight: 'bold',
+        fontWeight: '200',
         fontFamily: '$fonts.family',
     },
     topBox: {

@@ -11,6 +11,7 @@ import {
 import Firebase from '../../../config/firebase'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import SharedStyle from '../styles'
 
 // Pages
 import PatientsView from './patients_view'
@@ -29,6 +30,7 @@ export default class Overview extends Component {
         super(props);
 
         this.patientsRef = this.getRef().child('Patients/')
+        this.caregiversRef = this.getRef().child('Caregivers/')
         this.updatingPatientsRef = this.getRef().child('Nurses/' + props.user.id + "/RC Patients")
         this.criticalPatientsRef = this.getRef().child('Nurses/' + props.user.id + "/Critical Patients")
         this.distressedPatientsRef = this.getRef().child('Nurses/' + props.user.id + "/Distressed Patients")
@@ -67,16 +69,20 @@ export default class Overview extends Component {
 
             self.patientsRef.child(snap.key).on('value', (snapshot) => {
 
-                var item = {
-                    pID: snapshot.key,
-                    name: snapshot.val().name,
-                    status: snapshot.val().status,
-                    caregiverDistress: snapshot.val()["caregiverDistress"]
-                }
+                self.caregiversRef.child(snapshot.val()["primary caregiver"] + "/Profile/name").once('value', snsht => {
 
-                patients[snapshot.key] = item
+                    var item = {
+                        pID: snapshot.key,
+                        name: snapshot.val().name,
+                        status: snapshot.val().status,
+                        caregiverDistress: snapshot.val()["caregiver distress"],
+                        primaryCaregiver: snsht.val()
+                    }
 
-                setState(patients)
+                    patients[snapshot.key] = item
+
+                    setState(patients)
+                })
             })
         })
 
@@ -181,15 +187,15 @@ export default class Overview extends Component {
     render() {
 
         return (
-            <View style={styles.container}>
+            <View style={SharedStyle.container}>
                 <Header
                     text={"Overview"}
-                    headerStyle={styles.header}
-                    textStyle={styles.header_text}/>
+                    headerStyle={SharedStyle.header}
+                    textStyle={SharedStyle.header_text}/>
                 <ScrollView contentContainerStyle={styles.scrollViewContainer}>
                     { this.renderTable("Critical Patients", "All Critical", "criticalPatients", "Critical Patients") }
                     { this.renderTable("Status Updates", "All Updates", "updatedPatients", "RC Patients") }
-                    { this.renderTable("Distressed Caregivers", "All Distressed", "distressedPatients") }
+                    { this.renderTable("Distressed Caregivers", "All Distressed", "distressedPatients", "Distressed Patients") }
                 </ScrollView>
                 <ModalView
                     modalVisible={this.state.modalVisible}
@@ -210,7 +216,7 @@ export default class Overview extends Component {
                 status={patient.status}
                 actionIcon={squarePhoneIcon}
                 mainText={patient.name}
-                subTitleText={patient.phone}/>
+                subText={patient.primaryCaregiver}/>
         )
     }
 
@@ -242,20 +248,6 @@ export default class Overview extends Component {
 }
 
 const styles = EStyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '$colors.lightGray',
-    },
-    header: {
-        height: 60,
-        backgroundColor: '$colors.status',
-    },
-    header_text: {
-        color: '$colors.lightGray',
-        fontSize: 16,
-        fontWeight: '500',
-        fontFamily: "$fonts.family",
-    },
     scrollViewContainer: {
         backgroundColor: 'transparent',
     },
