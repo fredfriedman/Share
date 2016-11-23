@@ -1,11 +1,12 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { TouchableHighlight, ListView, Text, View } from 'react-native';
+import { TouchableHighlight, ListView, Text } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import Icon from 'react-native-vector-icons/Ionicons';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import DefaultEmptyTableViewCell from './defaultEmptyTableViewCell'
+import { View } from 'react-native-animatable';
 
 export default class TableViewGroup extends Component {
 
@@ -13,7 +14,9 @@ export default class TableViewGroup extends Component {
         super();
 
         this.state = {
-            name: 'default'
+            name: 'default',
+            animated: false,
+            count: 0,
         }
     }
 
@@ -24,7 +27,7 @@ export default class TableViewGroup extends Component {
     render() {
 
         return (
-            <View style={this.props.style}>
+            <View animation={this.props.animation && this.state.animated ? null : this.props.animation} style={this.props.style}>
                 <SwipeListView
                     dataSource={this.props.dataSource}
                     renderRow={this.props.renderRow}

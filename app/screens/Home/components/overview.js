@@ -16,7 +16,7 @@ import SharedStyle from '../styles'
 // Pages
 import PatientsView from './patients_view'
 import PatientDetailView from '../../Detail/detail'
-
+import LoadingAnimationView from '../../../components/loadingAnimationView'
 // Components
 import Button from 'react-native-button'
 import Header from '../../../components/header'
@@ -39,7 +39,7 @@ export default class Overview extends Component {
             criticalPatients: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2, }),
             updatedPatients: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2, }),
             distressedPatients: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2, }),
-
+            isVisible: true,
             modalVisible: false,
             modalVisiblePatient: null
         }
@@ -51,11 +51,19 @@ export default class Overview extends Component {
         this.listenForItems(this.distressedPatientsRef, this.setListState.bind(this, "distressedPatients", this.compareDistress))
     }
 
+    componentsWillUnmount() {
+        this.patientsRef.off()
+        this.caregiversRef.off()
+        this.updatingPatientsRef.off()
+        this.criticalPatientsRef.off()
+        this.distressedPatientsRef.off()
+    }
     getRef() {
         return Firebase.database().ref();
     }
 
     setListState(type, comparison, patients) {
+        this.setState({isVisible: false})
         this.setState({ [type] : this.state[type].cloneWithRows(Object.values(patients).sort(comparison)) });
     }
 
@@ -192,17 +200,26 @@ export default class Overview extends Component {
                     text={"Overview"}
                     headerStyle={SharedStyle.header}
                     textStyle={SharedStyle.header_text}/>
-                <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-                    { this.renderTable("Critical Patients", "All Critical", "criticalPatients", "Critical Patients") }
-                    { this.renderTable("Status Updates", "All Updates", "updatedPatients", "RC Patients") }
-                    { this.renderTable("Distressed Caregivers", "All Distressed", "distressedPatients", "Distressed Patients") }
-                </ScrollView>
+                { this.renderView()}
                 <ModalView
                     modalVisible={this.state.modalVisible}
                     patientID={this.state.modalVisiblePatient}
                     closeModal={this.setModalVisible.bind(this, null, false)}/>
             </View>
         );
+    }
+
+    renderView() {
+        return ( this.state.isVisible ?
+            <LoadingAnimationView animation={this.state.isVisible}/>
+            :
+            <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+                { this.renderTable("Critical Patients", "All Critical", "criticalPatients", "Critical Patients") }
+                { this.renderTable("Status Updates", "All Updates", "updatedPatients", "RC Patients") }
+                { this.renderTable("Distressed Caregivers", "All Distressed", "distressedPatients", "Distressed Patients") }
+            </ScrollView>
+
+        )
     }
 
     renderRow(patient: Object, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) {
@@ -220,22 +237,14 @@ export default class Overview extends Component {
         )
     }
 
-    renderFooter() {
-        return (
-            <TouchableHighlight
-                style={styles.headerStyle}
-                onPress={this.props.onPress}
-                underlayColor={'#B0BEC5'}>
-                <Text style={[styles.buttonText, {marginLeft: 10}]}>All {this.props.title}</Text>
-            </TouchableHighlight>
-        )
-    }
-
     renderTable(title, footerTitle, datasource, fbLabel) {
+        var entrance = ['slideInDown', 'slideInUp', 'slideInLeft', 'slideInRight'][Math.floor(Math.random() * 3)]
+
         return ( this.state[datasource].getRowCount() == 0 ?
                 null
                 :
                 <TableViewGroup
+                    animation={entrance}
                     headerTitle={title}
                     footerTitle={footerTitle}
                     onPress={this.onPressHeader.bind(this, fbLabel)}
