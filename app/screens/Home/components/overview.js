@@ -230,7 +230,7 @@ export default class Overview extends Component {
                 null
                 :
                 <TableViewGroup
-                    title={title}
+                    headerTitle={title}
                     footerTitle={footerTitle}
                     onPress={this.onPressHeader.bind(this, fbLabel)}
                     onPressArchive={this.onPressArchive.bind(this)}

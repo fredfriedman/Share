@@ -69,7 +69,7 @@ export default class Profile extends Component {
     }
 
     renderProfilePic() {
-        const defaultImage = <Icon name="ios-contact" ios="ios-contact" md="ios-contact" size={180} color='#262626'/>
+        const defaultImage = <Icon name="ios-contact" ios="ios-contact" md="ios-contact" size={150} color='#262626'/>
 
         return ( this.props.user.Profile.picture ?
             <View>
@@ -79,7 +79,7 @@ export default class Profile extends Component {
                 </View>
             </View>
          :
-            { defaultImage }
+            <View>{ defaultImage }</View>
         )
     }
 

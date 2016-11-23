@@ -25,14 +25,37 @@ export default class History extends Component {
         }
     }
 
+    statusToColor(status) {
+        if(status == 10) {
+            return '#B71C1C'
+        } else if (status == 9) {
+            return '#C62828'
+        } else if (status == 8) {
+            return '#D32F2F'
+        } else if (status == 7) {
+            return '#EF6C00'
+        } else if (status == 6) {
+            return '#FF9800'
+        } else if (status== 5) {
+            return '#FFCA28'
+        } else if (status == 4) {
+            return '#FDD835'
+        } else if (status == 3) {
+            return '#7CB342'
+        } else if (status == 2) {
+            return '#4CAF50'
+        } else {
+            return '#388E3C'
+        }
+    }
 
     componentWillMount() {
         var items = [0]
         var self = this
         Object.keys(this.props.assessment.results).forEach(function(key) {
-            items.push([k, self.props.assessment.results[key]])
+            if( key != "Caregiver" ) { items.push([key, self.props.assessment.results[key]]) }
         });
-        items.pop()
+        items.push(0)
         this.setState({dataSource: this.state.dataSource.cloneWithRows(items)})
     }
 
@@ -47,7 +70,7 @@ export default class History extends Component {
 
     render(){
 
-        const backIcon = (<Icon name="ios-arrow-back" ios="ios-arrow-back" md="md-arrow-back" size={30} color="#262626" />);
+        const backIcon = (<Icon name="ios-arrow-back" ios="ios-arrow-back" md="md-arrow-back" size={30} color="#E7E7E7" />);
 
         return (
             <View style={styles.container}>
@@ -62,7 +85,6 @@ export default class History extends Component {
                         <Text style={styles.dateText}>{this.parseDate(new Date(this.props.assessment.timestamp))}</Text>
                     </View>
                     <TableViewGroup
-                        headerIsEnabled={false}
                         onPress={() => console.log()}
                         onPressArchive={() => console.log()}
                         scrollEnabled={false}
@@ -75,8 +97,8 @@ export default class History extends Component {
                         disableHeaderButton={true}
                         disableHiddenRow={true} />
                     <View style={[styles.box, {height: 40, alignItems: 'center', justifyContent: 'center'}]}>
-                        <Text style={styles.text}>Caregiver Distress</Text>
-                        <Text style={styles.text}>{this.props.assessment.results.distress}</Text>
+                        <Text style={[styles.text, styles.labelText, {alignSelf: 'flex-start', marginLeft: 5}]}>Comments: </Text>
+                        <Text style={[styles.text, styles.typeText]}>{this.props.assessment.comments}</Text>
                     </View>
                 </ScrollView>
             </View>
@@ -87,7 +109,7 @@ export default class History extends Component {
         if (rowID == 0) {
             return (
                 <View style={[styles.row, {height: 20, backgroundColor: '#f7f7f7'}]}>
-                    <Grid style={{marginLeft: 20, marginRight: 10}}>
+                    <Grid>
                         <Col style={styles.col}>
                             <Text style={[styles.text, styles.labelText]}>Symptom</Text>
                         </Col>
@@ -103,26 +125,32 @@ export default class History extends Component {
                     </Grid>
                 </View>
             )
+        } else if (rowID == this.state.dataSource.getRowCount() - 1) {
+            return (
+                <View style={[styles.row, {justifyContent: 'flex-start', marginLeft: 10}]}>
+                    <Text style={[styles.text, styles.labelText, {fontWeight: '600', fontSize: 15}]}>Caregiver Distress: {this.props.assessment.results.Caregiver.value}</Text>
+                </View>
+            )
+        } else {
+            return (
+                <View style={styles.row}>
+                    <Grid style={{flex: 1}}>
+                        <Col style={{alignItems: 'center', justifyContent: 'center'}}>
+                            <Text style={[styles.text, styles.typeText]}>{result[0]}</Text>
+                        </Col>
+                        <Col style={{alignItems: 'center', justifyContent: 'center'}}>
+                            <Text style={[styles.text,styles.levelText]}>{result[1].level}</Text>
+                        </Col>
+                        <Col style={{alignItems: 'center', justifyContent: 'center'}}>
+                            <Text style={[styles.text,styles.changesText]}>{result[1].changes}</Text>
+                        </Col>
+                        <Col style={{alignItems: 'center', justifyContent: 'center'}}>
+                            <View style={[styles.status, {backgroundColor: this.statusToColor(result[1].level)}]}/>
+                        </Col>
+                    </Grid>
+                </View>
+            )
         }
-        return (
-            <View style={styles.row}>
-                <Grid style={{marginLeft: 20, flex: 1, marginRight: 10}}>
-                    <Col>
-                        <Text style={[styles.text, styles.typeText]}>{result[0]}</Text>
-                    </Col>
-                    <Col>
-                        <Text style={[styles.text,styles.levelText]}>{result[1].level}</Text>
-                    </Col>
-                    <Col>
-                        <Text style={[styles.text,styles.changesText]}>{result[1].changes}</Text>
-                    </Col>
-                    <Col style={[styles.col, {justifyContent: 'center'}]}>
-                        <View style={result[1].level > 7 ? [styles.status, {backgroundColor: 'red'}] :
-                                                           [styles.status, {backgroundColor: 'green'}]}/>
-                    </Col>
-                </Grid>
-            </View>
-        )
     }
 }
 
@@ -131,15 +159,17 @@ const styles = EStyleSheet.create({
         backgroundColor: 'white',
         width: '$dimensions.screenWidth - 40',
         alignSelf: 'center',
-        marginTop: 25,
         shadowColor: "$colors.darkGray",
         shadowOpacity: 0.8,
-        shadowRadius: 4,
+        shadowRadius: 1,
         shadowOffset: {
-            height: 2,
+            height: 0.5,
             width: 0
         },
-        elevation: 20,
+        elevation: 10,
+        marginTop: 25,
+        marginLeft: 10,
+        marginRight: 10
     },
     cell: {
         height: '$dimensions.rowHeight',
@@ -148,14 +178,14 @@ const styles = EStyleSheet.create({
 
     },
     container: {
-        backgroundColor: 'white',
+        backgroundColor: '$colors.lightGray',
         flex: 1
     },
     col: {
-        alignItems: 'center'
+        alignItems: 'center',
     },
     header: {
-        backgroundColor: "$colors.main"
+        backgroundColor: "$colors.status"
     },
     tableViewHeader: {
         backgroundColor: "$colors.lightGray"
@@ -167,7 +197,7 @@ const styles = EStyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        height: '$dimensions.rowHeight',
+        height: '-10 + $dimensions.rowHeight',
         backgroundColor: 'white',
     },
     stack: {
@@ -191,7 +221,7 @@ const styles = EStyleSheet.create({
         fontWeight: "bold",
     },
     typeText: {
-        fontSize: 16,
+        fontSize: 15,
         color: '$colors.darkGray',
         paddingLeft: 2.5
     },

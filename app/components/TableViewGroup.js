@@ -28,8 +28,8 @@ export default class TableViewGroup extends Component {
                 <SwipeListView
                     dataSource={this.props.dataSource}
                     renderRow={this.props.renderRow}
-                    renderHeader={this.renderHeader.bind(this)}
-                    renderFooter={this.props.renderFooter || this.renderFooter.bind(this)}
+                    renderHeader={this.props.headerTitle != null ? this.renderHeader.bind(this) : null}
+                    renderFooter={this.props.footerTitle != null ? this.renderFooter.bind(this) : null}
                     renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
                     scrollEnabled={this.props.scrollEnabled ? this.props.scrollEnabled : false }
                     renderHiddenRow={ (data, secId, rowId) => this.renderHiddenRow(data, secId, rowId)}
@@ -60,7 +60,7 @@ export default class TableViewGroup extends Component {
 
         return (
                 <View style={styles.header}>
-                    <Text style={styles.headerText}>{this.props.title}</Text>
+                    <Text style={styles.headerText}>{this.props.headerTitle}</Text>
                     <View style={styles.separator} />
                 </View>
         )
