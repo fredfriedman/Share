@@ -61,7 +61,7 @@ export default class HistoryTableViewCell extends Component {
     renderDistressIndicator() {
 
         const alertIcon = (<Icon name="ios-warning-outline" ios="ios-warning-outline" md="md-warning-outline" size={15} color="#e50000"/>);
-
+        console.log("t", this.props)
         return ( this.props.assessment && parseInt(this.props.assessment.distress) > 6 ?
             alertIcon
             :

@@ -68,6 +68,7 @@ export default class PatientDetailView  extends Component {
         }
         agg = Math.floor(agg/80*100)
         return {
+            distress: snap.val().Results.Caregiver.value,
             completed: snap.val().completed,
             timestamp: snap.val().timestamp,
             submittedBy: snap.val().submittedBy,
@@ -140,6 +141,13 @@ export default class PatientDetailView  extends Component {
         this.setState({ data: this.buildPoints(items.slice(0, 5)) })
     }
 
+    comparison(a, b) {
+        if (a.timestamp == b.timestamp) {
+            return 0
+        }
+        return a.timestamp > b.timestamp ? 1 : -1
+    }
+
     notesCallback(notes, child) {
         var self = this
 
@@ -154,7 +162,7 @@ export default class PatientDetailView  extends Component {
 
             notes.push(note);
 
-            self.setState({ notes: self.state.notes.cloneWithRows(notes) });
+            self.setState({ notes: self.state.notes.cloneWithRows(notes.slice(0).sort(self.comparison)) });
         })
     }
 
