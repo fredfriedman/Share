@@ -1,17 +1,21 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import ManagePatientDetail from '../screens/NurseSettings/ManagePatientDetail';
-import { addPatient ,removePatient} from '../actions/Actions';
+import { addPatient ,removePatient, initializeNurseList, initializePatientList} from '../actions/Actions';
+import firebaseHelper from '../screens/CaregiverSettings/firebaseHelper'
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-
+		patients: state.patients,
+		nurses: state.nurses,
 	}
 }
 const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
 		onRemove: (patientId) => { dispatch(removePatient(patientId)) },
-		onAdd: (patientId, patientStatus) => { dispatch(addPatient(patientId, patientStatus)) }
+		onAdd: (patientId, patientStatus) => { dispatch(addPatient(patientId, patientStatus)) },
+		initializePatientTable: () => {dispatch(initializePatientList())},
+		initializeNurseList: () => {dispatch(initializeNurseList())},
 	}
 }
 

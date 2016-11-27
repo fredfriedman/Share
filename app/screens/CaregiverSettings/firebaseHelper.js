@@ -21,6 +21,18 @@ export default class firebaseHelper {
       });
     }
 
+    getPatientsPromise(){
+        return firebase.database().ref('Caregivers/').once('value').then(function(snapshot) {
+            return snapshot.val();
+        });
+    }
+
+    getNursesPromise(){
+        return firebase.database().ref('Nurses/').once('value').then(function(snapshot) {
+            return snapshot.val();
+        });
+    }
+
     //fetch caregiver firebase caregiver data as promise. Do as you wish
     getCaregiverPromise(caregiverId) {
         return firebase.database().ref('Caregivers/'+ caregiverId).once('value').then(function(snapshot) {
