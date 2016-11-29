@@ -1,14 +1,20 @@
 import React, {Component} from 'react';
-import {View, StyleSheet,Text, Image, Alert, Navigator} from 'react-native';
+import {
+	Alert,
+	Navigator,
+	View
+} from 'react-native';
+
+
+import Icon from 'react-native-vector-icons/Ionicons';
+import EStyleSheet from 'react-native-extended-stylesheet';
 import SettingsList from 'react-native-settings-list';
 
 import login from '../Login/home';
-import firebaseHelper from './firebaseHelper';
 import Header from '../../components/header';
-import changepatientdetail from './ChangePatientDetail';
-import caregiverprofile from './CaregiverProfileInformation';
-import Icon from 'react-native-vector-icons/Ionicons';
-import EStyleSheet from 'react-native-extended-stylesheet';
+import ModalView from './EditProfileModal'
+import firebaseHelper from './firebaseHelper';
+import CaregiverProfile from './CaregiverProfileInformation';
 
 export default class CaregiverSettings extends Component {
 
@@ -16,17 +22,42 @@ export default class CaregiverSettings extends Component {
 		super();
 
 		this.onValueChange = this.onValueChange.bind(this);
-		this.state = {switchValue: false };
 
-		this.fb = new firebaseHelper();
+		this.state = {
+			switchValue: false,
+			modalVisible: false,
+			modalEditType: "",
+		}
 	}
 
-  	//clear asyn storage, logout with firebase, navigator clear
+	save(value) {
+		var fb = new firebaseHelper();
 
+		var self = this
+
+		fb.isValidPatientId(value)
+			.then(res => {
+				if (res.val()) {
+					fb.updatePatientId(this.props.user.id, value)
+					self.setModalVisible(null)
+				} else {
+					Alert.alert('Patient Does Not Exist')
+				}
+			}, function(error) {
+				Alert.alert('An Error Occurred')
+			})
+	}
+
+	onBack() {
+		this.props.navigator.pop()
+	}
+
+	setModalVisible(placeholder) {
+        this.setState({modalVisible: !this.state.modalVisible, modalEditType: placeholder});
+    }
 
 	render() {
 		const backIcon = (<Icon name="ios-arrow-back" ios="ios-arrow-back" md="md-arrow-back" size={30} color="white" />);
-		var bgColor = '#DCE3F4';
 
 		return (
 
@@ -49,7 +80,7 @@ export default class CaregiverSettings extends Component {
 						  	title='Patient Info'
 						  	titleInfo={'Patient ID: '+this.props.user.Patient}
 						  	titleInfoStyle={styles.titleInfoStyle}
-						  	onPress={() => this.changePatientId()}
+						  	onPress = {this.setModalVisible.bind(this, "Patient ID")}
 						/>
 						<SettingsList.Item
 						  	hasSwitch={true}
@@ -67,25 +98,21 @@ export default class CaregiverSettings extends Component {
 						/>
 					</SettingsList>
 				</View>
+				<ModalView
+                    modalVisible={this.state.modalVisible}
+					saveInfo={this.save.bind(this)}
+                    closeModal={this.setModalVisible.bind(this, null)}
+					placeholder={this.state.modalEditType}/>
 		  	</View>
 		);
 	}
 
 	onViewProfileInformation(){
-		console.log("hi",this.props, this.props.user)
 		this.props.navigator.push({
-			component:caregiverprofile,
+			component: CaregiverProfile,
 			sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
 			passProps: {user: this.props.user}
 
-		});
-	}
-
-	changePatientId(){
-		this.props.navigator.push({
-			component:changepatientdetail,
-			sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
-			passProps: {user: this.props.user}
 		});
 	}
 
