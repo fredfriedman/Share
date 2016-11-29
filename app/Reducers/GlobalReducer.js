@@ -1,4 +1,4 @@
-import {ADD_PATIENT,REMOVE_PATIENT,ASSIGN_CAREGIVER, NURSE_MESSAGE, PATIENT_MESSAGE, INITIALIZE_PATIENTS, INITIALIZE_NURSES} from '../actions/Actions';
+import {ADD_PATIENT,REMOVE_PATIENT,ASSIGN_CAREGIVER, NURSE_MESSAGE, PATIENT_MESSAGE, INITIALIZE_PATIENTS, INITIALIZE_CAREGIVERS} from '../actions/Actions';
 import firebaseHelper from '../screens/CaregiverSettings/firebaseHelper';
 
 initialState = {
@@ -14,14 +14,14 @@ export default  function globalReducer(state = initialState, action){
 
 		case REMOVE_PATIENT:
 			f.setPatientInactive(action.patientId);
+			
 		case ASSIGN_CAREGIVER:
 		case NURSE_MESSAGE:
 		case PATIENT_MESSAGE:
 		case INITIALIZE_PATIENTS:
 			return {...state, patients: action.patientList}
-		case INITIALIZE_NURSES:
-			// console.log("NEW********************************************************************************************&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-			return  {...state, nurses: action.caregiverList}
+		case INITIALIZE_CAREGIVERS:
+			return  {...state, caregivers: action.caregiverList}
 		default:
 			return state
 	}

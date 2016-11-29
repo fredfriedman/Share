@@ -21,7 +21,7 @@ export const PATIENT_MESSAGE = 'PATIENT_MESSAGE';
 
 export const INITIALIZE_PATIENTS = 'INITIALIZE_PATIENTS';
 
-export const INITIALIZE_NURSES = 'INITIALIZE_NURSES';
+export const INITIALIZE_CAREGIVERS = 'INITIALIZE_CAREGIVERS';
 
 
 
@@ -41,6 +41,10 @@ export function removePatient(patientId){
 
 export function assignCaregiver(caregiverId, patientId){
 	return {type: ASSIGN_CAREGIVER, caregiverId, patientId}
+}
+
+export function removeCaregiver(caregiverId){
+	console.log("***************************To Be Implemented*****************************");
 }
 
 //Messaging Actions
@@ -66,7 +70,7 @@ export function initializeCaregiverList(){
 	return function(dispatch){
 		let f = new firebaseHelper();
 		return f.getCaregiverListPromise().then(function(caregiverList){
-			dispatch({type: INITIALIZE_NURSES, caregiverList});
+			dispatch({type: INITIALIZE_CAREGIVERS, caregiverList});
 		})
 
 	};

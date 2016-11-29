@@ -7,6 +7,7 @@ import login from '../Login/home';
 import firebaseHelper from '../CaregiverSettings/firebaseHelper';
 import Header from '../../components/header';
 import ManagePatientDetailContainer from '../../containers/ManagePatientDetailContainer';
+import ManageCaregiverDetailContainer from '../../containers/ManageCaregiverDetailContainer';
 
 
 const styles = EStyleSheet.create({
@@ -58,7 +59,7 @@ export default class NurseSettings extends Component {
 					<SettingsList.Item
 					  	title='Manage Caregivers'
 					  	titleInfoStyle={styles.titleInfoStyle}
-					  	onPress={() => alert('Provision New Caregiver Profiles')}
+					  	onPress={() => this.onViewManageCaregiverDetail()}
 					/>
 					<SettingsList.Item
 					  	hasSwitch={true}
@@ -82,6 +83,13 @@ export default class NurseSettings extends Component {
 	onViewManagePatientDetail(){
 		this.props.navigator.push({
 			component:ManagePatientDetailContainer,
+			sceneConfig: Navigator.SceneConfigs.FloatFromBottom
+		});
+	}
+
+	onViewManageCaregiverDetail(){
+		this.props.navigator.push({
+			component:ManageCaregiverDetailContainer,
 			sceneConfig: Navigator.SceneConfigs.FloatFromBottom
 		});
 	}

@@ -8,13 +8,13 @@ import firebaseHelper from '../screens/CaregiverSettings/firebaseHelper'
 const mapStateToProps = (state, ownProps) => {
 	return {
 		patients: state.patients,
-		nurses: state.nurses,
+		caregivers: state.caregivers,
 	}
 }
 const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
-		onRemove: (patientId) => { dispatch(removePatient(patientId)) },
-		onAdd: (patientId, patientStatus) => { dispatch(addPatient(patientId, patientStatus)) },
+		onRemove: (patientId) => { dispatch(removeCaregiver(caregiverId)) },
+		onAdd: (patientId, patientStatus) => { dispatch(assignCaregiver(patientId, caregiverName)) },
 		initializePatientList: () => {dispatch(initializePatientList())},
 		initializeCaregiverList: () => {dispatch(initializeCaregiverList())},
 	}

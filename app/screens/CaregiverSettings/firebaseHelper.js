@@ -25,6 +25,18 @@ export default class firebaseHelper {
       });
     }
 
+    createNewCaregiver(patientId, caregiverName, phoneNumber, relation){
+        let userId = firebase.auth().currentUser.uid;
+        firebase.database().ref('Caregivers/' + userId).set({
+        Patient: patientId
+        Profile:{
+            name: caregiverName,
+            phone: phoneNumber,
+            relation: relation
+        },
+      });
+    }
+
     getPatientsPromise(){
         return firebase.database().ref('Patients/').once('value').then(function(snapshot) {
             return snapshot.val();
@@ -58,7 +70,6 @@ export default class firebaseHelper {
             if(exists && isValid){
                 var patientIdRef = firebase.database().ref('Caregivers/'+ caregiverId);
                 patientIdRef.update({'Patient': patientId});
-                console.log("***************************************YAYYYYY");
             }
             else {
                 alert('invalid patientId');

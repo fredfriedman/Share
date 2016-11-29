@@ -28,11 +28,11 @@ export default class ManagePatientDetail extends Component{
 //TODO Add entry, caregiver assigned to database
 //componentdidupdate
 	componentWillReceiveProps(nextProps){
-		console.log("FRUSTRATIONPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+		// console.log("FRUSTRATIONPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
 		if(nextProps.patients != this.props.patients){
 			const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 			
-			console.log(nextProps.patients);
+			// console.log(nextProps.patients);
 			patientList = [];
 			for( key in nextProps.patients){
 				// console.log({name: nextProps.nurses[key].Profile.name, id: key});
