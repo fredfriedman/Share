@@ -3,7 +3,7 @@ import {View,Text, ListView, TouchableHighlight} from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Header from '../../components/header';
-
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 data = {
 
@@ -55,16 +55,18 @@ export default class ManagePatientDetail extends Component{
 				<Header
                     text= "Manage Patients"
                     leftAction={()=> console.log('Hello')}
-                    leftIcon={<Icon name = 'plus' size = {20} color="white" />}/>
+                    leftIcon={<Icon name = 'plus' size = {20} color="white" />}
+                    textStyle = {styles.titleText}/>
          		<SwipeListView
 		            dataSource={this.state.datasource}
 		            renderRow={ data => (
-		                <View>
-		                    <Text>Name: {data.name} ID: {data.id}</Text>
+		                <View style = {styles.rowFront}>
+		                    <Text style = {styles.patientText}>Name: {data.name}</Text>
+		                    <Text style = {styles.patientText}>ID: {data.id}</Text>
 		                </View>
 		            )}
 		            renderHiddenRow={ (data, secId, rowId, rowMap) => (
-		                <TouchableHighlight onPress = {()=> this.deleteRow(data, secId,rowId,rowMap)}>
+		                <TouchableHighlight style = {styles.rowBack}onPress = {()=> this.deleteRow(data, secId,rowId,rowMap)}>
 		                    <Text>Delete</Text>
 		                </TouchableHighlight>
 		            )}
@@ -86,6 +88,50 @@ export default class ManagePatientDetail extends Component{
 		this.props.initializePatientList();
 	}
 }
+
+const styles = EStyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: '$colors.lightGray',
+	},
+
+	rowFront:{
+		backgroundColor: 'white',
+		paddingLeft: 10,
+		height: '$dimensions.rowHeight',
+		justifyContent: 'center',
+	},
+
+	rowBack:{
+		backgroundColor: 'red',
+		height: '$dimensions.rowHeight',
+		justifyContent: 'center',
+		alignItems: 'center',
+		width: 75,
+
+	},
+
+	titleText: {
+		color: 'white',
+        fontWeight: '300',
+        fontFamily: '$fonts.family',
+	},
+
+	rowBackText: {
+        fontSize: 11,
+        fontWeight: '300',
+        fontFamily: '$fonts.family',
+        color: 'white',
+    },
+	
+	patientText: {
+		fontSize: 11,
+        fontWeight: '300',
+        fontFamily: '$fonts.family',
+        color: '$colors.darkGray',
+
+	}
+});
 
 ManagePatientDetail.propTypes = {
 	onRemove: React.PropTypes.func.isRequired,

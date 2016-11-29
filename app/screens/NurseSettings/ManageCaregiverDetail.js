@@ -52,18 +52,19 @@ export default class ManageCaregiverDetail extends Component{
 				<Header
                     text= 'Manage Caregivers'
                     leftAction={()=> console.log('Hello')}
-                    leftIcon={<Icon name = 'plus' size = {20} color = 'white'/>}/>
+                    leftIcon={<Icon name = 'plus' size = {20} color = 'white'/>}
+                    textStyle = {styles.titleText}/>
          		<SwipeListView
 		            dataSource={this.state.datasource}
 		            renderRow={ data => (
 		                <View style = {styles.rowFront}>
-		                    <Text>Name: {data.name}</Text>
-		                    <Text>ID: {data.id}</Text>
+		                    <Text style = {styles.caregiverText}>Name: {data.name}</Text>
+		                    <Text style = {styles.caregiverText}>ID: {data.id}</Text>
 		                </View>
 		            )}
 		            renderHiddenRow={ (data, secId, rowId, rowMap) => (
 		                <TouchableHighlight style = {styles.rowBack} onPress = {()=> this.deleteRow(data, secId,rowId,rowMap)}>
-		                    <Text>Delete</Text>
+		                    <Text style = {styles.rowBackText}>Delete</Text>
 		                </TouchableHighlight>
 		            )}
 		            leftOpenValue={75}
@@ -92,14 +93,41 @@ const styles = EStyleSheet.create({
 	},
 
 	rowFront:{
-		backgroundColor: '$colors.lightGray',
-		paddingLeft: 20,
+		backgroundColor: 'white',
+		paddingLeft: 10,
+		height: '$dimensions.rowHeight',
+		justifyContent: 'center',
+	},
 
+	rowBack:{
+		backgroundColor: 'red',
+		height: '$dimensions.rowHeight',
+		justifyContent: 'center',
+		alignItems: 'center',
+		width: 75,
 
 	},
 
-	rowBack:{},
+	titleText: {
+		color: 'white',
+        fontWeight: '300',
+        fontFamily: '$fonts.family',
+	},
+
+	rowBackText: {
+        fontSize: 11,
+        fontWeight: '300',
+        fontFamily: '$fonts.family',
+        color: 'white',
+    },
 	
+	caregiverText: {
+		fontSize: 11,
+        fontWeight: '300',
+        fontFamily: '$fonts.family',
+        color: '$colors.darkGray',
+
+	}
 });
 
 ManageCaregiverDetail.propTypes = {
