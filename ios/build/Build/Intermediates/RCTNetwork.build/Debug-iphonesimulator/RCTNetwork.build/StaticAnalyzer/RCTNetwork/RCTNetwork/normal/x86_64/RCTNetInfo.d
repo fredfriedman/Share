@@ -1,6 +1,6 @@
 dependencies: \
-  /Users/aaronliberatore/Documents/Projects/Hospice/node_modules/react-native/Libraries/Network/RCTNetInfo.m \
-  /Users/aaronliberatore/Documents/Projects/Hospice/node_modules/react-native/Libraries/Network/RCTNetInfo.h \
+  /Users/aaronliberatore/Documents/Projects/Share/Hospice/node_modules/react-native/Libraries/Network/RCTNetInfo.m \
+  /Users/aaronliberatore/Documents/Projects/Share/Hospice/node_modules/react-native/Libraries/Network/RCTNetInfo.h \
   ../../React/Modules/RCTEventEmitter.h ../../React/Base/RCTBridge.h \
   ../../React/Base/RCTBridgeDelegate.h \
   ../../React/Base/RCTJavaScriptLoader.h \

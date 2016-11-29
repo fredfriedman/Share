@@ -30,7 +30,7 @@ export default class TabBar extends Component {
     }
 
     render() {
-        const selectedColor = "#0097A7"
+        const selectedColor = "#00ACC1"
         const unselectedColor = "#8E8E8E"
         const size = 30
 

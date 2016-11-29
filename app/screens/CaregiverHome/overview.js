@@ -7,7 +7,7 @@ import { Col, Row, Grid } from "react-native-easy-grid";
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import CaregiverAssessment from '../CaregiverAssessment/CaregiverAssessment';
+import CaregiverAssessment from '../CaregiverAssessment/assessment';
 import CaregiverHistory from '../CaregiverHistory/history';
 import CaregiverSettings from '../CaregiverSettings/caregiversettings';
 

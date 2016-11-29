@@ -6,6 +6,7 @@ import {
     } from 'react-native';
 
 import EStyleSheet from 'react-native-extended-stylesheet';
+import SharedStyle from '../styles'
 import Calendar from 'react-native-calendar';
 import Header from '../../../components/header'
 import moment from 'moment';
@@ -30,11 +31,11 @@ export default class CalendarPage extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
+            <View style={SharedStyle.container}>
                 <Header
                     text={"Calendar"}
-                    headerStyle={styles.header}
-                    textStyle={styles.header_text}/>
+                    headerStyle={SharedStyle.header}
+                    textStyle={SharedStyle.header_text}/>
                 <Calendar
                     ref="calendar"
                     eventDates={['2016-07-03', '2016-07-05', '2016-07-28', '2016-07-30']}
@@ -59,19 +60,6 @@ export default class CalendarPage extends Component {
     }
 
 const styles = EStyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'white',
-    },
-    header: {
-        backgroundColor: '$colors.status',
-    },
-    header_text: {
-        color: '$colors.lightGray',
-        fontSize: 16,
-        fontWeight: '500',
-        fontFamily: "$fonts.family",
-    },
     welcome: {
         fontSize: 20,
         textAlign: 'center',

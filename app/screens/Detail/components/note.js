@@ -37,9 +37,10 @@ export default class Note extends Component {
     }
 
     render() {
+        console.log(this.props.note)
         return (
             <View style={styles.row}>
-                <Image style={styles.userPicture} source={this.props.poster}/>
+                <Image style={styles.profilePicture} source={{uri: this.props.note.picture, isStatic: true}}/>
                 <View style={styles.stack}>
                     <Text style={styles.title}>{this.props.note.poster}</Text>
                     <Text style={styles.text}>{this.props.note.text}</Text>
@@ -58,6 +59,12 @@ const styles = EStyleSheet.create({
         fontWeight: 'bold',
         fontFamily: '$fonts.family',
         color: '#1e1e1e'
+    },
+    profilePicture: {
+        marginLeft: 2.5,
+        height: 35,
+        width: 35,
+        borderRadius: 17.5,
     },
     row: {
         flexDirection: 'row',

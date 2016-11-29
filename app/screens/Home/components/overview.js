@@ -11,11 +11,12 @@ import {
 import Firebase from '../../../config/firebase'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import SharedStyle from '../styles'
 
 // Pages
 import PatientsView from './patients_view'
 import PatientDetailView from '../../Detail/detail'
-
+import LoadingAnimationView from '../../../components/loadingAnimationView'
 // Components
 import Button from 'react-native-button'
 import Header from '../../../components/header'
@@ -29,6 +30,7 @@ export default class Overview extends Component {
         super(props);
 
         this.patientsRef = this.getRef().child('Patients/')
+        this.caregiversRef = this.getRef().child('Caregivers/')
         this.updatingPatientsRef = this.getRef().child('Nurses/' + props.user.id + "/RC Patients")
         this.criticalPatientsRef = this.getRef().child('Nurses/' + props.user.id + "/Critical Patients")
         this.distressedPatientsRef = this.getRef().child('Nurses/' + props.user.id + "/Distressed Patients")
@@ -37,7 +39,7 @@ export default class Overview extends Component {
             criticalPatients: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2, }),
             updatedPatients: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2, }),
             distressedPatients: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2, }),
-
+            isVisible: true,
             modalVisible: false,
             modalVisiblePatient: null
         }
@@ -49,11 +51,19 @@ export default class Overview extends Component {
         this.listenForItems(this.distressedPatientsRef, this.setListState.bind(this, "distressedPatients", this.compareDistress))
     }
 
+    componentsWillUnmount() {
+        this.patientsRef.off()
+        this.caregiversRef.off()
+        this.updatingPatientsRef.off()
+        this.criticalPatientsRef.off()
+        this.distressedPatientsRef.off()
+    }
     getRef() {
         return Firebase.database().ref();
     }
 
     setListState(type, comparison, patients) {
+        this.setState({isVisible: false})
         this.setState({ [type] : this.state[type].cloneWithRows(Object.values(patients).sort(comparison)) });
     }
 
@@ -67,16 +77,20 @@ export default class Overview extends Component {
 
             self.patientsRef.child(snap.key).on('value', (snapshot) => {
 
-                var item = {
-                    pID: snapshot.key,
-                    name: snapshot.val().name,
-                    status: snapshot.val().status,
-                    caregiverDistress: snapshot.val()["caregiverDistress"]
-                }
+                self.caregiversRef.child(snapshot.val()["primary caregiver"] + "/Profile/name").once('value', snsht => {
 
-                patients[snapshot.key] = item
+                    var item = {
+                        pID: snapshot.key,
+                        name: snapshot.val().name,
+                        status: snapshot.val().status,
+                        caregiverDistress: snapshot.val()["caregiver distress"],
+                        primaryCaregiver: snsht.val()
+                    }
 
-                setState(patients)
+                    patients[snapshot.key] = item
+
+                    setState(patients)
+                })
             })
         })
 
@@ -181,22 +195,31 @@ export default class Overview extends Component {
     render() {
 
         return (
-            <View style={styles.container}>
+            <View style={SharedStyle.container}>
                 <Header
                     text={"Overview"}
-                    headerStyle={styles.header}
-                    textStyle={styles.header_text}/>
-                <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-                    { this.renderTable("Critical Patients", "All Critical", "criticalPatients", "Critical Patients") }
-                    { this.renderTable("Status Updates", "All Updates", "updatedPatients", "RC Patients") }
-                    { this.renderTable("Distressed Caregivers", "All Distressed", "distressedPatients") }
-                </ScrollView>
+                    headerStyle={SharedStyle.header}
+                    textStyle={SharedStyle.header_text}/>
+                { this.renderView()}
                 <ModalView
                     modalVisible={this.state.modalVisible}
                     patientID={this.state.modalVisiblePatient}
                     closeModal={this.setModalVisible.bind(this, null, false)}/>
             </View>
         );
+    }
+
+    renderView() {
+        return ( this.state.isVisible ?
+            <LoadingAnimationView animation={this.state.isVisible}/>
+            :
+            <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+                { this.renderTable("Critical Patients", "All Critical", "criticalPatients", "Critical Patients") }
+                { this.renderTable("Status Updates", "All Updates", "updatedPatients", "RC Patients") }
+                { this.renderTable("Distressed Caregivers", "All Distressed", "distressedPatients", "Distressed Patients") }
+            </ScrollView>
+
+        )
     }
 
     renderRow(patient: Object, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) {
@@ -210,26 +233,18 @@ export default class Overview extends Component {
                 status={patient.status}
                 actionIcon={squarePhoneIcon}
                 mainText={patient.name}
-                subTitleText={patient.phone}/>
-        )
-    }
-
-    renderFooter() {
-        return (
-            <TouchableHighlight
-                style={styles.headerStyle}
-                onPress={this.props.onPress}
-                underlayColor={'#B0BEC5'}>
-                <Text style={[styles.buttonText, {marginLeft: 10}]}>All {this.props.title}</Text>
-            </TouchableHighlight>
+                subText={patient.primaryCaregiver}/>
         )
     }
 
     renderTable(title, footerTitle, datasource, fbLabel) {
+        var entrance = ['slideInDown', 'slideInUp', 'slideInLeft', 'slideInRight'][Math.floor(Math.random() * 3)]
+
         return ( this.state[datasource].getRowCount() == 0 ?
                 null
                 :
                 <TableViewGroup
+                    animation={entrance}
                     headerTitle={title}
                     footerTitle={footerTitle}
                     onPress={this.onPressHeader.bind(this, fbLabel)}
@@ -242,20 +257,6 @@ export default class Overview extends Component {
 }
 
 const styles = EStyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '$colors.lightGray',
-    },
-    header: {
-        height: 60,
-        backgroundColor: '$colors.status',
-    },
-    header_text: {
-        color: '$colors.lightGray',
-        fontSize: 16,
-        fontWeight: '500',
-        fontFamily: "$fonts.family",
-    },
     scrollViewContainer: {
         backgroundColor: 'transparent',
     },

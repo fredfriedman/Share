@@ -1,6 +1,6 @@
 dependencies: \
-  /Users/aaronliberatore/Documents/Projects/Hospice/node_modules/react-native/Libraries/Text/RCTTextSelection.m \
-  /Users/aaronliberatore/Documents/Projects/Hospice/node_modules/react-native/Libraries/Text/RCTTextSelection.h \
+  /Users/aaronliberatore/Documents/Projects/Share/Hospice/node_modules/react-native/Libraries/Text/RCTTextSelection.m \
+  /Users/aaronliberatore/Documents/Projects/Share/Hospice/node_modules/react-native/Libraries/Text/RCTTextSelection.h \
   ../../React/Base/RCTConvert.h ../../React/CSSLayout/CSSLayout.h \
   ../../React/CSSLayout/CSSMacros.h ../../React/Views/RCTAnimationType.h \
   ../../React/Views/RCTBorderStyle.h \

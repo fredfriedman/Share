@@ -1,6 +1,6 @@
 dependencies: \
-  /Users/aaronliberatore/Documents/Projects/Hospice/node_modules/react-native/Libraries/Geolocation/RCTLocationObserver.m \
-  /Users/aaronliberatore/Documents/Projects/Hospice/node_modules/react-native/Libraries/Geolocation/RCTLocationObserver.h \
+  /Users/aaronliberatore/Documents/Projects/Share/Hospice/node_modules/react-native/Libraries/Geolocation/RCTLocationObserver.m \
+  /Users/aaronliberatore/Documents/Projects/Share/Hospice/node_modules/react-native/Libraries/Geolocation/RCTLocationObserver.h \
   ../../React/Modules/RCTEventEmitter.h ../../React/Base/RCTBridge.h \
   ../../React/Base/RCTBridgeDelegate.h \
   ../../React/Base/RCTJavaScriptLoader.h \

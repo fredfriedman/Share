@@ -1,7 +1,7 @@
 dependencies: \
-  /Users/aaronliberatore/Documents/Projects/Hospice/node_modules/react-native/Libraries/Text/RCTText.m \
-  /Users/aaronliberatore/Documents/Projects/Hospice/node_modules/react-native/Libraries/Text/RCTText.h \
-  /Users/aaronliberatore/Documents/Projects/Hospice/node_modules/react-native/Libraries/Text/RCTShadowText.h \
+  /Users/aaronliberatore/Documents/Projects/Share/Hospice/node_modules/react-native/Libraries/Text/RCTText.m \
+  /Users/aaronliberatore/Documents/Projects/Share/Hospice/node_modules/react-native/Libraries/Text/RCTText.h \
+  /Users/aaronliberatore/Documents/Projects/Share/Hospice/node_modules/react-native/Libraries/Text/RCTShadowText.h \
   ../../React/Views/RCTShadowView.h ../../React/CSSLayout/CSSLayout.h \
   ../../React/CSSLayout/CSSMacros.h ../../React/Views/RCTComponent.h \
   ../../React/Base/RCTRootView.h ../../React/Base/RCTBridge.h \

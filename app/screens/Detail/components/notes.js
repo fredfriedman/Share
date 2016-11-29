@@ -8,14 +8,13 @@ import {
 } from 'react-native';
 
 import EStyleSheet from 'react-native-extended-stylesheet';
-import { personIcon } from '../../../config/images'
 import NotesInput from './notes-input'
 import Note from './note'
 
 export default class NotesPage extends Component {
 
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
     }
 
     addNote() {
@@ -32,29 +31,21 @@ export default class NotesPage extends Component {
     render(){
         return (
             <View style={this.props.containerStyle}>
-                <Text style={this.props.labelStyle}> Notes </Text>
                 <ListView
                     ref={ref => this.listView = ref}
-                    onLayout={event => {
-                        this.listViewHeight = event.nativeEvent.layout.height
-                    }}
-                    onContentSizeChange={() => {
-                        this.listView.scrollTo({y: this.listView.getMetrics().contentLength - this.listViewHeight})
-                    }}
                     dataSource={this.props.notes}
-                    renderRow={(note) => <Note note={note} poster={personIcon}/>}
+                    renderRow={(note) => <Note note={note}/>}
                     renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
-                    renderFooter={() =>
-                        <View style={styles.footer}>
-                            <TouchableHighlight
-                                onPress={this.addNote.bind(this)}
-                                style={styles.button}
-                                underlayColor={'transparent'}>
-                                <Text style={styles.text}> Comment </Text>
-                            </TouchableHighlight>
-                        </View>}
                     scrollEnabled={true}
                     enableEmptySections={true} />
+                <View style={styles.footer}>
+                    <TouchableHighlight
+                        onPress={this.addNote.bind(this)}
+                        style={styles.button}
+                        underlayColor={'transparent'}>
+                        <Text style={styles.text}> Comment </Text>
+                    </TouchableHighlight>
+                </View>
             </View>
         );
     }
@@ -78,6 +69,7 @@ const styles = EStyleSheet.create({
     },
     separator: {
         flex: 1,
+        marginLeft: 25,
         height: '$dimensions.hairlineWidth',
         backgroundColor: '$colors.mediumGray',
     },

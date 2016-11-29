@@ -1,8 +1,8 @@
 dependencies: \
-  /Users/aaronliberatore/Documents/Projects/Hospice/node_modules/react-native/Libraries/Image/RCTImageUtils.m \
-  /Users/aaronliberatore/Documents/Projects/Hospice/node_modules/react-native/Libraries/Image/RCTImageUtils.h \
+  /Users/aaronliberatore/Documents/Projects/Share/Hospice/node_modules/react-native/Libraries/Image/RCTImageUtils.m \
+  /Users/aaronliberatore/Documents/Projects/Share/Hospice/node_modules/react-native/Libraries/Image/RCTImageUtils.h \
   ../../React/Base/RCTDefines.h \
-  /Users/aaronliberatore/Documents/Projects/Hospice/node_modules/react-native/Libraries/Image/RCTResizeMode.h \
+  /Users/aaronliberatore/Documents/Projects/Share/Hospice/node_modules/react-native/Libraries/Image/RCTResizeMode.h \
   ../../React/Base/RCTConvert.h ../../React/CSSLayout/CSSLayout.h \
   ../../React/CSSLayout/CSSMacros.h ../../React/Views/RCTAnimationType.h \
   ../../React/Views/RCTBorderStyle.h \

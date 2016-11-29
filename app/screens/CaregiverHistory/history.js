@@ -33,7 +33,7 @@ export default class History extends Component {
     parseAssessments(snap) {
         var agg = 0
         for (var child in snap.val().Results) {
-            agg += parseInt(snap.val().Results[child].level)
+            if ( child != "Caregiver" ) { agg += parseInt(snap.val().Results[child].level) }
         }
         agg = Math.floor(agg/80*100)
         return {

@@ -4,10 +4,10 @@ import Dimensions from 'Dimensions'
 export default {
 
     colors: {
-        main: '#00BCD4',      // Teal
+        main: '#00ACC1',      // Teal
         status: '#0097A7',  // Darker Teal
         secondary: '#E7E7E7', // Silver
-        mainText: '#00BCD4',
+        mainText: '#00ACC1',
         secondaryText: '#f7f7f7',
         button: 'green',
         header: 'red',
