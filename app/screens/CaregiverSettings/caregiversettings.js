@@ -8,31 +8,17 @@ import Header from '../../components/header';
 import changepatientdetail from './ChangePatientDetail';
 import caregiverprofile from './CaregiverProfileInformation';
 import Icon from 'react-native-vector-icons/Ionicons';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
-var styles = StyleSheet.create({
-	imageStyle:{
+export default class CaregiverSettings extends Component {
 
-	},
-	titleInfoStyle:{
-
-	},
-});
-
-export default class caregiversettings extends Component {
 	constructor(){
 		super();
-		this.onValueChange = this.onValueChange.bind(this);
-		this.state = {switchValue: false,
-		};
 
-		//set states from firebase
-		var self = this;
+		this.onValueChange = this.onValueChange.bind(this);
+		this.state = {switchValue: false };
+
 		this.fb = new firebaseHelper();
-		this.fb.getCaregiverPromise('sD2AEvyjW9S2xuOY1yWPf7XkqUU2').then(function(caregiver){
-			self.setState(
-				{patientId: caregiver}
-			);
-		});
 	}
 
   	//clear asyn storage, logout with firebase, navigator clear
@@ -45,7 +31,12 @@ export default class caregiversettings extends Component {
 		return (
 
 		 	<View style={{backgroundColor:'#EFEFF4',flex:1}}>
-		 		<Header text={"Settings"} textStyle={{color: 'white'}} leftAction={this.onBack.bind(this)} leftIcon={backIcon}/>
+		 		<Header
+					text={"Settings"}
+					headerStyle={styles.header}
+					textStyle={styles.header_text}
+					leftAction={this.onBack.bind(this)}
+					leftIcon={backIcon}/>
 				<View style={{backgroundColor:'#EFEFF4',flex:1}}>
 					<SettingsList borderColor='#c8c7cc' defaultItemSize={50}>
 						<SettingsList.Header headerStyle={{marginTop:15}}/>
@@ -56,7 +47,7 @@ export default class caregiversettings extends Component {
 						/>
 						<SettingsList.Item
 						  	title='Patient Info'
-						  	titleInfo={'Patient ID: '+this.state.patientId}
+						  	titleInfo={'Patient ID: '+this.props.user.Patient}
 						  	titleInfoStyle={styles.titleInfoStyle}
 						  	onPress={() => this.changePatientId()}
 						/>
@@ -81,16 +72,20 @@ export default class caregiversettings extends Component {
 	}
 
 	onViewProfileInformation(){
+		console.log("hi",this.props, this.props.user)
 		this.props.navigator.push({
 			component:caregiverprofile,
-			sceneConfig: Navigator.SceneConfigs.FloatFromBottom
+			sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
+			passProps: {user: this.props.user}
+
 		});
 	}
 
 	changePatientId(){
 		this.props.navigator.push({
 			component:changepatientdetail,
-			sceneConfig: Navigator.SceneConfigs.FloatFromBottom
+			sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
+			passProps: {user: this.props.user}
 		});
 	}
 
@@ -115,3 +110,15 @@ export default class caregiversettings extends Component {
 		})
   	}
 }
+
+const styles = EStyleSheet.create({
+	header: {
+        backgroundColor: '$colors.main',
+    },
+    header_text: {
+        color: '$colors.lightGray',
+        fontSize: 16,
+        fontWeight: '500',
+        fontFamily: "$fonts.family",
+    },
+});
