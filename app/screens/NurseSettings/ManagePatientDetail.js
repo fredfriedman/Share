@@ -51,7 +51,7 @@ export default class ManagePatientDetail extends Component{
 
 	render(){
 		return(
-			<View>
+			<View style ={styles.container}>
 				<Header
                     text= "Manage Patients"
                     leftAction={()=> console.log('Hello')}
@@ -73,7 +73,6 @@ export default class ManagePatientDetail extends Component{
 		            leftOpenValue={75}
 		        />
 			</View>
-
 
 		);
 	}
