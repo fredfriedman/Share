@@ -1,7 +1,7 @@
 import React from 'react';
 import {ListView} from 'react-native';
 import {connect} from 'react-redux';
-import ManagePatientDetail from '../screens/NurseSettings/ManagePatientDetail';
+import ManageCaregiverDetail from '../screens/NurseSettings/ManageCaregiverDetail';
 import { addPatient ,removePatient, initializeCaregiverList, initializePatientList} from '../actions/Actions';
 import firebaseHelper from '../screens/CaregiverSettings/firebaseHelper'
 
@@ -23,4 +23,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 export default connect(
 	mapStateToProps, 
 	mapDispatchToProps
-	) (ManagePatientDetail);
+	) (ManageCaregiverDetail);

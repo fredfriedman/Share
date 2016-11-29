@@ -62,11 +62,11 @@ export function initializePatientList(){
 	};
 }
 
-export function initializeNurseList(){
+export function initializeCaregiverList(){
 	return function(dispatch){
 		let f = new firebaseHelper();
-		return f.getNursesPromise().then(function(nurseList){
-			dispatch({type: INITIALIZE_NURSES, nurseList});
+		return f.getCaregiverListPromise().then(function(caregiverList){
+			dispatch({type: INITIALIZE_NURSES, caregiverList});
 		})
 
 	};

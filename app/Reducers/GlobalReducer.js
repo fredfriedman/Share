@@ -13,6 +13,7 @@ export default  function globalReducer(state = initialState, action){
 			f.createNewPatient(action.patientName, action.patientStatus);
 
 		case REMOVE_PATIENT:
+			f.setPatientInactive(action.patientId);
 		case ASSIGN_CAREGIVER:
 		case NURSE_MESSAGE:
 		case PATIENT_MESSAGE:
@@ -20,7 +21,7 @@ export default  function globalReducer(state = initialState, action){
 			return {...state, patients: action.patientList}
 		case INITIALIZE_NURSES:
 			// console.log("NEW********************************************************************************************&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-			return  {...state, nurses: action.nurseList}
+			return  {...state, nurses: action.caregiverList}
 		default:
 			return state
 	}

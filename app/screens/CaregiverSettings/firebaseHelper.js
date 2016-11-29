@@ -9,6 +9,10 @@ export default class firebaseHelper {
 
     }
 
+    setPatientInactive(patientId){
+        firebase.database().ref('Patients/' + patientId+'/active').set(false);
+    }
+
     createNewPatient(patientName, patientStatus){
         let userId = firebase.auth().currentUser.uid;
         firebase.database().ref('Patients/' + userId).set({
@@ -22,13 +26,13 @@ export default class firebaseHelper {
     }
 
     getPatientsPromise(){
-        return firebase.database().ref('Caregivers/').once('value').then(function(snapshot) {
+        return firebase.database().ref('Patients/').once('value').then(function(snapshot) {
             return snapshot.val();
         });
     }
 
-    getNursesPromise(){
-        return firebase.database().ref('Nurses/').once('value').then(function(snapshot) {
+    getCaregiverListPromise(){
+        return firebase.database().ref('Caregivers/').once('value').then(function(snapshot) {
             return snapshot.val();
         });
     }
