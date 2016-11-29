@@ -2,12 +2,13 @@ import React, {Component} from 'react';
 import {View,Text, ListView, TouchableHighlight} from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import EStyleSheet from 'react-native-extended-stylesheet';
+import Header from '../../components/header';
 
 
 data = {
 
 }
-
 
 export default class ManageCaregiverDetail extends Component{
 	constructor(props){
@@ -47,22 +48,21 @@ export default class ManageCaregiverDetail extends Component{
 	
 	render(){
 		return(
-			<View>
-				<View style={{borderBottomWidth:1, backgroundColor:'#00BCD4',borderColor:'#c8c7cc'}}>
-           			<Text style={{alignSelf:'center',marginTop:30,marginBottom:20,fontWeight:'bold',fontSize:16, color: 'white'}}>Manage Caregivers</Text>
-           			<TouchableHighlight onPress = {() =>console.log("sensing")}>
-					    <Icon name="plus" size = {30} color = "white"/>
-				    </TouchableHighlight>
-         		</View>
+			<View style = {styles.container}>
+				<Header
+                    text= 'Manage Caregivers'
+                    leftAction={()=> console.log('Hello')}
+                    leftIcon={<Icon name = 'plus' size = {20} color = 'white'/>}/>
          		<SwipeListView
 		            dataSource={this.state.datasource}
 		            renderRow={ data => (
-		                <View>
-		                    <Text>Name: {data.name} ID: {data.id}</Text>
+		                <View style = {styles.rowFront}>
+		                    <Text>Name: {data.name}</Text>
+		                    <Text>ID: {data.id}</Text>
 		                </View>
 		            )}
 		            renderHiddenRow={ (data, secId, rowId, rowMap) => (
-		                <TouchableHighlight onPress = {()=> this.deleteRow(data, secId,rowId,rowMap)}>
+		                <TouchableHighlight style = {styles.rowBack} onPress = {()=> this.deleteRow(data, secId,rowId,rowMap)}>
 		                    <Text>Delete</Text>
 		                </TouchableHighlight>
 		            )}
@@ -84,6 +84,23 @@ export default class ManageCaregiverDetail extends Component{
 		this.props.initializeCaregiverList();
 	}
 }
+
+const styles = EStyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: '$colors.lightGray',
+	},
+
+	rowFront:{
+		backgroundColor: '$colors.lightGray',
+		paddingLeft: 20,
+
+
+	},
+
+	rowBack:{},
+	
+});
 
 ManageCaregiverDetail.propTypes = {
 	onRemove: React.PropTypes.func.isRequired,

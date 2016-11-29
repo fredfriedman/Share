@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {View,Text, ListView, TouchableHighlight} from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Header from '../../components/header';
 
 
 data = {
@@ -46,15 +47,15 @@ export default class ManagePatientDetail extends Component{
 		}
 	}
 	
+
+
 	render(){
 		return(
 			<View>
-				<View style={{borderBottomWidth:1, backgroundColor:'#00BCD4',borderColor:'#c8c7cc'}}>
-           			<Text style={{alignSelf:'center',marginTop:30,marginBottom:20,fontWeight:'bold',fontSize:16, color: 'white'}}>Manage Patients</Text>
-           			<TouchableHighlight onPress = {() =>console.log("sensing")}>
-					    <Icon name="plus" size = {30} color = "white"/>
-				    </TouchableHighlight>
-         		</View>
+				<Header
+                    text= "Manage Patients"
+                    leftAction={()=> console.log('Hello')}
+                    leftIcon={<Icon name = 'plus' size = {20} color="white" />}/>
          		<SwipeListView
 		            dataSource={this.state.datasource}
 		            renderRow={ data => (

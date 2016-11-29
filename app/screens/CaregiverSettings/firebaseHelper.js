@@ -28,7 +28,7 @@ export default class firebaseHelper {
     createNewCaregiver(patientId, caregiverName, phoneNumber, relation){
         let userId = firebase.auth().currentUser.uid;
         firebase.database().ref('Caregivers/' + userId).set({
-        Patient: patientId
+        Patient: patientId,
         Profile:{
             name: caregiverName,
             phone: phoneNumber,
