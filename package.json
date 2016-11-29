@@ -33,7 +33,8 @@
     "react-native-textinput-effects": "^0.1.3",
     "react-native-vector-icons": "^3.0.0",
     "react-redux": "^4.4.6",
-    "redux": "^3.6.0"
+    "redux": "^3.6.0",
+    "redux-thunk": "^2.1.0"
   },
   "devDependencies": {
     "babel-jest": "^16.0.0",

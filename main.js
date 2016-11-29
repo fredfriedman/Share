@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { AsyncStorage, Navigator} from 'react-native';
-import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { Provider,  } from 'react-redux';
+import thunk from 'redux-thunk';
+import { createStore,applyMiddleware } from 'redux';
 import globalReducer from './app/reducers/GlobalReducer';
 
-let store = createStore(globalReducer);
+let store = createStore(globalReducer, applyMiddleware(thunk));
 
 //need Reducers for React-redux
 

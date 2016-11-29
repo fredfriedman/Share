@@ -1,3 +1,5 @@
+
+import firebaseHelper from '../screens/CaregiverSettings/firebaseHelper';
 /*
 * action types
 */
@@ -30,12 +32,10 @@ export const INITIALIZE_NURSES = 'INITIALIZE_NURSES';
 
 //Firebase Functionality
 export function addPatient(patientName, patientStatus){
-	console.log("HELLO");
 	return {type: ADD_PATIENT, patientName, patientStatus}
 }
 
 export function removePatient(patientId){
-	console.log("goodbye");
 	return {type: REMOVE_PATIENT, patientId}
 }
 
@@ -53,9 +53,21 @@ export function messageNurse(nurseId, patientId, message){
 }
 
 export function initializePatientList(){
-	return {type: INITIALIZE_PATIENTS};
+	return function(dispatch){
+		let f = new firebaseHelper();
+		return f.getPatientsPromise().then(function(patientList){
+			dispatch({type: INITIALIZE_PATIENTS, patientList});
+		})
+
+	};
 }
 
 export function initializeNurseList(){
-	return {type: INITIALIZE_NURSES};
+	return function(dispatch){
+		let f = new firebaseHelper();
+		return f.getNursesPromise().then(function(nurseList){
+			dispatch({type: INITIALIZE_NURSES, nurseList});
+		})
+
+	};
 }

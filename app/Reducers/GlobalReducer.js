@@ -8,7 +8,6 @@ initialState = {
 
 export default  function globalReducer(state = initialState, action){
 	let f = new firebaseHelper();
-
 	switch(action.type) {
 		case ADD_PATIENT:
 			f.createNewPatient(action.patientName, action.patientStatus);
@@ -18,7 +17,10 @@ export default  function globalReducer(state = initialState, action){
 		case NURSE_MESSAGE:
 		case PATIENT_MESSAGE:
 		case INITIALIZE_PATIENTS:
+			return {...state, patients: action.patientList}
 		case INITIALIZE_NURSES:
+			// console.log("NEW********************************************************************************************&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+			return  {...state, nurses: action.nurseList}
 		default:
 			return state
 	}

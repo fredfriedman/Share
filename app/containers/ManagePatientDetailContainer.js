@@ -1,4 +1,5 @@
 import React from 'react';
+import {ListView} from 'react-native';
 import {connect} from 'react-redux';
 import ManagePatientDetail from '../screens/NurseSettings/ManagePatientDetail';
 import { addPatient ,removePatient, initializeNurseList, initializePatientList} from '../actions/Actions';
@@ -14,7 +15,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
 		onRemove: (patientId) => { dispatch(removePatient(patientId)) },
 		onAdd: (patientId, patientStatus) => { dispatch(addPatient(patientId, patientStatus)) },
-		initializePatientTable: () => {dispatch(initializePatientList())},
+		initializePatientList: () => {dispatch(initializePatientList())},
 		initializeNurseList: () => {dispatch(initializeNurseList())},
 	}
 }
