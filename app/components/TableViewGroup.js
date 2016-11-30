@@ -1,10 +1,12 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { TouchableHighlight, ListView, Text, View } from 'react-native';
+import { TouchableHighlight, ListView, Text } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import Icon from 'react-native-vector-icons/Ionicons';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import DefaultEmptyTableViewCell from './defaultEmptyTableViewCell'
+import { View } from 'react-native-animatable';
 
 export default class TableViewGroup extends Component {
 
@@ -12,7 +14,9 @@ export default class TableViewGroup extends Component {
         super();
 
         this.state = {
-            name: 'default'
+            name: 'default',
+            animated: false,
+            count: 0,
         }
     }
 
@@ -23,12 +27,13 @@ export default class TableViewGroup extends Component {
     render() {
 
         return (
-            <View style={this.props.style}>
-                {this.renderHeader()}
+            <View animation={this.props.animation && this.state.animated ? null : this.props.animation} style={this.props.style}>
                 <SwipeListView
                     dataSource={this.props.dataSource}
                     renderRow={this.props.renderRow}
-                    renderSeparator={this.props.renderSeparator || null}
+                    renderHeader={this.props.headerTitle != null ? this.renderHeader.bind(this) : null}
+                    renderFooter={this.props.footerTitle != null ? this.renderFooter.bind(this) : null}
+                    renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}
                     scrollEnabled={this.props.scrollEnabled ? this.props.scrollEnabled : false }
                     renderHiddenRow={ (data, secId, rowId) => this.renderHiddenRow(data, secId, rowId)}
                     rightOpenValue={-75}
@@ -56,30 +61,48 @@ export default class TableViewGroup extends Component {
     renderHeader() {
         const disclosureIcon = (<Icon name="ios-arrow-forward" style={{marginRight: 10}} size={20} color="#212121" />);
 
-        if (this.props.headerIsEnabled || this.props.headerStyle) {
-            return ( this.props.disableHeaderButton != null && this.props.disableHeaderButton ?
-                    <View style={[this.props.headerStyle, {flexDirection: 'row'}]}>
-                        <Text style={this.props.textStyle}> {this.props.title} </Text>
+        return (
+                <View style={styles.header}>
+                    <Text style={styles.headerText}>{this.props.headerTitle}</Text>
+                    <View style={styles.separator} />
+                </View>
+        )
+    }
+
+    renderFooter() {
+        return (
+                <TouchableHighlight
+                    onPress={this.props.onPress}
+                    underlayColor={'#B0BEC5'}>
+                    <View style={styles.footer}>
+                        <View style={styles.separator} />
+                        <Text style={styles.buttonText}>{this.props.footerTitle}</Text>
                     </View>
-                    :
-                    <TouchableHighlight
-                        style={this.props.headerStyle}
-                        onPress={this.props.onPress}
-                        underlayColor={'#B0BEC5'}>
-                        <View style={{flexDirection: 'row'}}>
-                            <Text style={this.props.textStyle}> {this.props.title} </Text>
-                            <View style={{flex: 1}} />
-                            { disclosureIcon }
-                        </View>
-                    </TouchableHighlight>
-            )
-        } else {
-            return ( null )
-        }
+                </TouchableHighlight>
+        )
     }
 }
 
 const styles = EStyleSheet.create({
+    buttonText: {
+        color: "#007AFF",
+        marginLeft: 10
+    },
+    header: {
+        height: 35,
+        paddingTop: 10,
+        justifyContent: 'space-between'
+    },
+    footer: {
+        height: 35,
+        paddingBottom: 10,
+        justifyContent: 'space-between'
+    },
+    headerText: {
+        color: '$colors.darkGray',
+        fontWeight: 'bold',
+        marginLeft: 10
+    },
     hiddenRow: {
         flexDirection: 'row',
         flex: 1,
@@ -94,6 +117,11 @@ const styles = EStyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    separator: {
+        marginLeft: 10,
+        height: '$dimensions.hairlineWidth',
+        backgroundColor: '$colors.lightGray',
     },
     text: {
         color: '$colors.status',

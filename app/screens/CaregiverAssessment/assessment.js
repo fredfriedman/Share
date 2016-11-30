@@ -31,12 +31,12 @@ export default class Assessment extends Component {
             scrollViewEnabled: true,
             swiperHeight: 0,
             user: this.props.user,
-            questionTypes: ["Pain", "Tiredness", "Nausea", "Depression", "Anxiety", "Drowsiness", "Appetite", "Shortness of Breath", "Caregiver"],
+            questionTypes: ["Pain", "Tiredness", "Nausea", "Depression", "Anxiety", "Drowsiness", "Appetite", "Shortness Of Breath", "Caregiver"],
             databaseKey: null,
             assessmentObject: {
-                date: this.formatDate(new Date()),
+                date: new Date().getTime(),
                 submittedBy: this.props.user.id,
-                results: {
+                Results: {
                     Pain: {
                         value: 0,
                         medicationChange: 'none'
@@ -65,7 +65,7 @@ export default class Assessment extends Component {
                         value: 6,
                         medicationChange: 'none'
                     },
-                    ShortnessOfBreath: {
+                    "Shortness Of Breath": {
                         value: 7,
                         medicationChange: 'none'
                     },
@@ -81,7 +81,7 @@ export default class Assessment extends Component {
 
     saveAssessmentObject() {
         var serializedAssessment = JSON.stringify(this.state.assessmentObject);
-        return store.save(this.state.assessmentObject.date.toString(), serializedAssessment)
+        return store.save(this.state.assessmentObject.date.timestamp.toString(), serializedAssessment)
             .then(json => console.log('Save success!'))
             .catch(error => console.log('Save error!'));
     }
@@ -104,7 +104,8 @@ export default class Assessment extends Component {
         var updates = {};
         updates['Patients/' + this.state.user.Patient + '/Assessments/' + databaseKey] = this.state.assessmentObject;
 
-        return firebase.database().ref().update(updates);
+        return firebase.database().ref().update(updates)
+
     }
 
     formatDate(date) {
@@ -129,8 +130,8 @@ export default class Assessment extends Component {
 
     onSlideComplete = (questionType, value) => {
         var newAssessmentObject = _.clone(this.state.assessmentObject);
-        var sanitizedQuestionType = this.removeSpacesAndCapitalize(questionType);
-        newAssessmentObject.results[sanitizedQuestionType].value = value;
+        var sanitizedQuestionType = questionType//this.removeSpacesAndCapitalize(questionType);
+        newAssessmentObject.Results[sanitizedQuestionType].value = value;
         this.setState({assessmentObject: newAssessmentObject});
 
         this.saveAssessmentObject();
@@ -138,8 +139,8 @@ export default class Assessment extends Component {
 
     onMedicationChange = (questionType, medicationChange) => {
         var newAssessmentObject = _.clone(this.state.assessmentObject);
-        var sanitizedQuestionType = this.removeSpacesAndCapitalize(questionType);
-        newAssessmentObject.results[sanitizedQuestionType].medicationChange = medicationChange;
+        var sanitizedQuestionType = questionType//this.removeSpacesAndCapitalize(questionType);
+        newAssessmentObject.Results[sanitizedQuestionType].medicationChange = medicationChange;
         this.setState({assessmentObject: newAssessmentObject});
 
         this.saveAssessmentObject();
@@ -149,9 +150,9 @@ export default class Assessment extends Component {
         var assessmentQuestions = [];
         for (var i = 0; i < this.state.questionTypes.length; i++) {
             var currentQuestionType = this.state.questionTypes[i];
-            var sanitizedQuestionType = this.removeSpacesAndCapitalize(currentQuestionType);
-            var questionValue = this.state.assessmentObject.results[sanitizedQuestionType].value;
-            var questionMedicationChange = this.state.assessmentObject.results[sanitizedQuestionType].medicationChange;
+            var sanitizedQuestionType = currentQuestionType//this.removeSpacesAndCapitalize(currentQuestionType);
+            var questionValue = this.state.assessmentObject.Results[sanitizedQuestionType].value;
+            var questionMedicationChange = this.state.assessmentObject.Results[sanitizedQuestionType].medicationChange;
             assessmentQuestions.push(
                 <Question
                     style={{flex: 1}}
@@ -187,13 +188,13 @@ export default class Assessment extends Component {
         var assessmentPages = this.generateAssessmentPages();
 
         return (
-            <View 
+            <View
                 style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
-                <Header 
-                    text={"Assessment - " + this.state.assessmentObject.date} 
-                    textStyle={{color: 'white'}} 
-                    leftAction={this.onBack.bind(this)} 
-                    leftIcon={backIcon}/> 
+                <Header
+                    text={"Assessment - " + this.state.assessmentObject.date}
+                    textStyle={{color: 'white'}}
+                    leftAction={this.onBack.bind(this)}
+                    leftIcon={backIcon}/>
                 <View
                     style={{ flex: 1 }}
                     onLayout={ (e) => {
@@ -214,7 +215,7 @@ export default class Assessment extends Component {
                         activeDot={<View style={{backgroundColor: '#FF9800', width: 8, height: 8, borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3,}} />}
                     >
                         {assessmentPages}
-                        
+
                     </Swiper>
                 </View>
             </View>
@@ -224,12 +225,12 @@ export default class Assessment extends Component {
 
 var Styles = EStyleSheet.create({
   buttonWrapperStyle: {
-    backgroundColor: 'transparent', 
-    flexDirection: 'row', 
-    paddingHorizontal: 5, 
-    paddingBottom: 15, 
-    flex: 1, 
-    justifyContent: 'space-between', 
+    backgroundColor: 'transparent',
+    flexDirection: 'row',
+    paddingHorizontal: 5,
+    paddingBottom: 15,
+    flex: 1,
+    justifyContent: 'space-between',
     alignItems: 'flex-end'
   }
 });

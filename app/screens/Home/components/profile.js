@@ -2,19 +2,20 @@
 
 import React, { Component } from 'react';
 import {
+        AsyncStorage,
         Image,
-        ListView,
-        StyleSheet,
         Text,
         TouchableHighlight,
         View,
     } from 'react-native';
 
-import {personIcon} from '../../../config/images'
 import Header from '../../../components/header'
 import Firebase from '../../../config/firebase'
 import EStyleSheet from 'react-native-extended-stylesheet';
-
+import SharedStyle from '../styles'
+import { Col, Row, Grid } from "react-native-easy-grid";
+import Platform from 'react-native'
+import ImagePicker from 'react-native-image-picker'
 // Assets
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -24,66 +25,172 @@ export default class Profile extends Component {
         super(props);
 
         this.state = {
-            dataSource: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2, }),
+            avatarSource: null,
         }
 
-        console.log(props)
+        this.nursePictureRef = this.getRef().child('Nurses/'+ props.user.id + '/Profile/')
     }
 
-    componentWillMount() {
-        console.log(this.props)
+    getRef() {
+        return Firebase.database().ref();
     }
+
+    editPhoto() {
+        const options = {
+            quality: 1.0,
+            maxWidth: 500,
+            maxHeight: 500,
+            storageOptions: {
+            skipBackup: true
+            }
+        };
+
+        ImagePicker.showImagePicker(options, (response) => {
+
+            if (response.didCancel) {
+                console.log('User cancelled photo picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            } else {
+
+                this.setState({
+                    avatarSource: 'data:image/jpeg;base64,' + response.data
+                });
+
+                this.nursePictureRef.update({picture: 'data:image/jpeg;base64,' + response.data});
+
+                var user = this.props.user
+                user.Profile["picture"] = 'data:image/jpeg;base64,' + response.data
+
+                AsyncStorage.setItem("user_data", JSON.stringify(user))
+            }
+        });
+    }
+
+    renderProfilePic() {
+        const defaultImage = <Icon name="ios-contact" ios="ios-contact" md="ios-contact" size={150} color='#262626'/>
+
+        return ( this.props.user.Profile.picture ?
+            <View>
+                <Image style={styles.profilePicture} source={{uri: this.props.user.Profile.picture, isStatic: true}}/>
+                <View style={styles.overlay}>
+                    <Text style={styles.overlayText}>Edit</Text>
+                </View>
+            </View>
+         :
+            <View>{ defaultImage }</View>
+        )
+    }
+
     render() {
-        const defaultImage = <Icon name="md-person" ios="ios-person" md="md-person" size={50} color='white'/>
+        const messageIcon = (<Icon name="ios-create-outline" size={30} color="#f7f7f7" />);
+        const emailIcon = (<Icon name="ios-mail-outline" size={30} color="#f7f7f7" />);
+        const phoneIcon = (<Icon name="ios-call" ios="ios-call" md="ios-call" size={30} color="#f7f7f7" />);
+        const mapIcon = (<Icon name="ios-map-outline" ios="ios-map-outline" md="ios-map-outline" size={30} color="#f7f7f7" />);
+
+        const emailIcon1 = (<Icon name="ios-mail-outline" size={20} color="#00BCD4" />);
+        const phoneIcon1 = (<Icon name="ios-call" ios="ios-call" md="ios-call" size={30} color="#00BCD4" />);
 
         return (
-        <View style={styles.container}>
-            <View style={styles.topBox}>
-                <View style={styles.profilePictureContainer}>
-                    <Image style={styles.profilePicture} source={personIcon}/>
+            <View style={SharedStyle.container}>
+                <Header
+                    text={"Profile"}
+                    headerStyle={SharedStyle.header}
+                    textStyle={SharedStyle.header_text}/>
+                <View style={styles.topBox}>
+                    <TouchableHighlight
+                        onPress={this.editPhoto.bind(this)}
+                        style={styles.profilePicture}
+                        underlayColor={'transparent'}>
+                        { this.renderProfilePic() }
+                    </TouchableHighlight>
+                    <Text style={[styles.text, {paddingTop: 10}]}>{this.props.user.Profile.name}</Text>
+                    <Text style={[styles.text, {color: 'gray',fontSize: 12, paddingTop: 5}]}>{this.props.user.Profile.hospital}</Text>
                 </View>
-                <Text style={[styles.text, {paddingTop: 20}]}>{this.props.user.Profile.name}</Text>
-                <Text style={[styles.text, {fontSize: 12, paddingTop: 10}]}>{this.props.user.Profile.phone}</Text>
+                <View style={styles.strip}>
+                    <Grid>
+                        <Row>
+                            <Col style={{borderWidth: 0.5, borderColor: '#f7f7f7', justifyContent: 'center', alignItems: 'center'}}>
+                                <TouchableHighlight
+                                    onPress={() => console.log()}
+                                    style={styles.actionButton}
+                                    underlayColor={'transparent'}>
+                                    { emailIcon }
+                                </TouchableHighlight>
+                            </Col>
+                            <Col style={{borderWidth: 0.5, borderColor: '#f7f7f7',  justifyContent: 'center', alignItems: 'center'}}>
+                                <TouchableHighlight
+                                    onPress={() => console.log()}
+                                    style={styles.actionButton}
+                                    underlayColor={'transparent'}>
+                                    { messageIcon }
+                                </TouchableHighlight>
+                            </Col>
+                            <Col style={{borderWidth: 0.5, borderColor: '#f7f7f7',  justifyContent: 'center', alignItems: 'center'}}>
+                                <TouchableHighlight
+                                    onPress={() => console.log()}
+                                    style={styles.actionButton}
+                                    underlayColor={'transparent'}>
+                                    { mapIcon }
+                                </TouchableHighlight>
+                            </Col>
+                            <Col style={{borderWidth: 0.5, borderColor: '#f7f7f7', justifyContent: 'center', alignItems: 'center'}}>
+                                <TouchableHighlight
+                                    onPress={() => console.log()}
+                                    style={styles.actionButton}
+                                    underlayColor={'transparent'}>
+                                    { phoneIcon }
+                                </TouchableHighlight>
+                            </Col>
+                        </Row>
+                    </Grid>
+                </View>
+                <Grid style={styles.bottomBox}>
+                    <Row style={styles.row}>
+                        <Col style={styles.column}>
+                            { emailIcon1 }
+                            <Text style={[styles.text, {paddingLeft: 10}]}>{this.props.user.email}</Text>
+                        </Col>
+                        <Col style={styles.column}>
+                            { phoneIcon1 }
+                            <Text style={[styles.text, {paddingLeft: 10,}]}>{this.props.user.Profile.phone}</Text>
+                        </Col>
+                    </Row>
+                </Grid>
+                <View style={{flex: 1, backgroundColor: '#f7f7f7'}}/>
             </View>
-            <View style={styles.box}>
-                <ListView
-                    style={styles.listViewContainer}
-                    dataSource={this.state.dataSource.cloneWithRows([1,2,3])}
-                    renderRow={(data) => <View style={styles.cell}/>}
-                    renderSeparator={() => <View style={styles.separator}/>}/>
-            </View>
-        </View>
         );
     }
 }
 
 const styles = EStyleSheet.create({
+    actionButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 60,
+        width: 60,
+
+    },
     bottomBox: {
-        flex: 1,
-        backgroundColor: '$colors.lightGray',
+        height: 20,
+        paddingTop: 5,
+        backgroundColor: '#f7f7f7'
     },
     box: {
-        marginTop: 25,
-        shadowColor: "$colors.darkGray",
-        shadowOpacity: 0.8,
-        shadowRadius: 4,
-        shadowOffset: {
-            height: 2,
-            width: 0
-        },
-        elevation: 20,
+        backgroundColor: '$colors.lightGray'
     },
     cell: {
         height: '$dimensions.rowHeight',
         width: '$dimensions.screenWidth',
         backgroundColor: 'white',
     },
-    container: {
-        flex: 1,
-        backgroundColor: '$colors.lightGray',
-    },
-    header: {
-        backgroundColor: '$colors.lightGray',
+    column: {
+        height: 30,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     indicator: {
         width: 5,
@@ -98,6 +205,21 @@ const styles = EStyleSheet.create({
     listViewContainer: {
 
     },
+    overlay: {
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        width: 40,
+        height: 17.5,
+        borderRadius: 2.5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(247,247,247,0.6)'
+    },
+    overlayText: {
+        color: '$colors.darkGray',
+        fontSize: 10,
+    },
     pageControl: {
         position:'absolute',
         left: 0,
@@ -105,25 +227,12 @@ const styles = EStyleSheet.create({
         bottom: 10
     },
     profilePicture: {
-        height: 100,
-        width: 100,
-        borderRadius: 50,
-    },
-    profilePictureContainer: {
-        height: 100,
-        width: 100,
-        borderRadius: 50,
-        shadowColor: "$colors.darkGray",
-        shadowOpacity: 0.8,
-        shadowRadius: 4,
-        shadowOffset: {
-            height: 2,
-            width: 0
-        },
-        elevation: 20,
+        height: 125,
+        width: 125,
+        borderRadius: 15,
     },
     row: {
-        flexDirection: 'row'
+        height: 20 ,
     },
     scrollView: {
         flex: 1,
@@ -135,24 +244,20 @@ const styles = EStyleSheet.create({
         height: '$dimensions.hairlineWidth',
         backgroundColor: '#8E8E8E'
     },
+    strip: {
+        backgroundColor: '$colors.main',
+        height: 70
+    },
     text: {
-        color: '$colors.lightGray',
-        fontSize: 20,
+        color: '$colors.status',
+        fontSize: 14,
         fontWeight: '$fonts.weight',
         fontFamily: '$fonts.family',
     },
     topBox: {
-        height: 300,
-        backgroundColor: '$colors.main',
+        height: 250,
+        backgroundColor: '#f7f7f7',
         alignItems: 'center',
         justifyContent: 'center',
-        shadowColor: "$colors.darkGray",
-        shadowOpacity: 0.8,
-        shadowRadius: 4,
-        shadowOffset: {
-            height: 2,
-            width: 0
-        },
-        elevation: 20,
     }
 });

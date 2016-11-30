@@ -11,11 +11,12 @@ import {
 import Firebase from '../../../config/firebase'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import SharedStyle from '../styles'
 
 // Pages
 import PatientsView from './patients_view'
 import PatientDetailView from '../../Detail/detail'
-
+import LoadingAnimationView from '../../../components/loadingAnimationView'
 // Components
 import Button from 'react-native-button'
 import Header from '../../../components/header'
@@ -29,62 +30,90 @@ export default class Overview extends Component {
         super(props);
 
         this.patientsRef = this.getRef().child('Patients/')
-        this.myPatientsRef = this.getRef().child('Nurses/' + props.user.id + "/Patients")
+        this.caregiversRef = this.getRef().child('Caregivers/')
+        this.updatingPatientsRef = this.getRef().child('Nurses/' + props.user.id + "/RC Patients")
+        this.criticalPatientsRef = this.getRef().child('Nurses/' + props.user.id + "/Critical Patients")
+        this.distressedPatientsRef = this.getRef().child('Nurses/' + props.user.id + "/Distressed Patients")
 
         this.state = {
-            dataSource: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2, }),
             criticalPatients: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2, }),
-            recentChanges: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2, }),
-
+            updatedPatients: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2, }),
+            distressedPatients: new ListView.DataSource({ rowHasChanged: (row1, row2) => row1 !== row2, }),
+            isVisible: true,
             modalVisible: false,
             modalVisiblePatient: null
         }
     }
 
     componentDidMount() {
-        this.listenForItems(this.patientsRef);
+        this.listenForItems(this.criticalPatientsRef, this.setListState.bind(this, "criticalPatients", this.compare))
+        this.listenForItems(this.updatingPatientsRef, this.setListState.bind(this, "updatedPatients", this.compare))
+        this.listenForItems(this.distressedPatientsRef, this.setListState.bind(this, "distressedPatients", this.compareDistress))
     }
 
+    componentsWillUnmount() {
+        this.patientsRef.off()
+        this.caregiversRef.off()
+        this.updatingPatientsRef.off()
+        this.criticalPatientsRef.off()
+        this.distressedPatientsRef.off()
+    }
     getRef() {
         return Firebase.database().ref();
     }
 
-    listenForItems(patientsRef) {
+    setListState(type, comparison, patients) {
+        this.setState({isVisible: false})
+        this.setState({ [type] : this.state[type].cloneWithRows(Object.values(patients).sort(comparison)) });
+    }
+
+    listenForItems(typePatientsRef, setState) {
 
         var self = this
 
-        var items = [];
+        var patients = {}
 
-        var critical = []
+        typePatientsRef.on('child_added', (snap) => {
 
-        var recentChanges = []
+            self.patientsRef.child(snap.key).on('value', (snapshot) => {
 
-        this.myPatientsRef.on('child_added', (snap) => {
-
-            self.patientsRef.child(snap.key).on('value', (snap) => {
-
-                if (snap.val().active) {
+                self.caregiversRef.child(snapshot.val()["primary caregiver"] + "/Profile/name").once('value', snsht => {
 
                     var item = {
-                        pID: snap.key,
-                        name: snap.val().name,
-                        status: snap.val().status
+                        pID: snapshot.key,
+                        name: snapshot.val().name,
+                        status: snapshot.val().status,
+                        caregiverDistress: snapshot.val()["caregiver distress"],
+                        primaryCaregiver: snsht.val()
                     }
 
-                    items.push(item)
+                    patients[snapshot.key] = item
 
-                    if ( critical.length < 3 && snap.val().status > 75){ critical.push(item); }
-                    else if ( critical.length > 0 && critical[0].status < snap.val().status) { critical.shift(); critical.push(item); }
+                    setState(patients)
+                })
+            })
+        })
 
-                } else {
-                    if ( (snap.key in items) ) { delete items[snap.key]}
-                }
-                self.setState({
-                    dataSource: self.state.dataSource.cloneWithRows(items),
-                    criticalPatients : self.state.dataSource.cloneWithRows(critical)
-                });
-            });
-        });
+        typePatientsRef.on('child_removed', (snap) => {
+
+            delete patients[snap.key]
+
+            setState(patients)
+        })
+    }
+
+    compare(a,b) {
+        if (a.status == b.status) {
+            return 0
+        }
+        return a.status < b.status ? 1 : -1
+    }
+
+    compareDistress(a,b) {
+        if (a.distress == b.distress) {
+            return 0
+        }
+        return a.distress < b.distress ? 1 : -1
     }
 
     //////////////////////////
@@ -119,12 +148,13 @@ export default class Overview extends Component {
 
         Navigaters to patient detail page
     */
-    onPressHeader() {
+    onPressHeader(type) {
         this.props.navigator.push({
             component: PatientsView,
             passProps: {
                 user: this.props.user,
-                backEnabled: true
+                type: type,
+                backEnabled: true,
             }
         })
     }
@@ -158,38 +188,19 @@ export default class Overview extends Component {
     */
     onPressArchive(title, data, secdId, rowId) {
         this.patientsRef.child(data.pID + "/active").set(false);
+        this.criticalPatientsRef.child(data.pID).remove()
+        this.updatingPatientsRef.child(data.pID).remove()
     }
 
     render() {
 
         return (
-            <View style={styles.container}>
+            <View style={SharedStyle.container}>
                 <Header
                     text={"Overview"}
-                    headerStyle={styles.header}
-                    textStyle={styles.header_text}/>
-                <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-                    <TableViewGroup
-                        title={"Critical"}
-                        headerIsEnabled={true}
-                        onPress={this.onPressHeader.bind(this)}
-                        onPressArchive={this.onPressArchive.bind(this)}
-                        style={styles.tableView}
-                        textStyle={styles.tableViewText}
-                        headerStyle={styles.criticalHeader}
-                        dataSource={this.state.criticalPatients}
-                        renderRow={this.renderRow.bind(this)}/>
-                    <TableViewGroup
-                        title={"Recent Update"}
-                        headerIsEnabled={true}
-                        onPress={this.onPressHeader.bind(this)}
-                        onPressArchive={this.onPressArchive.bind(this)}
-                        style={[styles.tableView, {marginTop: 20}]}
-                        textStyle={styles.tableViewText}
-                        headerStyle={styles.recentHeader}
-                        dataSource={this.state.dataSource}
-                        renderRow={this.renderRow.bind(this)}/>
-                </ScrollView>
+                    headerStyle={SharedStyle.header}
+                    textStyle={SharedStyle.header_text}/>
+                { this.renderView()}
                 <ModalView
                     modalVisible={this.state.modalVisible}
                     patientID={this.state.modalVisiblePatient}
@@ -198,59 +209,67 @@ export default class Overview extends Component {
         );
     }
 
+    renderView() {
+        return ( this.state.isVisible ?
+            <LoadingAnimationView animation={this.state.isVisible}/>
+            :
+            <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+                { this.renderTable("Critical Patients", "All Critical", "criticalPatients", "Critical Patients") }
+                { this.renderTable("Status Updates", "All Updates", "updatedPatients", "RC Patients") }
+                { this.renderTable("Distressed Caregivers", "All Distressed", "distressedPatients", "Distressed Patients") }
+            </ScrollView>
+
+        )
+    }
+
     renderRow(patient: Object, sectionID: number, rowID: number, highlightRow: (sectionID: number, rowID: number) => void) {
 
-        const phoneIcon = (<Icon name="phone-square" size={30} color="#262626" />);
+        const squarePhoneIcon = <Icon name="phone-square" size={30} color="#262626" />
 
         return (
             <PatientTableViewCell
                 onPress={()=>this.onPressPatient(patient)}
                 onPressIcon={()=>this.onPressAction(patient.pID)}
                 status={patient.status}
-                image={phoneIcon}
-                actionIcon={phoneIcon}
+                actionIcon={squarePhoneIcon}
                 mainText={patient.name}
-                subTitleText={patient.phone}/>
+                subText={patient.primaryCaregiver}/>
         )
+    }
+
+    renderTable(title, footerTitle, datasource, fbLabel) {
+        var entrance = ['slideInDown', 'slideInUp', 'slideInLeft', 'slideInRight'][Math.floor(Math.random() * 3)]
+
+        return ( this.state[datasource].getRowCount() == 0 ?
+                null
+                :
+                <TableViewGroup
+                    animation={entrance}
+                    headerTitle={title}
+                    footerTitle={footerTitle}
+                    onPress={this.onPressHeader.bind(this, fbLabel)}
+                    onPressArchive={this.onPressArchive.bind(this)}
+                    style={[styles.tableView, {marginTop: 15}]}
+                    dataSource={this.state[datasource]}
+                    renderRow={this.renderRow.bind(this)}/>
+            )
     }
 }
 
 const styles = EStyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'white'
-    },
-    header: {
-        height: 60,
-        backgroundColor: '$colors.lightGray',
-    },
-    header_text: {
-        color: '$colors.darkGray',
-        fontSize: 18,
-        fontWeight: '$fonts.weight',
-        fontFamily: "$fonts.family",
-    },
-    criticalHeader: {
-        backgroundColor: '#EF9A9A'
-    },
-    recentHeader: {
-        backgroundColor: "$colors.main"
-    },
     scrollViewContainer: {
         backgroundColor: 'transparent',
-        paddingTop: 10,
-        paddingBottom: 10
     },
     tableView: {
         backgroundColor: '#FFFFFF',
         shadowColor: "#000000",
         shadowOpacity: 0.8,
-        shadowRadius: 2,
+        shadowRadius: 1,
         shadowOffset: {
-            height: 1,
+            height: 0.5,
             width: 0
         },
-        elevation: 20,
+        elevation: 10,
         marginLeft: 10,
         marginRight: 10
     },

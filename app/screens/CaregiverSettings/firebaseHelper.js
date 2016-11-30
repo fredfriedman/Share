@@ -2,7 +2,7 @@
 //@author michael; temporary helper class. I suspect that we will need this class as a backend autoCapitalize
 
 import firebase from '../../config/firebase'
-import { AsyncStorage } from 'react-native';
+import { Alert, AsyncStorage } from 'react-native';
 
 export default class firebaseHelper {
     constructor(){
@@ -60,19 +60,9 @@ export default class firebaseHelper {
         });
     }
 
-
-
-    updateCaregiverName(caregiverId){
-        firebase.database().ref('Caregivers/'+ caregiverId).once('value', function(snapshot) {
-            var exists = ( snapshot.val() !== null );
-            if(exists && isValid){
-                var patientIdRef = firebase.database().ref('Caregivers/'+ caregiverId);
-                patientIdRef.update({'Patient': patientId});
-            }
-            else {
-                alert('invalid patientId');
-            }
-        });
+    updateCaregiveProfile(caregiverID, type, value) {
+        var valueRef = firebase.database().ref('Caregivers/'+ caregiverID + "/Profile/")
+        return valueRef.update({[type]: value});
     }
 
 
@@ -82,21 +72,9 @@ export default class firebaseHelper {
     @param int: patient id
     @return void; function sets patientId of caregiver taking care of patient
     */
-    updatePatientId(caregiverId, patientId, isValidPatientIdPromise){
-        isValidPatientIdPromise.then(function(isValid){
-            firebase.database().ref('Caregivers/'+ caregiverId).once('value', function(snapshot) {
-                var exists = ( snapshot.val() !== null );
-                if(exists && isValid){
-                    var patientIdRef = firebase.database().ref('Caregivers/'+ caregiverId);
-                    patientIdRef.update({'Patient': patientId});
-                    console.log("***************************************YAYYYYY");
-                }
-                else {
-                    alert('invalid patientId');
-                }
-            });
-
-        });
+    updatePatientId(caregiverId, patientId) {
+        var patientIdRef = firebase.database().ref('Caregivers/'+ caregiverId);
+        return patientIdRef.update({'Patient': patientId});
     }
 
 
@@ -107,14 +85,8 @@ export default class firebaseHelper {
     @return alert: if patientId is not valid patient id
     */
     isValidPatientId(patientId){
-        return firebase.database().ref('Patients/'+patientId).once('value', function(snapshot) {
-            if( snapshot.val() === null ) {
-                /* does not exist */
-                // alert("Patient ID not found");
-                // throw new Error();
-                return false;
-            }
-            return true;
+        return firebase.database().ref('Patients/' + patientId).once('value', function(snapshot) {
+            snapshot.val() === null ? false : true
         });
     }
 

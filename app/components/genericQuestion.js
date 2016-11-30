@@ -4,10 +4,10 @@ import { ListView,
         StyleSheet,
         Text,
         Image,
+        Slider,
         Dimensions,
         View, } from 'react-native';
 import ToggleButton from './toggleButton';
-import Slider from 'react-native-slider';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
 const height = Dimensions.get('window').height;
@@ -17,7 +17,7 @@ export default class Question extends Component {
 
 	constructor(props) {
         super(props);
-        this.state = { 
+        this.state = {
             value: this.props.value,
             medicationChange: this.props.medicationChange
         };
@@ -55,7 +55,7 @@ export default class Question extends Component {
 	    		<View style={{flex: 1}}>
 	    			<View style={{height: height * 0.3, padding: 10}}>
 		    			<Text style={Styles.questionText}>
-		                    Please indicate the severity of your {this.props.questionType} on a scale of 0 - 10 with 0 being 
+		                    Please indicate the severity of your {this.props.questionType} on a scale of 0 - 10 with 0 being
 		                    "No {this.props.questionType}" and 10 being "Worst {this.props.questionType} possible".
 		                </Text>
 
@@ -83,7 +83,7 @@ export default class Question extends Component {
 
 		                <View style={{width: width * 0.5}}>
 			                <ToggleButton
-			                    style={this.state.medicationChange == 'more' ? Styles.selectedStyle : Styles.unselectedStyle} 
+			                    style={this.state.medicationChange == 'more' ? Styles.selectedStyle : Styles.unselectedStyle}
 			                    textStyle={Styles.buttonText}
 			                    onPress={() => {
 			                    	this.setState({ medicationChange: 'more' });
@@ -92,7 +92,7 @@ export default class Question extends Component {
 			                    More
 			                </ToggleButton>
 			                <ToggleButton
-			                    style={this.state.medicationChange == 'none' ? Styles.selectedStyle : Styles.unselectedStyle} 
+			                    style={this.state.medicationChange == 'none' ? Styles.selectedStyle : Styles.unselectedStyle}
 			                    textStyle={Styles.buttonText}
 			                    onPress={() => {
 			                    	this.setState({ medicationChange: 'none' });
@@ -101,7 +101,7 @@ export default class Question extends Component {
 			                    None
 			                </ToggleButton>
 			                <ToggleButton
-			                    style={this.state.medicationChange == 'less' ? Styles.selectedStyle : Styles.unselectedStyle} 
+			                    style={this.state.medicationChange == 'less' ? Styles.selectedStyle : Styles.unselectedStyle}
 			                    textStyle={Styles.buttonText}
 			                    onPress={() => {
 			                    	this.setState({ medicationChange: 'less' });
@@ -121,8 +121,8 @@ var Styles = EStyleSheet.create({
   	fontFamily: '$fonts.family',
   	paddingVertical: 15,
   	fontSize: 15,
-  	textAlign: 'center', 
-  	fontWeight: 'normal', 
+  	textAlign: 'center',
+  	fontWeight: 'normal',
   	color: '$colors.main'
   },
   buttonText: {
@@ -144,17 +144,17 @@ var Styles = EStyleSheet.create({
     borderWidth: 2,
   },
   sliderText: {
-  	fontSize: 45, 
-  	textAlign: 'center', 
-  	color: '$colors.answerSelectedBackground', 
+  	fontSize: 45,
+  	textAlign: 'center',
+  	color: '$colors.answerSelectedBackground',
   	paddingBottom: 15
   },
   selectedStyle: {
-  	backgroundColor: '$colors.answerSelectedBackground',  	
+  	backgroundColor: '$colors.answerSelectedBackground',
   	borderColor: '$colors.answerSelectedBorder'
   },
   unselectedStyle: {
   	backgroundColor: '$colors.answerUnselectedBackground',
-  	borderColor: '$colors.answerUnselectedBorder' 
+  	borderColor: '$colors.answerUnselectedBorder'
   }
 });

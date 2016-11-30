@@ -99,7 +99,7 @@ export default class Graphs extends Component {
                         </Col>
                     </Row>
                     <Row style={styles.row} size={5}>
-                        <Col style={[styles.column, {backgroundColor: 'transparent'}]} size={2}>
+                        <Col style={styles.column} size={2}>
                             { this.renderChart() }
                         </Col>
                         <Col style={styles.column}>
