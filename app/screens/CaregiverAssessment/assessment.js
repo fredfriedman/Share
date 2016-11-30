@@ -11,7 +11,7 @@ import { ListView,
 import Swiper from 'react-native-swiper';
 import store from 'react-native-simple-store';
 import _ from 'lodash';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
 
@@ -239,7 +239,7 @@ export default class Assessment extends Component {
 
     render() {
 
-        const backIcon = (<Icon name="angle-left" size={35} color="white" />);
+        const backIcon = (<Icon name="ios-arrow-back" ios="ios-arrow-back" md="md-arrow-back" size={30} color="#f7f7f7" />);
         var assessmentPages = this.generateAssessmentPages();
 
         return (
