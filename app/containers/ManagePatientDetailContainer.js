@@ -14,7 +14,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
 		onRemove: (patientId) => { dispatch(removePatient(patientId)) },
-		onAdd: (patientId, patientStatus) => { dispatch(addPatient(patientId, patientStatus)) },
+		onAdd: (patientName, patientStatus) => { dispatch(addPatient(patientName, patientStatus)) },
 		initializePatientList: () => {dispatch(initializePatientList())},
 		initializeCaregiverList: () => {dispatch(initializeCaregiverList())},
 	}

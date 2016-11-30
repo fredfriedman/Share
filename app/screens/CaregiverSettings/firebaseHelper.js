@@ -14,15 +14,13 @@ export default class firebaseHelper {
     }
 
     createNewPatient(patientName, patientStatus){
-        let userId = firebase.auth().currentUser.uid;
-        firebase.database().ref('Patients/' + userId).set({
-        assessments:{},
-        caregivers:{},
-        notes:{},
-        active: true,
-        name: patientName,
-        status: patientStatus,
-      });
+        let userId = new Date().getTime();
+        firebase.database().ref('Patients/' + userId).set(
+        {
+            active: true,
+            name: patientName,
+            status: patientStatus,
+        });
     }
 
     createNewCaregiver(patientId, caregiverName, phoneNumber, relation){

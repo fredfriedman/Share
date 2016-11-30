@@ -51,8 +51,6 @@ export default class ManageCaregiverDetail extends Component{
 			<View style = {styles.container}>
 				<Header
                     text= 'Manage Caregivers'
-                    leftAction={()=> console.log('Hello')}
-                    leftIcon={<Icon name = 'plus' size = {20} color = 'white'/>}
                     textStyle = {styles.titleText}/>
          		<SwipeListView
 		            dataSource={this.state.datasource}
@@ -64,7 +62,7 @@ export default class ManageCaregiverDetail extends Component{
 		            )}
 		            renderHiddenRow={ (data, secId, rowId, rowMap) => (
 		                <TouchableHighlight style = {styles.rowBack} onPress = {()=> this.deleteRow(data, secId,rowId,rowMap)}>
-		                    <Text style = {styles.rowBackText}>Delete</Text>
+		                    <Text style = {styles.rowBackText}>Assign</Text>
 		                </TouchableHighlight>
 		            )}
 		            leftOpenValue={75}

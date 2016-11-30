@@ -10,6 +10,9 @@ export default  function globalReducer(state = initialState, action){
 	let f = new firebaseHelper();
 	switch(action.type) {
 		case ADD_PATIENT:
+			console.log("*********************");
+			console.log(action.patientName);
+			console.log(action.patientStatus);
 			f.createNewPatient(action.patientName, action.patientStatus);
 
 		case REMOVE_PATIENT:

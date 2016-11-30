@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View,Text, ListView, TouchableHighlight} from 'react-native';
+import {View,Text, ListView, TouchableHighlight, Modal, TextInput} from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Header from '../../components/header';
@@ -15,7 +15,9 @@ export default class ManagePatientDetail extends Component{
 		super(props);
 		const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 		data = ds.cloneWithRows(['undefined']);
-		this.state = {datasource: data};
+		this.state = {
+			datasource: data,
+		};
 		this.props.initializePatientList();
 		this.props.initializeCaregiverList();
 	}
@@ -54,7 +56,7 @@ export default class ManagePatientDetail extends Component{
 			<View style ={styles.container}>
 				<Header
                     text= "Manage Patients"
-                    leftAction={()=> console.log('Hello')}
+                    leftAction={()=> this.setModalVisible(!this.state.modalVisible)}
                     leftIcon={<Icon name = 'plus' size = {20} color="white" />}
                     textStyle = {styles.titleText}/>
          		<SwipeListView
@@ -67,15 +69,57 @@ export default class ManagePatientDetail extends Component{
 		            )}
 		            renderHiddenRow={ (data, secId, rowId, rowMap) => (
 		                <TouchableHighlight style = {styles.rowBack}onPress = {()=> this.deleteRow(data, secId,rowId,rowMap)}>
-		                    <Text>Delete</Text>
+		                    <Text style = {styles.rowBackText}>Delete</Text>
 		                </TouchableHighlight>
 		            )}
 		            leftOpenValue={75}
 		        />
+		        <Modal
+		            animationType={"slide"}
+		            transparent={false}
+		            visible={this.state.modalVisible}
+		            onRequestClose={() => {alert("Modal has been closed.")}}
+		            >
+		            <View style={{marginTop: 22}}>
+		            <View>
+		            <Text>Add Patient</Text>
+		            <Text>Patient Name: </Text>
+		            <TextInput
+		            	onChangeText={(patientName) => this.setState({patientName: patientName})}
+		            	value = {this.state.patientName}
+		           	/>
+		           	<Text>Patient Status (0-100): </Text>
+		            <TextInput
+		            	onChangeText={(patientStatus) => this.setState({patientStatus: patientStatus})}
+		            	value = {this.state.patientStatus}
+		           	/>
+
+		            <TouchableHighlight 
+		            	onPress={() => {
+			              this.setModalVisible(!this.state.modalVisible);
+			              this.props.onAdd(this.state.patientName, this.state.patientStatus);
+			              this.props.initializePatientList();
+			            }}>
+		               <Text>Submit</Text>
+		            </TouchableHighlight>
+		            <TouchableHighlight 
+		            	onPress={() => {
+			              this.setModalVisible(!this.state.modalVisible);
+			            }}>
+		               <Text>Cancel</Text>
+		            </TouchableHighlight>
+
+		          </View>
+		         </View>
+		        </Modal>
 			</View>
 
 		);
 	}
+
+	setModalVisible(visible) {
+      this.setState({modalVisible: visible});
+  	}
 
 	deleteRow(data,secId,rowId,rowMap){
 		rowMap[`${secId}${rowId}`].closeRow();
