@@ -32,7 +32,7 @@ export default class History extends Component {
 
     parseAssessments(snap) {
         return {
-            completed: snap.val().completed,
+            completed: true,
             timestamp: snap.val().timestamp,
             submittedBy: snap.val().submittedBy,
             results: snap.val().Results,

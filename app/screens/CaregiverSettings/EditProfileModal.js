@@ -100,7 +100,7 @@ const styles = EStyleSheet.create({
     textInput: {
         marginTop: 5,
         marginLeft: 5,
-        height: 30,
+        height: 50,
         color: '$colors.darkGray'
     },
 })
