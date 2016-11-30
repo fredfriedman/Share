@@ -138,7 +138,7 @@ export default class Assessment extends Component {
                         lastThreeAssessments.push(snapshot.val());
                         var databaseAssessmentObject = snapshot.val();
                         sumLastThree += databaseAssessmentObject.ESAS;
-                        var average = sumLastThree / 3;
+                        var average = sumLastThree / lastThreeAssessments.length;
                         patientRef.child('status').set(average);
 
                         var critical = 8 * 10 * 0.7;
