@@ -33,8 +33,8 @@ export default class Header extends Component {
             <View style={styles.navBarContainer}>
                 <View style={[styles.header, this.props.headerStyle]}>
                     {this.renderCenterItem()}
-                    {this.renderButton(this.props.leftAction, this.props.leftIcon, { marginLeft: 15, paddingTop: 15 })}
-                    {this.renderButton(this.props.rightAction, this.props.rightIcon, { marginRight: 15, paddingTop: 15 })}
+                    {this.renderButton(this.props.leftAction, this.props.leftIcon, { height: 30, width: 35, marginLeft: 15, paddingTop: 5 })}
+                    {this.renderButton(this.props.rightAction, this.props.rightIcon, { height: 30, width: 35, marginRight: 15, paddingTop: 5 })}
                 </View>
             </View>
         );

@@ -48,7 +48,6 @@ module.exports = EStyleSheet.create({
     },
     formContainer: {
         marginTop: 5,
-        paddingTop: 20,
         paddingBottom: 20,
         alignItems: 'center',
         width: Dimensions.get('window').width,

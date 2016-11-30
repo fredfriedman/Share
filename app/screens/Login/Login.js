@@ -13,6 +13,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import Button from 'react-native-button'
 import { Hoshi } from 'react-native-textinput-effects'
 import Header from '../../components/header'
+import LoadingAnimationView from '../../components/loadingAnimationView'
 
 import dismissKeyboard from 'dismissKeyboard'
 import styles from './styles'
@@ -117,6 +118,8 @@ export default class Login extends Component {
             var usr = snapshot.val()
             usr["id"] = snapshot.key
             usr["type"] = type
+            usr["email"] = user.email
+            usr["photoURL"] = user.photoURL
 
             AsyncStorage.setItem('user_data', JSON.stringify(usr));
 
@@ -131,46 +134,50 @@ export default class Login extends Component {
         }
     }
 
-    render() {
+    renderLoadingView() {
         const MainColor = '#00BCD4'
+
+        return ( !this.state.animating ?
+            <View style={styles.formContainerHoshi}>
+                <Hoshi
+                    ref="email"
+                    label={'Email Address'}
+                    style={styles.row}
+                    labelStyle={styles.mainText}
+                    inputStyle={styles.textInput}
+                    borderColor={MainColor}
+                    onChangeText={(text) => this.setState({username: text})}
+                    onSubmitEditing={(event) => {  this.refs.password.refs.input.focus(); }}
+                    autoCapitalize={'none'}
+                    autoCorrect={false}/>
+                <Hoshi
+                    ref='password'
+                    label={'Password'}
+                    labelStyle={styles.mainText}
+                    style={[styles.row, {paddingTop: 20}]}
+                    inputStyle={styles.textInput}
+                    borderColor={MainColor}
+                    autoCapitalize={'none'}
+                    autoCorrect={false}
+                    secureTextEntry={true}
+                    onChangeText={(text) => this.setState({password: text})}/>
+            </View>
+            :
+            <LoadingAnimationView animation={this.state.animating}/>
+        )
+    }
+
+    render() {
         const closeIcon = ( <Icon name="ios-close" ios="ios-close" md="md-close" size={30} color={'#1e1e1e'} />);
 
         return (
-            <View style={[styles.container, {alignItems: 'center', backgroundColor: 'white'}]}>
+            <View style={[styles.container, {justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'white'}]}>
                 <Header
                     leftAction={this.onExitScene.bind(this)}
                     leftIcon={closeIcon}
                     centerIcon={<Image style={styles.icon} source={butterfly}/>}
                     headerStyle={styles.header}/>
-                <View style={styles.formContainerHoshi}>
-                    <Hoshi
-                        ref="email"
-                        label={'Email Address'}
-                        style={styles.row}
-                        labelStyle={styles.mainText}
-                        inputStyle={styles.textInput}
-                        borderColor={MainColor}
-                        onChangeText={(text) => this.setState({username: text})}
-                        onSubmitEditing={(event) => {  this.refs.password.refs.input.focus(); }}
-                        autoCapitalize={'none'}
-                        autoCorrect={false}/>
-                    <Hoshi
-                        ref='password'
-                        label={'Password'}
-                        labelStyle={styles.mainText}
-                        style={[styles.row, {paddingTop: 20}]}
-                        inputStyle={styles.textInput}
-                        borderColor={MainColor}
-                        autoCapitalize={'none'}
-                        autoCorrect={false}
-                        secureTextEntry={true}
-                        onChangeText={(text) => this.setState({password: text})}/>
-                </View>
-                <ActivityIndicator
-                    animating={this.state.animating}
-                    style={{height: 60}}
-                    size="large" />
-                <View style={{flex: 1}}/>
+                { this.renderLoadingView() }
                 <KeyboardAvoidingView style={{flex: 1, justifyContent: 'flex-end'}} behavior={'padding'}>
                     <View style={styles.signInBox}>
                         <Button

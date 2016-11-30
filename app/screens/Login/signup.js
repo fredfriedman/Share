@@ -1,7 +1,6 @@
 'use strict';
 import React, { Component } from 'react';
 import {
-    ActivityIndicator,
     Alert,
     Image,
     Navigator,
@@ -20,6 +19,7 @@ import styles from './styles'
 import Button from 'react-native-button'
 import Header from '../../components/header'
 import { Fumi } from 'react-native-textinput-effects';
+import LoadingAnimationView from '../../components/loadingAnimationView'
 
 // Utilities
 import Firebase from '../../config/firebase'
@@ -29,6 +29,22 @@ import dismissKeyboard from 'dismissKeyboard'
 // Screens
 import Login from './Login'
 
+function User() {
+    this.name = '';
+    this.phone = '';
+    this.email = '';
+    this.password = '';
+}
+function Caregiver() {
+    User.call(this);
+    this.relation = '';
+    this.patient = '';
+}
+function Nurse() {
+    User.call(this);
+    this.hospital = '';
+    this.picture = '';
+}
 
 export default class signup extends Component {
 
@@ -36,20 +52,8 @@ export default class signup extends Component {
         super(props);
 
         this.state = {
-            caregiverName: "",
-            caregiverEmail: '',
-            caregiverPassword: '',
-            caregiverRelation: '',
-            caregiverPhone: '',
-            caregiverPatient: '',
-
-            nurseName: "",
-            nurseEmail: '',
-            nursePassword: '',
-            nursePhone: '',
-            nurseHospital: '',
-            nursePicture: '',
-
+            caregiver: new Caregiver(),
+            nurse: new Nurse(),
             animating: false,
             isCaregiver: true,
             currentPage: 0
@@ -60,8 +64,8 @@ export default class signup extends Component {
 
         var self = this
 
-        var email =  self.state.isCaregiver ? this.state.caregiverEmail : this.state.nurseEmail
-        var pass  =  self.state.isCaregiver ? this.state.caregiverPassword : this.state.nursePassword
+        var email =  self.state.isCaregiver ? this.state.caregiver.email : this.state.nurse.email
+        var pass  =  self.state.isCaregiver ? this.state.caregiver.password  : this.state.nurse.password
 
         this.setState({animating: true})
 
@@ -70,8 +74,8 @@ export default class signup extends Component {
 
                 var ref = self.state.isCaregiver ? "Caregivers/" + user.uid : "Nurses/" + user.uid
 
-                var data = self.state.isCaregiver ? {patient: self.state.caregiverPatient, Profile: {name: self.state.caregiverName, phone: self.state.caregiverPhone, relation: self.state.caregiverRelation}} :
-                                                    {Profile: {name: self.state.nurseName, phone: self.state.nursePhone, relation: self.state.nursePicture}}
+                var data = self.state.isCaregiver ? {patient: self.state.caregiver.patient,  Profile: {name: self.state.caregiver.name, phone: self.state.caregiver.phone, relation: self.state.caregiver.relation}} :
+                                                    {Profile: {name: self.state.nurse.name, phone: self.state.nurse.phone, relation: self.state.nurse.picture}}
 
                 Firebase.database().ref().child(ref).set(data);
 
@@ -180,10 +184,7 @@ export default class signup extends Component {
                     onPress={this.onPressSignUp.bind(this)}>
                     Submit
                 </Button>
-                <ActivityIndicator
-                    animating={this.state.animating}
-                    style={{height: 40}}
-                    size="large"/>
+                <LoadingAnimationView animating={this.state.animating} />
                 <Button
                     style={isCaregiver ? [styles.accountLabel, styles.centered, styles.mainText] : [styles.accountLabel, styles.centered, styles.secondaryText] }
                     containerStyle={{alignSelf: 'center', width: 130}}
@@ -219,10 +220,13 @@ export default class signup extends Component {
                         iconColor={IconColor}
                         style={styles.row}
                         labelStyle={styles.mainText}
-                        value={this.state.caregiverName}
+                        value={this.state.caregiver.name}
                         autoCapitalize={'none'}
                         autoCorrect={false}
-                        onChangeText={(text) => this.setState({caregiverName: text})}
+                        onChangeText={(text) => {
+                            var updatedUser = Object.assign({}, this.state.caregiver, {name: text});
+                            this.setState({caregiver: updatedUser})
+                        }}
                         onSubmitEditing={(event) => {  this.refs.caregiverEmail.refs.input.focus(); }}/>
                     <Fumi
                         ref="caregiverEmail"
@@ -232,10 +236,13 @@ export default class signup extends Component {
                         iconColor={IconColor}
                         style={styles.row}
                         labelStyle={styles.mainText}
-                        value={this.state.caregiverEmail}
+                        value={this.state.caregiver.email}
                         autoCapitalize={'none'}
                         autoCorrect={false}
-                        onChangeText={(text) => this.setState({caregiverEmail: text})}
+                        onChangeText={(text) => {
+                            var updatedUser = Object.assign({}, this.state.caregiver, {email: text});
+                            this.setState({caregiver: updatedUser})
+                        }}
                         onSubmitEditing={(event) => {  this.refs.caregiverPassword.refs.input.focus(); }}/>
                     <Fumi
                         ref='caregiverPassword'
@@ -245,12 +252,15 @@ export default class signup extends Component {
                         iconColor={IconColor}
                         style={styles.row}
                         labelStyle={styles.mainText}
-                        value={this.state.caregiverPassword}
+                        value={this.state.caregiver.password}
                         autoCapitalize={'none'}
                         autoCorrect={false}
                         secureTextEntry={true}
                         onSubmitEditing={(event) => {  this.refs.caregiverPatient.refs.input.focus(); }}
-                        onChangeText={(text) => this.setState({caregiverPassword: text})}/>
+                        onChangeText={(text) => {
+                            var updatedUser = Object.assign({}, this.state.caregiver, {password: text});
+                            this.setState({caregiver: updatedUser})
+                        }}/>
                     <Fumi
                         ref='caregiverPatient'
                         label={'Who are you taking care of?'}
@@ -259,11 +269,31 @@ export default class signup extends Component {
                         iconColor={IconColor}
                         style={styles.row}
                         labelStyle={styles.mainText}
-                        value={this.state.caregiverPatient}
+                        value={this.state.caregiver.patient}
                         autoCapitalize={'none'}
                         autoCorrect={false}
                         secureTextEntry={true}
-                        onChangeText={(text) => this.setState({caregiverPatient: text})}/>
+                        onSubmitEditing={(event) => { this.refs.caregiverPhone.refs.input.focus(); }}
+                        onChangeText={(text) => {
+                            var updatedUser = Object.assign({}, this.state.caregiver, {patient: text});
+                            this.setState({caregiver: updatedUser})
+                        }}/>
+                    <Fumi
+                        ref='caregiverPhone'
+                        label={'# to reach you?'}
+                        iconClass={FontAwesomeIcon}
+                        iconName={'phone'}
+                        iconColor={IconColor}
+                        style={styles.row}
+                        labelStyle={styles.mainText}
+                        value={this.state.caregiver.phone}
+                        autoCapitalize={'none'}
+                        autoCorrect={false}
+                        secureTextEntry={true}
+                        onChangeText={(text) => {
+                            var updatedUser = Object.assign({}, this.state.caregiver, {phone: text});
+                            this.setState({caregiver: updatedUser})
+                        }}/>
                 </View>
         );
     }
@@ -280,10 +310,13 @@ export default class signup extends Component {
                     iconColor={IconColor}
                     style={[styles.row , {borderTopLeftRadius: 5, borderTopRightRadius: 5}]}
                     labelStyle={styles.mainText}
-                    value={this.state.nurseName}
+                    value={this.state.nurse.name}
                     autoCapitalize={'none'}
                     autoCorrect={false}
-                    onChangeText={(text) => this.setState({nurseName: text})}
+                    onChangeText={(text) => {
+                        var updatedUser = Object.assign({}, this.state.nurse, {name: text});
+                        this.setState({nurse: updatedUser})
+                    }}
                     onSubmitEditing={(event) => {  this.refs.nurseHospital.refs.input.focus(); }}/>
                 <Fumi
                     ref='nurseHospital'
@@ -293,11 +326,31 @@ export default class signup extends Component {
                     iconColor={IconColor}
                     style={styles.row}
                     labelStyle={styles.mainText}
-                    value={this.state.nurseHospital}
+                    value={this.state.nurse.hospital}
                     autoCapitalize={'none'}
                     autoCorrect={false}
-                    onChangeText={(text) => this.setState({nurseHospital: text})}
-                    onSubmitEditing={(event) => {  this.refs.nurseEmail.refs.input.focus(); }}/>
+                    onChangeText={(text) => {
+                        var updatedUser = Object.assign({}, this.state.nurse, {hospital: text});
+                        this.setState({nurse: updatedUser})
+                    }}
+                    onSubmitEditing={(event) => {  this.refs.nursePhone.refs.input.focus(); }}/>
+                <Fumi
+                    ref='nursePhone'
+                    label={'# to reach you?'}
+                    iconClass={FontAwesomeIcon}
+                    iconName={'phone'}
+                    iconColor={IconColor}
+                    style={styles.row}
+                    labelStyle={styles.mainText}
+                    value={this.state.nurse.phone}
+                    autoCapitalize={'none'}
+                    autoCorrect={false}
+                    secureTextEntry={true}
+                    onSubmitEditing={(event) => { this.refs.nurseEmail.refs.input.focus(); }}
+                    onChangeText={(text) => {
+                        var updatedUser = Object.assign({}, this.state.nurse, {phone: text});
+                        this.setState({nurse: updatedUser})
+                    }}/>
                 <Fumi
                     ref='nurseEmail'
                     label={'Email Address'}
@@ -306,10 +359,13 @@ export default class signup extends Component {
                     iconColor={IconColor}
                     style={styles.row}
                     labelStyle={styles.mainText}
-                    value={this.state.nurseEmail}
+                    value={this.state.nurse.email}
                     autoCapitalize={'none'}
                     autoCorrect={false}
-                    onChangeText={(text) => this.setState({nurseEmail: text})}
+                    onChangeText={(text) => {
+                        var updatedUser = Object.assign({}, this.state.nurse, {email: text});
+                        this.setState({nurse: updatedUser})
+                    }}
                     onSubmitEditing={(event) => {  this.refs.nursePassword.refs.input.focus(); }}/>
                 <Fumi
                     ref='nursePassword'
@@ -319,11 +375,14 @@ export default class signup extends Component {
                     iconColor={IconColor}
                     style={[styles.row, {borderBottomLeftRadius: 5, borderBottomRightRadius: 5}]}
                     labelStyle={styles.mainText}
-                    value={this.state.nursePassword}
+                    value={this.state.nurse.password}
                     autoCapitalize={'none'}
                     autoCorrect={false}
                     secureTextEntry={true}
-                    onChangeText={(text) => this.setState({nursePassword: text})}
+                    onChangeText={(text) => {
+                        var updatedUser = Object.assign({}, this.state.nurse, {password: text});
+                        this.setState({nurse: updatedUser})
+                    }}
                     onSubmitEditing={(event) => { }}/>
             </View>
         );
