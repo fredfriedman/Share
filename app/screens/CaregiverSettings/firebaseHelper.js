@@ -15,24 +15,26 @@ export default class firebaseHelper {
 
     createNewPatient(patientName, patientStatus){
         let userId = new Date().getTime();
+        let nurseID = firebase.auth().currentUser.uid;
         firebase.database().ref('Patients/' + userId).set(
         {
             active: true,
             name: patientName,
             status: patientStatus,
         });
+        firebase.database().ref('Nurses/' + nurseID + '/Patients/').update({[userId]: true});
     }
 
-    createNewCaregiver(patientId, caregiverName, phoneNumber, relation){
+    createNewCaregiver(patientId, caregiverName, phoneNumber, relation, nurseID){
         let userId = firebase.auth().currentUser.uid;
         firebase.database().ref('Caregivers/' + userId).set({
-        Patient: patientId,
-        Profile:{
-            name: caregiverName,
-            phone: phoneNumber,
-            relation: relation
-        },
-      });
+            Patient: patientId,
+            Profile:{
+                name: caregiverName,
+                phone: phoneNumber,
+                relation: relation
+            },
+        });
     }
 
     getPatientsPromise(){

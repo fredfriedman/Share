@@ -3,7 +3,7 @@ import { AsyncStorage, Navigator} from 'react-native';
 import { Provider,  } from 'react-redux';
 import thunk from 'redux-thunk';
 import { createStore,applyMiddleware } from 'redux';
-import globalReducer from './app/reducers/GlobalReducer';
+import globalReducer from './app/Reducers/GlobalReducer';
 
 let store = createStore(globalReducer, applyMiddleware(thunk));
 

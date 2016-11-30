@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {View,Text, ListView, TouchableHighlight, Modal, TextInput} from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Header from '../../components/header';
 
@@ -37,7 +37,7 @@ export default class ManageCaregiverDetail extends Component{
 	componentWillReceiveProps(nextProps){
 		if(nextProps.caregivers != this.props.caregivers){
 			const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-			
+
 
 			caregiverList = [];
 			for( key in nextProps.caregivers){
@@ -49,13 +49,20 @@ export default class ManageCaregiverDetail extends Component{
 			});
 		}
 	}
-	
+
+	onBack() {
+		this.props.navigator.pop()
+	}
+
 	render(){
+		const backIcon = (<Icon name="ios-arrow-back" ios="ios-arrow-back" md="md-arrow-back" size={30} color="white" />);
 		return(
 			<View style = {styles.container}>
 				<Header
                     text= 'Manage Caregivers'
-                    textStyle = {styles.titleText}/>
+                    textStyle = {styles.titleText}
+					leftAction={this.onBack.bind(this)}
+					leftIcon={backIcon}/>
          		<SwipeListView
 		            dataSource={this.state.datasource}
 		            renderRow={ data => (
@@ -70,6 +77,7 @@ export default class ManageCaregiverDetail extends Component{
 		                </TouchableHighlight>
 		            )}
 		            leftOpenValue={75}
+					disableLeftSwipe={true}
 		        />
 		       	<Modal
 		            animationType={"fade"}
@@ -85,7 +93,7 @@ export default class ManageCaregiverDetail extends Component{
 			            	onChangeText={(patientId) => this.setState({patientId: patientId})}
 			            	value = {this.state.patientId}
 			           	/>
-			            <TouchableHighlight 
+			            <TouchableHighlight
 			            	style = {styles.submit}
 			            	onPress={() => {
 				              this.setModalVisible(!this.state.modalVisible);
@@ -95,7 +103,7 @@ export default class ManageCaregiverDetail extends Component{
 				            }}>
 			               <Text style = {styles.buttonStyles}>Confirm</Text>
 			            </TouchableHighlight>
-			            <TouchableHighlight 
+			            <TouchableHighlight
 			            	style = {styles.cancel}
 			            	onPress={() => {
 				              this.setModalVisible(!this.state.modalVisible);
@@ -162,7 +170,7 @@ const styles = EStyleSheet.create({
         fontFamily: '$fonts.family',
         color: 'white',
     },
-	
+
 	caregiverText: {
 		fontSize: 11,
         fontWeight: '300',

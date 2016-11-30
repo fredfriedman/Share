@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {View,Text, ListView, TouchableHighlight, Modal, TextInput} from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 import Header from '../../components/header';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
@@ -35,7 +35,7 @@ export default class ManagePatientDetail extends Component{
 		// console.log("FRUSTRATIONPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
 		if(nextProps.patients != this.props.patients){
 			const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-			
+
 			// console.log(nextProps.patients);
 			patientList = [];
 			for( key in nextProps.patients){
@@ -49,16 +49,23 @@ export default class ManagePatientDetail extends Component{
 			});
 		}
 	}
-	
 
+	onBack() {
+		this.props.navigator.pop()
+	}
 
 	render(){
+		const backIcon = (<Icon name="ios-arrow-back" ios="ios-arrow-back" md="md-arrow-back" size={30} color="white" />);
+		const addIcon = (<Icon name="ios-add" size={30} color="white" />);
+
 		return(
 			<View style ={styles.container}>
 				<Header
                     text= "Manage Patients"
-                    leftAction={()=> this.setModalVisible(!this.state.modalVisible)}
-                    leftIcon={<Icon name = 'plus' size = {20} color="white" />}
+					rightAction={()=> this.setModalVisible(!this.state.modalVisible)}
+					rightIcon={addIcon}
+                    leftAction={this.onBack.bind(this)}
+                    leftIcon={backIcon}
                     textStyle = {styles.titleText}/>
          		<SwipeListView
 		            dataSource={this.state.datasource}
@@ -74,6 +81,7 @@ export default class ManagePatientDetail extends Component{
 		                </TouchableHighlight>
 		            )}
 		            leftOpenValue={75}
+					disableLeftSwipe={true}
 		        />
 		        <Modal
 		            animationType={"fade"}
@@ -84,27 +92,23 @@ export default class ManagePatientDetail extends Component{
 		            	<View style = {styles.externalContainer}>
 		            	<View style= {styles.modalViewStyles}>
 			            <Text style = {styles.modalText}>Add Patient</Text>
-			            <Text>Patient Name: </Text>
 			            <TextInput
+							style={styles.textInput}
+							placeholder={"Please Enter the Patient's name"}
+                            multiline={false}
+							autoCorrect={false}
 			            	onChangeText={(patientName) => this.setState({patientName: patientName})}
-			            	value = {this.state.patientName}
-			           	/>
-			           	<Text>Patient Status (0-100): </Text>
-			            <TextInput
-			            	onChangeText={(patientStatus) => this.setState({patientStatus: patientStatus})}
-			            	value = {this.state.patientStatus}
-			           	/>
-
-			            <TouchableHighlight 
+			            	value = {this.state.patientName}/>
+			            <TouchableHighlight
 			            	style = {styles.submit}
 			            	onPress={() => {
 				              this.setModalVisible(!this.state.modalVisible);
-				              this.props.onAdd(this.state.patientName, this.state.patientStatus);
+				              this.props.onAdd(this.state.patientName, -1);
 				              this.props.initializePatientList();
 				            }}>
 			               <Text style = {styles.buttonStyles}>Submit</Text>
 			            </TouchableHighlight>
-			            <TouchableHighlight 
+			            <TouchableHighlight
 			            	style = {styles.cancel}
 			            	onPress={() => {
 				              this.setModalVisible(!this.state.modalVisible);
@@ -155,7 +159,10 @@ const styles = EStyleSheet.create({
 		width: 75,
 
 	},
-
+	textInput: {
+        height: 30,
+        color: '$colors.darkGray'
+    },
 	titleText: {
 		color: 'white',
         fontWeight: '300',
@@ -168,7 +175,7 @@ const styles = EStyleSheet.create({
         fontFamily: '$fonts.family',
         color: 'white',
     },
-	
+
 	patientText: {
 		fontSize: 11,
         fontWeight: '300',
