@@ -139,13 +139,13 @@ export default class History extends Component {
                             <Text style={[styles.text, styles.typeText]}>{result[0]}</Text>
                         </Col>
                         <Col style={{alignItems: 'center', justifyContent: 'center'}}>
-                            <Text style={[styles.text,styles.levelText]}>{result[1].level}</Text>
+                            <Text style={[styles.text,styles.levelText]}>{result[1].value}</Text>
                         </Col>
                         <Col style={{alignItems: 'center', justifyContent: 'center'}}>
-                            <Text style={[styles.text,styles.changesText]}>{result[1].changes}</Text>
+                            <Text style={[styles.text,styles.changesText]}>{result[1].medicationChange}</Text>
                         </Col>
                         <Col style={{alignItems: 'center', justifyContent: 'center'}}>
-                            <View style={[styles.status, {backgroundColor: this.statusToColor(result[1].level)}]}/>
+                            <View style={[styles.status, {backgroundColor: this.statusToColor(result[1].value)}]}/>
                         </Col>
                     </Grid>
                 </View>

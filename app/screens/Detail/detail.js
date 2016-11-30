@@ -62,11 +62,6 @@ export default class PatientDetailView  extends Component {
     }
 
     parseAssessments(snap) {
-        var agg = 0
-        for (var child in snap.val().Results) {
-            if ( child != "Caregiver" ) { agg += parseInt(snap.val().Results[child].level) }
-        }
-        agg = Math.floor(agg/80*100)
         return {
             distress: snap.val().Results.Caregiver.value,
             completed: snap.val().completed,
@@ -74,7 +69,7 @@ export default class PatientDetailView  extends Component {
             submittedBy: snap.val().submittedBy,
             results: snap.val().Results,
             comments: snap.val().comments,
-            agg: agg
+            agg: snap.val().ESAS
         }
     }
 
@@ -84,6 +79,7 @@ export default class PatientDetailView  extends Component {
 
     buildPoints(assessments) {
         var graphData = {   "Appetite": {max: null, min: null, avg: null, points: []},
+                            "Anxiety": {max: null, min: null, avg: null, points: []},
                             "Depression": {max: null, min: null, avg: null, points: []},
                             "Drowsiness": {max: null, min: null, avg: null, points: []},
                             "Nausea": {max: null, min: null, avg: null, points: []},
@@ -93,13 +89,14 @@ export default class PatientDetailView  extends Component {
 
         for (var i = 0; i < assessments.length; i++) {
             this.updateLatestDate(assessments[i].timestamp)
-            this.updateData(graphData, i, assessments[i].results.Appetite.level, "Appetite")
-            this.updateData(graphData, i, assessments[i].results.Depression.level, "Depression")
-            this.updateData(graphData, i, assessments[i].results.Drowsiness.level, "Drowsiness")
-            this.updateData(graphData, i, assessments[i].results.Nausea.level, "Nausea")
-            this.updateData(graphData, i, assessments[i].results.Pain.level, "Pain")
-            this.updateData(graphData, i, assessments[i].results["Shortness Of Breath"].level, "Shortness of Breath")
-            this.updateData(graphData, i, assessments[i].results.Tiredness.level, "Tiredness")
+            this.updateData(graphData, i, assessments[i].results.Appetite.value, "Appetite")
+            this.updateData(graphData, i, assessments[i].results.Anxiety.value, "Anxiety")
+            this.updateData(graphData, i, assessments[i].results.Depression.value, "Depression")
+            this.updateData(graphData, i, assessments[i].results.Drowsiness.value, "Drowsiness")
+            this.updateData(graphData, i, assessments[i].results.Nausea.value, "Nausea")
+            this.updateData(graphData, i, assessments[i].results.Pain.value, "Pain")
+            this.updateData(graphData, i, assessments[i].results["Shortness Of Breath"].value, "Shortness of Breath")
+            this.updateData(graphData, i, assessments[i].results.Tiredness.value, "Tiredness")
         }
 
         return graphData
@@ -117,6 +114,7 @@ export default class PatientDetailView  extends Component {
         if (gData[type]["min"] == null || gData[type]["min"] > level) { gData[type]["min"] = level }
         gData[type]["avg"] == null ? gData[type]["avg"] = level : gData[type]["avg"] += level
         gData[type]["points"].push([i, level])
+        console.log(gData)
     }
 
     setHistory(hist) {
