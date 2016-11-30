@@ -43,7 +43,7 @@ export default class PatientTableViewCell extends Component {
                     <View style={[styles.statusBar, { backgroundColor: this.statusToColor(this.props.status)}]}/>
                     <View style={styles.stack}>
                         <Text style={styles.text}>{this.props.mainText}</Text>
-                        <Text style={styles.caregiverText}>Primary Caregiver: {this.props.subText}</Text>
+                        <Text style={styles.caregiverText}>Primary Caregiver: {this.props.subText || "Unlisted"}</Text>
                     </View>
                     <View style={{flex: 1}}/>
                     <TouchableHighlight

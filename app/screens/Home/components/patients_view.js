@@ -120,7 +120,7 @@ export default class PatientsView extends Component {
     }
 
     render() {
-        const backIcon = <Icon name="ios-arrow-back" ios="ios-arrow-back" md="md-arrow-back" size={30} color="#262626" />
+        const backIcon = <Icon name="ios-arrow-back" ios="ios-arrow-back" md="md-arrow-back" size={30} color="#E7E7E7" />
 
         return (
             <View style={SharedStyle.container} noSpacer={false} noScroll={false}>
