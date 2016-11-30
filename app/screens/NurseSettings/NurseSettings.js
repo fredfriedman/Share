@@ -22,7 +22,6 @@ const styles = EStyleSheet.create({
 
 	},
 });
-
 export default class NurseSettings extends Component {
 	constructor(){
 		super();
@@ -47,11 +46,6 @@ export default class NurseSettings extends Component {
 				<SettingsList borderColor='#c8c7cc' defaultItemSize={50}>
 					<SettingsList.Header headerStyle={{marginTop:15}}/>
 					<SettingsList.Item
-						title='Profile Information'
-						titleInfoStyle={styles.titleInfoStyle}
-						onPress={() => alert('Nurse Information')}
-					/>
-					<SettingsList.Item
 					  	title='Manage Patients'
 					  	titleInfoStyle={styles.titleInfoStyle}
 					  	onPress={() => this.onViewManagePatientDetail()}
@@ -60,13 +54,6 @@ export default class NurseSettings extends Component {
 					  	title='Manage Caregivers'
 					  	titleInfoStyle={styles.titleInfoStyle}
 					  	onPress={() => this.onViewManageCaregiverDetail()}
-					/>
-					<SettingsList.Item
-					  	hasSwitch={true}
-						switchState={this.state.switchValue}
-					  	switchOnValueChange={this.onValueChange.bind(this)}
-					  	hasNavArrow={false}
-					  	title='Notifications'
 					/>
 					<SettingsList.Header headerStyle={{marginTop:15}}/>
 					<SettingsList.Item

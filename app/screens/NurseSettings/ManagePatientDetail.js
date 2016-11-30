@@ -17,6 +17,7 @@ export default class ManagePatientDetail extends Component{
 		data = ds.cloneWithRows(['undefined']);
 		this.state = {
 			datasource: data,
+			modalVisible: false,
 		};
 		this.props.initializePatientList();
 		this.props.initializeCaregiverList();
@@ -75,42 +76,43 @@ export default class ManagePatientDetail extends Component{
 		            leftOpenValue={75}
 		        />
 		        <Modal
-		            animationType={"slide"}
-		            transparent={false}
+		            animationType={"fade"}
+		            transparent={true}
 		            visible={this.state.modalVisible}
 		            onRequestClose={() => {alert("Modal has been closed.")}}
 		            >
-		            <View style={{marginTop: 22}}>
-		            <View>
-		            <Text>Add Patient</Text>
-		            <Text>Patient Name: </Text>
-		            <TextInput
-		            	onChangeText={(patientName) => this.setState({patientName: patientName})}
-		            	value = {this.state.patientName}
-		           	/>
-		           	<Text>Patient Status (0-100): </Text>
-		            <TextInput
-		            	onChangeText={(patientStatus) => this.setState({patientStatus: patientStatus})}
-		            	value = {this.state.patientStatus}
-		           	/>
+		            	<View style = {styles.externalContainer}>
+		            	<View style= {styles.modalViewStyles}>
+			            <Text style = {styles.modalText}>Add Patient</Text>
+			            <Text>Patient Name: </Text>
+			            <TextInput
+			            	onChangeText={(patientName) => this.setState({patientName: patientName})}
+			            	value = {this.state.patientName}
+			           	/>
+			           	<Text>Patient Status (0-100): </Text>
+			            <TextInput
+			            	onChangeText={(patientStatus) => this.setState({patientStatus: patientStatus})}
+			            	value = {this.state.patientStatus}
+			           	/>
 
-		            <TouchableHighlight 
-		            	onPress={() => {
-			              this.setModalVisible(!this.state.modalVisible);
-			              this.props.onAdd(this.state.patientName, this.state.patientStatus);
-			              this.props.initializePatientList();
-			            }}>
-		               <Text>Submit</Text>
-		            </TouchableHighlight>
-		            <TouchableHighlight 
-		            	onPress={() => {
-			              this.setModalVisible(!this.state.modalVisible);
-			            }}>
-		               <Text>Cancel</Text>
-		            </TouchableHighlight>
-
-		          </View>
-		         </View>
+			            <TouchableHighlight 
+			            	style = {styles.submit}
+			            	onPress={() => {
+				              this.setModalVisible(!this.state.modalVisible);
+				              this.props.onAdd(this.state.patientName, this.state.patientStatus);
+				              this.props.initializePatientList();
+				            }}>
+			               <Text style = {styles.buttonStyles}>Submit</Text>
+			            </TouchableHighlight>
+			            <TouchableHighlight 
+			            	style = {styles.cancel}
+			            	onPress={() => {
+				              this.setModalVisible(!this.state.modalVisible);
+				            }}>
+			               <Text style = {styles.buttonStyles}>Cancel</Text>
+			            </TouchableHighlight>
+			            </View>
+			            </View>
 		        </Modal>
 			</View>
 
@@ -173,7 +175,59 @@ const styles = EStyleSheet.create({
         fontFamily: '$fonts.family',
         color: '$colors.darkGray',
 
+	},
+
+	modalViewStyles:{
+		flex: 1,
+	    justifyContent: 'center',
+	    padding: 20,
+	    marginTop: 100,
+	    marginBottom: 100,
+	    marginLeft: 10,
+	    marginRight: 10,
+	    borderRadius: 5,
+	    backgroundColor: '$colors.lightGray',
+	},
+	externalContainer:{
+		backgroundColor: 'rgba(0, 0, 0, 0.5)',
+		height: '$dimensions.screenHeight',
+		width: '$dimensions.screenWidth',
+	},
+
+	placeHolder: {
+		position: 'relative',
+	    backgroundColor: '#000000',
+	    opacity: 0.5,
+	},
+	submit:{
+		backgroundColor: 'green',
+		height: '$dimensions.rowHeight',
+		borderRadius: 4,
+		margin: 5,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	cancel:{
+		backgroundColor: 'red',
+		height: '$dimensions.rowHeight',
+		borderRadius: 4,
+		margin: 5,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	buttonStyles: {
+		color: 'white',
+		fontSize: 12,
+		fontWeight: '300',
+		fontFamily: '$fonts.family',
+	},
+	modalText: {
+		textAlign: 'center',
+		fontSize: 15,
+		fontWeight: '400',
+		fontFamily: '$fonts.family',
 	}
+
 });
 
 ManagePatientDetail.propTypes = {
