@@ -13,8 +13,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Profile from './components/profile'
 import Overview from './components/overview'
 import Patients from './components/patients_view'
-import Calendar from './components/calendar'
-import Settings from '../NurseSettings/NurseSettings'
+import Settings from '../../containers/NurseSettingContainer'
 
 export default class TabBar extends Component {
 

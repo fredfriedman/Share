@@ -9,6 +9,46 @@ export default class firebaseHelper {
 
     }
 
+    setPatientInactive(patientId){
+        firebase.database().ref('Patients/' + patientId+'/active').set(false);
+    }
+
+    createNewPatient(patientName, patientStatus){
+        let userId = firebase.auth().currentUser.uid;
+        firebase.database().ref('Patients/' + userId).set({
+        assessments:{},
+        caregivers:{},
+        notes:{},
+        active: true,
+        name: patientName,
+        status: patientStatus,
+      });
+    }
+
+    createNewCaregiver(patientId, caregiverName, phoneNumber, relation){
+        let userId = firebase.auth().currentUser.uid;
+        firebase.database().ref('Caregivers/' + userId).set({
+        Patient: patientId,
+        Profile:{
+            name: caregiverName,
+            phone: phoneNumber,
+            relation: relation
+        },
+      });
+    }
+
+    getPatientsPromise(){
+        return firebase.database().ref('Patients/').once('value').then(function(snapshot) {
+            return snapshot.val();
+        });
+    }
+
+    getCaregiverListPromise(){
+        return firebase.database().ref('Caregivers/').once('value').then(function(snapshot) {
+            return snapshot.val();
+        });
+    }
+
     //fetch caregiver firebase caregiver data as promise. Do as you wish
     getCaregiverPromise(caregiverId) {
         return firebase.database().ref('Caregivers/'+ caregiverId).once('value').then(function(snapshot) {
