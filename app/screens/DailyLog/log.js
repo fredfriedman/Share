@@ -1,12 +1,11 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { AppRegistry, ViewPagerAndroid, View, Text, Image } from 'react-native';
+import { AppRegistry, ViewPagerAndroid, View, Slider, Text, Image } from 'react-native';
 
 let styles   = require('../../screens/Login/styles')
 let Question = require("../../components/question").default
 var Button   = require('../../components/button').default
-var Slider = require('react-native-slider');
 
 export default class DailyLog extends Component {
 

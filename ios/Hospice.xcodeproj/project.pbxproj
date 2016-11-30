@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00B9EE055B644D19A158E69B /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 14C05C7DD66B4727B91A251B /* EvilIcons.ttf */; };
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
@@ -32,6 +31,7 @@
 		3240612062524BBCB38A9564 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A35D58664BA4913BEEF798C /* Foundation.ttf */; };
 		33632FC195544D678AAD2BE5 /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A37956A3CA214A879F7B3BC1 /* libRNVectorIcons.a */; };
 		400BE7EDB4404215B72E6116 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D5D48E10B440450D8AE64571 /* SimpleLineIcons.ttf */; };
+		403C71B9D99B4FEFB9626A47 /* libRNSpinkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 08D1E042FB874F2592AE65E4 /* libRNSpinkit.a */; };
 		4ED234AB5D5546E1B9945D84 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7C09C5F4F4DA4E45A99BA064 /* Octicons.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		E32319831DC42493009A6A9B /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E323197A1DC42493009A6A9B /* Entypo.ttf */; };
@@ -125,6 +125,13 @@
 			remoteGlobalIDString = 58B5119B1A9E6C1200147676;
 			remoteInfo = RCTText;
 		};
+		E3429A271DE620C2005D44D7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FAF3AF3A0AA94D04A431C91C /* RNSpinkit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D42CB3511B2538DE00FD0AE2;
+			remoteInfo = RNSpinkit;
+		};
 		E38843181DE5270D0091EADA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F60768E23E6D432A883AE86C /* RNImagePicker.xcodeproj */;
@@ -159,6 +166,7 @@
 		00E356EE1AD99517003FC87E /* HospiceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HospiceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* HospiceTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HospiceTests.m; sourceTree = "<group>"; };
+		08D1E042FB874F2592AE65E4 /* libRNSpinkit.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSpinkit.a; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Hospice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hospice.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -193,6 +201,7 @@
 		E32319821DC42493009A6A9B /* Zocial.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Zocial.ttf; sourceTree = "<group>"; };
 		E3ADDA321DC7DAD1008C3036 /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
 		F60768E23E6D432A883AE86C /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
+		FAF3AF3A0AA94D04A431C91C /* RNSpinkit.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSpinkit.xcodeproj; path = "../node_modules/react-native-spinkit/ios/RNSpinkit.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -222,6 +231,7 @@
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				33632FC195544D678AAD2BE5 /* libRNVectorIcons.a in Frameworks */,
 				20E07B8150354E92A7A084F1 /* libRNImagePicker.a in Frameworks */,
+				403C71B9D99B4FEFB9626A47 /* libRNSpinkit.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -363,6 +373,7 @@
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				192D06A084914593994019BA /* RNVectorIcons.xcodeproj */,
 				F60768E23E6D432A883AE86C /* RNImagePicker.xcodeproj */,
+				FAF3AF3A0AA94D04A431C91C /* RNSpinkit.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -413,6 +424,14 @@
 			);
 			name = Fonts;
 			path = "../node_modules/react-native-vector-icons/Fonts";
+			sourceTree = "<group>";
+		};
+		E3429A181DE620C2005D44D7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E3429A281DE620C2005D44D7 /* libRNSpinkit.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		E388430A1DE5270D0091EADA /* Products */ = {
@@ -558,6 +577,10 @@
 					ProjectRef = F60768E23E6D432A883AE86C /* RNImagePicker.xcodeproj */;
 				},
 				{
+					ProductGroup = E3429A181DE620C2005D44D7 /* Products */;
+					ProjectRef = FAF3AF3A0AA94D04A431C91C /* RNSpinkit.xcodeproj */;
+				},
+				{
 					ProductGroup = E3ADDA231DC7DA73008C3036 /* Products */;
 					ProjectRef = 192D06A084914593994019BA /* RNVectorIcons.xcodeproj */;
 				},
@@ -639,6 +662,13 @@
 			fileType = archive.ar;
 			path = libRCTText.a;
 			remoteRef = 832341B41AAA6A8300B99B32 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E3429A281DE620C2005D44D7 /* libRNSpinkit.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNSpinkit.a;
+			remoteRef = E3429A271DE620C2005D44D7 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		E38843191DE5270D0091EADA /* libRNImagePicker.a */ = {
@@ -775,6 +805,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Hospice.app/Hospice";
@@ -792,6 +823,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
@@ -813,6 +845,7 @@
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
+					"$(SRCROOT)/../node_modules/react-native-spinkit/ios/**",
 				);
 				INFOPLIST_FILE = Hospice/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -822,6 +855,7 @@
 					"-lc++",
 				);
 				PRODUCT_NAME = Hospice;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -838,6 +872,7 @@
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
+					"$(SRCROOT)/../node_modules/react-native-spinkit/ios/**",
 				);
 				INFOPLIST_FILE = Hospice/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -847,6 +882,7 @@
 					"-lc++",
 				);
 				PRODUCT_NAME = Hospice;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
@@ -891,6 +927,7 @@
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
+					"$(SRCROOT)/../node_modules/react-native-spinkit/ios/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -933,6 +970,7 @@
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
+					"$(SRCROOT)/../node_modules/react-native-spinkit/ios/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
