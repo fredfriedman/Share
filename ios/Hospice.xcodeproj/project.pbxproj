@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00B9EE055B644D19A158E69B /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 14C05C7DD66B4727B91A251B /* EvilIcons.ttf */; };
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
@@ -848,6 +849,7 @@
 					"$(SRCROOT)/../node_modules/react-native-spinkit/ios/**",
 				);
 				INFOPLIST_FILE = Hospice/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -875,6 +877,7 @@
 					"$(SRCROOT)/../node_modules/react-native-spinkit/ios/**",
 				);
 				INFOPLIST_FILE = Hospice/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",

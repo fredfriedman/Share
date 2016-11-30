@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import {
         ListView,
         ScrollView,
+        Text,
         View,
     } from 'react-native';
 
@@ -198,6 +199,8 @@ export default class Overview extends Component {
             <View style={SharedStyle.container}>
                 <Header
                     text={"Overview"}
+                    rightAction={this.onPressHeader.bind(this, "Patients")}
+                    rightIcon={<Text style={{color: "#262626", paddingTop: 10, fontSize: 10.5}}>See All</Text>}
                     headerStyle={SharedStyle.header}
                     textStyle={SharedStyle.header_text}/>
                 { this.renderView()}

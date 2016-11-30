@@ -6,6 +6,7 @@ import { ListView,
         Image,
         Alert,
         Dimensions,
+        TextInput,
         View, } from 'react-native';
 import Button from 'apsl-react-native-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -17,35 +18,30 @@ const width = Dimensions.get('window').width;
 export default class Submit extends Component {
     constructor(props) {
         super(props);
+        this.state = { 
+            text: this.props.text
+        };
     }
 
     render() {
         return(
             <View style={Styles.container}>
                 <View style={{height: height * 0.3, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-                    <Text style={Styles.submissionTitle}>
-                        Congratulations!
+                    <Text style={Styles.submissionBody}>
+                        Are there any comments you would like to add before you submit?
                     </Text>
                 </View>
                 <View style={{height: height * 0.3, flexDirection: 'row', justifyContent: 'center', alignItems: 'flex-start'}}>
-                    <Text style={Styles.submissionBody}>
-                        You have completed the assessment! Please make sure your answers
-                        are what you want them to be before submitting.
-                    </Text>
+                    <TextInput 
+                        style={Styles.submissionBody}
+                        placeholder="Tap here to type"
+                        placeholderTextColor="FF9800"
+                        onChangeText={(text) => {
+                            this.setState({text: text});
+                            this.props.saveComments(text);
+                        }}>
+                    </TextInput>
                 </View>
-                <Button
-                    style={Styles.submitButton}
-                    textStyle={{color: 'white'}}
-                    onPress={() => Alert.alert(
-                        'Confirm Submission',
-                        'Are you sure you want to submit your answers?',
-                        [
-                          {text: 'Cancel', onPress: () => console.log('Cancelled')},
-                          {text: 'Submit', onPress: () => this.props.saveAssessmentToFirebase()}
-                        ]
-                    )}>
-                    Submit Answers
-                </Button>
             </View>
         );
     }
@@ -60,27 +56,19 @@ var Styles = EStyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start'
   },
-  submissionTitle: {
+  textInputStyle: {
     flex: 1,
-    fontSize: 44,
-    fontWeight: 'bold',
     fontFamily: '$fonts.family',
-    padding: 10,
-    textAlign: 'center',
-    color: '$colors.answerSelectedBackground'
+    padding: 10, 
+    textAlign: 'center', 
+    borderColor: '$colors.answerSelectedBackground'
   },
   submissionBody: {
     flex: 1,
     fontSize: 20,
     fontFamily: '$fonts.family',
-    padding: 10,
-    textAlign: 'center',
+    padding: 10, 
+    textAlign: 'center', 
     color: '$colors.main'
-  },
-  submitButton: {
-    backgroundColor: '$colors.answerSelectedBackground',
-    borderColor: '$colors.answerSelectedBorder',
-    width: width * 0.5,
-    alignSelf: 'center'
   }
 });

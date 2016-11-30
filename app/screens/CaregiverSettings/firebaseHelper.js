@@ -15,29 +15,28 @@ export default class firebaseHelper {
 
     createNewPatient(patientName, patientStatus){
         let userId = new Date().getTime();
+        let nurseID = firebase.auth().currentUser.uid;
         firebase.database().ref('Patients/' + userId).set(
         {
             active: true,
             name: patientName,
             status: patientStatus,
+            nurse: nurseID,
         });
-        return userId;
+
+        firebase.database().ref('Nurses/' + nurseID + '/Patients/').update({[userId]: true});
     }
 
-    nurseAssignPatient(nurseId, patientId){
-        firebase.database().ref('Nurses/' + nurseId + '/Patients/' + patientId).set(true);
-    }
-
-    createNewCaregiver(patientId, caregiverName, phoneNumber, relation){
+    createNewCaregiver(patientId, caregiverName, phoneNumber, relation, nurseID){
         let userId = firebase.auth().currentUser.uid;
         firebase.database().ref('Caregivers/' + userId).set({
-        Patient: patientId,
-        Profile:{
-            name: caregiverName,
-            phone: phoneNumber,
-            relation: relation
-        },
-      });
+            Patient: patientId,
+            Profile:{
+                name: caregiverName,
+                phone: phoneNumber,
+                relation: relation
+            },
+        });
     }
 
     getPatientsPromise(){
@@ -80,6 +79,17 @@ export default class firebaseHelper {
     updatePatientId(caregiverId, patientId) {
         var patientIdRef = firebase.database().ref('Caregivers/'+ caregiverId);
         return patientIdRef.update({'Patient': patientId});
+    }
+
+    /**
+    @access public
+    @param int: caregiver id
+    @param int: nurse id
+    @return void; function sets nurseId linked to caregiver
+    */
+    updateNurseId(caregiverId, nurseId) {
+        var nurseIdRef = firebase.database().ref('Caregivers/'+ nurseId);
+        return nurseIdRef.update({'Nurse': nurseId});
     }
 
 

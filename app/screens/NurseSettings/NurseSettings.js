@@ -9,19 +9,6 @@ import Header from '../../components/header';
 import ManagePatientDetailContainer from '../../containers/ManagePatientDetailContainer';
 import ManageCaregiverDetailContainer from '../../containers/ManageCaregiverDetailContainer';
 
-
-const styles = EStyleSheet.create({
-	container: {
-		backgroundColor:'$colors.lightGray',
-		flex:1
-	},
-	imageStyle:{
-
-	},
-	titleInfoStyle:{
-
-	},
-});
 export default class NurseSettings extends Component {
 	constructor(props){
 		super(props);
@@ -42,7 +29,10 @@ export default class NurseSettings extends Component {
 
 		return (
 		 	<View style={styles.container}>
-				<Header text={"Settings"} textStyle={{color: 'white'}}/>
+				<Header
+					text={"Settings"}
+					textStyle={styles.header_text}
+					headerStyle={styles.headerStyle}/>
 				<SettingsList borderColor='#c8c7cc' defaultItemSize={50}>
 					<SettingsList.Header headerStyle={{marginTop:15}}/>
 					<SettingsList.Item
@@ -102,3 +92,25 @@ export default class NurseSettings extends Component {
 		})
   	}
 }
+
+const styles = EStyleSheet.create({
+	container: {
+		backgroundColor:'$colors.lightGray',
+		flex:1
+	},
+	imageStyle:{
+
+	},
+	titleInfoStyle:{
+
+	},
+	header: {
+        backgroundColor: '$colors.main',
+    },
+    header_text: {
+        color: '$colors.lightGray',
+        fontSize: 16,
+        fontWeight: '500',
+        fontFamily: "$fonts.family",
+    },
+});
