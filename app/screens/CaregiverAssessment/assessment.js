@@ -143,17 +143,17 @@ export default class Assessment extends Component {
 
                         var critical = 8 * 10 * 0.7;
                         if (average > critical) {
-                            nurseRef.child('Critical Patients').set({[patientId]: true});
+                            nurseRef.child('Critical Patients').update({[patientId]: true});
                         } else {
                             nurseRef.child('Critical Patients').child(patientId).remove();
                         }
                         if (Math.abs(average - lastAverage) >= 10) {
-                            nurseRef.child('RC Patients').set({[patientId]: true});
+                            nurseRef.child('RC Patients').update({[patientId]: true});
                         } else {
                             nurseRef.child('RC Patients').child(patientId).remove();
                         }
                         if (databaseAssessmentObject.Results.Caregiver.value >= 7) {
-                            nurseRef.child('Distressed Patients').set({[patientId]: true});
+                            nurseRef.child('Distressed Patients').update({[patientId]: true});
                         } else {
                             nurseRef.child('RC Patients').child(patientId).remove();
                         }
