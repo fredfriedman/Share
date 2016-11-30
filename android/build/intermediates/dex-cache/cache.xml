@@ -2,11 +2,11 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\Michael\workspace\Hospice\android\app\build\intermediates\exploded-aar\Hospice\react-native-vector-icons\unspecified\jars\classes.jar"
+        jar="C:\Users\Michael\workspace\Hospice\android\app\build\intermediates\exploded-aar\Hospice\react-native-image-picker\unspecified\jars\classes.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="912186ad156f49c43d4ebe290ba5276993ebb815">
-        <dex dex="C:\Users\Michael\workspace\Hospice\android\app\build\intermediates\pre-dexed\debug\classes-e3f41843223680886cb9680ea6f0d4ac991f4f37.jar" />
+        sha1="05a50f06a219bfff86f8b6b7129622dbe15598ce">
+        <dex dex="C:\Users\Michael\workspace\Hospice\android\app\build\intermediates\pre-dexed\debug\classes-f92501d2e44a6f0f35b2328f29796053940bd878.jar" />
     </item>
 
 </items>

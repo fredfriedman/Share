@@ -14,7 +14,7 @@ import Profile from './components/profile'
 import Overview from './components/overview'
 import Patients from './components/patients_view'
 import Settings from '../../containers/NurseSettingContainer'
-
+import Calendar from './components/calendar'
 export default class TabBar extends Component {
 
     constructor(props) {
