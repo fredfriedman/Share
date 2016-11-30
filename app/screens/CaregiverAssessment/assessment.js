@@ -159,6 +159,7 @@ export default class Assessment extends Component {
                         }
                     });
             })
+        this.props.navigator.popN(2)
     }
 
 
@@ -174,7 +175,7 @@ export default class Assessment extends Component {
     onSlideComplete = (questionType, value) => {
         var newAssessmentObject = _.clone(this.state.assessmentObject);
         newAssessmentObject.Results[questionType].value = value;
-        
+
         this.setState({assessmentObject: newAssessmentObject});
         this.updateESAS();
     }
@@ -182,7 +183,7 @@ export default class Assessment extends Component {
     onMedicationChange = (questionType, medicationChange) => {
         var newAssessmentObject = _.clone(this.state.assessmentObject);
         newAssessmentObject.Results[questionType].medicationChange = medicationChange;
-        
+
         this.setState({assessmentObject: newAssessmentObject});
         this.updateESAS();
     }
@@ -230,7 +231,7 @@ export default class Assessment extends Component {
             "Are you sure you want to go back? Your assessment hasn't been submitted yet.",
             [
               {text: 'Cancel', onPress: () => console.log('Cancelled')},
-              {text: 'Quit', onPress: () => this.props.navigator.pop()}
+              {text: 'Quit', onPress: () => this.props.navigator.popN(2)}
             ]
         )
     }
@@ -244,18 +245,18 @@ export default class Assessment extends Component {
         return (
             <View
                 style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
-                <Header 
-                    text={"Assessment - " + new Date(this.state.assessmentObject.timestamp).toLocaleDateString()} 
-                    textStyle={{color: 'white'}} 
-                    leftAction={this.onBack.bind(this)} 
-                    leftIcon={backIcon}/> 
+                <Header
+                    text={"Assessment - " + new Date(this.state.assessmentObject.timestamp).toLocaleDateString()}
+                    textStyle={{color: 'white'}}
+                    leftAction={this.onBack.bind(this)}
+                    leftIcon={backIcon}/>
                 <View
                     style={{ flex: 1 }}
                     onLayout={ (e) => {
                     var {x, y, width, height} = e.nativeEvent.layout;
                         this.setState({
                             swiperHeight: height
-                        })}}> 
+                        })}}>
                     <Swiper
                         height={this.state.swiperHeight}
                         horizontal={true}

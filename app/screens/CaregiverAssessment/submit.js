@@ -62,19 +62,19 @@ var Styles = EStyleSheet.create({
   },
   submissionTitle: {
     flex: 1,
-    fontSize: 50,
+    fontSize: 44,
     fontWeight: 'bold',
     fontFamily: '$fonts.family',
-    padding: 10, 
-    textAlign: 'center', 
+    padding: 10,
+    textAlign: 'center',
     color: '$colors.answerSelectedBackground'
   },
   submissionBody: {
     flex: 1,
     fontSize: 20,
     fontFamily: '$fonts.family',
-    padding: 10, 
-    textAlign: 'center', 
+    padding: 10,
+    textAlign: 'center',
     color: '$colors.main'
   },
   submitButton: {
