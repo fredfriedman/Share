@@ -4,6 +4,7 @@ import { ListView,
         TouchableHighlight,
         StyleSheet,
         Text,
+        Alert,
         Image,
         Dimensions,
         View, } from 'react-native';
@@ -17,6 +18,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import firebase from '../../config/firebase'
 import Question from '../../components/genericQuestion';
 import SubmitPage from './submit';
+import CommentsPage from './comments';
 import Header from '../../components/header';
 import QuestionNavigationButton from '../../components/questionNavigationButton'
 import ToggleButton from '../../components/toggleButton';
@@ -28,60 +30,78 @@ export default class Assessment extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            scrollViewEnabled: true,
             swiperHeight: 0,
             user: this.props.user,
             questionTypes: ["Pain", "Tiredness", "Nausea", "Depression", "Anxiety", "Drowsiness", "Appetite", "Shortness Of Breath", "Caregiver"],
             databaseKey: null,
             assessmentObject: {
-                date: new Date().getTime(),
+                timestamp: new Date().getTime(),
                 submittedBy: this.props.user.id,
+                comments: null,
+                ESAS: 0,
                 Results: {
                     Pain: {
                         value: 0,
                         medicationChange: 'none'
                     },
                     Tiredness: {
-                        value: 1,
+                        value: 0,
                         medicationChange: 'none'
                     },
                     Nausea: {
-                        value: 2,
+                        value: 0,
                         medicationChange: 'none'
                     },
                     Depression: {
-                        value: 3,
+                        value: 0,
                         medicationChange: 'none'
                     },
                     Anxiety: {
-                        value: 4,
+                        value: 0,
                         medicationChange: 'none'
                     },
                     Drowsiness: {
-                        value: 5,
+                        value: 0,
                         medicationChange: 'none'
                     },
                     Appetite: {
-                        value: 6,
+                        value: 0,
                         medicationChange: 'none'
                     },
                     "Shortness Of Breath": {
-                        value: 7,
+                        value: 0,
                         medicationChange: 'none'
                     },
                     Caregiver: {
-                        value: 8
+                        value: 0
                     }
-                }
+                },
             }
         };
         console.log("Object is: " + JSON.stringify(this.state.assessmentObject));
         console.log("User is: " + JSON.stringify(this.state.user));
     }
 
+    updateESAS() {
+        var sum = 0;
+        sum += this.state.assessmentObject.Results.Pain.value;
+        sum += this.state.assessmentObject.Results.Tiredness.value;
+        sum += this.state.assessmentObject.Results.Nausea.value;
+        sum += this.state.assessmentObject.Results.Depression.value;
+        sum += this.state.assessmentObject.Results.Anxiety.value;
+        sum += this.state.assessmentObject.Results.Drowsiness.value;
+        sum += this.state.assessmentObject.Results.Appetite.value;
+        sum += this.state.assessmentObject.Results['Shortness Of Breath'].value;
+        var newAssessmentObject = _.clone(this.state.assessmentObject);
+        newAssessmentObject.ESAS = sum;
+
+        this.setState({assessmentObject: newAssessmentObject});
+        this.saveAssessmentObject();
+    }
+
     saveAssessmentObject() {
         var serializedAssessment = JSON.stringify(this.state.assessmentObject);
-        return store.save(this.state.assessmentObject.date.timestamp.toString(), serializedAssessment)
+        return store.save(this.state.assessmentObject.timestamp.toString(), serializedAssessment)
             .then(json => console.log('Save success!'))
             .catch(error => console.log('Save error!'));
     }
@@ -101,58 +121,80 @@ export default class Assessment extends Component {
 
     saveAssessmentToFirebase() {
         var databaseKey = this.generateDatabaseKey();
+        var patientRef = firebase.database().ref().child('Patients').child(this.state.user.Patient);
+        var patientId = this.state.user.Patient;
+        var nurseRef = firebase.database().ref().child('Nurses').child(this.state.user.Nurse);
         var updates = {};
         updates['Patients/' + this.state.user.Patient + '/Assessments/' + databaseKey] = this.state.assessmentObject;
 
-        return firebase.database().ref().update(updates)
+        var sumLastThree = 0;
+        var lastAverage = patientRef.child('status');
+        var lastThreeAssessments = [];
 
+        firebase.database().ref().update(updates)
+            .then(snap => {
+                patientRef.child('Assessments').orderByChild("timestamp").limitToLast(3)
+                    .on("child_added", function(snapshot) {
+                        lastThreeAssessments.push(snapshot.val());
+                        var databaseAssessmentObject = snapshot.val();
+                        sumLastThree += databaseAssessmentObject.ESAS;
+                        var average = sumLastThree / 3;
+                        patientRef.child('status').set(average);
+
+                        var critical = 8 * 10 * 0.7;
+                        if (average > critical) {
+                            nurseRef.child('Critical Patients').set({[patientId]: true});
+                        } else {
+                            nurseRef.child('Critical Patients').child(patientId).remove();
+                        }
+                        if (Math.abs(average - lastAverage) >= 10) {
+                            nurseRef.child('RC Patients').set({[patientId]: true});
+                        } else {
+                            nurseRef.child('RC Patients').child(patientId).remove();
+                        }
+                        if (databaseAssessmentObject.Results.Caregiver.value >= 7) {
+                            nurseRef.child('Distressed Patients').set({[patientId]: true});
+                        } else {
+                            nurseRef.child('RC Patients').child(patientId).remove();
+                        }
+                    });
+            })
     }
 
-    formatDate(date) {
-        var monthNames = [
-          "January", "February", "March",
-          "April", "May", "June", "July",
-          "August", "September", "October",
-          "November", "December"
-        ];
 
-        var beforeDate = date;
-        var day = date.getDate();
-        var monthIndex = date.getMonth();
-        var year = date.getFullYear();
 
-        return (day + ' ' + monthNames[monthIndex] + ' ' + year);
-    }
+    saveComments(text) {
+        var newAssessmentObject = _.clone(this.state.assessmentObject);
+        newAssessmentObject.comments = text;
 
-    removeSpacesAndCapitalize(questionType) {
-        return questionType.replace(/\b\w/g, l => l.toUpperCase()).replace(/\s+/g, '');
+        this.setState({assessmentObject: newAssessmentObject});
+        this.saveAssessmentObject();
     }
 
     onSlideComplete = (questionType, value) => {
         var newAssessmentObject = _.clone(this.state.assessmentObject);
-        var sanitizedQuestionType = questionType//this.removeSpacesAndCapitalize(questionType);
-        newAssessmentObject.Results[sanitizedQuestionType].value = value;
+        newAssessmentObject.Results[questionType].value = value;
+        
         this.setState({assessmentObject: newAssessmentObject});
-
-        this.saveAssessmentObject();
+        this.updateESAS();
     }
 
     onMedicationChange = (questionType, medicationChange) => {
         var newAssessmentObject = _.clone(this.state.assessmentObject);
-        var sanitizedQuestionType = questionType//this.removeSpacesAndCapitalize(questionType);
-        newAssessmentObject.Results[sanitizedQuestionType].medicationChange = medicationChange;
+        newAssessmentObject.Results[questionType].medicationChange = medicationChange;
+        
         this.setState({assessmentObject: newAssessmentObject});
-
-        this.saveAssessmentObject();
+        this.updateESAS();
     }
 
     generateQuestions() {
         var assessmentQuestions = [];
         for (var i = 0; i < this.state.questionTypes.length; i++) {
             var currentQuestionType = this.state.questionTypes[i];
-            var sanitizedQuestionType = currentQuestionType//this.removeSpacesAndCapitalize(currentQuestionType);
-            var questionValue = this.state.assessmentObject.Results[sanitizedQuestionType].value;
-            var questionMedicationChange = this.state.assessmentObject.Results[sanitizedQuestionType].medicationChange;
+
+            var questionValue = this.state.assessmentObject.Results[currentQuestionType].value;
+            var questionMedicationChange = this.state.assessmentObject.Results[currentQuestionType].medicationChange;
+
             assessmentQuestions.push(
                 <Question
                     style={{flex: 1}}
@@ -170,6 +212,11 @@ export default class Assessment extends Component {
     generateAssessmentPages() {
         var assessmentPages = this.generateQuestions();
         assessmentPages.push(
+            <CommentsPage
+                saveComments={this.saveComments.bind(this)}
+            />
+        );
+        assessmentPages.push(
             <SubmitPage
                 saveAssessmentToFirebase={this.saveAssessmentToFirebase.bind(this)}
             />
@@ -178,7 +225,14 @@ export default class Assessment extends Component {
     }
 
     onBack() {
-        this.props.navigator.pop()
+        Alert.alert(
+            'Confirm Quit',
+            "Are you sure you want to go back? Your assessment hasn't been submitted yet.",
+            [
+              {text: 'Cancel', onPress: () => console.log('Cancelled')},
+              {text: 'Quit', onPress: () => this.props.navigator.pop()}
+            ]
+        )
     }
 
 
@@ -190,19 +244,18 @@ export default class Assessment extends Component {
         return (
             <View
                 style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
-                <Header
-                    text={"Assessment - " + this.state.assessmentObject.date}
-                    textStyle={{color: 'white'}}
-                    leftAction={this.onBack.bind(this)}
-                    leftIcon={backIcon}/>
+                <Header 
+                    text={"Assessment - " + new Date(this.state.assessmentObject.timestamp).toLocaleDateString()} 
+                    textStyle={{color: 'white'}} 
+                    leftAction={this.onBack.bind(this)} 
+                    leftIcon={backIcon}/> 
                 <View
                     style={{ flex: 1 }}
                     onLayout={ (e) => {
                     var {x, y, width, height} = e.nativeEvent.layout;
                         this.setState({
                             swiperHeight: height
-                        })
-                }}>
+                        })}}> 
                     <Swiper
                         height={this.state.swiperHeight}
                         horizontal={true}
