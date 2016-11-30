@@ -10,6 +10,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import CaregiverAssessment from '../CaregiverAssessment/assessment';
 import CaregiverHistory from '../CaregiverHistory/history';
 import CaregiverSettings from '../CaregiverSettings/caregiversettings';
+import AssessmentLandingPage from '../CaregiverAssessment/landing';
 
 export default class Overview extends Component {
 
@@ -50,9 +51,10 @@ export default class Overview extends Component {
             		<Col>
                         <TouchableHighlight
                             pressed={false}
-                            style={styles.buttonStyle1}
-                            onPress={() => this.handlePress(CaregiverAssessment)}>
-                            <View style={styles.buttonChildrenContainer}>
+                            style={styles.buttonStyle1} 
+                            onPress={() => this.handlePress(AssessmentLandingPage)}>
+                            <View
+                                style={styles.buttonChildrenContainer}>
                                 <Icon name="assignment-late" size={80} color="white" />
                                 <Text style={styles.buttonTextStyle}>Complete Assessment</Text>
                             </View>
