@@ -21,6 +21,7 @@ export default class firebaseHelper {
             active: true,
             name: patientName,
             status: patientStatus,
+            nurse: nurseID,
         });
         firebase.database().ref('Nurses/' + nurseID + '/Patients/').update({[userId]: true});
     }
@@ -77,6 +78,17 @@ export default class firebaseHelper {
     updatePatientId(caregiverId, patientId) {
         var patientIdRef = firebase.database().ref('Caregivers/'+ caregiverId);
         return patientIdRef.update({'Patient': patientId});
+    }
+
+    /**
+    @access public
+    @param int: caregiver id
+    @param int: nurse id
+    @return void; function sets nurseId linked to caregiver
+    */
+    updateNurseId(caregiverId, nurseId) {
+        var nurseIdRef = firebase.database().ref('Caregivers/'+ nurseId);
+        return nurseIdRef.update({'Nurse': nurseId});
     }
 
 

@@ -74,16 +74,41 @@ export default class signup extends Component {
 
                 var ref = self.state.isCaregiver ? "Caregivers/" + user.uid : "Nurses/" + user.uid
 
-                var data = self.state.isCaregiver ? {patient: self.state.caregiver.patient,  Profile: {name: self.state.caregiver.name, phone: self.state.caregiver.phone, relation: self.state.caregiver.relation}} :
-                                                    {Profile: {name: self.state.nurse.name, phone: self.state.nurse.phone, relation: self.state.nurse.picture}}
+                if (self.state.isCaregiver) {
+                    return Firebase.database().ref().child("Patients/" + self.state.caregiver.patient + "/nurse").once('value')
+                        .then(function(res) {
 
-                Firebase.database().ref().child(ref).set(data);
+                            var data = {
+                                Patient: self.state.caregiver.patient,
+                                Nurse: res.val(),
+                                Profile: {
+                                    name: self.state.caregiver.name,
+                                    phone: self.state.caregiver.phone,
+                                    relation: self.state.caregiver.relation
+                                }
+                            }
 
-                self.setState({animating: false})
+                            Firebase.database().ref().child(ref).set(data);
 
-                dismissKeyboard()
+                            self.setState({animating: false})
 
-                self.props.navigator.pop()
+                            dismissKeyboard()
+
+                            self.props.navigator.pop()
+                        })
+
+                } else {
+
+                    var data = {Profile: {name: self.state.nurse.name, phone: self.state.nurse.phone, relation: self.state.nurse.picture}}
+
+                    Firebase.database().ref().child(ref).set(data);
+
+                    self.setState({animating: false})
+
+                    dismissKeyboard()
+
+                    self.props.navigator.pop()
+                }
 
             }, function(error) {
 
