@@ -14,6 +14,7 @@ import Header from '../../components/header';
 import CaregiverAssessment from '../CaregiverAssessment/assessment';
 import CaregiverHistory from '../CaregiverHistory/historyTest';
 import CaregiverSettings from '../CaregiverSettings/caregiversettings';
+import AssessmentLandingPage from '../CaregiverAssessment/landing';
 
 export default class Overview extends Component {
 
@@ -44,7 +45,7 @@ export default class Overview extends Component {
             			<Button
                             pressed={false}
                             style={styles.buttonStyle1} 
-                            onPress={() => this.handlePress(CaregiverAssessment)}>
+                            onPress={() => this.handlePress(AssessmentLandingPage)}>
                             <View
                                 style={styles.buttonChildrenContainer}>
                                 <Icon name="assignment-late" size={80} color="white" />
