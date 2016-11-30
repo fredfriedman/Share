@@ -7,6 +7,7 @@ import firebaseHelper from '../screens/CaregiverSettings/firebaseHelper';
 //Manage Patients
 export const ADD_PATIENT = 'ADD_PATIENT';
 export const REMOVE_PATIENT = 'REMOVE_PATIENT';
+export const NURSE_ASSIGN_PATIENT = 'NURSE_ASSIGN_PATIENT';
 
 //Manage Caregivers
 export const ASSIGN_CAREGIVER = 'ASSIGN_CAREGIVER';
@@ -31,16 +32,20 @@ export const INITIALIZE_CAREGIVERS = 'INITIALIZE_CAREGIVERS';
 */
 
 //Firebase Functionality
-export function addPatient(patientName, patientStatus){
-	return {type: ADD_PATIENT, patientName, patientStatus}
+export function addPatient(patientName, patientStatus, nurseId){
+	return {type: ADD_PATIENT, patientName, patientStatus, nurseId};
 }
 
 export function removePatient(patientId){
-	return {type: REMOVE_PATIENT, patientId}
+	return {type: REMOVE_PATIENT, patientId};
+}
+
+export function nurseAssignPatient(nurseId, patientId){
+	return {type: NURSE_ASSIGN_PATIENT, nurseId, patientId};
 }
 
 export function assignCaregiver(caregiverId, patientId){
-	return {type: ASSIGN_CAREGIVER, caregiverId, patientId}
+	return {type: ASSIGN_CAREGIVER, caregiverId, patientId};
 }
 
 export function removeCaregiver(caregiverId){

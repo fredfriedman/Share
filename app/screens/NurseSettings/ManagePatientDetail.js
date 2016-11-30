@@ -99,7 +99,8 @@ export default class ManagePatientDetail extends Component{
 			            	style = {styles.submit}
 			            	onPress={() => {
 				              this.setModalVisible(!this.state.modalVisible);
-				              this.props.onAdd(this.state.patientName, this.state.patientStatus);
+				              console.log(this.props.user);
+				              this.props.onAdd(this.state.patientName, this.state.patientStatus, this.props.user.id);
 				              this.props.initializePatientList();
 				            }}>
 			               <Text style = {styles.buttonStyles}>Submit</Text>

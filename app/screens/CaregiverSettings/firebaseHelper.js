@@ -21,6 +21,11 @@ export default class firebaseHelper {
             name: patientName,
             status: patientStatus,
         });
+        return userId;
+    }
+
+    nurseAssignPatient(nurseId, patientId){
+        firebase.database().ref('Nurses/' + nurseId + '/Patients/' + patientId).set(true);
     }
 
     createNewCaregiver(patientId, caregiverName, phoneNumber, relation){

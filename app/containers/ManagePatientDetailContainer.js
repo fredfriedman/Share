@@ -2,7 +2,7 @@ import React from 'react';
 import {ListView} from 'react-native';
 import {connect} from 'react-redux';
 import ManagePatientDetail from '../screens/NurseSettings/ManagePatientDetail';
-import { addPatient ,removePatient, initializeCaregiverList, initializePatientList} from '../actions/Actions';
+import { addPatient ,removePatient, nurseAssignPatient, initializeCaregiverList, initializePatientList} from '../actions/Actions';
 import firebaseHelper from '../screens/CaregiverSettings/firebaseHelper'
 
 const mapStateToProps = (state, ownProps) => {
@@ -14,7 +14,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
 		onRemove: (patientId) => { dispatch(removePatient(patientId)) },
-		onAdd: (patientName, patientStatus) => { dispatch(addPatient(patientName, patientStatus)) },
+		onAdd: (patientName, patientStatus) => { dispatch(addPatient(patientName, patientStatus, nurseId)) },
 		initializePatientList: () => {dispatch(initializePatientList())},
 		initializeCaregiverList: () => {dispatch(initializeCaregiverList())},
 	}

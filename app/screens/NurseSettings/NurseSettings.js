@@ -23,8 +23,8 @@ const styles = EStyleSheet.create({
 	},
 });
 export default class NurseSettings extends Component {
-	constructor(){
-		super();
+	constructor(props){
+		super(props);
 
 		this.state = {
 			switchValue: false,
@@ -70,14 +70,20 @@ export default class NurseSettings extends Component {
 	onViewManagePatientDetail(){
 		this.props.navigator.push({
 			component:ManagePatientDetailContainer,
-			sceneConfig: Navigator.SceneConfigs.FloatFromBottom
+			sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
+			passProps: {
+				user: this.props.user,
+			},
 		});
 	}
 
 	onViewManageCaregiverDetail(){
 		this.props.navigator.push({
 			component:ManageCaregiverDetailContainer,
-			sceneConfig: Navigator.SceneConfigs.FloatFromBottom
+			sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
+			passProps: {
+				user: this.props.user,
+			},
 		});
 	}
 
