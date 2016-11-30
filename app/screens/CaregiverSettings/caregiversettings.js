@@ -94,7 +94,7 @@ export default class CaregiverSettings extends Component {
 							backgroundColor = 'red'
 							titleStyle = {{color: 'white'}}
 						  	title='Logout'
-						  	onPress={() => this.onLogout()}
+						  	onPress={this.onLogout.bind(this)}
 						/>
 					</SettingsList>
 				</View>
@@ -125,10 +125,11 @@ export default class CaregiverSettings extends Component {
 	}
 
 	onLogout(){
+		var fb = new firebaseHelper();
 
 		var self = this
 
-		this.fb.signOut().then(function(val) {
+		fb.signOut().then(function(val) {
 			if(val) {
 				self.props.navigator.resetTo({component: login});
 			} else {
