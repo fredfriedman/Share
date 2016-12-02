@@ -24,7 +24,7 @@ export default class Submit extends Component {
             <View style={Styles.container}>
                 <View style={{height: height * 0.3, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                     <Text style={Styles.submissionTitle}>
-                        Congratulations!
+                        Complete!
                     </Text>
                 </View>
                 <View style={{height: height * 0.3, flexDirection: 'row', justifyContent: 'center', alignItems: 'flex-start'}}>

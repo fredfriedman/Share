@@ -78,8 +78,6 @@ export default class Assessment extends Component {
                 },
             }
         };
-        console.log("Object is: " + JSON.stringify(this.state.assessmentObject));
-        console.log("User is: " + JSON.stringify(this.state.user));
     }
 
     updateESAS() {
@@ -124,44 +122,71 @@ export default class Assessment extends Component {
         var patientRef = firebase.database().ref().child('Patients').child(this.state.user.Patient);
         var patientId = this.state.user.Patient;
         var nurseRef = firebase.database().ref().child('Nurses').child(this.state.user.Nurse);
-        var updates = {};
-        updates['Patients/' + this.state.user.Patient + '/Assessments/' + databaseKey] = this.state.assessmentObject;
 
-        var sumLastThree = 0;
-        var lastAverage = patientRef.child('status');
-        var lastThreeAssessments = [];
+        var self = this
 
-        firebase.database().ref().update(updates)
-            .then(snap => {
-                patientRef.child('Assessments').orderByChild("timestamp").limitToLast(3)
-                    .on("child_added", function(snapshot) {
-                        lastThreeAssessments.push(snapshot.val());
-                        var databaseAssessmentObject = snapshot.val();
-                        sumLastThree += databaseAssessmentObject.ESAS;
-                        var average = sumLastThree / lastThreeAssessments.length;
-                        patientRef.child('status').set(average);
+        var criticalPatients = "Nurses/" + this.state.user.Nurse + "/Critical Patients/" + patientId
+        var rcPatients = "Nurses/" + this.state.user.Nurse + "/RC Patients/" + patientId
+        var distressedPatients = "Nurses/" + this.state.user.Nurse + "/Distressed Patients/" + patientId
+        var statusRef = 'Patients/' + self.state.user.Patient + '/status'
+        var assessRef = 'Patients/' + self.state.user.Patient + '/Assessments/' + databaseKey
 
-                        var critical = 8 * 10 * 0.7;
-                        if (average > critical) {
-                            nurseRef.child('Critical Patients').update({[patientId]: true});
-                        } else {
-                            nurseRef.child('Critical Patients').child(patientId).remove();
-                        }
-                        if (Math.abs(average - lastAverage) >= 10) {
-                            nurseRef.child('RC Patients').update({[patientId]: true});
-                        } else {
-                            nurseRef.child('RC Patients').child(patientId).remove();
-                        }
-                        if (databaseAssessmentObject.Results.Caregiver.value >= 7) {
-                            nurseRef.child('Distressed Patients').update({[patientId]: true});
-                        } else {
-                            nurseRef.child('RC Patients').child(patientId).remove();
-                        }
-                    });
-            })
+        patientRef.child('Assessments').orderByChild("timestamp").limitToLast(3)
+            .once("value", function(snapshot) {
+
+                var updates = {};
+
+                var cutOffForCriticalState = 8 * 10 * 0.7;
+
+                if (snapshot.val() == null) {
+                    updates[criticalPatients] = self.state.assessmentObject.ESAS >= cutOffForCriticalState ? true : null
+
+                    updates[rcPatients] = true
+
+                    updates[distressedPatients] = self.state.assessmentObject.Results.Caregiver.value >= 7 ? true : null
+
+                    updates[statusRef] = self.state.assessmentObject.ESAS;
+                } else {
+
+                    var assessments = Object.values(snapshot.val()).sort(this.compare)
+
+                    var sum = 0;
+
+                    assessments.forEach( function (assessment) {
+                        sum += parseInt(assessment["ESAS"])
+                    })
+
+                    var prevESAS = parseInt(assessments[assessments.length - 1]["ESAS"])
+                    var newESAS = self.state.assessmentObject.ESAS
+
+                    var oldAvg = sum / assessments.length
+                    var newAvg = assessments.length == 3 ? (sum - parseInt(assessments[0]["ESAS"]) + newESAS) / 3 : (sum + newESAS) / (assessments.length + 1)
+
+                    updates[criticalPatients] = newAvg > cutOffForCriticalState ? true : null
+
+                    updates[rcPatients] = Math.abs(prevESAS - newESAS) >= 10 ? true : null
+
+                    updates[distressedPatients] = self.state.assessmentObject.Results.Caregiver.value >= 7 ? true : null
+
+                    updates[statusRef] = newAvg;
+                }
+
+                updates[assessRef] = self.state.assessmentObject;
+
+                firebase.database().ref().update(updates)
+            });
+
         this.props.navigator.popN(2)
     }
 
+    compare(av,bv) {
+        var a = parseInt(av.timestamp)
+        var b = parseInt(bv.timestamp)
+        if (a == b) {
+            return 0
+        }
+        return a < b ? 1 : -1
+    }
 
 
     saveComments(text) {
