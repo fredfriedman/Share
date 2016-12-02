@@ -44,12 +44,13 @@ export default class Overview extends Component {
             modalVisible: false,
             modalVisiblePatient: null
         }
+        this.listeners = {}
     }
 
     componentDidMount() {
-        this.listenForItems(this.criticalPatientsRef, this.setListState.bind(this, "criticalPatients", this.compare))
-        this.listenForItems(this.updatingPatientsRef, this.setListState.bind(this, "updatedPatients", this.compare))
-        this.listenForItems(this.distressedPatientsRef, this.setListState.bind(this, "distressedPatients", this.compare))
+        this.listenForItems(this.criticalPatientsRef, "criticalPatients", this.callback1.bind(this))
+        this.listenForItems(this.updatingPatientsRef, "updatedPatients", this.callback2.bind(this))
+        this.listenForItems(this.distressedPatientsRef, "distressedPatients", this.callback3.bind(this))
     }
 
     componentsWillUnmount() {
@@ -68,7 +69,39 @@ export default class Overview extends Component {
         this.setState({ [type] : this.state[type].cloneWithRows(Object.values(patients).sort(comparison)) });
     }
 
-    listenForItems(typePatientsRef, setState) {
+    callback1(patients, state,  snapshot) {
+        this.callback(patients, state, snapshot)
+    }
+
+    callback2(patients, state,  snapshot) {
+        this.callback(patients, state, snapshot)
+    }
+
+    callback3(patients, state,  snapshot) {
+        this.callback(patients, state, snapshot)
+    }
+
+    callback(patients, state, snapshot) {
+        var self = this
+
+        self.caregiversRef.child(snapshot.val()["primary caregiver"] + "/Profile/name").once('value', snsht => {
+
+            var item = {
+                pID: snapshot.key,
+                name: snapshot.val().name,
+                status: snapshot.val().status,
+                caregiverDistress: snapshot.val()["caregiver distress"],
+                primaryCaregiver: snsht.val()
+            }
+
+            patients[snapshot.key] = item
+
+            self.setListState(state, self.compare, patients)
+        })
+
+    }
+
+    listenForItems(typePatientsRef, state, callback) {
 
         var self = this
 
@@ -76,30 +109,18 @@ export default class Overview extends Component {
 
         typePatientsRef.on('child_added', (snap) => {
 
-            self.patientsRef.child(snap.key).on('value', (snapshot) => {
-                console.log("got it!", snapshot.val())
-                self.caregiversRef.child(snapshot.val()["primary caregiver"] + "/Profile/name").once('value', snsht => {
+            var listener = self.patientsRef.child(snap.key).on('value', callback.bind(this, patients, state))
 
-                    var item = {
-                        pID: snapshot.key,
-                        name: snapshot.val().name,
-                        status: snapshot.val().status,
-                        caregiverDistress: snapshot.val()["caregiver distress"],
-                        primaryCaregiver: snsht.val()
-                    }
-                    console.log(item, patients)
-                    patients[snapshot.key] = item
-
-                    setState(patients)
-                })
-            })
+            self.listeners[state + snap.key] = listener
         })
 
         typePatientsRef.on('child_removed', (snap) => {
 
             delete patients[snap.key]
+            console.log(state + snap.key, self.listeners[state + snap.key], self.listeners)
+            self.patientsRef.child(snap.key).off('value', self.listeners[state + snap.key])
 
-            setState(patients)
+            self.setListState(state, self.compare, patients)
         })
     }
 
