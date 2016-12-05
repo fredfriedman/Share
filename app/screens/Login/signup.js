@@ -99,7 +99,7 @@ export default class signup extends Component {
 
                 } else {
 
-                    var data = {Profile: {name: self.state.nurse.name, phone: self.state.nurse.phone, relation: self.state.nurse.picture}}
+                    var data = {Profile: {name: self.state.nurse.name, phone: self.state.nurse.phone, hospital: self.state.nurse.hospital, picture: ""}}
 
                     Firebase.database().ref().child(ref).set(data);
 

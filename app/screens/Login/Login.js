@@ -24,17 +24,26 @@ import TabBar from '../Home/TabBar'
 import PasswordReset from './passwordReset'
 import CaregiverHome from '../CaregiverHome/overview'
 
-
-
+const { NURSE, CAREGIVER } = require('../../lib/constants').default
 
 export default class Login extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
             username: '',
             password: '',
             animating: false,
         }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        AsyncStorage.setItem('user_data', JSON.stringify(nextProps.user));
+
+        this.setState({animating: false})
+
+        var component = nextProps.user.type === NURSE ? TabBar : CaregiverHome
+
+        this.props.navigator.resetTo({ component: component })
     }
 
     componentDidMount() {
@@ -64,74 +73,10 @@ export default class Login extends Component {
 
         this.setState({animating: true})
 
-        Firebase.auth().signInWithEmailAndPassword(this.state.username, this.state.password)
-            .then(function(usr) {
-
-                user = usr
-
-                return Firebase.database().ref().child("Caregivers/" + user.uid).once('value').then(function(snapshot) {
-                    return self.signInHandler(user, snapshot, "caregiver")
-                })
-
-            }).then(function(isCaregiver) {
-                if (!isCaregiver) {
-                     return Firebase.database().ref().child("Nurses/" + user.uid).once('value')
-                        .then(function(snapshot) {
-                            self.signInHandler(user, snapshot, "nurse")
-                        }, function(error) {
-                            throw {code: error.code}
-                        })
-                }
-
-            }, function(error) {
-
-                var alertTitle;
-                var alertMessage;
-
-                switch (error.code) {
-                    case "auth/invalid-email":
-                        alertTitle = "Incorrect Email"
-                        alertMessage = "It looks like you may have misspelled your email.\n Please try again."
-                        break;
-                    case "auth/wrong-password":
-                        alertTitle = "Incorrect Password"
-                        alertMessage = "The password you entered is incorrect.\n Please try again."
-                        break;
-                    default:
-                        alertTitle = "Oops something went wrong"
-                        alertMessage = "Please try again."
-                }
-
-                Alert.alert(alertTitle, alertMessage, [ {text: 'OK', onPress: () => console.log('OK Pressed!')}, ])
-
-                self.setState({animating: false})
-            })
-    }
-
-    signInHandler(user, snapshot, type): Boolean {
-        if (snapshot.val() !== null) {
-
-            this.setState({animating: false})
-
-            dismissKeyboard()
-
-            var usr = snapshot.val()
-            usr["id"] = snapshot.key
-            usr["type"] = type
-            usr["email"] = user.email
-            usr["photoURL"] = user.photoURL
-
-            AsyncStorage.setItem('user_data', JSON.stringify(usr));
-
-            var component = type == "caregiver" ? CaregiverHome : TabBar
-
-            this.props.navigator.resetTo({ component: component, passProps: {user: usr} })
-
-            return true
-        } else {
-
-            return false
-        }
+        this.props.actions.login({
+            username: this.state.username,
+            password: this.state.password,
+        })
     }
 
     renderLoadingView() {

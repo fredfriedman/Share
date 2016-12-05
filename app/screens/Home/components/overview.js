@@ -45,6 +45,7 @@ export default class Overview extends Component {
             modalVisiblePatient: null
         }
         this.listeners = {}
+        console.log(props, "overview")
     }
 
     componentDidMount() {

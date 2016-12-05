@@ -11,7 +11,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import Icon from 'react-native-vector-icons/Ionicons';
 // Pages in Tab Bar
 import Profile from './components/profile'
-import Overview from './components/overview'
+import Overview from '../../containers/OverviewContainer'
 import Patients from './components/patients_view'
 import Settings from '../../containers/NurseSettingContainer'
 import Calendar from './components/calendar'
@@ -62,7 +62,7 @@ export default class TabBar extends Component {
                 renderIcon={() => over}
                 renderSelectedIcon={() => overS}
                 onPress={() => this.setTab('Overview')}>
-                <Overview navigator={this.props.navigator} user={this.props.user}/>
+                <Overview navigator={this.props.navigator}/>
             </TabNavigator.Item>
             <TabNavigator.Item
                 selected={this.state.selectedTab === 'Calendar'}

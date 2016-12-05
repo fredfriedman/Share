@@ -4,6 +4,9 @@ import firebaseHelper from '../screens/CaregiverSettings/firebaseHelper';
 * action types
 */
 
+// User Managemnet
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_ERROR = 'LOGIN_ERROR';
 //Manage Patients
 export const ADD_PATIENT = 'ADD_PATIENT';
 export const REMOVE_PATIENT = 'REMOVE_PATIENT';
@@ -29,6 +32,15 @@ export const INITIALIZE_CAREGIVERS = 'INITIALIZE_CAREGIVERS';
 /*
 * action creators
 */
+
+export function login(credentials){
+	if(credentials.username === 'testuser' && credentials.password === 'test'){
+		return {type: LOGIN_SUCCESS}
+	} else {
+		return {type: LOGIN_ERROR}
+	}
+
+}
 
 //Firebase Functionality
 export function addPatient(patientName, patientStatus){

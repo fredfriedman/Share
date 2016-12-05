@@ -18,6 +18,7 @@ export default class Overview extends Component {
 
     constructor(props) {
         super(props);
+        console.log("home", props)
     }
 
     handlePress(component) {

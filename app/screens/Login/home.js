@@ -5,7 +5,7 @@ import Dimensions from 'Dimensions';
 
 import styles from './styles'
 import SignUp from './signup'
-import Login from './Login'
+import Login from '../../containers/LoginContainer'
 import { butterfly } from '../../config/images'
 import CloseModalButton from '../../components/TopLeftAction'
 
