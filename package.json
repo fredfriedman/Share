@@ -12,6 +12,7 @@
     "es6-promise": "4.0.3",
     "firebase": "^3.4.1",
     "lodash": "^4.16.6",
+    "keymirror": "0.1.1",
     "moment": "^2.16.0",
     "react": "15.3.2",
     "react-native": "0.34.1",

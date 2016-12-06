@@ -26,9 +26,11 @@ import Firebase from '../../config/firebase'
 import Dimensions from 'Dimensions';
 import dismissKeyboard from 'dismissKeyboard'
 
+const { SUCCESS, FAILURE, REQUESTING, CAREGIVER, NURSE } = require('../../lib/constants').default
 // Screens
 import Login from './Login'
-
+import NurseHome from '../Home/TabBar'
+import CaregiverHome from '../CaregiverHome/overview'
 function User() {
     this.name = '';
     this.phone = '';
@@ -46,7 +48,7 @@ function Nurse() {
     this.picture = '';
 }
 
-export default class signup extends Component {
+export default class Signup extends Component {
 
     constructor(props){
         super(props);
@@ -60,83 +62,61 @@ export default class signup extends Component {
         };
     }
 
+    componentWillReceiveProps(nextProps) {
+        switch(nextProps.state.type) {
+            case SUCCESS:
+                console.log("success", nextProps.state.result)
+                var component = nextProps.state.result.type === NURSE ? NurseHome : CaregiverHome
+                this.setState({animating: false})
+                this.props.navigator.resetTo({ component: component })
+                break
+            case FAILURE:
+                console.log("failure", nextProps.state.result)
+                this.setState({animating: false})
+                this.displayError(nextProps.state.result)
+                break
+            case REQUESTING:
+                console.log("requesting")
+                this.setState({animating: true})
+                break
+            default:
+                console.log("unknown", nextProps.state.type)
+        }
+    }
+    shouldComponentUpdate() {
+        return true
+    }
+    displayError(error) {
+        var alertTitle = "Oops something went wrong"
+        var alertMessage = "Please try again."
+
+        switch (error) {
+            case "auth/email-already-in-use":
+                Alert.alert("Email Already in Use",
+                            "It looks like this email is already in use.",
+                            [
+                              {text: 'OK', onPress: () => console.log('OK Pressed!')},
+                              {text: "Sign In", onPress: () => this.props.navigator.pop()},
+                            ])
+                break;
+            case "auth/invalid-email":
+                Alert.alert("Invalid Email",
+                            "It looks like this email is malformed.\n Please try again.",
+                            [{text: 'OK', onPress: () => console.log('OK Pressed!')}])
+                break;
+            case "auth/weak-password":
+                Alert.alert("Weak Password",
+                            "Please create a stronger password.",
+                            [{text: 'OK', onPress: () => console.log('OK Pressed!')}])
+        }
+    }
+
     onPressSignUp() {
 
-        var self = this
+        this.state.isCaregiver ?    this.props.actions.registerCaregiver(this.state.caregiver)
+                                    :
+                                    this.props.actions.registerNurse(this.state.nurse)
 
-        var email =  self.state.isCaregiver ? this.state.caregiver.email : this.state.nurse.email
-        var pass  =  self.state.isCaregiver ? this.state.caregiver.password  : this.state.nurse.password
-
-        this.setState({animating: true})
-
-        Firebase.auth().createUserWithEmailAndPassword(email, pass)
-            .then(function(user) {
-
-                var ref = self.state.isCaregiver ? "Caregivers/" + user.uid : "Nurses/" + user.uid
-
-                if (self.state.isCaregiver) {
-                    return Firebase.database().ref().child("Patients/" + self.state.caregiver.patient + "/nurse").once('value')
-                        .then(function(res) {
-
-                            var data = {
-                                Patient: self.state.caregiver.patient,
-                                Nurse: res.val(),
-                                Profile: {
-                                    name: self.state.caregiver.name,
-                                    phone: self.state.caregiver.phone,
-                                    relation: self.state.caregiver.relation
-                                }
-                            }
-
-                            Firebase.database().ref().child(ref).set(data);
-
-                            self.setState({animating: false})
-
-                            dismissKeyboard()
-
-                            self.props.navigator.pop()
-                        })
-
-                } else {
-
-                    var data = {Profile: {name: self.state.nurse.name, phone: self.state.nurse.phone, hospital: self.state.nurse.hospital, picture: ""}}
-
-                    Firebase.database().ref().child(ref).set(data);
-
-                    self.setState({animating: false})
-
-                    dismissKeyboard()
-
-                    self.props.navigator.pop()
-                }
-
-            }, function(error) {
-
-                var alertTitle = "Oops something went wrong"
-                var alertMessage = "Please try again."
-
-                switch (error.code) {
-                    case "auth/email-already-in-use":
-                        Alert.alert("Email Already in Use",
-                                    "It looks like this email is already in use.",
-                                    [
-                                      {text: 'OK', onPress: () => console.log('OK Pressed!')},
-                                      {text: "Sign In", onPress: () => self.props.navigator.pop()},
-                                    ])
-                        break;
-                    case "auth/invalid-email":
-                        Alert.alert("Invalid Email",
-                                    "It looks like this email is malformed.\n Please try again.",
-                                    [{text: 'OK', onPress: () => console.log('OK Pressed!')}])
-                        break;
-                    case "auth/weak-password":
-                        Alert.alert("Weak Password",
-                                    "Please create a stronger password.",
-                                    [{text: 'OK', onPress: () => console.log('OK Pressed!')}])
-                }
-
-                self.setState({animating: false})
-        });
     }
 
     onExitScene() {

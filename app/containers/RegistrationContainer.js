@@ -14,12 +14,11 @@ import * as globalActions from '../actions/Actions'
 
 
 // Component
-import Login from '../screens/Login/Login'
+import Signup from '../screens/Login/signup'
 
 function mapStateToProps(state, ownProps) {
 	return {
 		state: state.state,
-		user: state.user
 	}
 }
 
@@ -30,4 +29,4 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Signup);

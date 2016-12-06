@@ -47,32 +47,68 @@ export class Firebase extends Backend {
     *
     * if error, {code: xxx, error: 'message'}
     */
-    async signup (user) {
-        /*return await FirebaseInstance.auth().createUserWithEmailAndPassword(user.email, user.password)
-            .then(function(user) {
-
-                var ref = user.isCaregiver ? "Caregivers/" + user.uid : "Nurses/" + user.uid
-
-                if (user.isCaregiver) {
-                    return Firebase.database().ref().child("Patients/" + self.state.caregiver.patient + "/nurse").once('value')
-                        .then(function(res) {
-
-                            user["Nurse"] = res.val()
-
-                            return Firebase.database().ref().child(ref).set(user);
-                        })
-
-                } else {
-                    return Firebase.database().ref().child(ref).set(user);
-                }
-
+    async registerCaregiver (_user) {
+        var user = {
+            Patient: _user.patient,
+            Profile : {
+                name: _user.name,
+                email: _user.email,
+                phone: _user.phone,
+                relation: _user.relation
+            },
+            type: CAREGIVER
+        }
+        var uid;
+        console.log(user, _user)
+        return await FB.auth().createUserWithEmailAndPassword(_user.email, _user.password)
+            .then(function(usr) {
+                uid = usr.uid
+                return FB.database().ref().child("Patients/" + user.Patient + "/nurse").once('value')
             })
-            .then(function(success) {
-
+            .then(function(res) {
+                var ref = "Caregivers/" + uid
+                user["Nurse"] = res.val()
+                return FB.database().ref().child(ref).set(user);
+            })
+            .then(function(result) {
+                user["id"] = uid
+                return user
             })
             .catch((error) => {
                 throw(error)
-            })*/
+            })
+    }
+
+    async registerNurse(_user) {
+        var user = {
+            Profile : {
+                name: _user.name,
+                hospital: _user.hospital,
+                email: _user.email,
+                phone: _user.phone,
+                picture: ""
+            },
+            type: NURSE
+        }
+        var uid;
+        return await FB.auth().createUserWithEmailAndPassword(_user.email, _user.password)
+            .then(function(usr) {
+                var ref = "Nurses/" + usr.uid
+                uid = usr.uid
+                return FB.database().ref().child(ref).set(user);
+            })
+            .then(function(result) {
+                user["id"] = uid
+                return user
+            })
+            .catch((error) => {
+                console.log(error)
+                throw(error)
+            })
+    }
+
+    async signup (user) {
+
     }
     /**
     * ### login

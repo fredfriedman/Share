@@ -4,7 +4,7 @@ import Button from 'react-native-button'
 import Dimensions from 'Dimensions';
 
 import styles from './styles'
-import SignUp from './signup'
+import SignUp from '../../containers/RegistrationContainer'
 import Login from '../../containers/LoginContainer'
 import { butterfly } from '../../config/images'
 import CloseModalButton from '../../components/TopLeftAction'

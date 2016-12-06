@@ -19,6 +19,14 @@ export default keyMirror({
   SIGNUP_SUCCESS: null,
   SIGNUP_FAILURE: null,
 
+  REGISTER_NURSE_REQUEST: null,
+  REGISTER_NURSE_SUCCESS: null,
+  REGISTER_NURSE_FAILURE: null,
+
+  REGISTER_CAREGIVER_REQUEST: null,
+  REGISTER_CAREGIVER_SUCCESS: null,
+  REGISTER_CAREGIVER_FAILURE: null,
+
   LOGIN_REQUEST: null,
   LOGIN_SUCCESS: null,
   LOGIN_FAILURE: null,
@@ -55,6 +63,10 @@ export default keyMirror({
   REGISTER: null,
 
   NURSE: null,
-  CAREGIVER: null
+  CAREGIVER: null,
+
+  SUCCESS: null,
+  FAILURE: null,
+  REQUESTING: null,
 
 })

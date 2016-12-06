@@ -27,8 +27,6 @@ export const INITIALIZE_PATIENTS = 'INITIALIZE_PATIENTS';
 export const INITIALIZE_CAREGIVERS = 'INITIALIZE_CAREGIVERS';
 
 
-
-
 /*
 * action creators
 */

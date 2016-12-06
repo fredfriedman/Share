@@ -29,7 +29,7 @@ export default class Overview extends Component {
 
     constructor(props) {
         super(props);
-
+        console.log("overview", props)
         this.patientsRef = this.getRef().child('Patients/')
         this.caregiversRef = this.getRef().child('Caregivers/')
         this.updatingPatientsRef = this.getRef().child('Nurses/' + props.user.id + "/RC Patients")
@@ -45,7 +45,7 @@ export default class Overview extends Component {
             modalVisiblePatient: null
         }
         this.listeners = {}
-        console.log(props, "overview")
+
     }
 
     componentDidMount() {

@@ -31,6 +31,14 @@ const {
     SIGNUP_SUCCESS,
     SIGNUP_FAILURE,
 
+    REGISTER_NURSE_REQUEST,
+    REGISTER_NURSE_SUCCESS,
+    REGISTER_NURSE_FAILURE,
+
+    REGISTER_CAREGIVER_REQUEST,
+    REGISTER_CAREGIVER_SUCCESS,
+    REGISTER_CAREGIVER_FAILURE,
+
     RESET_PASSWORD_REQUEST,
     RESET_PASSWORD_SUCCESS,
     RESET_PASSWORD_FAILURE
@@ -166,6 +174,40 @@ export function signupFailure (error) {
         payload: error
     }
 }
+export function registerNurseRequest () {
+    return {
+        type: REGISTER_NURSE_REQUEST
+    }
+}
+export function registerNurseSuccess (json) {
+    return {
+        type: REGISTER_NURSE_SUCCESS,
+        payload: json
+    }
+}
+export function registerNurseFailure (error) {
+    return {
+        type: REGISTER_NURSE_FAILURE,
+        payload: error
+    }
+}
+export function registerCaregiverRequest () {
+    return {
+        type: REGISTER_CAREGIVER_REQUEST
+    }
+}
+export function registerCaregiverSuccess (json) {
+    return {
+        type: REGISTER_CAREGIVER_SUCCESS,
+        payload: json
+    }
+}
+export function registerCaregiverFailure (error) {
+    return {
+        type: REGISTER_CAREGIVER_FAILURE,
+        payload: error
+    }
+}
 /**
 * ## SessionToken actions
 */
@@ -264,134 +306,132 @@ export function saveSessionToken (json) {
 *
 * Otherwise, dispatch the error so the user can see
 */
-export function signup (username, email, password) {
+export function registerNurse(user) {
     return dispatch => {
-        dispatch(signupRequest())
-        return irebase().signup({
-            username: username,
-            email: email,
-            password: password
+        dispatch(registerNurseRequest())
+
+        return BackendFactory().registerNurse(user)
+            .then(function (usr) {
+                dispatch(registerNurseSuccess(usr))
+            })
+            .catch((error) => {
+                dispatch(registerNurseFailure(error))
+            })
+    }
+}
+
+export function registerCaregiver(user) {
+    console.log("registering caregiver")
+    return dispatch => {
+        dispatch(registerCaregiverRequest())
+
+        return BackendFactory().registerCaregiver(user)
+            .then(function (usr) {
+                dispatch(registerCaregiverSuccess(usr))
+            })
+            .catch((error) => {
+                dispatch(registerCaregiverFailure(error))
+            })
+    }
+}
+
+export function signup (username, email, password) {
+}
+
+/**
+* ## Login actions
+*/
+export function loginRequest () {
+    return {
+        type: LOGIN_REQUEST
+    }
+}
+
+export function loginSuccess (user) {
+    return {
+        type: LOGIN_SUCCESS,
+        payload: user
+    }
+}
+
+export function loginFailure (error) {
+    return {
+        type: LOGIN_FAILURE,
+        payload: error
+    }
+}
+/**
+* ## Login
+* @param {string} username - user's name
+* @param {string} password - user's password
+*
+* After calling Backend, if response is good, save the json
+* which is the currentUser which contains the sessionToken
+*
+* If successful, set the state to logout
+* otherwise, dispatch a failure
+*/
+
+export function login (credentials) {
+    return dispatch => {
+        dispatch(loginRequest())
+
+        return BackendFactory().login(credentials)
+            .then(function (user) {
+                dispatch(loginSuccess(user))
+            })
+            .catch((error) => {
+                dispatch(loginFailure(error))
+            })
+    }
+}
+
+/**
+* ## ResetPassword actions
+*/
+export function resetPasswordRequest () {
+    return {
+        type: RESET_PASSWORD_REQUEST
+    }
+}
+
+export function resetPasswordSuccess () {
+    return {
+        type: RESET_PASSWORD_SUCCESS
+    }
+}
+
+export function resetPasswordFailure (error) {
+    return {
+        type: RESET_PASSWORD_FAILURE,
+        payload: error
+    }
+}
+/**
+* ## ResetPassword
+*
+* @param {string} email - the email address to reset password
+* *Note* There's no feedback to the user whether the email
+* address is valid or not.
+*
+* This functionality depends on the server set
+* up correctly ie, that emails are verified.
+* With that enabled, an email can be sent w/ a
+* form for setting the new password.
+*/
+export function resetPassword (email) {
+    return dispatch => {
+        dispatch(resetPasswordRequest())
+        return BackendFactory().resetPassword({
+            email: email
         })
-
-        .then((json) => {
-            return saveSessionToken(
-                Object.assign({}, json,
-                    { username: username,
-                        email: email
-                    })
-                )
-                .then(() => {
-                    dispatch(signupSuccess(
-                        Object.assign({}, json,
-                            { username: username,
-                                email: email
-                            })
-                        ))
-                        dispatch(logoutState())
-                        // navigate to Tabbar
-                        Actions.Tabbar()
-                    })
-                })
-                .catch((error) => {
-                    dispatch(signupFailure(error))
-                })
-            }
-        }
-
-        /**
-        * ## Login actions
-        */
-        export function loginRequest () {
-            return {
-                type: LOGIN_REQUEST
-            }
-        }
-
-        export function loginSuccess (user) {
-            return {
-                type: LOGIN_SUCCESS,
-                payload: user
-            }
-        }
-
-        export function loginFailure (error) {
-            return {
-                type: LOGIN_FAILURE,
-                payload: error
-            }
-        }
-        /**
-        * ## Login
-        * @param {string} username - user's name
-        * @param {string} password - user's password
-        *
-        * After calling Backend, if response is good, save the json
-        * which is the currentUser which contains the sessionToken
-        *
-        * If successful, set the state to logout
-        * otherwise, dispatch a failure
-        */
-
-        export function login (credentials) {
-            return dispatch => {
-                dispatch(loginRequest())
-
-                return BackendFactory().login(credentials)
-                    .then(function (user) {
-                        dispatch(loginSuccess(user))
-                    })
-                    .catch((error) => {
-                        dispatch(loginFailure(error))
-                    })
-            }
-        }
-
-        /**
-        * ## ResetPassword actions
-        */
-        export function resetPasswordRequest () {
-            return {
-                type: RESET_PASSWORD_REQUEST
-            }
-        }
-
-        export function resetPasswordSuccess () {
-            return {
-                type: RESET_PASSWORD_SUCCESS
-            }
-        }
-
-        export function resetPasswordFailure (error) {
-            return {
-                type: RESET_PASSWORD_FAILURE,
-                payload: error
-            }
-        }
-        /**
-        * ## ResetPassword
-        *
-        * @param {string} email - the email address to reset password
-        * *Note* There's no feedback to the user whether the email
-        * address is valid or not.
-        *
-        * This functionality depends on the server set
-        * up correctly ie, that emails are verified.
-        * With that enabled, an email can be sent w/ a
-        * form for setting the new password.
-        */
-        export function resetPassword (email) {
-            return dispatch => {
-                dispatch(resetPasswordRequest())
-                return BackendFactory().resetPassword({
-                    email: email
-                })
-                .then(() => {
-                    dispatch(loginState())
-                    dispatch(resetPasswordSuccess())
-                    Actions.Login()
-                })
-                .catch((error) => {
-                    dispatch(resetPasswordFailure(error))
-                })
-            }
-        }
+        .then(() => {
+            dispatch(loginState())
+            dispatch(resetPasswordSuccess())
+            Actions.Login()
+        })
+        .catch((error) => {
+            dispatch(resetPasswordFailure(error))
+        })
+    }
+}

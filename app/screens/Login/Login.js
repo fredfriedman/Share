@@ -24,7 +24,7 @@ import TabBar from '../Home/TabBar'
 import PasswordReset from './passwordReset'
 import CaregiverHome from '../CaregiverHome/overview'
 
-const { NURSE, CAREGIVER } = require('../../lib/constants').default
+const { SUCCESS, FAILURE, REQUESTING, NURSE, CAREGIVER } = require('../../lib/constants').default
 
 export default class Login extends Component {
     constructor() {
@@ -37,17 +37,49 @@ export default class Login extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        AsyncStorage.setItem('user_data', JSON.stringify(nextProps.user));
+        switch(nextProps.state.type) {
+            case SUCCESS:
+                AsyncStorage.setItem('user_data', JSON.stringify(nextProps.user));
 
-        this.setState({animating: false})
+                this.setState({animating: false})
 
-        var component = nextProps.user.type === NURSE ? TabBar : CaregiverHome
+                var component = nextProps.user.type === NURSE ? TabBar : CaregiverHome
 
-        this.props.navigator.resetTo({ component: component })
+                this.props.navigator.resetTo({ component: component })
+                break
+            case FAILURE:
+                this.setState({animating: false})
+                this.displayError(nextProps.state.error)
+                break
+            case REQUESTING:
+                this.setState({animating: true})
+                break
+            default:
+                console.log("unknown", nextProps.state.type)
+        }
     }
 
     componentDidMount() {
         this.refs.email.refs.input.focus()
+    }
+
+    displayError(error) {
+        var alertTitle;
+        var alertMessage;
+        switch (error) {
+            case "auth/invalid-email":
+                alertTitle = "Incorrect Email"
+                alertMessage = "It looks like you may have misspelled your email.\n Please try again."
+                break;
+            case "auth/wrong-password":
+                alertTitle = "Incorrect Password"
+                alertMessage = "The password you entered is incorrect.\n Please try again."
+                break;
+            default:
+                alertTitle = "Oops something went wrong"
+                alertMessage = "Please try again."
+        }
+        Alert.alert(alertTitle, alertMessage, [ {text: 'OK', onPress: () => console.log('OK Pressed!')}, ])
     }
 
     onExitScene() {
