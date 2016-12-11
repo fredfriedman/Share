@@ -8,6 +8,7 @@ import firebaseHelper from '../CaregiverSettings/firebaseHelper';
 import Header from '../../components/header';
 import ManagePatientDetailContainer from '../../containers/ManagePatientDetailContainer';
 import ManageCaregiverDetailContainer from '../../containers/ManageCaregiverDetailContainer';
+import AboutPage from '../About/about'
 
 export default class NurseSettings extends Component {
 	constructor(){
@@ -35,6 +36,11 @@ export default class NurseSettings extends Component {
 					headerStyle={styles.headerStyle}/>
 				<SettingsList borderColor='#c8c7cc' defaultItemSize={50}>
 					<SettingsList.Header headerStyle={{marginTop:15}}/>
+					<SettingsList.Item
+						title='About'
+						titleInfoStyle={styles.titleInfoStyle}
+						onPress={() => this.onViewAboutPage()}
+					/>
 					<SettingsList.Item
 					  	title='Manage Patients'
 					  	titleInfoStyle={styles.titleInfoStyle}
@@ -68,6 +74,14 @@ export default class NurseSettings extends Component {
 		this.props.navigator.push({
 			component:ManageCaregiverDetailContainer,
 			sceneConfig: Navigator.SceneConfigs.FloatFromBottom
+		});
+	}
+
+	onViewAboutPage(){
+		this.props.navigator.push({
+			component: AboutPage,
+			sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
+
 		});
 	}
 
