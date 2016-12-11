@@ -12,7 +12,8 @@ export default class PatientTableViewCell extends Component {
         super();
     }
 
-    statusToColor(status) {
+    statusToColor(value) {
+        var status = parseInt(value)
         if(status > 90) {
             return '#B71C1C'
         } else if (status > 80) {

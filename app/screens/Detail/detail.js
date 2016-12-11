@@ -231,7 +231,7 @@ export default class PatientDetailView  extends Component {
                 <View>
                     <View style={[styles.row, {alignItems: 'center'}]}>
                         <View style={[styles.indicator, {backgroundColor: this.statusToColor(this.props.patient.status)}]}/>
-                        <Text style={[styles.text, {fontSize: 60}]}> {this.props.patient.status} </Text>
+                        <Text style={[styles.text, {fontSize: 60}]}> {Math.floor(this.props.patient.status)} </Text>
                         { this.props.patient.caregiverDistress ? alertIcon : null}
                     </View>
                     <Text style={[styles.text, {color: '#00838F', fontSize: 20, fontWeight: '400'}]}> Current Status </Text>

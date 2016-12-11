@@ -44,12 +44,13 @@ export default class Overview extends Component {
             modalVisible: false,
             modalVisiblePatient: null
         }
+        this.listeners = {}
     }
 
     componentDidMount() {
-        this.listenForItems(this.criticalPatientsRef, this.setListState.bind(this, "criticalPatients", this.compare))
-        this.listenForItems(this.updatingPatientsRef, this.setListState.bind(this, "updatedPatients", this.compare))
-        this.listenForItems(this.distressedPatientsRef, this.setListState.bind(this, "distressedPatients", this.compareDistress))
+        this.listenForItems(this.criticalPatientsRef, "criticalPatients", this.callback1.bind(this))
+        this.listenForItems(this.updatingPatientsRef, "updatedPatients", this.callback2.bind(this))
+        this.listenForItems(this.distressedPatientsRef, "distressedPatients", this.callback3.bind(this))
     }
 
     componentsWillUnmount() {
@@ -68,7 +69,39 @@ export default class Overview extends Component {
         this.setState({ [type] : this.state[type].cloneWithRows(Object.values(patients).sort(comparison)) });
     }
 
-    listenForItems(typePatientsRef, setState) {
+    callback1(patients, state,  snapshot) {
+        this.callback(patients, state, snapshot)
+    }
+
+    callback2(patients, state,  snapshot) {
+        this.callback(patients, state, snapshot)
+    }
+
+    callback3(patients, state,  snapshot) {
+        this.callback(patients, state, snapshot)
+    }
+
+    callback(patients, state, snapshot) {
+        var self = this
+
+        self.caregiversRef.child(snapshot.val()["primary caregiver"] + "/Profile/name").once('value', snsht => {
+
+            var item = {
+                pID: snapshot.key,
+                name: snapshot.val().name,
+                status: snapshot.val().status,
+                caregiverDistress: snapshot.val()["caregiver distress"],
+                primaryCaregiver: snsht.val()
+            }
+
+            patients[snapshot.key] = item
+
+            self.setListState(state, self.compare, patients)
+        })
+
+    }
+
+    listenForItems(typePatientsRef, state, callback) {
 
         var self = this
 
@@ -76,41 +109,31 @@ export default class Overview extends Component {
 
         typePatientsRef.on('child_added', (snap) => {
 
-            self.patientsRef.child(snap.key).on('value', (snapshot) => {
+            var listener = self.patientsRef.child(snap.key).on('value', callback.bind(this, patients, state))
 
-                self.caregiversRef.child(snapshot.val()["primary caregiver"] + "/Profile/name").once('value', snsht => {
-
-                    var item = {
-                        pID: snapshot.key,
-                        name: snapshot.val().name,
-                        status: snapshot.val().status,
-                        caregiverDistress: snapshot.val()["caregiver distress"],
-                        primaryCaregiver: snsht.val()
-                    }
-
-                    patients[snapshot.key] = item
-
-                    setState(patients)
-                })
-            })
+            self.listeners[state + snap.key] = listener
         })
 
         typePatientsRef.on('child_removed', (snap) => {
 
             delete patients[snap.key]
+            console.log(state + snap.key, self.listeners[state + snap.key], self.listeners)
+            self.patientsRef.child(snap.key).off('value', self.listeners[state + snap.key])
 
-            setState(patients)
+            self.setListState(state, self.compare, patients)
         })
     }
 
-    compare(a,b) {
-        if (a.status == b.status) {
+    compare(av,bv) {
+        var a = parseInt(av.status)
+        var b = parseInt(bv.status)
+        if (a == b) {
             return 0
         }
-        return a.status < b.status ? 1 : -1
+        return a < b ? 1 : -1
     }
 
-    compareDistress(a,b) {
+    compareDistress(av,bv) {
         if (a.distress == b.distress) {
             return 0
         }
@@ -194,13 +217,14 @@ export default class Overview extends Component {
     }
 
     render() {
+        const peopleIcon = <Icon name="users" size={20} color="#E7E7E7" />
 
         return (
             <View style={SharedStyle.container}>
                 <Header
                     text={"Overview"}
                     rightAction={this.onPressHeader.bind(this, "Patients")}
-                    rightIcon={<Text style={{color: "#262626", paddingTop: 10, fontSize: 10.5}}>See All</Text>}
+                    rightIcon={peopleIcon}
                     headerStyle={SharedStyle.header}
                     textStyle={SharedStyle.header_text}/>
                 { this.renderView()}
@@ -219,7 +243,7 @@ export default class Overview extends Component {
             <ScrollView contentContainerStyle={styles.scrollViewContainer}>
                 { this.renderTable("Critical Patients", "All Critical", "criticalPatients", "Critical Patients") }
                 { this.renderTable("Status Updates", "All Updates", "updatedPatients", "RC Patients") }
-                { this.renderTable("Distressed Caregivers", "All Distressed", "distressedPatients", "Distressed Patients") }
+                { this.renderTable("Patients With Distressed Caregivers", "All Distressed", "distressedPatients", "Distressed Patients") }
             </ScrollView>
 
         )
@@ -247,7 +271,7 @@ export default class Overview extends Component {
                 null
                 :
                 <TableViewGroup
-                    animation={entrance}
+
                     headerTitle={title}
                     footerTitle={footerTitle}
                     onPress={this.onPressHeader.bind(this, fbLabel)}

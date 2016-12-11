@@ -42,7 +42,7 @@ export default class Overview extends Component {
                     <Col>
                         <Button
                             pressed={false}
-                            style={styles.buttonStyle1} 
+                            style={styles.buttonStyle1}
                             onPress={() => this.handlePress(AssessmentLandingPage)}>
                             <View
                                 style={styles.buttonChildrenContainer}>
@@ -53,7 +53,7 @@ export default class Overview extends Component {
                     </Col>
                     <Col>
                         <Button
-                            style={styles.buttonStyle2} 
+                            style={styles.buttonStyle2}
                             onPress={() => this.handlePress(null)}>
                             <View
                                 style={styles.buttonChildrenContainer}>
@@ -66,7 +66,7 @@ export default class Overview extends Component {
                 <Row style={styles.container}>
                     <Col>
                         <Button
-                            style={styles.buttonStyle2} 
+                            style={styles.buttonStyle2}
                             onPress={() => this.handlePress(CaregiverHistory)}>
                             <View
                                 style={styles.buttonChildrenContainer}>
@@ -77,7 +77,7 @@ export default class Overview extends Component {
                     </Col>
                     <Col>
                         <Button
-                            style={styles.buttonStyle1} 
+                            style={styles.buttonStyle1}
                             onPress={() => this.handlePress(CaregiverSettings)}>
                             <View
                                 style={styles.buttonChildrenContainer}>
@@ -106,13 +106,13 @@ var styles = EStyleSheet.create({
   },
   overviewTextStyle: {
     fontFamily: '$fonts.family',
-    fontSize: 25, 
-    color: '$colors.main', 
+    fontSize: 25,
+    color: '$colors.main',
     textAlign: 'center'
   },
   buttonTextStyle: {
     color: 'white',
-    fontFamily: 'Roboto-Regular',
+    fontFamily: '$fonts.family',
     fontSize: 15,
     margin: 5,
     textAlign: 'center',

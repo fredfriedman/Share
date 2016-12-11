@@ -297,7 +297,6 @@ export default class signup extends Component {
                         value={this.state.caregiver.patient}
                         autoCapitalize={'none'}
                         autoCorrect={false}
-                        secureTextEntry={true}
                         onSubmitEditing={(event) => { this.refs.caregiverPhone.refs.input.focus(); }}
                         onChangeText={(text) => {
                             var updatedUser = Object.assign({}, this.state.caregiver, {patient: text});
@@ -314,7 +313,6 @@ export default class signup extends Component {
                         value={this.state.caregiver.phone}
                         autoCapitalize={'none'}
                         autoCorrect={false}
-                        secureTextEntry={true}
                         onChangeText={(text) => {
                             var updatedUser = Object.assign({}, this.state.caregiver, {phone: text});
                             this.setState({caregiver: updatedUser})
@@ -370,7 +368,6 @@ export default class signup extends Component {
                     value={this.state.nurse.phone}
                     autoCapitalize={'none'}
                     autoCorrect={false}
-                    secureTextEntry={true}
                     onSubmitEditing={(event) => { this.refs.nurseEmail.refs.input.focus(); }}
                     onChangeText={(text) => {
                         var updatedUser = Object.assign({}, this.state.nurse, {phone: text});

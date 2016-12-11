@@ -32,7 +32,7 @@ export default class History extends Component {
 
     parseAssessments(snap) {
         return {
-            completed: snap.val().completed,
+            completed: true,
             timestamp: snap.val().timestamp,
             submittedBy: snap.val().submittedBy,
             results: snap.val().Results,
@@ -75,13 +75,14 @@ export default class History extends Component {
         const backIcon = (<Icon name="ios-arrow-back" ios="ios-arrow-back" md="md-arrow-back" size={30} color="#f7f7f7" />);
 
         return (
-            <View>
+            <View style={{flex: 1}}>
                 <Header
                     text={"History"}
                     textStyle={{color: 'white'}}
                     leftAction={this.onPressBack.bind(this)}
                     leftIcon={backIcon}/>
                 <ListView
+                    style={{flex: 1}}
                     dataSource={this.state.history}
                     renderRow={(data) => <HistoryRow assessment={data} onPressHistoryCell={this.onPressHistoryCell.bind(this)}/>}
                     renderSeparator={(sectionId, rowId) => <View key={rowId} style={styles.separator} />}/>
