@@ -1,0 +1,22 @@
+BACKLOG: Features that we want to implement in the future
+
+COMMUNICATIONS FEATURES:
+
+1.Push notification functionality --> ex. might be notifications based on when users finish assessments
+
+CAREGIVER FEATURES:
+
+1.Assessment: One submission per day restriction
+2.Assessment: change assessment button UI to indicate completion
+3.Assessment: Completion check implementation
+4.Assessment: Alert and redirection when editing completed assessment
+5.Assessment: Load completed Submission from same day
+6.Assessment: Load unfinished assessment from same day
+7.Assessment: Alert redirection when finishing incomplete assessment
+8.Assessment: Save assessment nswers as one session
+
+MISC. FEATURES:
+
+1. Signup: Sign up on caregiver side through an email link sent out by the nurses --> currently, caregivers have to obtain a long id number for the patient they are caring for from the nurses. If we had the ability to automatically send out an email to caregivers from nurses with the id, and an autolink to sign up the caregiver, this might make onboarding much less stressful and confusing for the users involved.
+2. Ability to export patient list outside of application for reference --> Ability to save a list of patients. It wasn't clearly defined what this would accomplish. Perhaps being able to print out the list of high priority patients might make it easier for nurses to keep track of the information.
+3. Daily Routing and scheduling --> A way to create schedule which patients to visit in what order so that nurses who they need to see each day in the most efficient fashion.
