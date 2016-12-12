@@ -2,7 +2,7 @@
 
 > Application is developed in Javascript using React-Native 34.1 and React 15.3.2
 
-Our application began with the presentation, business, and data layers combined, but has since began to take on a more redux architecture. At the moment, our main branch only features a portion of the app using redux; however, we have begun migrating to a full implementation inside the `redux-refactor` branch. Here, the application has undergone significant architectural changes to full reflect the redux structure; however, it is only about 50% complete into the transformation. As such, we have deployed the basic application without these changes, but suggest future development be made on that branch.
+Our application began with the presentation, business, and data layers combined, but has since began to take on a more redux architecture. At the moment, our main branch only features a portion of the app using redux; however, we have begun migrating to a full implementation inside the `redux-refactor` branch. Here, the application has undergone significant architectural changes to fully reflect the redux structure; however, it is only about 50% complete into the transformation. As such, we have deployed the basic application without these changes, but suggest future development be made on that branch.
 
 #### File System
 
@@ -16,6 +16,8 @@ Our application began with the presentation, business, and data layers combined,
     - /Reducers
     - /screens
     - /images
+- main.js
+- package.js
 
 #### Presentation Layer
 
