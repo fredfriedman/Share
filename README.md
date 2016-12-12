@@ -9,9 +9,9 @@ The vision of Share is to create a transparent, simple, and reliable communicati
 #### Table of Contents
 * [Team Structure](#Team Structure)
 * [Features](#features)
-* [Setup](#Setup)
-* [User Documentation](./doc/Share User Documentation.docx)
-* [Technical Documentation](./doc/Technical Docs/overview.md)
+* [Setup](#setup)
+* [User Documentation](./doc/Share\ User\ Documentation.docx)
+* [Technical Documentation](./doc/Technical\ Docs/overview.md)
 
 #### Team Structure
  - Aaron Liberatore: Development
