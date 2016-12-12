@@ -15,6 +15,7 @@ import Header from '../../components/header';
 import ModalView from './EditProfileModal'
 import firebaseHelper from './firebaseHelper';
 import CaregiverProfile from './CaregiverProfileInformation';
+import AboutPage from '../About/about'
 
 export default class CaregiverSettings extends Component {
 
@@ -72,6 +73,11 @@ export default class CaregiverSettings extends Component {
 					<SettingsList borderColor='#c8c7cc' defaultItemSize={50}>
 						<SettingsList.Header headerStyle={{marginTop:15}}/>
 						<SettingsList.Item
+							title='About'
+							titleInfoStyle={styles.titleInfoStyle}
+							onPress={() => this.onViewAboutPage()}
+						/>
+						<SettingsList.Item
 							title='Profile Information'
 							titleInfoStyle={styles.titleInfoStyle}
 							onPress={() => this.onViewProfileInformation()}
@@ -112,6 +118,14 @@ export default class CaregiverSettings extends Component {
 			component: CaregiverProfile,
 			sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
 			passProps: {user: this.props.user}
+
+		});
+	}
+
+	onViewAboutPage(){
+		this.props.navigator.push({
+			component: AboutPage,
+			sceneConfig: Navigator.SceneConfigs.FloatFromBottom,
 
 		});
 	}
